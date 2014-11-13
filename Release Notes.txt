@@ -1,0 +1,13 @@
+Release Notes
+=============
+
+Changes made between version 1.4.1 (17-Oct-2010) and version 1.4.2 (12-Feb-2011)
+
+1.  When any of the image selection comboboxes; Comp Date, Theme, Classification, Medium, Award was 
+    changed they were not setting the AllScoresSelected flag back to true.  This caused the statusbar 
+    text in the slideshow to show the photographer's name at the beginning of a new competition.
+    Take 2:  Apparantly I didn't fix this in v1.4.1 like the v1.4.1 release notes say. :-(
+
+Known Problems
+--------------
+- When executable is run off a thumb drive and the Images Root Folder had previously been set in the registry to C:\RPS, the path stored in the database was incorrect (F:\\hotos\....)
