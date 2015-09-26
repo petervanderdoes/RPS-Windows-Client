@@ -1,11 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RPS Digital Viewer", "RPS Digital Viewer.vbproj", "{134D8C6B-FAD5-40E1-9A85-A9DDDF4D5D9F}"
 EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "..\RPS Digital Viewr Setup\Setup.isproj", "{7143B414-DBEF-4EFC-B975-4BE45124C70A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{134D8C6B-FAD5-40E1-9A85-A9DDDF4D5D9F} = {134D8C6B-FAD5-40E1-9A85-A9DDDF4D5D9F}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
