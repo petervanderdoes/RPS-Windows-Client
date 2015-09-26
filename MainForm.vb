@@ -16,9 +16,11 @@ Public Class MainForm
     'Private databaseFileName As String = "rps.mdb"
     'Public reportsOutputFolder As String = "Reports"
     'Public imagesRootFolder As String = "Photos"
-    Private databaseFileName As String = Application.StartupPath + "\rps.mdb"
-    Public reportsOutputFolder As String = Application.StartupPath + "\Reports"
-    Public imagesRootFolder As String = Application.StartupPath + "\Photos"
+    Private dataFolder As String = Application.LocalUserAppDataPath
+
+    Private databaseFileName As String = dataFolder + "\rps.mdb"
+    Public reportsOutputFolder As String = dataFolder + "\Reports"
+    Public imagesRootFolder As String = dataFolder + "\Photos"
     Private ServerName As String = "localhost"
     Private ServerScriptDir As String = "/scripts"
     Public cameraClubName As String = "Raritan Photographic Society"
