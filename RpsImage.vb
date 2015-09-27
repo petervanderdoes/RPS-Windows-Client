@@ -1,21 +1,17 @@
 ﻿Class RpsImage
 
-    Private full_width As Integer = 1440
-    Private full_height As Integer = 900
+    Private full_width = 1440
+    Private full_height = 900
+    Public ReadOnly Property getFullWidth() As Integer
+        Get
+            Return full_width
+        End Get
+    End Property
 
-    Function setFullSize() As System.Drawing.Size
-        Return New Size(full_width, full_height)
-    End Function
+    Public ReadOnly Property getFullHeight As Integer
+        Get
+            Return full_height
+        End Get
+    End Property
 
-    Function setSplashClub() As System.Drawing.Size
-        Return New Size(full_width, 102)
-    End Function
-
-    Function setSplashTheme() As System.Drawing.Size
-        Return New Size(full_width, 102)
-    End Function
-
-    Function setSplashClassification() As System.Drawing.Size
-        Return New Size(full_width, 102)
-    End Function
 End Class
