@@ -2682,12 +2682,12 @@ Public Class MainForm
             response = request.GetResponse()
 
             ' Debug: Read the HTTP response into a string and display it
-            If http_method = "POST" Then
-                reader = New StreamReader(response.GetResponseStream())
-                Dim dummy As String
-                dummy = reader.ReadToEnd
-                MsgBox(dummy)
-            End If
+            'If http_method = "POST" Then
+            'reader = New StreamReader(response.GetResponseStream())
+            'Dim dummy As String
+            'dummy = reader.ReadToEnd
+            'MsgBox(dummy)
+            'End If
 
             ' Parse the status out of the xml response
             XPathDoc = New XPathDocument(response.GetResponseStream())
