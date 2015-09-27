@@ -15,6 +15,7 @@ Public Class ImageViewer
     Dim inDelayLoop As Boolean = False
     Dim thumb As Thumbnail
     Dim thumbnailThread As Thread
+    Dim Rps_Image As RpsImage = New RpsImage
 
     Private Const SCORE As Integer = 0
     Private Const AWARD As Integer = 1
@@ -90,7 +91,7 @@ Public Class ImageViewer
         Me.picShowPicture.BackColor = System.Drawing.Color.Black
         Me.picShowPicture.Location = New System.Drawing.Point(0, 0)
         Me.picShowPicture.Name = "picShowPicture"
-        Me.picShowPicture.Size = New System.Drawing.Size(1024, 768)
+        Me.picShowPicture.Size = Rps_Image.setFullSize
         Me.picShowPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.picShowPicture.TabIndex = 2
         Me.picShowPicture.TabStop = False
@@ -176,7 +177,7 @@ Public Class ImageViewer
         Me.splashClub.ForeColor = System.Drawing.Color.Yellow
         Me.splashClub.Location = New System.Drawing.Point(0, 157)
         Me.splashClub.Name = "splashClub"
-        Me.splashClub.Size = New System.Drawing.Size(1024, 101)
+        Me.splashClub.Size = Rps_Image.setSplashClub
         Me.splashClub.TabIndex = 5
         Me.splashClub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.splashClub.UseMnemonic = False
@@ -188,7 +189,7 @@ Public Class ImageViewer
         Me.splashTheme.ForeColor = System.Drawing.Color.White
         Me.splashTheme.Location = New System.Drawing.Point(0, 351)
         Me.splashTheme.Name = "splashTheme"
-        Me.splashTheme.Size = New System.Drawing.Size(1024, 101)
+        Me.splashTheme.Size = Rps_Image.setSplashTheme
         Me.splashTheme.TabIndex = 6
         Me.splashTheme.Text = "Open and Oldies"
         Me.splashTheme.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -201,7 +202,7 @@ Public Class ImageViewer
         Me.splashClassification.ForeColor = System.Drawing.Color.Red
         Me.splashClassification.Location = New System.Drawing.Point(0, 535)
         Me.splashClassification.Name = "splashClassification"
-        Me.splashClassification.Size = New System.Drawing.Size(1024, 102)
+        Me.splashClassification.Size = Rps_Image.setSplashClassification
         Me.splashClassification.TabIndex = 7
         Me.splashClassification.Text = "Beginner"
         Me.splashClassification.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -212,7 +213,7 @@ Public Class ImageViewer
         Me.AutoScale = False
         Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(1024, 768)
+        Me.ClientSize = Rps_Image.setFullSize
         Me.ControlBox = False
         Me.Controls.Add(Me.ScorePopUp)
         Me.Controls.Add(Me.splashClassification)
@@ -222,9 +223,9 @@ Public Class ImageViewer
         Me.Controls.Add(Me.picShowPicture)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(1024, 768)
+        Me.MaximumSize = Rps_Image.setFullSize
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(1024, 768)
+        Me.MinimumSize = Rps_Image.setFullSize
         Me.Name = "ImageViewer"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Picture Viewer"

@@ -10,6 +10,7 @@ Public Class ThumbnailViewer
     Dim fullSizeFileName As String
     Dim Zoomed As Boolean
     Dim thumbnailViewTitle As String
+    Dim Rps_Image As RpsImage = New RpsImage
 
     ' API parameters for setting border select style for the listview
     Public Const LVM_FIRST As Integer = &H1000
@@ -119,7 +120,7 @@ Public Class ThumbnailViewer
         Me.ZoomedImage.BackColor = System.Drawing.Color.Black
         Me.ZoomedImage.Location = New System.Drawing.Point(0, 0)
         Me.ZoomedImage.Name = "ZoomedImage"
-        Me.ZoomedImage.Size = New System.Drawing.Size(1024, 768)
+        Me.ZoomedImage.Size = Rps_Image.setFullSize
         Me.ZoomedImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.ZoomedImage.TabIndex = 1
         Me.ZoomedImage.TabStop = False
@@ -149,7 +150,7 @@ Public Class ThumbnailViewer
         Me.AutoScale = False
         Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(1024, 768)
+        Me.ClientSize = Rps_Image.setFullSize
         Me.ControlBox = False
         Me.Controls.Add(Me.Divider)
         Me.Controls.Add(Me.ThumbnailViewTitleBar)
@@ -158,9 +159,9 @@ Public Class ThumbnailViewer
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(1024, 768)
+        Me.MaximumSize = Rps_Image.setFullSize
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(1024, 768)
+        Me.MinimumSize = Rps_Image.setFullSize
         Me.Name = "ThumbnailViewer"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
@@ -182,7 +183,7 @@ Public Class ThumbnailViewer
                 Case Keys.Escape, Keys.X
                     Me.Close()
                 Case Keys.F1
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 1 Then
                         'ThumbnailListView.SelectedItems(0).Text = "1st"
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(0)
@@ -194,7 +195,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(0)
                     End If
                 Case Keys.F2
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 2 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(1)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -203,7 +204,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(1)
                     End If
                 Case Keys.F3
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 3 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(2)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -212,7 +213,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(2)
                     End If
                 Case Keys.F4
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 4 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(3)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -221,7 +222,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(3)
                     End If
                 Case Keys.F5
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 5 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(4)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -230,7 +231,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(4)
                     End If
                 Case Keys.F6
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 6 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(5)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -239,7 +240,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(5)
                     End If
                 Case Keys.F7
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 7 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(6)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -248,7 +249,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(6)
                     End If
                 Case Keys.F8
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 8 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(7)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
