@@ -2264,7 +2264,7 @@ Public Class MainForm
 
         Try
             ' Retrieve the list of competition dates from the server
-            If REST(ServerName, ServerScriptDir + "/digital_get_comp_dates.php", "GET", params, response) Then
+            If REST(ServerName, ServerScriptDir + "/?rpswinclient=getcompdata", "GET", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/Competition_Date")
                 While nodes.MoveNext()
@@ -2408,7 +2408,7 @@ Public Class MainForm
             If download_prints And Not download_digital Then
                 params.Add("medium", "prints")
             End If
-            If Not REST(ServerName, ServerScriptDir + "/digital_download.php", "POST", params, response) Then
+            If Not REST(ServerName, ServerScriptDir + "/?rpswinclient=download", "POST", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
                 nodes.MoveNext()
@@ -3013,7 +3013,7 @@ Public Class MainForm
             params.Add("username", username)
             params.Add("password", password)
             params.Add("file", fileName)
-            If Not REST(ServerName, ServerScriptDir + "/digital_upload_scores.php", "POST", params, response) Then
+            If Not REST(ServerName, ServerScriptDir + "/?rpswinclient=uploadscore", "POST", params, response) Then
                 ' If the web service returned an error, display it
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
