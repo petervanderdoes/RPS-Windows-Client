@@ -11,7 +11,7 @@ Public Class ImageViewer
     Dim currentScoreSubStr As String
     Dim statusBarVisible As Integer = 0
     Dim showPhotogName As Boolean = False
-    Dim splashScreenVisible = True
+    Dim splashScreenVisible As Boolean = True
     Dim inDelayLoop As Boolean = False
     Dim thumb As Thumbnail
     Dim thumbnailThread As Thread

@@ -1,3 +1,5 @@
+Imports System.Runtime.ExceptionServices
+
 Public Class MainForm
     Inherits System.Windows.Forms.Form
 
@@ -47,8 +49,8 @@ Public Class MainForm
     Private sevenPointThumbViewTitle As String
 
     Private Sub InitializeStatusBar()
-        Dim info = New System.Windows.Forms.StatusBarPanel
-        Dim progress = New System.Windows.Forms.StatusBarPanel
+        Dim info As StatusBarPanel = New System.Windows.Forms.StatusBarPanel
+        Dim progress As StatusBarPanel = New System.Windows.Forms.StatusBarPanel
 
         'info.Text = "Ready"
         'info.Width = 592
@@ -772,7 +774,7 @@ Public Class MainForm
                 objSelectedPhotos.AcceptChanges()
             Catch eUpdate As System.Exception
                 'Add your error handling code here.
-                Throw eUpdate
+                ExceptionDispatchInfo.Capture(eUpdate).Throw()
             End Try
             'Add your code to check the returned dataset for any errors that may have been
             'pushed into the row object's error.
@@ -790,7 +792,7 @@ Public Class MainForm
             Me.FillDataSet(objDataSetTemp)
         Catch eFillDataSet As System.Exception
             'Add your error handling code here.
-            Throw eFillDataSet
+            ExceptionDispatchInfo.Capture(eFillDataSet).Throw()
         End Try
         Try
             grdCompetition_Entries.DataSource = Nothing
@@ -801,7 +803,7 @@ Public Class MainForm
             grdCompetition_Entries.SetDataBinding(objSelectedPhotos, "Competition Entries")
         Catch eLoadMerge As System.Exception
             'Add your error handling code here.
-            Throw eLoadMerge
+            ExceptionDispatchInfo.Capture(eLoadMerge).Throw()
         End Try
 
     End Sub
@@ -816,7 +818,7 @@ Public Class MainForm
             End If
         Catch updateException As System.Exception
             'Add your error handling code here.
-            Throw updateException
+            ExceptionDispatchInfo.Capture(updateException).Throw()
         Finally
             'Close the connection whether or not the exception was thrown.
             Me.OleDbConnection1.Close()
@@ -835,7 +837,7 @@ Public Class MainForm
             Me.OleDbDataAdapter1.Fill(dataSet)
         Catch fillException As System.Exception
             'Add your error handling code here.
-            Throw fillException
+            ExceptionDispatchInfo.Capture(fillException).Throw()
         Finally
             'Turn constraint checking back on.
             dataSet.EnforceConstraints = True
@@ -1100,7 +1102,7 @@ Public Class MainForm
     End Function
 
     Private Sub PickAwards()
-        Dim screenTitle As String
+        Dim screenTitle As String = ""
         Dim Viewer As ThumbnailViewer
         Try
             ' Bail out if the dataset is empty
@@ -1312,18 +1314,11 @@ Public Class MainForm
         Dim competitionTheme As String
         Dim medium As String
         Dim classification As String
-        Dim title As String
-        Dim maker As String
         Dim folderPath As String
-        Dim dRow As DataRow
-        Dim files() As FileInfo
-        Dim file As FileInfo
-        Dim fileFullName As String
-        Dim fileName As String
-        Dim fields()
         Dim DataGridCaptionText As String
         Dim numSelected As Integer
-        Dim relativePath As String
+        Dim files As FileInfo()
+        Dim file_info As FileInfo
 
         Try
             ' Open the Catalog Images dialog
@@ -1345,15 +1340,17 @@ Public Class MainForm
                 Exit Sub
             End If
 
+
             ' Iterate though all the .jpg files in the folder
             files = dirInfo.GetFiles    ' Get all files in the folder
             StatusBar.progressBar.Minimum = 0
             StatusBar.progressBar.Maximum = files.Length
             StatusBar.progressBar.Value = 0
-            For Each file In files
 
-                If CheckFileName(file) Then
-                    CatalogOneImage(file, classification, medium, competitionDate, competitionTheme)
+            For Each file_info In files
+
+                If CheckFileName(File_info) Then
+                    CatalogOneImage(File_info, classification, medium, competitionDate, competitionTheme)
                 End If
 
                 ' Update the Progressbar
@@ -1367,7 +1364,9 @@ Public Class MainForm
             SelectDate.Text = Format(Date.Parse(competitionDate), "dd-MMM-yyyy")
             SelectClassification.Text = classification
             SelectMedium.Text = medium
+
             numSelected = objSelectedPhotos.Tables("Competition Entries").Rows.Count
+
             DataGridCaptionText = competitionDate + " - " + SelectClassification.Text + " / " + SelectMedium.Text
             grdCompetition_Entries.CaptionText = DataGridCaptionText + " - " +
                 numSelected.ToString + " Images"
@@ -2598,13 +2597,9 @@ Public Class MainForm
         Dim URL As String
         Dim delim As String
         Dim XPathDoc As XPathDocument
-        Dim appId As String
-        Dim context As String
-        Dim query As String
         Dim data As New StringBuilder
         Dim byteData() As Byte
         Dim postStream As Stream = Nothing
-        Dim reader As StreamReader
         Dim fs As FileStream
         Dim br As BinaryReader
         Dim ms As New MemoryStream

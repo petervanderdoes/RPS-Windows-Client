@@ -186,7 +186,7 @@ Public Class Upload_Scores_Dialog
 
     Private Sub Upload_Scores_Dialog_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         Dim InvalidInput As Boolean = False
-        Dim ctrl As Control
+
         Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 
         If Me.DialogResult = DialogResult.OK Then

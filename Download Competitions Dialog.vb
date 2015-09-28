@@ -254,7 +254,6 @@ Public Class Download_Competitions_Dialog
 
     Private Sub Download_Competitions_Dialog_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         Dim InvalidInput As Boolean = False
-        Dim ctrl As Control
         Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 
         If Me.DialogResult = DialogResult.OK Then

@@ -216,7 +216,6 @@ Public Class Catalog_Images_Dialog
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         'Dim folderName As String
         Dim fileOpenDialog As New OpenFileDialog
-        Dim fileName As String
         'Dim imageFileName As String
         Dim i As Integer
         'Dim dir As Directory
@@ -270,7 +269,6 @@ Public Class Catalog_Images_Dialog
 
     Private Sub Catalog_Images_Dialog_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         Dim InvalidInput As Boolean = False
-        Dim ctrl As Control
         Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 
         If Me.DialogResult = DialogResult.OK Then
