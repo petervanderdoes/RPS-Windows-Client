@@ -1146,6 +1146,7 @@ Public Class MainForm
 
             ' Launch the thumbnail screen
             Viewer = New ThumbnailViewer(Me, objSelectedPhotos, screenTitle)
+            Viewer.setSizes()
             'Cursor.Hide()
             Viewer.ShowDialog()
             'Cursor.Show()

@@ -10,7 +10,6 @@ Public Class ThumbnailViewer
     Dim fullSizeFileName As String
     Dim Zoomed As Boolean
     Dim thumbnailViewTitle As String
-    Dim Rps_Image As RpsImage = New RpsImage
 
     ' API parameters for setting border select style for the listview
     Public Const LVM_FIRST As Integer = &H1000
@@ -140,7 +139,7 @@ Public Class ThumbnailViewer
         Me.ThumbnailViewTitleBar.Name = "ThumbnailViewTitleBar"
         Me.ThumbnailViewTitleBar.Size = New System.Drawing.Size(1024, 37)
         Me.ThumbnailViewTitleBar.TabIndex = 2
-        Me.ThumbnailViewTitleBar.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.ThumbnailViewTitleBar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         '
         'Divider
         '
