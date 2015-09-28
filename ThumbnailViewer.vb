@@ -263,7 +263,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(7)
                     End If
                 Case Keys.F9
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 9 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(8)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
@@ -272,7 +272,7 @@ Public Class ThumbnailViewer
                         currentRow("Award") = theMainForm.awards.Item(8)
                     End If
                 Case Keys.F10
-                    If ThumbnailListView.SelectedIndices.Count > 0 And _
+                    If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 10 Then
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(9)
                         currentIndex = ThumbnailListView.SelectedIndices(0)

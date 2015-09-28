@@ -3,13 +3,13 @@ Public Class MainForm
 
     'Dim MonthNames() As String = New String() {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
 
-    Private connectStringEpilog As String = "Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Registry Path=;Jet OLEDB:Database L" & _
+    Private connectStringEpilog As String = "Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Registry Path=;Jet OLEDB:Database L" &
         "ocking Mode=1;Jet OLEDB:Database Password=;Data Source="""
-    Private connectStringProlog As String = """;Password=;Jet O" & _
-        "LEDB:Engine Type=5;Jet OLEDB:Global Bulk Transactions=1;Provider=""Microsoft.Jet." & _
-        "OLEDB.4.0"";Jet OLEDB:System database=;Jet OLEDB:SFP=False;Extended Properties=;M" & _
-        "ode=Share Deny None;Jet OLEDB:New Database Password=;Jet OLEDB:Create System Dat" & _
-        "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" & _
+    Private connectStringProlog As String = """;Password=;Jet O" &
+        "LEDB:Engine Type=5;Jet OLEDB:Global Bulk Transactions=1;Provider=""Microsoft.Jet." &
+        "OLEDB.4.0"";Jet OLEDB:System database=;Jet OLEDB:SFP=False;Extended Properties=;M" &
+        "ode=Share Deny None;Jet OLEDB:New Database Password=;Jet OLEDB:Create System Dat" &
+        "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" &
         "ut Replica Repair=False;User ID=Admin;Jet OLEDB:Encrypt Database=False"
 
     ' User Preferences (defaults)
@@ -1198,8 +1198,8 @@ Public Class MainForm
     End Function
 
 
-    Private Sub CatalogOneImage(ByVal file As FileInfo, ByVal classification As String, _
-            ByVal medium As String, ByVal competitionDate As Date, _
+    Private Sub CatalogOneImage(ByVal file As FileInfo, ByVal classification As String,
+            ByVal medium As String, ByVal competitionDate As Date,
             ByVal competitionTheme As String)
         'Dim relativePath As String
         Dim fileName As String
@@ -1229,17 +1229,17 @@ Public Class MainForm
         End Try
     End Sub
 
-    Private Sub InsertImageIntoDatabase( _
-            ByVal file As FileInfo, _
-            ByVal maker As String, _
-            ByVal title As String, _
-            ByVal score As String, _
-            ByVal award As String, _
-            ByVal classification As String, _
-            ByVal medium As String, _
-            ByVal competitionDate As Date, _
-            ByVal competitionTheme As String, _
-            ByVal entry_id As String, _
+    Private Sub InsertImageIntoDatabase(
+            ByVal file As FileInfo,
+            ByVal maker As String,
+            ByVal title As String,
+            ByVal score As String,
+            ByVal award As String,
+            ByVal classification As String,
+            ByVal medium As String,
+            ByVal competitionDate As Date,
+            ByVal competitionTheme As String,
+            ByVal entry_id As String,
             ByVal sequence As Integer)
 
         Dim relativePath As String
@@ -1359,7 +1359,7 @@ Public Class MainForm
             SelectMedium.Text = medium
             numSelected = objSelectedPhotos.Tables("Competition Entries").Rows.Count
             DataGridCaptionText = competitionDate + " - " + SelectClassification.Text + " / " + SelectMedium.Text
-            grdCompetition_Entries.CaptionText = DataGridCaptionText + " - " + _
+            grdCompetition_Entries.CaptionText = DataGridCaptionText + " - " +
                 numSelected.ToString + " Images"
 
             ' Update the list of dates in the Competition Date combobox
@@ -1643,7 +1643,7 @@ Public Class MainForm
         Try
             ' Bail out if the dataset is empty
             If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-                MsgBox("No images selected." + vbCrLf + "Select one or more images before running the report", _
+                MsgBox("No images selected." + vbCrLf + "Select one or more images before running the report",
                     MsgBoxStyle.Exclamation, "Error in ResultsReport()")
                 Exit Sub
             End If
@@ -1659,9 +1659,9 @@ Public Class MainForm
             Else
                 reportType = "Scoresheet"
             End If
-            tempFile = reportsOutputFolder + "\" + _
-                reportType + "_" + CType(competitionDate.Year, String) + "-" + _
-                CType(competitionDate.Month, String) + "-" + _
+            tempFile = reportsOutputFolder + "\" +
+                reportType + "_" + CType(competitionDate.Year, String) + "-" +
+                CType(competitionDate.Month, String) + "-" +
                 CType(competitionDate.Day, String)
             If EnableTheme.Checked Then
                 tempFile += "_" + SelectTheme.Text
@@ -1835,9 +1835,9 @@ Public Class MainForm
     End Function
 
 
-    Private Sub GridResizeColumns(ByVal DataGridView As DataGrid, _
-                                ByVal FixedTotalWidth As Double, _
-                                ByVal StartCol As Integer, _
+    Private Sub GridResizeColumns(ByVal DataGridView As DataGrid,
+                                ByVal FixedTotalWidth As Double,
+                                ByVal StartCol As Integer,
                              ByVal ParamArray ColumnWidthInPercent() As Double)
 
         Dim TotalGridWidth As Long
@@ -1960,7 +1960,7 @@ Public Class MainForm
     Private Sub SetDatabaseName(ByVal fileName As String)
         Try
             databaseFileName = fileName
-            OleDbConnection1.ConnectionString = _
+            OleDbConnection1.ConnectionString =
                 connectStringEpilog + fileName + connectStringProlog
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in SetDatabasename()")
@@ -2370,7 +2370,7 @@ Public Class MainForm
 
             ' Delete any competitions in the local database that already have this date
             dateParts = Split(comp_date, "-")
-            sql = "DELETE FROM [Competition Entries] WHERE [Competition Date 1] = " + _
+            sql = "DELETE FROM [Competition Entries] WHERE [Competition Date 1] = " +
                 "#" + dateParts(1) + "/" + dateParts(2) + "/" + dateParts(0) + "#"
             If download_digital And Not download_prints Then
                 sql += " AND Medium like '%Digital'"
@@ -2538,23 +2538,23 @@ Public Class MainForm
                     End If
 
                     ' Fetch the image file from the server
-                    localImageFileName = competitionFolder + "\" + _
-                        StrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") + _
+                    localImageFileName = competitionFolder + "\" +
+                        StrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
                         "+" + entry.first_name + "_" + entry.last_name + ".jpg"
                     DownloadImage(entry.url, localImageFileName)
 
                     ' Insert this image into the database
-                    InsertImageIntoDatabase( _
-                        New FileInfo(localImageFileName), _
-                        entry.first_name + " " + entry.last_name, _
-                        entry.title, _
-                        entry.score, _
-                        entry.award, _
-                        comp_classification, _
-                        comp_medium, _
-                        comp_date, _
-                        comp_theme, _
-                        entry.entry_id, _
+                    InsertImageIntoDatabase(
+                        New FileInfo(localImageFileName),
+                        entry.first_name + " " + entry.last_name,
+                        entry.title,
+                        entry.score,
+                        entry.award,
+                        comp_classification,
+                        comp_medium,
+                        comp_date,
+                        comp_theme,
+                        entry.entry_id,
                         sequence_num)
 
                     ' Update the Progressbar
@@ -2798,7 +2798,7 @@ Public Class MainForm
     '       MyString = StrMap(MyString, "àéùxyz", "aeu")
     ' will translate all occurrances of à, é, ù and will delete all occurrances of x,y,z.
 
-    Public Function StrMap(ByVal S As String, ByVal MapWhat As String, _
+    Public Function StrMap(ByVal S As String, ByVal MapWhat As String,
       ByVal ToWhat As String, Optional ByVal Compare As Long = 0) As String
 
         Dim output_ptr As Long

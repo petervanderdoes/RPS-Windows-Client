@@ -309,7 +309,7 @@ Public Class PreferencesDialog
             tbDatabaseFileName.Text = fileOpenDialog.FileName
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in btnDatabaseFileName_Click()")
-        End Try      
+        End Try
     End Sub
 
     Private Sub btnReportsOutputFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReportsOutputFolder.Click
@@ -326,5 +326,5 @@ Public Class PreferencesDialog
 
     End Sub
 
-    
+
 End Class

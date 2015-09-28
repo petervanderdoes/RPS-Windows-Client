@@ -73,10 +73,10 @@ Public Class About
 
         ' fields = Split(Application.ProductVersion, ".")
 
-        Label1.Text = "RPS Digital Competition Viewer" + vbCrLf + _
-            "Version " + Application.ProductVersion + vbCrLf + _
-            "(21-Feb-2011)" + vbCrLf + vbCrLf + _
-            "© Jake Chapple" + vbCrLf + _
+        Label1.Text = "RPS Digital Competition Viewer" + vbCrLf +
+            "Version " + Application.ProductVersion + vbCrLf +
+            "(21-Feb-2011)" + vbCrLf + vbCrLf +
+            "© Jake Chapple" + vbCrLf +
             "Raritan Photographic Society"
 
     End Sub
