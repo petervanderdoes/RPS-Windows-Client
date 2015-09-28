@@ -87,13 +87,14 @@ Public Class ThumbnailViewer
     Friend WithEvents ThumbnailViewTitleBar As System.Windows.Forms.Label
     Friend WithEvents Divider As System.Windows.Forms.Label
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(ThumbnailViewer))
-        Me.ThumbnailListView = New System.Windows.Forms.ListView
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ThumbnailViewer))
+        Me.ThumbnailListView = New System.Windows.Forms.ListView()
         Me.ThumbnailImageList = New System.Windows.Forms.ImageList(Me.components)
-        Me.ZoomedImage = New System.Windows.Forms.PictureBox
-        Me.ThumbnailViewTitleBar = New System.Windows.Forms.Label
-        Me.Divider = New System.Windows.Forms.Label
+        Me.ZoomedImage = New System.Windows.Forms.PictureBox()
+        Me.ThumbnailViewTitleBar = New System.Windows.Forms.Label()
+        Me.Divider = New System.Windows.Forms.Label()
+        CType(Me.ZoomedImage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ThumbnailListView
@@ -104,10 +105,12 @@ Public Class ThumbnailViewer
         Me.ThumbnailListView.ForeColor = System.Drawing.Color.White
         Me.ThumbnailListView.LargeImageList = Me.ThumbnailImageList
         Me.ThumbnailListView.Location = New System.Drawing.Point(0, 43)
+        Me.ThumbnailListView.Margin = New System.Windows.Forms.Padding(0)
         Me.ThumbnailListView.MultiSelect = False
         Me.ThumbnailListView.Name = "ThumbnailListView"
         Me.ThumbnailListView.Size = New System.Drawing.Size(1024, 725)
         Me.ThumbnailListView.TabIndex = 0
+        Me.ThumbnailListView.UseCompatibleStateImageBehavior = False
         '
         'ThumbnailImageList
         '
@@ -119,8 +122,9 @@ Public Class ThumbnailViewer
         '
         Me.ZoomedImage.BackColor = System.Drawing.Color.Black
         Me.ZoomedImage.Location = New System.Drawing.Point(0, 0)
+        Me.ZoomedImage.Margin = New System.Windows.Forms.Padding(0)
         Me.ZoomedImage.Name = "ZoomedImage"
-        Me.ZoomedImage.Size = Rps_Image.setFullSize
+        Me.ZoomedImage.Size = New System.Drawing.Size(1024, 768)
         Me.ZoomedImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.ZoomedImage.TabIndex = 1
         Me.ZoomedImage.TabStop = False
@@ -132,6 +136,7 @@ Public Class ThumbnailViewer
         Me.ThumbnailViewTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ThumbnailViewTitleBar.ForeColor = System.Drawing.Color.Yellow
         Me.ThumbnailViewTitleBar.Location = New System.Drawing.Point(0, 0)
+        Me.ThumbnailViewTitleBar.Margin = New System.Windows.Forms.Padding(0)
         Me.ThumbnailViewTitleBar.Name = "ThumbnailViewTitleBar"
         Me.ThumbnailViewTitleBar.Size = New System.Drawing.Size(1024, 37)
         Me.ThumbnailViewTitleBar.TabIndex = 2
@@ -141,16 +146,15 @@ Public Class ThumbnailViewer
         '
         Me.Divider.BackColor = System.Drawing.Color.White
         Me.Divider.Location = New System.Drawing.Point(0, 37)
+        Me.Divider.Margin = New System.Windows.Forms.Padding(0)
         Me.Divider.Name = "Divider"
         Me.Divider.Size = New System.Drawing.Size(1024, 2)
         Me.Divider.TabIndex = 3
         '
         'ThumbnailViewer
         '
-        Me.AutoScale = False
-        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = Rps_Image.setFullSize
+        Me.ClientSize = New System.Drawing.Size(1024, 768)
         Me.ControlBox = False
         Me.Controls.Add(Me.Divider)
         Me.Controls.Add(Me.ThumbnailViewTitleBar)
@@ -159,15 +163,16 @@ Public Class ThumbnailViewer
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.MaximumSize = Rps_Image.setFullSize
+        Me.MaximumSize = New System.Drawing.Size(1024, 768)
         Me.MinimizeBox = False
-        Me.MinimumSize = Rps_Image.setFullSize
+        Me.MinimumSize = New System.Drawing.Size(1024, 768)
         Me.Name = "ThumbnailViewer"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "ThumbnailViewer"
         Me.TopMost = True
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
+        CType(Me.ZoomedImage, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -415,6 +420,28 @@ Public Class ThumbnailViewer
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in SetListViewBorderStyle()")
         End Try
+    End Sub
+
+    Friend Sub setSizes()
+        Dim I As RpsImage = New RpsImage
+
+        ThumbnailListView.Location = New Point(0, 43)
+        ThumbnailListView.Size = New Size(I.getFullWidth(), I.getFullHeight - 37 - 2)
+
+        ThumbnailImageList.ImageSize = New Size(256, 256)
+
+        ZoomedImage.Location = New Point(0, 0)
+        ZoomedImage.Size = New Size(I.getFullWidth(), I.getFullHeight)
+
+        ThumbnailViewTitleBar.Location = New Point(0, 0)
+        ThumbnailViewTitleBar.Size = New Size(I.getFullWidth(), 37)
+
+        Divider.Location = New Point(0, 37)
+        Divider.Size = New Size(I.getFullWidth(), 2)
+
+        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight)
+        MaximumSize = New Size(I.getFullWidth(), I.getFullHeight)
+        MinimumSize = New Size(I.getFullWidth(), I.getFullHeight)
     End Sub
 
 End Class
