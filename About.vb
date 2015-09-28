@@ -69,14 +69,12 @@ Public Class About
 #End Region
 
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim fields()
 
         ' fields = Split(Application.ProductVersion, ".")
 
         Label1.Text = "RPS Digital Competition Viewer" + vbCrLf +
-            "Version " + Application.ProductVersion + vbCrLf +
-            "(21-Feb-2011)" + vbCrLf + vbCrLf +
-            "© Jake Chapple" + vbCrLf +
+            "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
+            "© Jake Chapple, Peter van der Does" + vbCrLf +
             "Raritan Photographic Society"
 
     End Sub
