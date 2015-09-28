@@ -75,7 +75,7 @@ Public Class MainForm
 
     Public Sub New()
         MyBase.New()
-
+        Application.EnableVisualStyles()
         'This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -194,7 +194,6 @@ Public Class MainForm
         Me.ReportsResultsReportMenu = New System.Windows.Forms.MenuItem()
         Me.MenuItem7 = New System.Windows.Forms.MenuItem()
         Me.HelpAboutMenu = New System.Windows.Forms.MenuItem()
-        Me.btnSlideShow = New System.Windows.Forms.Button()
         Me.SelectClassification = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.SelectMedium = New System.Windows.Forms.ComboBox()
@@ -222,10 +221,11 @@ Public Class MainForm
         Me.EnableMedium = New System.Windows.Forms.CheckBox()
         Me.EnableTheme = New System.Windows.Forms.CheckBox()
         Me.EnableAward = New System.Windows.Forms.CheckBox()
-        Me.btnThumbnails = New System.Windows.Forms.Button()
         Me.SelectScore = New System.Windows.Forms.ComboBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.SelectDate = New System.Windows.Forms.ComboBox()
+        Me.btnThumbnails = New System.Windows.Forms.Button()
+        Me.btnSlideShow = New System.Windows.Forms.Button()
         CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.objSelectedPhotos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -237,7 +237,7 @@ Public Class MainForm
         'btnLoad
         '
         Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnLoad.Location = New System.Drawing.Point(701, 576)
+        Me.btnLoad.Location = New System.Drawing.Point(701, 492)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(75, 24)
         Me.btnLoad.TabIndex = 0
@@ -246,18 +246,18 @@ Public Class MainForm
         'btnUpdate
         '
         Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnUpdate.Location = New System.Drawing.Point(782, 576)
+        Me.btnUpdate.Location = New System.Drawing.Point(783, 492)
         Me.btnUpdate.Name = "btnUpdate"
-        Me.btnUpdate.Size = New System.Drawing.Size(75, 23)
+        Me.btnUpdate.Size = New System.Drawing.Size(75, 24)
         Me.btnUpdate.TabIndex = 1
         Me.btnUpdate.Text = "&Update"
         '
         'btnCancelAll
         '
         Me.btnCancelAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCancelAll.Location = New System.Drawing.Point(863, 576)
+        Me.btnCancelAll.Location = New System.Drawing.Point(865, 492)
         Me.btnCancelAll.Name = "btnCancelAll"
-        Me.btnCancelAll.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancelAll.Size = New System.Drawing.Size(75, 24)
         Me.btnCancelAll.TabIndex = 2
         Me.btnCancelAll.Text = "Ca&ncel All"
         '
@@ -269,9 +269,9 @@ Public Class MainForm
         Me.grdCompetition_Entries.DataMember = ""
         Me.grdCompetition_Entries.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.grdCompetition_Entries.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.grdCompetition_Entries.Location = New System.Drawing.Point(207, 14)
+        Me.grdCompetition_Entries.Location = New System.Drawing.Point(209, 10)
         Me.grdCompetition_Entries.Name = "grdCompetition_Entries"
-        Me.grdCompetition_Entries.Size = New System.Drawing.Size(731, 547)
+        Me.grdCompetition_Entries.Size = New System.Drawing.Size(731, 463)
         Me.grdCompetition_Entries.TabIndex = 3
         Me.grdCompetition_Entries.TableStyles.AddRange(New System.Windows.Forms.DataGridTableStyle() {Me.DataGridTableStyle1})
         '
@@ -422,29 +422,18 @@ Public Class MainForm
         Me.HelpAboutMenu.Index = 0
         Me.HelpAboutMenu.Text = "&About"
         '
-        'btnSlideShow
-        '
-        Me.btnSlideShow.BackColor = System.Drawing.SystemColors.Control
-        Me.btnSlideShow.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.Single_Photo
-        Me.btnSlideShow.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.btnSlideShow.Location = New System.Drawing.Point(107, 219)
-        Me.btnSlideShow.Name = "btnSlideShow"
-        Me.btnSlideShow.Size = New System.Drawing.Size(40, 41)
-        Me.btnSlideShow.TabIndex = 22
-        Me.btnSlideShow.UseVisualStyleBackColor = False
-        '
         'SelectClassification
         '
         Me.SelectClassification.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SelectClassification.Location = New System.Drawing.Point(20, 130)
+        Me.SelectClassification.Location = New System.Drawing.Point(28, 136)
         Me.SelectClassification.Name = "SelectClassification"
-        Me.SelectClassification.Size = New System.Drawing.Size(176, 24)
+        Me.SelectClassification.Size = New System.Drawing.Size(174, 24)
         Me.SelectClassification.TabIndex = 20
         '
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(20, 110)
+        Me.Label3.Location = New System.Drawing.Point(28, 114)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(168, 16)
         Me.Label3.TabIndex = 19
@@ -453,15 +442,15 @@ Public Class MainForm
         'SelectMedium
         '
         Me.SelectMedium.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SelectMedium.Location = New System.Drawing.Point(20, 180)
+        Me.SelectMedium.Location = New System.Drawing.Point(28, 188)
         Me.SelectMedium.Name = "SelectMedium"
-        Me.SelectMedium.Size = New System.Drawing.Size(175, 24)
+        Me.SelectMedium.Size = New System.Drawing.Size(174, 24)
         Me.SelectMedium.TabIndex = 18
         '
         'Label2
         '
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(20, 160)
+        Me.Label2.Location = New System.Drawing.Point(28, 166)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(175, 16)
         Me.Label2.TabIndex = 17
@@ -470,7 +459,7 @@ Public Class MainForm
         'Label1
         '
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(20, 10)
+        Me.Label1.Location = New System.Drawing.Point(28, 10)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(175, 16)
         Me.Label1.TabIndex = 15
@@ -478,7 +467,7 @@ Public Class MainForm
         '
         'RecalcAwards
         '
-        Me.RecalcAwards.Location = New System.Drawing.Point(43, 409)
+        Me.RecalcAwards.Location = New System.Drawing.Point(51, 419)
         Me.RecalcAwards.Name = "RecalcAwards"
         Me.RecalcAwards.Size = New System.Drawing.Size(129, 23)
         Me.RecalcAwards.TabIndex = 25
@@ -489,7 +478,8 @@ Public Class MainForm
         Me.AwardsTableTitleBar.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.AwardsTableTitleBar.ForeColor = System.Drawing.Color.White
-        Me.AwardsTableTitleBar.Location = New System.Drawing.Point(17, 326)
+        Me.AwardsTableTitleBar.Location = New System.Drawing.Point(28, 336)
+        Me.AwardsTableTitleBar.Margin = New System.Windows.Forms.Padding(0)
         Me.AwardsTableTitleBar.Name = "AwardsTableTitleBar"
         Me.AwardsTableTitleBar.Size = New System.Drawing.Size(175, 24)
         Me.AwardsTableTitleBar.TabIndex = 27
@@ -499,9 +489,10 @@ Public Class MainForm
         '
         Me.NumNinesHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NumNinesHeadingButton.Location = New System.Drawing.Point(17, 350)
+        Me.NumNinesHeadingButton.Location = New System.Drawing.Point(28, 360)
+        Me.NumNinesHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
-        Me.NumNinesHeadingButton.Size = New System.Drawing.Size(58, 24)
+        Me.NumNinesHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumNinesHeadingButton.TabIndex = 34
         Me.NumNinesHeadingButton.Text = "9s"
         '
@@ -509,9 +500,10 @@ Public Class MainForm
         '
         Me.NumEightsHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NumEightsHeadingButton.Location = New System.Drawing.Point(74, 350)
+        Me.NumEightsHeadingButton.Location = New System.Drawing.Point(86, 360)
+        Me.NumEightsHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
-        Me.NumEightsHeadingButton.Size = New System.Drawing.Size(58, 24)
+        Me.NumEightsHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumEightsHeadingButton.TabIndex = 35
         Me.NumEightsHeadingButton.Text = "8s"
         '
@@ -519,9 +511,10 @@ Public Class MainForm
         '
         Me.NumSevensHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NumSevensHeadingButton.Location = New System.Drawing.Point(131, 350)
+        Me.NumSevensHeadingButton.Location = New System.Drawing.Point(144, 360)
+        Me.NumSevensHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
-        Me.NumSevensHeadingButton.Size = New System.Drawing.Size(60, 24)
+        Me.NumSevensHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumSevensHeadingButton.TabIndex = 36
         Me.NumSevensHeadingButton.Text = "7s"
         '
@@ -529,9 +522,10 @@ Public Class MainForm
         '
         Me.tbEligibleNines.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.tbEligibleNines.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbEligibleNines.Location = New System.Drawing.Point(17, 374)
+        Me.tbEligibleNines.Location = New System.Drawing.Point(28, 383)
+        Me.tbEligibleNines.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleNines.Name = "tbEligibleNines"
-        Me.tbEligibleNines.Size = New System.Drawing.Size(58, 23)
+        Me.tbEligibleNines.Size = New System.Drawing.Size(59, 23)
         Me.tbEligibleNines.TabIndex = 37
         Me.tbEligibleNines.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -539,9 +533,10 @@ Public Class MainForm
         '
         Me.tbEligibleEights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.tbEligibleEights.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbEligibleEights.Location = New System.Drawing.Point(74, 374)
+        Me.tbEligibleEights.Location = New System.Drawing.Point(86, 383)
+        Me.tbEligibleEights.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleEights.Name = "tbEligibleEights"
-        Me.tbEligibleEights.Size = New System.Drawing.Size(58, 23)
+        Me.tbEligibleEights.Size = New System.Drawing.Size(59, 23)
         Me.tbEligibleEights.TabIndex = 38
         Me.tbEligibleEights.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -549,9 +544,10 @@ Public Class MainForm
         '
         Me.tbEligibleSevens.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.tbEligibleSevens.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbEligibleSevens.Location = New System.Drawing.Point(131, 374)
+        Me.tbEligibleSevens.Location = New System.Drawing.Point(144, 383)
+        Me.tbEligibleSevens.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleSevens.Name = "tbEligibleSevens"
-        Me.tbEligibleSevens.Size = New System.Drawing.Size(60, 23)
+        Me.tbEligibleSevens.Size = New System.Drawing.Size(59, 23)
         Me.tbEligibleSevens.TabIndex = 39
         Me.tbEligibleSevens.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -598,16 +594,16 @@ Public Class MainForm
         '
         Me.SelectAward.Enabled = False
         Me.SelectAward.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SelectAward.Location = New System.Drawing.Point(20, 284)
+        Me.SelectAward.Location = New System.Drawing.Point(28, 292)
         Me.SelectAward.Name = "SelectAward"
-        Me.SelectAward.Size = New System.Drawing.Size(176, 24)
+        Me.SelectAward.Size = New System.Drawing.Size(175, 24)
         Me.SelectAward.TabIndex = 40
         '
         'Label4
         '
         Me.Label4.Enabled = False
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(20, 263)
+        Me.Label4.Location = New System.Drawing.Point(28, 270)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(176, 16)
         Me.Label4.TabIndex = 41
@@ -616,25 +612,25 @@ Public Class MainForm
         'Label5
         '
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(20, 58)
+        Me.Label5.Location = New System.Drawing.Point(28, 62)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(176, 16)
+        Me.Label5.Size = New System.Drawing.Size(175, 16)
         Me.Label5.TabIndex = 42
         Me.Label5.Text = "Theme"
         '
         'SelectTheme
         '
         Me.SelectTheme.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SelectTheme.Location = New System.Drawing.Point(20, 77)
+        Me.SelectTheme.Location = New System.Drawing.Point(28, 84)
         Me.SelectTheme.Name = "SelectTheme"
-        Me.SelectTheme.Size = New System.Drawing.Size(176, 24)
+        Me.SelectTheme.Size = New System.Drawing.Size(174, 24)
         Me.SelectTheme.TabIndex = 43
         '
         'EnableClassification
         '
         Me.EnableClassification.Checked = True
         Me.EnableClassification.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.EnableClassification.Location = New System.Drawing.Point(4, 130)
+        Me.EnableClassification.Location = New System.Drawing.Point(12, 139)
         Me.EnableClassification.Name = "EnableClassification"
         Me.EnableClassification.Size = New System.Drawing.Size(13, 21)
         Me.EnableClassification.TabIndex = 45
@@ -643,7 +639,7 @@ Public Class MainForm
         '
         Me.EnableMedium.Checked = True
         Me.EnableMedium.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.EnableMedium.Location = New System.Drawing.Point(7, 180)
+        Me.EnableMedium.Location = New System.Drawing.Point(12, 191)
         Me.EnableMedium.Name = "EnableMedium"
         Me.EnableMedium.Size = New System.Drawing.Size(13, 21)
         Me.EnableMedium.TabIndex = 46
@@ -652,32 +648,22 @@ Public Class MainForm
         '
         Me.EnableTheme.Checked = True
         Me.EnableTheme.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.EnableTheme.Location = New System.Drawing.Point(4, 76)
+        Me.EnableTheme.Location = New System.Drawing.Point(12, 87)
         Me.EnableTheme.Name = "EnableTheme"
         Me.EnableTheme.Size = New System.Drawing.Size(13, 21)
         Me.EnableTheme.TabIndex = 47
         '
         'EnableAward
         '
-        Me.EnableAward.Location = New System.Drawing.Point(4, 284)
+        Me.EnableAward.Location = New System.Drawing.Point(12, 295)
         Me.EnableAward.Name = "EnableAward"
         Me.EnableAward.Size = New System.Drawing.Size(13, 21)
         Me.EnableAward.TabIndex = 48
         '
-        'btnThumbnails
-        '
-        Me.btnThumbnails.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.thumbs
-        Me.btnThumbnails.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.btnThumbnails.Location = New System.Drawing.Point(157, 219)
-        Me.btnThumbnails.Margin = New System.Windows.Forms.Padding(0)
-        Me.btnThumbnails.Name = "btnThumbnails"
-        Me.btnThumbnails.Size = New System.Drawing.Size(40, 41)
-        Me.btnThumbnails.TabIndex = 49
-        '
         'SelectScore
         '
         Me.SelectScore.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SelectScore.Location = New System.Drawing.Point(20, 232)
+        Me.SelectScore.Location = New System.Drawing.Point(28, 240)
         Me.SelectScore.Name = "SelectScore"
         Me.SelectScore.Size = New System.Drawing.Size(73, 24)
         Me.SelectScore.TabIndex = 50
@@ -685,7 +671,7 @@ Public Class MainForm
         'Label6
         '
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(20, 211)
+        Me.Label6.Location = New System.Drawing.Point(28, 218)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(80, 16)
         Me.Label6.TabIndex = 51
@@ -694,16 +680,37 @@ Public Class MainForm
         'SelectDate
         '
         Me.SelectDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SelectDate.Location = New System.Drawing.Point(20, 29)
+        Me.SelectDate.Location = New System.Drawing.Point(28, 32)
         Me.SelectDate.Name = "SelectDate"
-        Me.SelectDate.Size = New System.Drawing.Size(175, 24)
+        Me.SelectDate.Size = New System.Drawing.Size(174, 24)
         Me.SelectDate.TabIndex = 52
+        '
+        'btnThumbnails
+        '
+        Me.btnThumbnails.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.thumbs
+        Me.btnThumbnails.Location = New System.Drawing.Point(155, 223)
+        Me.btnThumbnails.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnThumbnails.Name = "btnThumbnails"
+        Me.btnThumbnails.Size = New System.Drawing.Size(40, 41)
+        Me.btnThumbnails.TabIndex = 49
+        '
+        'btnSlideShow
+        '
+        Me.btnSlideShow.BackColor = System.Drawing.SystemColors.Control
+        Me.btnSlideShow.FlatAppearance.BorderSize = 0
+        Me.btnSlideShow.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.Single_Photo
+        Me.btnSlideShow.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.btnSlideShow.Location = New System.Drawing.Point(112, 223)
+        Me.btnSlideShow.Name = "btnSlideShow"
+        Me.btnSlideShow.Size = New System.Drawing.Size(40, 41)
+        Me.btnSlideShow.TabIndex = 22
+        Me.btnSlideShow.UseVisualStyleBackColor = False
         '
         'MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-        Me.ClientSize = New System.Drawing.Size(950, 628)
+        Me.ClientSize = New System.Drawing.Size(950, 544)
         Me.Controls.Add(Me.SelectDate)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.SelectScore)

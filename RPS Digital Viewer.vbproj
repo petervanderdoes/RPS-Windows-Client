@@ -148,6 +148,7 @@
     <Compile Include="About.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -168,6 +169,10 @@
     </Compile>
     <Compile Include="MainForm.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -195,11 +200,17 @@
     <Compile Include="Upload Scores Dialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
     <Content Include="RPS Digital Viewer.ico" />
     <Content Include="SelectedPhotos.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>SelectedPhotos.Designer.vb</LastGenOutput>
     </Content>
+    <None Include="thumbs.ico" />
+    <None Include="Single_Photo.ico" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.vb</DependentUpon>
     </EmbeddedResource>
