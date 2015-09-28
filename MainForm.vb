@@ -237,7 +237,7 @@ Public Class MainForm
         'btnLoad
         '
         Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnLoad.Location = New System.Drawing.Point(685, 576)
+        Me.btnLoad.Location = New System.Drawing.Point(701, 576)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(75, 24)
         Me.btnLoad.TabIndex = 0
@@ -246,7 +246,7 @@ Public Class MainForm
         'btnUpdate
         '
         Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnUpdate.Location = New System.Drawing.Point(774, 576)
+        Me.btnUpdate.Location = New System.Drawing.Point(782, 576)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(75, 23)
         Me.btnUpdate.TabIndex = 1
@@ -255,7 +255,7 @@ Public Class MainForm
         'btnCancelAll
         '
         Me.btnCancelAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCancelAll.Location = New System.Drawing.Point(865, 576)
+        Me.btnCancelAll.Location = New System.Drawing.Point(863, 576)
         Me.btnCancelAll.Name = "btnCancelAll"
         Me.btnCancelAll.Size = New System.Drawing.Size(75, 23)
         Me.btnCancelAll.TabIndex = 2
@@ -374,8 +374,10 @@ Public Class MainForm
         '
         'CompCreateSeasonEndComp
         '
+        Me.CompCreateSeasonEndComp.Enabled = False
         Me.CompCreateSeasonEndComp.Index = 6
         Me.CompCreateSeasonEndComp.Text = "Create Best Of... Competition..."
+        Me.CompCreateSeasonEndComp.Visible = False
         '
         'MenuItem2
         '
@@ -423,11 +425,11 @@ Public Class MainForm
         'btnSlideShow
         '
         Me.btnSlideShow.BackColor = System.Drawing.SystemColors.Control
-        Me.btnSlideShow.Image = CType(resources.GetObject("btnSlideShow.Image"), System.Drawing.Image)
+        Me.btnSlideShow.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.Single_Photo
         Me.btnSlideShow.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.btnSlideShow.Location = New System.Drawing.Point(107, 219)
         Me.btnSlideShow.Name = "btnSlideShow"
-        Me.btnSlideShow.Size = New System.Drawing.Size(36, 38)
+        Me.btnSlideShow.Size = New System.Drawing.Size(40, 41)
         Me.btnSlideShow.TabIndex = 22
         Me.btnSlideShow.UseVisualStyleBackColor = False
         '
@@ -664,11 +666,12 @@ Public Class MainForm
         '
         'btnThumbnails
         '
-        Me.btnThumbnails.Image = CType(resources.GetObject("btnThumbnails.Image"), System.Drawing.Image)
+        Me.btnThumbnails.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.thumbs
         Me.btnThumbnails.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.btnThumbnails.Location = New System.Drawing.Point(157, 219)
+        Me.btnThumbnails.Margin = New System.Windows.Forms.Padding(0)
         Me.btnThumbnails.Name = "btnThumbnails"
-        Me.btnThumbnails.Size = New System.Drawing.Size(36, 38)
+        Me.btnThumbnails.Size = New System.Drawing.Size(40, 41)
         Me.btnThumbnails.TabIndex = 49
         '
         'SelectScore

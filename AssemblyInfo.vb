@@ -1,3 +1,4 @@
+Imports System.Resources
 Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
@@ -8,13 +9,13 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("RPS Digital Competition Viewer")> 
-<Assembly: AssemblyCopyright("")> 
-<Assembly: AssemblyTrademark("")> 
-<Assembly: CLSCompliant(True)> 
+<Assembly: AssemblyTitle("")>
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("RPS Digital Competition Viewer")>
+<Assembly: AssemblyCopyright("")>
+<Assembly: AssemblyTrademark("")>
+<Assembly: CLSCompliant(True)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("11525F85-AEC4-4EEB-A6CB-F9375EBF6E09")>
@@ -31,3 +32,4 @@ Imports System.Runtime.InteropServices
 
 '<Assembly: AssemblyVersion("1.0.*")> 
 <Assembly: AssemblyVersion("1.5.0")>
+<Assembly: NeutralResourcesLanguage("en-US")>
