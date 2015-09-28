@@ -2796,12 +2796,12 @@ Public Class MainForm
     ' MapWhat with the corresponding character in toWhat.
     '
     ' Call it like so
-    '       MyString = StrMap(MyString, "àéù", "aeu")
+    '       MyString = StrMap(MyString, "Ã Ã©Ã¹", "aeu")
     '
     ' If the MapWhat string is longer than the ToWhat string, the extra characters
     ' in MapWhat will be deleted from the string e.g.
-    '       MyString = StrMap(MyString, "àéùxyz", "aeu")
-    ' will translate all occurrances of à, é, ù and will delete all occurrances of x,y,z.
+    '       MyString = StrMap(MyString, "Ã Ã©Ã¹xyz", "aeu")
+    ' will translate all occurrances of Ã , Ã©, Ã¹ and will delete all occurrances of x,y,z.
 
     Public Function StrMap(ByVal S As String, ByVal MapWhat As String,
       ByVal ToWhat As String, Optional ByVal Compare As Long = 0) As String
