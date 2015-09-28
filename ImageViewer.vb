@@ -15,7 +15,6 @@ Public Class ImageViewer
     Dim inDelayLoop As Boolean = False
     Dim thumb As Thumbnail
     Dim thumbnailThread As Thread
-    Dim Rps_Image As RpsImage = New RpsImage
 
     Private Const SCORE As Integer = 0
     Private Const AWARD As Integer = 1
@@ -68,21 +67,22 @@ Public Class ImageViewer
     Friend WithEvents splashTheme As System.Windows.Forms.Label
     Friend WithEvents splashClassification As System.Windows.Forms.Label
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.picShowPicture = New System.Windows.Forms.PictureBox
-        Me.ofdSelectPicture = New System.Windows.Forms.OpenFileDialog
-        Me.OdbcSelectCommand1 = New System.Data.Odbc.OdbcCommand
-        Me.OdbcInsertCommand1 = New System.Data.Odbc.OdbcCommand
-        Me.OdbcUpdateCommand1 = New System.Data.Odbc.OdbcCommand
-        Me.OdbcDeleteCommand1 = New System.Data.Odbc.OdbcCommand
-        Me.OdbcDataAdapter1 = New System.Data.Odbc.OdbcDataAdapter
-        Me.ScorePopUp = New System.Windows.Forms.Label
-        Me.StatusBar = New System.Windows.Forms.Panel
-        Me.StatusBarAward = New System.Windows.Forms.Label
-        Me.StatusBarScore = New System.Windows.Forms.Label
-        Me.StatusBarTitle = New System.Windows.Forms.Label
-        Me.splashClub = New System.Windows.Forms.Label
-        Me.splashTheme = New System.Windows.Forms.Label
-        Me.splashClassification = New System.Windows.Forms.Label
+        Me.picShowPicture = New System.Windows.Forms.PictureBox()
+        Me.ofdSelectPicture = New System.Windows.Forms.OpenFileDialog()
+        Me.OdbcSelectCommand1 = New System.Data.Odbc.OdbcCommand()
+        Me.OdbcInsertCommand1 = New System.Data.Odbc.OdbcCommand()
+        Me.OdbcUpdateCommand1 = New System.Data.Odbc.OdbcCommand()
+        Me.OdbcDeleteCommand1 = New System.Data.Odbc.OdbcCommand()
+        Me.OdbcDataAdapter1 = New System.Data.Odbc.OdbcDataAdapter()
+        Me.ScorePopUp = New System.Windows.Forms.Label()
+        Me.StatusBar = New System.Windows.Forms.Panel()
+        Me.StatusBarAward = New System.Windows.Forms.Label()
+        Me.StatusBarScore = New System.Windows.Forms.Label()
+        Me.StatusBarTitle = New System.Windows.Forms.Label()
+        Me.splashClub = New System.Windows.Forms.Label()
+        Me.splashTheme = New System.Windows.Forms.Label()
+        Me.splashClassification = New System.Windows.Forms.Label()
+        CType(Me.picShowPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusBar.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -90,8 +90,9 @@ Public Class ImageViewer
         '
         Me.picShowPicture.BackColor = System.Drawing.Color.Black
         Me.picShowPicture.Location = New System.Drawing.Point(0, 0)
+        Me.picShowPicture.Margin = New System.Windows.Forms.Padding(0)
         Me.picShowPicture.Name = "picShowPicture"
-        Me.picShowPicture.Size = Rps_Image.setFullSize
+        Me.picShowPicture.Size = New System.Drawing.Size(1024, 768)
         Me.picShowPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.picShowPicture.TabIndex = 2
         Me.picShowPicture.TabStop = False
@@ -112,11 +113,13 @@ Public Class ImageViewer
         '
         'ScorePopUp
         '
+        Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ScorePopUp.BackColor = System.Drawing.Color.Black
         Me.ScorePopUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.ScorePopUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 56.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ScorePopUp.ForeColor = System.Drawing.Color.White
         Me.ScorePopUp.Location = New System.Drawing.Point(728, 104)
+        Me.ScorePopUp.Margin = New System.Windows.Forms.Padding(0)
         Me.ScorePopUp.Name = "ScorePopUp"
         Me.ScorePopUp.Size = New System.Drawing.Size(192, 115)
         Me.ScorePopUp.TabIndex = 3
@@ -130,7 +133,8 @@ Public Class ImageViewer
         Me.StatusBar.Controls.Add(Me.StatusBarAward)
         Me.StatusBar.Controls.Add(Me.StatusBarScore)
         Me.StatusBar.Controls.Add(Me.StatusBarTitle)
-        Me.StatusBar.Location = New System.Drawing.Point(0, 740)
+        Me.StatusBar.Location = New System.Drawing.Point(0, 750)
+        Me.StatusBar.Margin = New System.Windows.Forms.Padding(0)
         Me.StatusBar.Name = "StatusBar"
         Me.StatusBar.Size = New System.Drawing.Size(1024, 28)
         Me.StatusBar.TabIndex = 4
@@ -142,6 +146,7 @@ Public Class ImageViewer
         Me.StatusBarAward.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusBarAward.ForeColor = System.Drawing.Color.White
         Me.StatusBarAward.Location = New System.Drawing.Point(0, 0)
+        Me.StatusBarAward.Margin = New System.Windows.Forms.Padding(0)
         Me.StatusBarAward.Name = "StatusBarAward"
         Me.StatusBarAward.Size = New System.Drawing.Size(134, 28)
         Me.StatusBarAward.TabIndex = 2
@@ -153,6 +158,7 @@ Public Class ImageViewer
         Me.StatusBarScore.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusBarScore.ForeColor = System.Drawing.Color.White
         Me.StatusBarScore.Location = New System.Drawing.Point(889, 0)
+        Me.StatusBarScore.Margin = New System.Windows.Forms.Padding(0)
         Me.StatusBarScore.Name = "StatusBarScore"
         Me.StatusBarScore.Size = New System.Drawing.Size(135, 28)
         Me.StatusBarScore.TabIndex = 1
@@ -164,6 +170,7 @@ Public Class ImageViewer
         Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusBarTitle.ForeColor = System.Drawing.Color.White
         Me.StatusBarTitle.Location = New System.Drawing.Point(134, 0)
+        Me.StatusBarTitle.Margin = New System.Windows.Forms.Padding(0)
         Me.StatusBarTitle.Name = "StatusBarTitle"
         Me.StatusBarTitle.Size = New System.Drawing.Size(755, 28)
         Me.StatusBarTitle.TabIndex = 0
@@ -176,8 +183,9 @@ Public Class ImageViewer
         Me.splashClub.Font = New System.Drawing.Font("Microsoft Sans Serif", 40.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.splashClub.ForeColor = System.Drawing.Color.Yellow
         Me.splashClub.Location = New System.Drawing.Point(0, 157)
+        Me.splashClub.Margin = New System.Windows.Forms.Padding(0)
         Me.splashClub.Name = "splashClub"
-        Me.splashClub.Size = Rps_Image.setSplashClub
+        Me.splashClub.Size = New System.Drawing.Size(1024, 101)
         Me.splashClub.TabIndex = 5
         Me.splashClub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.splashClub.UseMnemonic = False
@@ -188,8 +196,9 @@ Public Class ImageViewer
         Me.splashTheme.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.splashTheme.ForeColor = System.Drawing.Color.White
         Me.splashTheme.Location = New System.Drawing.Point(0, 351)
+        Me.splashTheme.Margin = New System.Windows.Forms.Padding(0)
         Me.splashTheme.Name = "splashTheme"
-        Me.splashTheme.Size = Rps_Image.setSplashTheme
+        Me.splashTheme.Size = New System.Drawing.Size(1024, 101)
         Me.splashTheme.TabIndex = 6
         Me.splashTheme.Text = "Open and Oldies"
         Me.splashTheme.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -201,8 +210,9 @@ Public Class ImageViewer
         Me.splashClassification.Font = New System.Drawing.Font("Microsoft Sans Serif", 48.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.splashClassification.ForeColor = System.Drawing.Color.Red
         Me.splashClassification.Location = New System.Drawing.Point(0, 535)
+        Me.splashClassification.Margin = New System.Windows.Forms.Padding(0)
         Me.splashClassification.Name = "splashClassification"
-        Me.splashClassification.Size = Rps_Image.setSplashClassification
+        Me.splashClassification.Size = New System.Drawing.Size(1024, 102)
         Me.splashClassification.TabIndex = 7
         Me.splashClassification.Text = "Beginner"
         Me.splashClassification.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -210,10 +220,8 @@ Public Class ImageViewer
         '
         'ImageViewer
         '
-        Me.AutoScale = False
-        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
-        Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = Rps_Image.setFullSize
+        Me.BackColor = System.Drawing.Color.Maroon
+        Me.ClientSize = New System.Drawing.Size(1024, 768)
         Me.ControlBox = False
         Me.Controls.Add(Me.ScorePopUp)
         Me.Controls.Add(Me.splashClassification)
@@ -223,14 +231,15 @@ Public Class ImageViewer
         Me.Controls.Add(Me.picShowPicture)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
-        Me.MaximumSize = Rps_Image.setFullSize
+        Me.MaximumSize = New System.Drawing.Size(1024, 768)
         Me.MinimizeBox = False
-        Me.MinimumSize = Rps_Image.setFullSize
+        Me.MinimumSize = New System.Drawing.Size(1024, 768)
         Me.Name = "ImageViewer"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Picture Viewer"
         Me.TopMost = True
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
+        CType(Me.picShowPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusBar.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -585,5 +594,41 @@ Public Class ImageViewer
         thumbnailThread = New Thread(AddressOf thumb.Render)
         thumbnailThread.Start()
     End Function
+
+    Friend Sub setSizes()
+        Dim I As RpsImage = New RpsImage
+        Dim splash_location_y As Integer
+
+        picShowPicture.Size = New Size(I.getFullWidth(), I.getFullHeight)
+
+        ScorePopUp.Location = New Point(I.getFullWidth() - 192, 0)
+        ScorePopUp.Size = New Size(192, 115)
+
+        StatusBar.Location = New Point(0, I.getFullHeight - 28)
+        StatusBar.Size = New Size(I.getFullWidth(), 28)
+
+        StatusBarAward.Location = New Point(0, 0)
+        StatusBarAward.Size = New Size(134, 28)
+
+        StatusBarScore.Location = New Point(I.getFullWidth() - 135, 0)
+        StatusBarScore.Size = New Size(135, 28)
+
+        StatusBarTitle.Location = New Point(134, 0)
+        StatusBarTitle.Size = New Size(I.getFullWidth() - 134 - 135, 28)
+
+        splash_location_y = (I.getFullHeight - (3 * 110)) / 3
+        splashClub.Location = New Point(0, splash_location_y)
+        splashClub.Size = New Size(I.getFullWidth(), 100)
+
+        splashTheme.Location = New Point(0, splash_location_y * 2)
+        splashTheme.Size = New Size(I.getFullWidth(), 100)
+
+        splashClassification.Location = New Point(0, splash_location_y * 3)
+        splashClassification.Size = New Size(I.getFullWidth(), 100)
+
+        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight)
+        MaximumSize = New Size(I.getFullWidth(), I.getFullHeight)
+        MinimumSize = New Size(I.getFullWidth(), I.getFullHeight)
+    End Sub
 End Class
 

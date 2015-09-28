@@ -575,8 +575,8 @@ Public Class MainForm
         '
         'OleDbSelectCommand1
         '
-        Me.OleDbSelectCommand1.CommandText = "SELECT Award, Classification, [Competition Date 1], [Display Sequence], [Image Fi" & _
-    "le Name], Maker, Medium, Photo_ID, [Score 1], [Server Entry ID], Theme, Title FR" & _
+        Me.OleDbSelectCommand1.CommandText = "SELECT Award, Classification, [Competition Date 1], [Display Sequence], [Image Fi" &
+    "le Name], Maker, Medium, Photo_ID, [Score 1], [Server Entry ID], Theme, Title FR" &
     "OM [Competition Entries]"
         Me.OleDbSelectCommand1.Connection = Me.OleDbConnection1
         '
@@ -1055,6 +1055,7 @@ Public Class MainForm
         End If
 
         Viewer = New ImageViewer(Me, objSelectedPhotos, grdCompetition_Entries.CurrentRowIndex, showSplash, statusBarState)
+        Viewer.setSizes()
         Cursor.Hide()
         Viewer.ShowDialog()
         Cursor.Show()
