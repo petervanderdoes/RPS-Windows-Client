@@ -14,4 +14,6 @@ Partial Public Class medium
     Public Property name As String
     Public Property id As Long
 
+    Public Overridable Property club_medium As ICollection(Of club_medium) = New HashSet(Of club_medium)
+
 End Class

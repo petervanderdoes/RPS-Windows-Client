@@ -10,10 +10,12 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class award
-    Public Property name As String
-    Public Property id As Long
+Partial Public Class club_medium
+    Public Property club_id As Nullable(Of Long)
+    Public Property medium_id As Nullable(Of Long)
+    Public Property sort_key As Long
 
-    Public Overridable Property club_award As ICollection(Of club_award) = New HashSet(Of club_award)
+    Public Overridable Property club As club
+    Public Overridable Property medium As medium
 
 End Class

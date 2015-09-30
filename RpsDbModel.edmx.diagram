@@ -5,11 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b470111dcdf041d7ae4d2d08e30f49a5" Name="Diagram1">
-        <EntityTypeShape EntityType="rpsModel.award" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="rpsModel.classification" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="rpsModel.club" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="rpsModel.CompetitionEntry" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="rpsModel.medium" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rpsModel.award" Width="1.5" PointX="5.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rpsModel.classification" Width="1.5" PointX="7.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rpsModel.club" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rpsModel.CompetitionEntry" Width="1.5" PointX="0.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rpsModel.medium" Width="1.5" PointX="2.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rpsModel.club_award" Width="1.5" PointX="5.25" PointY="3.625" />
+        <EntityTypeShape EntityType="rpsModel.club_classification" Width="1.5" PointX="7.5" PointY="3.625" />
+        <EntityTypeShape EntityType="rpsModel.club_medium" Width="1.5" PointX="3.125" PointY="3.625" />
+        <AssociationConnector Association="rpsModel.FK_club_award_0_0" />
+        <AssociationConnector Association="rpsModel.FK_club_award_1_0" />
+        <AssociationConnector Association="rpsModel.FK_club_classification_0_0" />
+        <AssociationConnector Association="rpsModel.FK_club_classification_1_0" />
+        <AssociationConnector Association="rpsModel.FK_club_medium_1_0" />
+        <AssociationConnector Association="rpsModel.FK_club_medium_0_0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

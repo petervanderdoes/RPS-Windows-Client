@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="rpsModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;E:\Peter\RPS\development\Rps Digital Viewer\rps.db&quot;" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="rpsModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;E:\Peter\RPS\development\Rps Digital Viewer\rps.db&quot;" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="award">
           <Key>
             <PropertyRef Name="id" />
@@ -30,28 +30,31 @@
           <Property Name="max_score" Type="integer" />
           <Property Name="min_score_for_award" Type="integer" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'main.club_award' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="club_award">
+          <Key>
+            <PropertyRef Name="sort_key" />
+          </Key>
           <Property Name="club_id" Type="integer" />
           <Property Name="award_id" Type="integer" />
           <Property Name="points" Type="integer" />
-          <Property Name="sort_key" Type="integer" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'main.club_classification' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+          <Property Name="sort_key" Type="integer" Nullable="false" />
+        </EntityType>
         <EntityType Name="club_classification">
+          <Key>
+            <PropertyRef Name="sort_key" />
+          </Key>
           <Property Name="club_id" Type="integer" />
           <Property Name="classification_id" Type="integer" />
-          <Property Name="sort_key" Type="integer" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'main.club_medium' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+          <Property Name="sort_key" Type="integer" Nullable="false" />
+        </EntityType>
         <EntityType Name="club_medium">
+          <Key>
+            <PropertyRef Name="sort_key" />
+          </Key>
           <Property Name="club_id" Type="integer" />
           <Property Name="medium_id" Type="integer" />
-          <Property Name="sort_key" Type="integer" />
-        </EntityType>-->
+          <Property Name="sort_key" Type="integer" Nullable="false" />
+        </EntityType>
         <EntityType Name="CompetitionEntries">
           <Key>
             <PropertyRef Name="Photo_ID" />
@@ -76,15 +79,113 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
           <Property Name="name" Type="nvarchar" MaxLength="2147483647" />
           <Property Name="id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <Association Name="FK_club_award_0_0">
+          <End Role="award" Type="Self.award" Multiplicity="0..1" />
+          <End Role="club_award" Type="Self.club_award" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="award">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_award">
+              <PropertyRef Name="award_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_award_1_0">
+          <End Role="club" Type="Self.club" Multiplicity="0..1" />
+          <End Role="club_award" Type="Self.club_award" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="club">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_award">
+              <PropertyRef Name="club_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_classification_0_0">
+          <End Role="classification" Type="Self.classification" Multiplicity="0..1" />
+          <End Role="club_classification" Type="Self.club_classification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="classification">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_classification">
+              <PropertyRef Name="classification_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_classification_1_0">
+          <End Role="club" Type="Self.club" Multiplicity="0..1" />
+          <End Role="club_classification" Type="Self.club_classification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="club">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_classification">
+              <PropertyRef Name="club_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_medium_0_0">
+          <End Role="medium" Type="Self.medium" Multiplicity="0..1" />
+          <End Role="club_medium" Type="Self.club_medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="medium">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_medium">
+              <PropertyRef Name="medium_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_medium_1_0">
+          <End Role="club" Type="Self.club" Multiplicity="0..1" />
+          <End Role="club_medium" Type="Self.club_medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="club">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_medium">
+              <PropertyRef Name="club_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="rpsModelStoreContainer">
           <EntitySet Name="award" EntityType="Self.award" store:Type="Tables" />
           <EntitySet Name="classification" EntityType="Self.classification" store:Type="Tables" />
           <EntitySet Name="club" EntityType="Self.club" store:Type="Tables" />
+          <EntitySet Name="club_award" EntityType="Self.club_award" store:Type="Tables" />
+          <EntitySet Name="club_classification" EntityType="Self.club_classification" store:Type="Tables" />
+          <EntitySet Name="club_medium" EntityType="Self.club_medium" store:Type="Tables" />
           <EntitySet Name="CompetitionEntries" EntityType="Self.CompetitionEntries" store:Type="Tables" />
           <EntitySet Name="medium" EntityType="Self.medium" store:Type="Tables" />
+          <AssociationSet Name="FK_club_award_0_0" Association="Self.FK_club_award_0_0">
+            <End Role="award" EntitySet="award" />
+            <End Role="club_award" EntitySet="club_award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_award_1_0" Association="Self.FK_club_award_1_0">
+            <End Role="club" EntitySet="club" />
+            <End Role="club_award" EntitySet="club_award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_classification_0_0" Association="Self.FK_club_classification_0_0">
+            <End Role="classification" EntitySet="classification" />
+            <End Role="club_classification" EntitySet="club_classification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_classification_1_0" Association="Self.FK_club_classification_1_0">
+            <End Role="club" EntitySet="club" />
+            <End Role="club_classification" EntitySet="club_classification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_medium_0_0" Association="Self.FK_club_medium_0_0">
+            <End Role="medium" EntitySet="medium" />
+            <End Role="club_medium" EntitySet="club_medium" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_medium_1_0" Association="Self.FK_club_medium_1_0">
+            <End Role="club" EntitySet="club" />
+            <End Role="club_medium" EntitySet="club_medium" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="rpsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -94,6 +195,7 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
           </Key>
           <Property Name="name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="club_award" Relationship="rpsModel.FK_club_award_0_0" FromRole="award" ToRole="club_award" />
         </EntityType>
         <EntityType Name="classification">
           <Key>
@@ -101,6 +203,7 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
           </Key>
           <Property Name="name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="club_classification" Relationship="rpsModel.FK_club_classification_0_0" FromRole="classification" ToRole="club_classification" />
         </EntityType>
         <EntityType Name="club">
           <Key>
@@ -112,6 +215,9 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
           <Property Name="min_score" Type="Int64" />
           <Property Name="max_score" Type="Int64" />
           <Property Name="min_score_for_award" Type="Int64" />
+          <NavigationProperty Name="club_award" Relationship="rpsModel.FK_club_award_1_0" FromRole="club" ToRole="club_award" />
+          <NavigationProperty Name="club_classification" Relationship="rpsModel.FK_club_classification_1_0" FromRole="club" ToRole="club_classification" />
+          <NavigationProperty Name="club_medium" Relationship="rpsModel.FK_club_medium_1_0" FromRole="club" ToRole="club_medium" />
         </EntityType>
         <EntityType Name="CompetitionEntry">
           <Key>
@@ -136,6 +242,7 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
           </Key>
           <Property Name="name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="club_medium" Relationship="rpsModel.FK_club_medium_0_0" FromRole="medium" ToRole="club_medium" />
         </EntityType>
         <EntityContainer Name="rpsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="awards" EntityType="Self.award" />
@@ -143,7 +250,137 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
           <EntitySet Name="clubs" EntityType="Self.club" />
           <EntitySet Name="CompetitionEntries" EntityType="Self.CompetitionEntry" />
           <EntitySet Name="media" EntityType="Self.medium" />
+          <EntitySet Name="club_award" EntityType="rpsModel.club_award" />
+          <EntitySet Name="club_classification" EntityType="rpsModel.club_classification" />
+          <EntitySet Name="club_medium" EntityType="rpsModel.club_medium" />
+          <AssociationSet Name="FK_club_award_0_0" Association="rpsModel.FK_club_award_0_0">
+            <End Role="award" EntitySet="awards" />
+            <End Role="club_award" EntitySet="club_award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_award_1_0" Association="rpsModel.FK_club_award_1_0">
+            <End Role="club" EntitySet="clubs" />
+            <End Role="club_award" EntitySet="club_award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_classification_0_0" Association="rpsModel.FK_club_classification_0_0">
+            <End Role="classification" EntitySet="classifications" />
+            <End Role="club_classification" EntitySet="club_classification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_classification_1_0" Association="rpsModel.FK_club_classification_1_0">
+            <End Role="club" EntitySet="clubs" />
+            <End Role="club_classification" EntitySet="club_classification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_medium_1_0" Association="rpsModel.FK_club_medium_1_0">
+            <End Role="club" EntitySet="clubs" />
+            <End Role="club_medium" EntitySet="club_medium" />
+          </AssociationSet>
+          <AssociationSet Name="FK_club_medium_0_0" Association="rpsModel.FK_club_medium_0_0">
+            <End Role="medium" EntitySet="media" />
+            <End Role="club_medium" EntitySet="club_medium" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="club_award">
+          <Key>
+            <PropertyRef Name="sort_key" />
+          </Key>
+          <Property Name="club_id" Type="Int64" />
+          <Property Name="award_id" Type="Int64" />
+          <Property Name="points" Type="Int64" />
+          <Property Name="sort_key" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="award" Relationship="rpsModel.FK_club_award_0_0" FromRole="club_award" ToRole="award" />
+          <NavigationProperty Name="club" Relationship="rpsModel.FK_club_award_1_0" FromRole="club_award" ToRole="club" />
+        </EntityType>
+        <EntityType Name="club_classification">
+          <Key>
+            <PropertyRef Name="sort_key" />
+          </Key>
+          <Property Name="club_id" Type="Int64" />
+          <Property Name="classification_id" Type="Int64" />
+          <Property Name="sort_key" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="classification" Relationship="rpsModel.FK_club_classification_0_0" FromRole="club_classification" ToRole="classification" />
+          <NavigationProperty Name="club" Relationship="rpsModel.FK_club_classification_1_0" FromRole="club_classification" ToRole="club" />
+        </EntityType>
+        <EntityType Name="club_medium">
+          <Key>
+            <PropertyRef Name="sort_key" />
+          </Key>
+          <Property Name="club_id" Type="Int64" />
+          <Property Name="medium_id" Type="Int64" />
+          <Property Name="sort_key" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="club" Relationship="rpsModel.FK_club_medium_1_0" FromRole="club_medium" ToRole="club" />
+          <NavigationProperty Name="medium" Relationship="rpsModel.FK_club_medium_0_0" FromRole="club_medium" ToRole="medium" />
+        </EntityType>
+        <Association Name="FK_club_award_0_0">
+          <End Type="rpsModel.award" Role="award" Multiplicity="0..1" />
+          <End Type="rpsModel.club_award" Role="club_award" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="award">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_award">
+              <PropertyRef Name="award_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_award_1_0">
+          <End Type="rpsModel.club" Role="club" Multiplicity="0..1" />
+          <End Type="rpsModel.club_award" Role="club_award" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="club">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_award">
+              <PropertyRef Name="club_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_classification_0_0">
+          <End Type="rpsModel.classification" Role="classification" Multiplicity="0..1" />
+          <End Type="rpsModel.club_classification" Role="club_classification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="classification">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_classification">
+              <PropertyRef Name="classification_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_classification_1_0">
+          <End Type="rpsModel.club" Role="club" Multiplicity="0..1" />
+          <End Type="rpsModel.club_classification" Role="club_classification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="club">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_classification">
+              <PropertyRef Name="club_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_medium_1_0">
+          <End Type="rpsModel.club" Role="club" Multiplicity="0..1" />
+          <End Type="rpsModel.club_medium" Role="club_medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="club">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_medium">
+              <PropertyRef Name="club_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_club_medium_0_0">
+          <End Type="rpsModel.medium" Role="medium" Multiplicity="0..1" />
+          <End Type="rpsModel.club_medium" Role="club_medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="medium">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="club_medium">
+              <PropertyRef Name="medium_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -201,6 +438,34 @@ warning 6013: The table/view 'main.club_medium' does not have a primary key defi
               <MappingFragment StoreEntitySet="medium">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="club_award">
+            <EntityTypeMapping TypeName="rpsModel.club_award">
+              <MappingFragment StoreEntitySet="club_award">
+                <ScalarProperty Name="sort_key" ColumnName="sort_key" />
+                <ScalarProperty Name="points" ColumnName="points" />
+                <ScalarProperty Name="award_id" ColumnName="award_id" />
+                <ScalarProperty Name="club_id" ColumnName="club_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="club_classification">
+            <EntityTypeMapping TypeName="rpsModel.club_classification">
+              <MappingFragment StoreEntitySet="club_classification">
+                <ScalarProperty Name="sort_key" ColumnName="sort_key" />
+                <ScalarProperty Name="classification_id" ColumnName="classification_id" />
+                <ScalarProperty Name="club_id" ColumnName="club_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="club_medium">
+            <EntityTypeMapping TypeName="rpsModel.club_medium">
+              <MappingFragment StoreEntitySet="club_medium">
+                <ScalarProperty Name="sort_key" ColumnName="sort_key" />
+                <ScalarProperty Name="medium_id" ColumnName="medium_id" />
+                <ScalarProperty Name="club_id" ColumnName="club_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

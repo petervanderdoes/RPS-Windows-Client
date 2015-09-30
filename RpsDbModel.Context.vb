@@ -27,5 +27,8 @@ Partial Public Class rpsEntities
     Public Overridable Property clubs() As DbSet(Of club)
     Public Overridable Property CompetitionEntries() As DbSet(Of CompetitionEntry)
     Public Overridable Property media() As DbSet(Of medium)
+    Public Overridable Property club_award() As DbSet(Of club_award)
+    Public Overridable Property club_classification() As DbSet(Of club_classification)
+    Public Overridable Property club_medium() As DbSet(Of club_medium)
 
 End Class

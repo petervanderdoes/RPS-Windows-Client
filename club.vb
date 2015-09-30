@@ -18,4 +18,8 @@ Partial Public Class club
     Public Property max_score As Nullable(Of Long)
     Public Property min_score_for_award As Nullable(Of Long)
 
+    Public Overridable Property club_award As ICollection(Of club_award) = New HashSet(Of club_award)
+    Public Overridable Property club_classification As ICollection(Of club_classification) = New HashSet(Of club_classification)
+    Public Overridable Property club_medium As ICollection(Of club_medium) = New HashSet(Of club_medium)
+
 End Class

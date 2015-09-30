@@ -14,4 +14,6 @@ Partial Public Class classification
     Public Property name As String
     Public Property id As Long
 
+    Public Overridable Property club_classification As ICollection(Of club_classification) = New HashSet(Of club_classification)
+
 End Class

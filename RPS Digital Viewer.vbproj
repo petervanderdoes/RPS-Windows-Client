@@ -197,6 +197,15 @@
     <Compile Include="club.vb">
       <DependentUpon>RpsDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="club_award.vb">
+      <DependentUpon>RpsDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="club_classification.vb">
+      <DependentUpon>RpsDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="club_medium.vb">
+      <DependentUpon>RpsDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CompetitionEntry.vb">
       <DependentUpon>RpsDbModel.tt</DependentUpon>
     </Compile>
