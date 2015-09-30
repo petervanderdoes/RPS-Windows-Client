@@ -22,14 +22,14 @@ Public Class MainForm
     'Private databaseFileName As String = "rps.mdb"
     'Public reportsOutputFolder As String = "Reports"
     'Public imagesRootFolder As String = "Photos"
-    Private dataFolder As String = Application.LocalUserAppDataPath
+    Private dataFolder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
 
     Private databaseFileName As String = dataFolder + "\rps.mdb"
     Private connection_string As String = "Data Source=" + databaseFileName + ";Version=3;New=False;Compress=True;"
     Public reportsOutputFolder As String = dataFolder + "\Reports"
     Public imagesRootFolder As String = dataFolder + "\Photos"
     Private ServerName As String = "localhost"
-    Private ServerScriptDir As String = "/scripts"
+    Private ServerScriptDir As String = "/"
     Public cameraClubName As String = "Raritan Photographic Society"
     Public cameraClubId As Integer = 1
     Public classifications As New ArrayList
