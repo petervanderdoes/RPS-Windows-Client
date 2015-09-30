@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="rpsDbEntities.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;E:\Peter\RPS\development\Rps Digital Viewer\rps.db&quot;" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="rpsModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;E:\Peter\RPS\development\Rps Digital Viewer\rps.db&quot;" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="award">
           <Key>
             <PropertyRef Name="id" />
@@ -30,6 +30,28 @@
           <Property Name="max_score" Type="integer" />
           <Property Name="min_score_for_award" Type="integer" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'main.club_award' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="club_award">
+          <Property Name="club_id" Type="integer" />
+          <Property Name="award_id" Type="integer" />
+          <Property Name="points" Type="integer" />
+          <Property Name="sort_key" Type="integer" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'main.club_classification' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="club_classification">
+          <Property Name="club_id" Type="integer" />
+          <Property Name="classification_id" Type="integer" />
+          <Property Name="sort_key" Type="integer" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'main.club_medium' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="club_medium">
+          <Property Name="club_id" Type="integer" />
+          <Property Name="medium_id" Type="integer" />
+          <Property Name="sort_key" Type="integer" />
+        </EntityType>-->
         <EntityType Name="CompetitionEntries">
           <Key>
             <PropertyRef Name="Photo_ID" />
@@ -54,17 +76,18 @@
           <Property Name="name" Type="nvarchar" MaxLength="2147483647" />
           <Property Name="id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="rpsDbEntitiesStoreContainer">
+        <EntityContainer Name="rpsModelStoreContainer">
           <EntitySet Name="award" EntityType="Self.award" store:Type="Tables" />
           <EntitySet Name="classification" EntityType="Self.classification" store:Type="Tables" />
           <EntitySet Name="club" EntityType="Self.club" store:Type="Tables" />
           <EntitySet Name="CompetitionEntries" EntityType="Self.CompetitionEntries" store:Type="Tables" />
           <EntitySet Name="medium" EntityType="Self.medium" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="rpsDbEntities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="rpsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="award">
           <Key>
             <PropertyRef Name="id" />
@@ -90,20 +113,6 @@
           <Property Name="max_score" Type="Int64" />
           <Property Name="min_score_for_award" Type="Int64" />
         </EntityType>
-        <EntityType Name="medium">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityContainer Name="rpsEntities2" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="awards" EntityType="Self.award" />
-          <EntitySet Name="classifications" EntityType="Self.classification" />
-          <EntitySet Name="clubs" EntityType="Self.club" />
-          <EntitySet Name="media" EntityType="Self.medium" />
-          <EntitySet Name="CompetitionEntries" EntityType="rpsDbEntities.CompetitionEntry" />
-        </EntityContainer>
         <EntityType Name="CompetitionEntry">
           <Key>
             <PropertyRef Name="Photo_ID" />
@@ -121,14 +130,28 @@
           <Property Name="Display_Sequence" Type="Int64" />
           <Property Name="Server_Entry_ID" Type="Int64" />
         </EntityType>
+        <EntityType Name="medium">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityContainer Name="rpsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="awards" EntityType="Self.award" />
+          <EntitySet Name="classifications" EntityType="Self.classification" />
+          <EntitySet Name="clubs" EntityType="Self.club" />
+          <EntitySet Name="CompetitionEntries" EntityType="Self.CompetitionEntry" />
+          <EntitySet Name="media" EntityType="Self.medium" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="rpsDbEntitiesStoreContainer" CdmEntityContainer="rpsEntities2">
+        <EntityContainerMapping StorageEntityContainer="rpsModelStoreContainer" CdmEntityContainer="rpsEntities">
           <EntitySetMapping Name="awards">
-            <EntityTypeMapping TypeName="rpsDbEntities.award">
+            <EntityTypeMapping TypeName="rpsModel.award">
               <MappingFragment StoreEntitySet="award">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -136,7 +159,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="classifications">
-            <EntityTypeMapping TypeName="rpsDbEntities.classification">
+            <EntityTypeMapping TypeName="rpsModel.classification">
               <MappingFragment StoreEntitySet="classification">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -144,7 +167,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="clubs">
-            <EntityTypeMapping TypeName="rpsDbEntities.club">
+            <EntityTypeMapping TypeName="rpsModel.club">
               <MappingFragment StoreEntitySet="club">
                 <ScalarProperty Name="short_name" ColumnName="short_name" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -155,29 +178,29 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="media">
-            <EntityTypeMapping TypeName="rpsDbEntities.medium">
-              <MappingFragment StoreEntitySet="medium">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
+          <EntitySetMapping Name="CompetitionEntries">
+            <EntityTypeMapping TypeName="rpsModel.CompetitionEntry">
+              <MappingFragment StoreEntitySet="CompetitionEntries">
+                <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Maker" ColumnName="Maker" />
+                <ScalarProperty Name="Classification" ColumnName="Classification" />
+                <ScalarProperty Name="Medium" ColumnName="Medium" />
+                <ScalarProperty Name="Theme" ColumnName="Theme" />
+                <ScalarProperty Name="Competition_Date_1" ColumnName="Competition_Date_1" />
+                <ScalarProperty Name="Score_1" ColumnName="Score_1" />
+                <ScalarProperty Name="Award" ColumnName="Award" />
+                <ScalarProperty Name="Image_File_Name" ColumnName="Image_File_Name" />
+                <ScalarProperty Name="Display_Sequence" ColumnName="Display_Sequence" />
+                <ScalarProperty Name="Server_Entry_ID" ColumnName="Server_Entry_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CompetitionEntries">
-            <EntityTypeMapping TypeName="rpsDbEntities.CompetitionEntry">
-              <MappingFragment StoreEntitySet="CompetitionEntries">
-                <ScalarProperty Name="Server_Entry_ID" ColumnName="Server_Entry_ID" />
-                <ScalarProperty Name="Display_Sequence" ColumnName="Display_Sequence" />
-                <ScalarProperty Name="Image_File_Name" ColumnName="Image_File_Name" />
-                <ScalarProperty Name="Award" ColumnName="Award" />
-                <ScalarProperty Name="Score_1" ColumnName="Score_1" />
-                <ScalarProperty Name="Competition_Date_1" ColumnName="Competition_Date_1" />
-                <ScalarProperty Name="Theme" ColumnName="Theme" />
-                <ScalarProperty Name="Medium" ColumnName="Medium" />
-                <ScalarProperty Name="Classification" ColumnName="Classification" />
-                <ScalarProperty Name="Maker" ColumnName="Maker" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Photo_ID" ColumnName="Photo_ID" />
+          <EntitySetMapping Name="media">
+            <EntityTypeMapping TypeName="rpsModel.medium">
+              <MappingFragment StoreEntitySet="medium">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

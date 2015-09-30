@@ -16,7 +16,7 @@ Public Class MainForm
         "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" &
         "ut Replica Repair=False;User ID=Admin;Jet OLEDB:Encrypt Database=False"
 
-    Private rpsContext As rpsEntities = New rpsEntities2
+    Private rpsContext As rpsEntities = New rpsEntities
 
     ' User Preferences (defaults)
     'Private databaseFileName As String = "rps.mdb"
