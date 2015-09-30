@@ -1,4 +1,6 @@
 Imports System.Runtime.ExceptionServices
+Imports System.Linq
+
 
 Public Class MainForm
     Inherits System.Windows.Forms.Form
@@ -14,6 +16,8 @@ Public Class MainForm
         "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" &
         "ut Replica Repair=False;User ID=Admin;Jet OLEDB:Encrypt Database=False"
 
+    Private rpsContext As rpsEntities = New rpsEntities2
+
     ' User Preferences (defaults)
     'Private databaseFileName As String = "rps.mdb"
     'Public reportsOutputFolder As String = "Reports"
@@ -21,6 +25,7 @@ Public Class MainForm
     Private dataFolder As String = Application.LocalUserAppDataPath
 
     Private databaseFileName As String = dataFolder + "\rps.mdb"
+    Private connection_string As String = "Data Source=" + databaseFileName + ";Version=3;New=False;Compress=True;"
     Public reportsOutputFolder As String = dataFolder + "\Reports"
     Public imagesRootFolder As String = dataFolder + "\Photos"
     Private ServerName As String = "localhost"
@@ -1256,7 +1261,7 @@ Public Class MainForm
             ByVal sequence As Integer)
 
         Dim relativePath As String
-        Dim dRow As DataRow
+        Dim entry As CompetitionEntry = New CompetitionEntry
 
         Try
             ' Calculate the relative path to the file.  The path is relative to the
@@ -1267,45 +1272,42 @@ Public Class MainForm
                 relativePath = file.FullName    ' Store absolute path if can't calculate relative path
             End If
 
-            ' Insert a new row in to the database table
-            dRow = objSelectedPhotos.Tables("Competition Entries").NewRow
-
             ' Fill in the field values
-            dRow("Title") = title
-            dRow("Maker") = maker
-            dRow("Classification") = classification
-            dRow("Medium") = medium
-            dRow("Theme") = competitionTheme
-            dRow("Competition Date 1") = competitionDate
-            dRow("Image File Name") = relativePath
+            entry.Title = title
+            entry.Maker = maker
+            entry.Classification = classification
+            entry.Medium = medium
+            entry.Theme = competitionTheme
+            entry.Competition_Date_1 = competitionDate
+            entry.Image_File_Name = relativePath
             If sequence = 0 Then
-                dRow("Display Sequence") = file.Length Mod 61
+                entry.Display_Sequence = file.Length Mod 61
             Else
-                dRow("Display Sequence") = sequence
+                entry.Display_Sequence = sequence
             End If
             If entry_id > "" Then
-                dRow("Server Entry ID") = entry_id
+                entry.Server_Entry_ID = entry_id
             Else
-                dRow("Server Entry ID") = DBNull.Value
+                entry.Server_Entry_ID = Nothing
             End If
             If score > "" Then
-                dRow("Score 1") = score
+                entry.Score_1 = score
             Else
-                dRow("Score 1") = DBNull.Value
+                entry.Score_1 = Nothing
             End If
             If award > "" Then
-                dRow("Award") = award
+                entry.Award = award
             Else
-                dRow("Award") = DBNull.Value
+                entry.Award = Nothing
             End If
 
             ' Add it to the database
-            objSelectedPhotos.Tables("Competition Entries").Rows.Add(dRow)
-            OleDbDataAdapter1.Update(objSelectedPhotos)
+            rpsContext.CompetitionEntries.Add(entry)
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in InsertImageInDatabase()")
+            MsgBox(ex.Message, , "Error In InsertImageInDatabase()")
         End Try
+        rpsContext.SaveChanges()
     End Sub
 
     Private Sub CatalogImages()
@@ -1350,8 +1352,8 @@ Public Class MainForm
 
             For Each file_info In files
 
-                If CheckFileName(File_info) Then
-                    CatalogOneImage(File_info, classification, medium, competitionDate, competitionTheme)
+                If CheckFileName(file_info) Then
+                    CatalogOneImage(file_info, classification, medium, competitionDate, competitionTheme)
                 End If
 
                 ' Update the Progressbar
@@ -2128,7 +2130,12 @@ Public Class MainForm
     ' Load the list of unique competition dates into the Competition Dates combobox
     '
     Private Sub LoadCompDates()
-        Dim recs As OleDbDataReader
+
+        Dim query = From entries In rpsContext.CompetitionEntries
+                    Order By entries.Competition_Date_1
+                    Select entries.Competition_Date_1 Distinct
+
+        Dim record
 
         Try
             ' Empty the list if it's not already empty
@@ -2136,21 +2143,18 @@ Public Class MainForm
                 SelectDate.Items.Clear()
             End If
 
-            ' Load the list of unique competition dates into the combobox
-            recs = SqlSelect("SELECT DISTINCT [Competition Date 1] FROM [Competition Entries] ORDER BY [Competition Date 1] DESC")
-            If Not recs Is Nothing Then
-                While recs.Read
-                    SelectDate.Items.Add(Format(recs.GetDateTime(0), "dd-MMM-yyyy"))
-                End While
-            End If
-            OleDbConnection1.Close()
+            For Each record In query
+                Dim item As DateTime
+                item = Convert.ToDateTime(record)
 
+                SelectDate.Items.Add(item.ToString("dd-MMM-yyyy"))
+            Next
             ' Select the first item in the list
             If SelectDate.Items.Count > 0 Then
                 SelectDate.SelectedIndex = 0
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadCompDates()")
+            MsgBox(ex.Message, , "Error In LoadCompDates()")
         End Try
 
     End Sub
@@ -2163,10 +2167,10 @@ Public Class MainForm
         Dim theme As String
         Dim i As Integer
         Dim delim As String
-        Dim sqlInsert As String = "INSERT INTO [Competition Entries] (Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],[Score 1],[Server Entry ID],[Competition Date 1],Theme) "
-        'Dim sqlSelect As String = "SELECT Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],NULL,[Server Entry ID]"
-        Dim sqlSelect As String = "SELECT Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],[Score 1],[Server Entry ID]"
-        Dim sqlWhere As String = "WHERE Award IN ("
+        Dim sqlInsert As String = "INSERT INTO [Competition Entries] (Title, Maker, classification, medium,[Image File Name],[Display Sequence],[Score 1],[Server Entry ID],[Competition Date 1], Theme) "
+        'Dim sqlSelect As String = "Select Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],NULL,[Server Entry ID]"
+        Dim sqlSelect As String = "Select Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],[Score 1],[Server Entry ID]"
+        Dim sqlWhere As String = "WHERE Award In ("
         Dim sqlOrderBy As String = "ORDER BY Classification"
         Dim sqlCommand As New OleDbCommand
 
@@ -2264,7 +2268,8 @@ Public Class MainForm
 
         Try
             ' Retrieve the list of competition dates from the server
-            If REST(ServerName, ServerScriptDir + "/?rpswinclient=getcompdata", "GET", params, response) Then
+            params.Add("rpswinclient", "getcompdate")
+            If REST(ServerName, ServerScriptDir, "GET", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/Competition_Date")
                 While nodes.MoveNext()
@@ -2399,6 +2404,7 @@ Public Class MainForm
             ' Retrieve the competition Manifest from the server
             Cursor.Current = Cursors.WaitCursor
             params.Clear()
+            params.Add("rpswinclient", "download")
             params.Add("username", username)
             params.Add("password", password)
             params.Add("comp_date", comp_date)
@@ -2408,7 +2414,7 @@ Public Class MainForm
             If download_prints And Not download_digital Then
                 params.Add("medium", "prints")
             End If
-            If Not REST(ServerName, ServerScriptDir + "/?rpswinclient=download", "POST", params, response) Then
+            If Not REST(ServerName, ServerScriptDir, "POST", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
                 nodes.MoveNext()
@@ -2697,7 +2703,8 @@ Public Class MainForm
             'End If
 
             ' Parse the status out of the xml response
-            XPathDoc = New XPathDocument(response.GetResponseStream())
+            Dim response_stream As Stream = response.GetResponseStream()
+            XPathDoc = New XPathDocument(response_stream)
             If responseOK(XPathDoc) Then
                 REST = True
             Else
@@ -3194,6 +3201,16 @@ Public Class MainForm
         EightsAndAwardsSelected = False
         SelectImages()
     End Sub
+
+    Private Function CreateDataTable(ByVal sourceTable As DataTable, ByVal rows As DataRow()) As DataTable
+        Dim result As DataTable
+
+        result = sourceTable.Clone()
+        For Each row As DataRow In rows
+            result.Rows.Add(row.ItemArray)
+        Next
+        Return result
+    End Function
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
