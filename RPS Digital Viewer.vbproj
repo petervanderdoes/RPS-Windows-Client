@@ -25,12 +25,14 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>0.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -46,8 +48,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -127,15 +127,15 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Services" />
     <Reference Include="System.Data.SQLite, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>packages\System.Data.SQLite.Core.1.0.98.1\lib\net46\System.Data.SQLite.dll</HintPath>
+      <HintPath>packages\System.Data.SQLite.Core.1.0.98.1\lib\net451\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.SQLite.EF6, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>packages\System.Data.SQLite.EF6.1.0.98.1\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+      <HintPath>packages\System.Data.SQLite.EF6.1.0.98.1\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>packages\System.Data.SQLite.Linq.1.0.98.1\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+      <HintPath>packages\System.Data.SQLite.Linq.1.0.98.1\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing">
@@ -183,7 +183,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="award.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="BestOfDialog.vb">
       <SubType>Form</SubType>
@@ -192,22 +192,22 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="classification.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="club.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="club_award.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="club_classification.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="club_medium.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CompetitionEntry.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataItem.vb">
       <SubType>Code</SubType>
@@ -222,7 +222,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="medium.vb">
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
+      <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -244,22 +244,22 @@
     <Compile Include="ProgressStatus.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RpsDbModel.Context.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RpsDbModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RpsDbModel.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RpsDbModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="RpsDbModel.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RpsDbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="RpsImage.vb" />
+    <Compile Include="RpsModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RpsModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RpsModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RpsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="RpsModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RpsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SelectedPhotos.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -274,21 +274,23 @@
     <Compile Include="Upload Scores Dialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
     <Content Include="RPS Digital Viewer.ico" />
-    <Content Include="RpsDbModel.Context.tt">
+    <Content Include="RpsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RpsDbModel.edmx</DependentUpon>
-      <LastGenOutput>RpsDbModel.Context.vb</LastGenOutput>
+      <DependentUpon>RpsModel.edmx</DependentUpon>
+      <LastGenOutput>RpsModel.Context.vb</LastGenOutput>
     </Content>
-    <Content Include="RpsDbModel.tt">
+    <Content Include="RpsModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RpsDbModel.edmx</DependentUpon>
-      <LastGenOutput>RpsDbModel.vb</LastGenOutput>
+      <DependentUpon>RpsModel.edmx</DependentUpon>
+      <LastGenOutput>RpsModel.vb</LastGenOutput>
     </Content>
     <Content Include="SelectedPhotos.xsd">
       <Generator>MSDataSetGenerator</Generator>
@@ -300,12 +302,12 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <EntityDeploy Include="RpsDbModel.edmx">
+    <EntityDeploy Include="RpsModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RpsDbModel.Designer.vb</LastGenOutput>
+      <LastGenOutput>RpsModel.Designer.vb</LastGenOutput>
     </EntityDeploy>
-    <None Include="RpsDbModel.edmx.diagram">
-      <DependentUpon>RpsDbModel.edmx</DependentUpon>
+    <None Include="RpsModel.edmx.diagram">
+      <DependentUpon>RpsModel.edmx</DependentUpon>
     </None>
     <None Include="thumbs.ico" />
     <None Include="Single_Photo.ico" />
@@ -344,7 +346,6 @@
     <EmbeddedResource Include="Upload Scores Dialog.resx">
       <DependentUpon>Upload Scores Dialog.vb</DependentUpon>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="My Project\app.manifest" />
     <None Include="RPS Digital Viewer_TemporaryKey.pfx" />
     <None Include="SelectedPhotos.xsc">
@@ -377,16 +378,19 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent />
     <PostBuildEvent />
   </PropertyGroup>
-  <Import Project="packages\System.Data.SQLite.Core.1.0.98.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.98.1\build\net46\System.Data.SQLite.Core.targets')" />
+  <Import Project="packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\System.Data.SQLite.Core.1.0.98.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.Data.SQLite.Core.1.0.98.1\build\net46\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.Data.SQLite.Core.1.0.98.1\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
 </Project>

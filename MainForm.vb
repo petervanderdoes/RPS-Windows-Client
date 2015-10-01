@@ -1,5 +1,6 @@
 Imports System.Runtime.ExceptionServices
 Imports System.Linq
+Imports System.Data.Entity.Core.EntityClient
 
 
 Public Class MainForm
@@ -15,16 +16,19 @@ Public Class MainForm
         "ode=Share Deny None;Jet OLEDB:New Database Password=;Jet OLEDB:Create System Dat" &
         "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" &
         "ut Replica Repair=False;User ID=Admin;Jet OLEDB:Encrypt Database=False"
+    Private dataFolder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
+    Private databaseFileNameSqlite As String = dataFolder + "\rps.db"
+    Private databaseFileName As String = dataFolder + "\rps.mdb"
 
-    Private rpsContext As rpsEntities = New rpsEntities
+    Private sqliteConnectionString As SQLite.SQLiteConnectionStringBuilder = New SQLite.SQLiteConnectionStringBuilder()
+    Private efConnection As EntityConnectionStringBuilder = New EntityConnectionStringBuilder()
+    Private rpsContext As rpsEntities
+
 
     ' User Preferences (defaults)
     'Private databaseFileName As String = "rps.mdb"
     'Public reportsOutputFolder As String = "Reports"
     'Public imagesRootFolder As String = "Photos"
-    Private dataFolder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
-
-    Private databaseFileName As String = dataFolder + "\rps.mdb"
     Private connection_string As String = "Data Source=" + databaseFileName + ";Version=3;New=False;Compress=True;"
     Public reportsOutputFolder As String = dataFolder + "\Reports"
     Public imagesRootFolder As String = dataFolder + "\Photos"
@@ -86,8 +90,12 @@ Public Class MainForm
         'This call is required by the Windows Form Designer.
         InitializeComponent()
 
-        'Add any initialization after the InitializeComponent() call
-
+        Dim connectionString As String = New EntityClient.EntityConnectionStringBuilder() _
+         With {.Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
+               .Provider = "System.Data.SQLite.EF6",
+               .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() _
+                 With {.DataSource = databaseFileNameSqlite}.ConnectionString}.ConnectionString
+        rpsContext = New rpsEntities(connectionString)
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -219,7 +227,6 @@ Public Class MainForm
         Me.OleDbInsertCommand1 = New System.Data.OleDb.OleDbCommand()
         Me.OleDbSelectCommand1 = New System.Data.OleDb.OleDbCommand()
         Me.OleDbUpdateCommand1 = New System.Data.OleDb.OleDbCommand()
-        Me.objSelectedPhotos = New RPS_Digital_Viewer.SelectedPhotos()
         Me.SelectAward = New System.Windows.Forms.ComboBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -233,6 +240,7 @@ Public Class MainForm
         Me.SelectDate = New System.Windows.Forms.ComboBox()
         Me.btnThumbnails = New System.Windows.Forms.Button()
         Me.btnSlideShow = New System.Windows.Forms.Button()
+        Me.objSelectedPhotos = New RPS_Digital_Viewer.SelectedPhotos()
         CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.objSelectedPhotos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -244,7 +252,7 @@ Public Class MainForm
         'btnLoad
         '
         Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnLoad.Location = New System.Drawing.Point(701, 492)
+        Me.btnLoad.Location = New System.Drawing.Point(701, 471)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(75, 24)
         Me.btnLoad.TabIndex = 0
@@ -253,7 +261,7 @@ Public Class MainForm
         'btnUpdate
         '
         Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnUpdate.Location = New System.Drawing.Point(783, 492)
+        Me.btnUpdate.Location = New System.Drawing.Point(783, 471)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(75, 24)
         Me.btnUpdate.TabIndex = 1
@@ -262,7 +270,7 @@ Public Class MainForm
         'btnCancelAll
         '
         Me.btnCancelAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCancelAll.Location = New System.Drawing.Point(865, 492)
+        Me.btnCancelAll.Location = New System.Drawing.Point(865, 471)
         Me.btnCancelAll.Name = "btnCancelAll"
         Me.btnCancelAll.Size = New System.Drawing.Size(75, 24)
         Me.btnCancelAll.TabIndex = 2
@@ -278,7 +286,7 @@ Public Class MainForm
         Me.grdCompetition_Entries.HeaderForeColor = System.Drawing.SystemColors.ControlText
         Me.grdCompetition_Entries.Location = New System.Drawing.Point(209, 10)
         Me.grdCompetition_Entries.Name = "grdCompetition_Entries"
-        Me.grdCompetition_Entries.Size = New System.Drawing.Size(731, 463)
+        Me.grdCompetition_Entries.Size = New System.Drawing.Size(731, 442)
         Me.grdCompetition_Entries.TabIndex = 3
         Me.grdCompetition_Entries.TableStyles.AddRange(New System.Windows.Forms.DataGridTableStyle() {Me.DataGridTableStyle1})
         '
@@ -357,7 +365,7 @@ Public Class MainForm
         'CompCatalogImagesByFolder
         '
         Me.CompCatalogImagesByFolder.Index = 1
-        Me.CompCatalogImagesByFolder.Text = "Catalog a Folder of Images..."
+        Me.CompCatalogImagesByFolder.Text = "Catalog a Folder Of Images..."
         '
         'MenuItem1
         '
@@ -422,7 +430,7 @@ Public Class MainForm
         '
         Me.MenuItem7.Index = 4
         Me.MenuItem7.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.HelpAboutMenu})
-        Me.MenuItem7.Text = "&Help"
+        Me.MenuItem7.Text = "&HELp"
         '
         'HelpAboutMenu
         '
@@ -501,7 +509,7 @@ Public Class MainForm
         Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
         Me.NumNinesHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumNinesHeadingButton.TabIndex = 34
-        Me.NumNinesHeadingButton.Text = "9s"
+        Me.NumNinesHeadingButton.Text = "9S"
         '
         'NumEightsHeadingButton
         '
@@ -512,7 +520,7 @@ Public Class MainForm
         Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
         Me.NumEightsHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumEightsHeadingButton.TabIndex = 35
-        Me.NumEightsHeadingButton.Text = "8s"
+        Me.NumEightsHeadingButton.Text = "8S"
         '
         'NumSevensHeadingButton
         '
@@ -523,7 +531,7 @@ Public Class MainForm
         Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
         Me.NumSevensHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumSevensHeadingButton.TabIndex = 36
-        Me.NumSevensHeadingButton.Text = "7s"
+        Me.NumSevensHeadingButton.Text = "7S"
         '
         'tbEligibleNines
         '
@@ -580,7 +588,7 @@ Public Class MainForm
         '
         'OleDbSelectCommand1
         '
-        Me.OleDbSelectCommand1.CommandText = "SELECT Award, Classification, [Competition Date 1], [Display Sequence], [Image Fi" &
+        Me.OleDbSelectCommand1.CommandText = "Select Award, Classification, [Competition Date 1], [Display Sequence], [Image Fi" &
     "le Name], Maker, Medium, Photo_ID, [Score 1], [Server Entry ID], Theme, Title FR" &
     "OM [Competition Entries]"
         Me.OleDbSelectCommand1.Connection = Me.OleDbConnection1
@@ -590,12 +598,6 @@ Public Class MainForm
         Me.OleDbUpdateCommand1.CommandText = resources.GetString("OleDbUpdateCommand1.CommandText")
         Me.OleDbUpdateCommand1.Connection = Me.OleDbConnection1
         Me.OleDbUpdateCommand1.Parameters.AddRange(New System.Data.OleDb.OleDbParameter() {New System.Data.OleDb.OleDbParameter("Award", System.Data.OleDb.OleDbType.VarWChar, 50, "Award"), New System.Data.OleDb.OleDbParameter("Classification", System.Data.OleDb.OleDbType.VarWChar, 50, "Classification"), New System.Data.OleDb.OleDbParameter("Competition_Date_1", System.Data.OleDb.OleDbType.DBDate, 0, "Competition Date 1"), New System.Data.OleDb.OleDbParameter("Display_Sequence", System.Data.OleDb.OleDbType.[Integer], 0, "Display Sequence"), New System.Data.OleDb.OleDbParameter("Image_File_Name", System.Data.OleDb.OleDbType.VarWChar, 255, "Image File Name"), New System.Data.OleDb.OleDbParameter("Maker", System.Data.OleDb.OleDbType.VarWChar, 128, "Maker"), New System.Data.OleDb.OleDbParameter("Medium", System.Data.OleDb.OleDbType.VarWChar, 50, "Medium"), New System.Data.OleDb.OleDbParameter("Score_1", System.Data.OleDb.OleDbType.[Integer], 0, "Score 1"), New System.Data.OleDb.OleDbParameter("Server_Entry_ID", System.Data.OleDb.OleDbType.[Integer], 0, "Server Entry ID"), New System.Data.OleDb.OleDbParameter("Theme", System.Data.OleDb.OleDbType.VarWChar, 128, "Theme"), New System.Data.OleDb.OleDbParameter("Title", System.Data.OleDb.OleDbType.VarWChar, 128, "Title"), New System.Data.OleDb.OleDbParameter("Original_Photo_ID", System.Data.OleDb.OleDbType.[Integer], 0, System.Data.ParameterDirection.Input, False, CType(0, Byte), CType(0, Byte), "Photo_ID", System.Data.DataRowVersion.Original, Nothing)})
-        '
-        'objSelectedPhotos
-        '
-        Me.objSelectedPhotos.DataSetName = "SelectedPhotos"
-        Me.objSelectedPhotos.Locale = New System.Globalization.CultureInfo("en-US")
-        Me.objSelectedPhotos.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'SelectAward
         '
@@ -713,11 +715,17 @@ Public Class MainForm
         Me.btnSlideShow.TabIndex = 22
         Me.btnSlideShow.UseVisualStyleBackColor = False
         '
+        'objSelectedPhotos
+        '
+        Me.objSelectedPhotos.DataSetName = "SelectedPhotos"
+        Me.objSelectedPhotos.Locale = New System.Globalization.CultureInfo("en-US")
+        Me.objSelectedPhotos.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
         'MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-        Me.ClientSize = New System.Drawing.Size(950, 544)
+        Me.ClientSize = New System.Drawing.Size(950, 523)
         Me.Controls.Add(Me.SelectDate)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.SelectScore)
@@ -865,7 +873,7 @@ Public Class MainForm
             LoadCompDates()
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in MainForm_Load()")
+            MsgBox(ex.Message, , "Error In MainForm_Load()")
         End Try
     End Sub
 
@@ -879,7 +887,7 @@ Public Class MainForm
         Catch eUpdate As System.Exception
             'Add your error handling code here.
             'Display error message, if any.
-            MsgBox(eUpdate.Message, , "Error in btnUpdate_Click()")
+            MsgBox(eUpdate.Message, , "Error In btnUpdate_Click()")
         End Try
 
     End Sub
@@ -1046,7 +1054,7 @@ Public Class MainForm
 
         ' Bail out if the dataset is empty
         If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-            MsgBox("No competition has been loaded.", MsgBoxStyle.Exclamation, "Error in DoSlideShow()")
+            MsgBox("No competition has been loaded.", MsgBoxStyle.Exclamation, "Error In DoSlideShow()")
             Exit Sub
         End If
 
@@ -1089,7 +1097,7 @@ Public Class MainForm
         Catch eUpdate As System.Exception
             'Add your error handling code here.
             'Display error message, if any.
-            MsgBox(eUpdate.Message, , "Error in DoSlideShow()")
+            MsgBox(eUpdate.Message, , "Error In DoSlideShow()")
         End Try
     End Sub
     '
@@ -1101,7 +1109,7 @@ Public Class MainForm
             d = Date.ParseExact(s, "dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
             Return d
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ParseSelectedDate()")
+            MsgBox(ex.Message, , "Error In ParseSelectedDate()")
             Return d
         End Try
     End Function
@@ -1112,7 +1120,7 @@ Public Class MainForm
         Try
             ' Bail out if the dataset is empty
             If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-                MsgBox("No images loaded.", MsgBoxStyle.Exclamation, "Error in PickAwards()")
+                MsgBox("No images loaded.", MsgBoxStyle.Exclamation, "Error In PickAwards()")
                 Exit Sub
             End If
 
@@ -1133,9 +1141,9 @@ Public Class MainForm
                 screenTitle = SelectClassification.Text + " " + SelectMedium.Text
             ElseIf EightsAndAwardsSelected Then
                 If numJudges > 1 Then
-                    screenTitle = "Award winners and images averaging 8 points or more"
+                    screenTitle = "Award winners And images averaging 8 points Or more"
                 Else
-                    screenTitle = "Award winners and images with 8 points or more"
+                    screenTitle = "Award winners And images With 8 points Or more"
                 End If
             ElseIf SelectedAvgScore > 0 Then
                 If SelectedAvgScore = 9 Then
@@ -1160,7 +1168,7 @@ Public Class MainForm
             Me.UpdateDataSet()
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in PickAwards()")
+            MsgBox(ex.Message, , "Error In PickAwards()")
         End Try
     End Sub
 
@@ -1210,7 +1218,7 @@ Public Class MainForm
                 CheckFileName = True
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CheckFileName()")
+            MsgBox(ex.Message, , "Error In CheckFileName()")
             CheckFileName = False
         End Try
     End Function
@@ -1243,7 +1251,7 @@ Public Class MainForm
             ' Insert a new row in to the database table
             InsertImageIntoDatabase(file, maker, title, score, award, classification, medium, competitionDate, competitionTheme, "", 0)
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CatalogOneImage()")
+            MsgBox(ex.Message, , "Error In CatalogOneImage()")
         End Try
     End Sub
 
