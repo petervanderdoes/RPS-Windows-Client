@@ -94,7 +94,8 @@ Public Class MainForm
          With {.Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
                .Provider = "System.Data.SQLite.EF6",
                .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() _
-                 With {.DataSource = databaseFileNameSqlite}.ConnectionString}.ConnectionString
+                 With {.DataSource = databaseFileNameSqlite,
+                       .ForeignKeys = True}.ConnectionString}.ConnectionString
         rpsContext = New rpsEntities(connectionString)
     End Sub
 
@@ -2080,32 +2081,51 @@ Public Class MainForm
     '
     Private Sub LoadClubRules()
         Dim rec As OleDbDataReader
-
+        Dim record As Object
+        Dim query As Object
         Try
             ' Fetch the list of club classifications from the database
             classifications.Clear()
             SelectClassification.Items.Clear()     ' remove any items in the classifications combobox
-            LoadStringListFromDatabase(classifications, "SELECT c.name FROM club a, club_classification b, classification c WHERE a.id=b.club_id AND b.classification_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
-            For Each s As String In classifications
-                SelectClassification.Items.Add(s)
+            query = From c In rpsContext.classifications
+                    From b In rpsContext.club_classification
+                    From a In rpsContext.clubs
+                    Where a.id = cameraClubId AndAlso b.classification_id = c.id
+                    Select c.name
+
+            For Each record In query
+                SelectClassification.Items.Add(record)
             Next
             SelectClassification.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the list of club mediums from the database
             mediums.Clear()
             SelectMedium.Items.Clear()     ' remove any items in the mediums combobox
-            LoadStringListFromDatabase(mediums, "SELECT c.name FROM club a, club_medium b, medium c WHERE a.id=b.club_id AND b.medium_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
-            For Each s As String In mediums
-                SelectMedium.Items.Add(s)
+            query = From c In rpsContext.media
+                    From b In rpsContext.club_medium
+                    From a In rpsContext.clubs
+                    Where a.id = cameraClubId AndAlso b.medium_id = c.id
+                    Order By b.sort_key
+                    Select c.name
+
+            'LoadStringListFromDatabase(mediums, "SELECT c.name FROM club a, club_medium b, medium c WHERE a.id=b.club_id AND b.medium_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
+            For Each record In query
+                SelectMedium.Items.Add(record)
             Next
             SelectMedium.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the list of club awards from the database
             awards.Clear()
             SelectAward.Items.Clear()
-            LoadStringListFromDatabase(awards, "SELECT c.name FROM club a, club_award b, award c WHERE a.id=b.club_id AND b.award_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
-            For Each s As String In awards
-                SelectAward.Items.Add(s)
+            query = From c In rpsContext.awards
+                    From b In rpsContext.club_award
+                    From a In rpsContext.clubs
+                    Where a.id = cameraClubId AndAlso b.award_id = c.id
+                    Select c.name Distinct
+
+            'LoadStringListFromDatabase(awards, "SELECT c.name FROM club a, club_award b, award c WHERE a.id=b.club_id AND b.award_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
+            For Each record In query
+                SelectAward.Items.Add(record)
             Next
             SelectAward.SelectedIndex = 0 ' Select the first element in the combobox
 
