@@ -422,7 +422,7 @@ Public Class ThumbnailViewer
     End Sub
 
     Friend Sub setSizes()
-        Dim I As RpsImage = New RpsImage
+        Dim I As RpsImageSize = New RpsImageSize
 
         ThumbnailListView.Location = New Point(0, 43)
         ThumbnailListView.Size = New Size(I.getFullWidth(), I.getFullHeight - 37 - 2)

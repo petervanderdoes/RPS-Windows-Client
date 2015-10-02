@@ -596,7 +596,7 @@ Public Class ImageViewer
     End Function
 
     Friend Sub setSizes()
-        Dim I As RpsImage = New RpsImage
+        Dim I As RpsImageSize = New RpsImageSize
         Dim splash_location_y As Integer
 
         picShowPicture.Size = New Size(I.getFullWidth(), I.getFullHeight)
@@ -608,13 +608,13 @@ Public Class ImageViewer
         StatusBar.Size = New Size(I.getFullWidth(), 28)
 
         StatusBarAward.Location = New Point(0, 0)
-        StatusBarAward.Size = New Size(134, 28)
+        StatusBarAward.Size = New Size(134, StatusBar.Size.Height)
 
         StatusBarScore.Location = New Point(I.getFullWidth() - 135, 0)
-        StatusBarScore.Size = New Size(135, 28)
+        StatusBarScore.Size = New Size(135, StatusBar.Size.Height)
 
         StatusBarTitle.Location = New Point(134, 0)
-        StatusBarTitle.Size = New Size(I.getFullWidth() - 134 - 135, 28)
+        StatusBarTitle.Size = New Size(I.getFullWidth() - StatusBarAward.Size.Width - StatusBarScore.Size.Width, StatusBar.Size.Height)
 
         splash_location_y = (I.getFullHeight - (3 * 110)) / 3
         splashClub.Location = New Point(0, splash_location_y)

@@ -245,7 +245,7 @@
     <Compile Include="ProgressStatus.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RpsImage.vb" />
+    <Compile Include="RpsImageSize.vb" />
     <Compile Include="RpsModel.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

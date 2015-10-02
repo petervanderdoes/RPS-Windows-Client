@@ -1,4 +1,4 @@
-﻿Class RpsImage
+﻿Class RpsImageSize
 
     Private full_width = 1440
     Private full_height = 900
