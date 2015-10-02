@@ -3133,14 +3133,19 @@ Public Class MainForm
     '
     Private Sub LoadUniqueThemes()
         Try
-            Dim compDate As String = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
+            Dim compDate As String = Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy")
             themes.Clear()
             SelectTheme.Items.Clear()
-            LoadStringListFromDatabase(themes, "SELECT DISTINCT Theme from [Competition Entries] WHERE [Competition Date 1]=#" + compDate + "#")
-            For Each s As String In themes
-                SelectTheme.Items.Add(s)
+
+            Dim query = From entries In rpsContext.CompetitionEntries
+                        Where entries.Competition_Date_1.Equals(compDate)
+                        Select entries.Theme Distinct
+            Dim record
+
+            For Each record In query
+                SelectTheme.Items.Add(record)
             Next
-            If themes.Count > 0 Then
+            If SelectTheme.Items.Count > 0 Then
                 SelectTheme.SelectedIndex = 0
             Else
                 SelectTheme.Text = ""
