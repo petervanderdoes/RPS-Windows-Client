@@ -5,14 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1cc721004b93447b86710dd4f220a74c" Name="Diagram1">
-        <EntityTypeShape EntityType="RpsModel.award" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.classification" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.club" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.club_award" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.club_classification" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.club_medium" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.CompetitionEntry" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RpsModel.medium" Width="1.5" PointX="0.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.award" Width="1.5" PointX="4.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.classification" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.club" Width="1.5" PointX="7.375" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.club_award" Width="1.5" PointX="4.625" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.club_classification" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.club_medium" Width="1.5" PointX="2.875" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.CompetitionEntry" Width="1.5" PointX="7.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RpsModel.medium" Width="1.5" PointX="2.625" PointY="0.5" IsExpanded="true" />
         <AssociationConnector Association="RpsModel.FK_club_award_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="RpsModel.FK_club_classification_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="RpsModel.FK_club_award_1_0" ManuallyRouted="false" />
