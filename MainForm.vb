@@ -6,8 +6,6 @@ Imports System.Data.Entity.Core.EntityClient
 Public Class MainForm
     Inherits System.Windows.Forms.Form
 
-    'Dim MonthNames() As String = New String() {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
-
     Private connectStringEpilog As String = "Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Registry Path=;Jet OLEDB:Database L" &
         "ocking Mode=1;Jet OLEDB:Database Password=;Data Source="""
     Private connectStringProlog As String = """;Password=;Jet O" &
@@ -20,15 +18,14 @@ Public Class MainForm
     Private databaseFileNameSqlite As String = dataFolder + "\rps.db"
     Private databaseFileName As String = dataFolder + "\rps.mdb"
 
+    ' Database 
     Private sqliteConnectionString As SQLite.SQLiteConnectionStringBuilder = New SQLite.SQLiteConnectionStringBuilder()
     Private efConnection As EntityConnectionStringBuilder = New EntityConnectionStringBuilder()
     Private rpsContext As rpsEntities
-
+    Private query As Object
+    Private record As Object
 
     ' User Preferences (defaults)
-    'Private databaseFileName As String = "rps.mdb"
-    'Public reportsOutputFolder As String = "Reports"
-    'Public imagesRootFolder As String = "Photos"
     Private connection_string As String = "Data Source=" + databaseFileName + ";Version=3;New=False;Compress=True;"
     Public reportsOutputFolder As String = dataFolder + "\Reports"
     Public imagesRootFolder As String = dataFolder + "\Photos"
@@ -1880,8 +1877,7 @@ Public Class MainForm
     Private Sub GetUserPreferences()
         Dim prefsDialog As New PreferencesDialog(Me)
         Dim s As String
-        Dim query As Object
-        Dim record As Object
+
         Try
             ' Load the current perferences into the dialog
             prefsDialog.tbDatabaseFileName.Text = databaseFileName
@@ -2080,8 +2076,7 @@ Public Class MainForm
     '
     Private Sub LoadClubRules()
         Dim rec As OleDbDataReader
-        Dim record As Object
-        Dim query As Object
+
         Try
             ' Fetch the list of club classifications from the database
             classifications.Clear()
@@ -2153,11 +2148,9 @@ Public Class MainForm
     '
     Private Sub LoadCompDates()
 
-        Dim query = From entries In rpsContext.CompetitionEntries
-                    Order By entries.Competition_Date_1
-                    Select entries.Competition_Date_1 Distinct
-
-        Dim record
+        query = From entries In rpsContext.CompetitionEntries
+                Order By entries.Competition_Date_1
+                Select entries.Competition_Date_1 Distinct
 
         Try
             ' Empty the list if it's not already empty
@@ -3151,10 +3144,9 @@ Public Class MainForm
             themes.Clear()
             SelectTheme.Items.Clear()
 
-            Dim query = From entries In rpsContext.CompetitionEntries
-                        Where entries.Competition_Date_1.Equals(compDate)
-                        Select entries.Theme Distinct
-            Dim record
+            query = From entries In rpsContext.CompetitionEntries
+                    Where entries.Competition_Date_1.Equals(compDate)
+                    Select entries.Theme Distinct
 
             For Each record In query
                 SelectTheme.Items.Add(record)
