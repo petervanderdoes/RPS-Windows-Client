@@ -1880,7 +1880,8 @@ Public Class MainForm
     Private Sub GetUserPreferences()
         Dim prefsDialog As New PreferencesDialog(Me)
         Dim s As String
-
+        Dim query As Object
+        Dim record As Object
         Try
             ' Load the current perferences into the dialog
             prefsDialog.tbDatabaseFileName.Text = databaseFileName
@@ -1896,7 +1897,12 @@ Public Class MainForm
             End If
             prefsDialog.tbServerName.Text = ServerName
             prefsDialog.tbServerScriptDir.Text = ServerScriptDir
-            LoadKeyValueListFromDatabase(prefsDialog.cbCameraClubName, "SELECT id, name FROM club")
+            query = From club In rpsContext.clubs
+                    Select club.id, club.name
+
+            For Each record In query
+                prefsDialog.cbCameraClubName.Items.Add(New DataItem(record.id, record.name))
+            Next
             prefsDialog.cbCameraClubName.Text = cameraClubName
             prefsDialog.cbNumJudges.Text = CType(numJudges, String)
 
@@ -1915,11 +1921,7 @@ Public Class MainForm
             If prefsDialog.DialogResult = DialogResult.OK Then
                 If irf > "" Then
                     ' If necessary, strip off a trailing "\"
-                    If InStrRev(irf, "\") = Len(irf) Then
-                        imagesRootFolder = Mid(irf, 1, Len(irf) - 1)
-                    Else
-                        imagesRootFolder = irf
-                    End If
+                    imagesRootFolder = Helper.TrimTrailingSlash(imagesRootFolder)
                     ' write it to the registry
                     WriteRegistryString("Software\RPS Digital Viewer", "Images Root Folder", imagesRootFolder)
                 End If
@@ -1931,11 +1933,8 @@ Public Class MainForm
                 End If
                 If rof > "" Then
                     ' If necessary, strip off a trailing "\"
-                    If InStrRev(rof, "\") = Len(rof) Then
-                        reportsOutputFolder = Mid(rof, 1, Len(rof) - 1)
-                    Else
-                        reportsOutputFolder = rof
-                    End If
+                    reportsOutputFolder = Helper.TrimTrailingSlash(reportsOutputFolder)
+
                     ' write it to the registry
                     WriteRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reportsOutputFolder)
                 End If
@@ -2108,7 +2107,6 @@ Public Class MainForm
                     Order By b.sort_key
                     Select c.name
 
-            'LoadStringListFromDatabase(mediums, "SELECT c.name FROM club a, club_medium b, medium c WHERE a.id=b.club_id AND b.medium_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
             For Each record In query
                 SelectMedium.Items.Add(record)
             Next
@@ -2123,23 +2121,19 @@ Public Class MainForm
                     Where a.id = cameraClubId AndAlso b.award_id = c.id
                     Select c.name Distinct
 
-            'LoadStringListFromDatabase(awards, "SELECT c.name FROM club a, club_award b, award c WHERE a.id=b.club_id AND b.award_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
             For Each record In query
                 SelectAward.Items.Add(record)
             Next
             SelectAward.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the club's min and max scores from the database
-            Dim sql As String
-            sql = "SELECT min_score, max_score, min_score_for_award FROM club WHERE id=" + CType(cameraClubId, String)
-            rec = SqlSelect("SELECT min_score, max_score, min_score_for_award FROM club WHERE id=" + CType(cameraClubId, String))
-            If Not rec Is Nothing Then
-                rec.Read()
-                minScore = rec.GetInt16(0)
-                maxScore = rec.GetInt16(1)
-                minScoreForAward = rec.GetInt16(2)
-            End If
-            OleDbConnection1.Close()
+            record = (From club In rpsContext.clubs
+                      Where club.id = cameraClubId
+                      Select club.max_score, club.min_score, club.min_score_for_award).SingleOrDefault
+
+            minScore = record.min_score
+            maxScore = record.max_score
+            minScoreForAward = record.min_score_for_award
             ' Fill the SelectScore combobox
             SelectScore.Items.Clear()
             SelectScore.Items.Add("All")
