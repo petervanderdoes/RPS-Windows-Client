@@ -47,6 +47,7 @@ Public Class MainForm
     Private SelectedScore As Integer
     Private SelectedAvgScore As Integer
     Public lastAdminUsername As String
+    Public entries As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry)
 
     Public StatusBar As New ProgressStatus
 
@@ -1151,7 +1152,7 @@ Public Class MainForm
         Dim statusBarState As Integer
 
         ' Bail out if the dataset is empty
-        If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
+        If DataGridView1.RowCount() <= 0 Then
             MsgBox("No competition has been loaded.", MsgBoxStyle.Exclamation, "Error In DoSlideShow()")
             Exit Sub
         End If
@@ -1177,7 +1178,7 @@ Public Class MainForm
             statusBarState = 0
         End If
 
-        Viewer = New ImageViewer(Me, objSelectedPhotos, grdCompetition_Entries.CurrentRowIndex, showSplash, statusBarState)
+        Viewer = New ImageViewer(Me, objSelectedPhotos, DataGridView1.FirstDisplayedScrollingRowIndex, showSplash, statusBarState)
         Viewer.setSizes()
         Cursor.Hide()
         Viewer.ShowDialog()
@@ -1591,9 +1592,9 @@ Public Class MainForm
                 OleDbSelectCommand1.CommandText = select_stmt + where_clause + order_clause
                 query = select_stmt + where_clause + order_clause
                 ' Attempt to load the dataset.
-                'Me.LoadDataSet()
-                Dim entries As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry)
+
                 entries = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query)
+
                 With DataGridView1
                     .Columns("Score").DefaultCellStyle = centerCellStyle
                     .Columns("Award").DefaultCellStyle = centerCellStyle
@@ -1625,7 +1626,7 @@ Public Class MainForm
     Private Sub CalculateAwards()
         Dim eligibleScores As New System.Collections.ArrayList
         Dim maximumAwards As Integer
-        Dim dRow As DataRow
+        Dim dRow As CompetitionEntry
         Dim i As Integer
         Dim numEligibleNines As Integer
         Dim numEligibleEights As Integer
@@ -1637,14 +1638,14 @@ Public Class MainForm
 
         Try
             ' What is the maximum number of Awards possible
-            maximumAwards = MaxAwards(CType(objSelectedPhotos.Tables("Competition Entries").Rows.Count, Double))
+            maximumAwards = MaxAwards(CType(entries.Count, Double))
 
             ' Iterate through the dataset and record all the scores which are eligible for an award
-            For Each dRow In objSelectedPhotos.Tables("Competition Entries").Rows
-                If Not dRow("Score 1") Is DBNull.Value Then
+            For Each dRow In entries
+                If IsNumeric(dRow.Score_1) Then
                     totalNumScores = totalNumScores + 1
-                    If dRow("Score 1") >= (minScoreForAward * numJudges) And dRow("Score 1") <= (maxScore * numJudges) Then
-                        eligibleScores.Add(dRow("Score 1"))
+                    If dRow.Score_1 >= (minScoreForAward * numJudges) And dRow.Score_1 <= (maxScore * numJudges) Then
+                        eligibleScores.Add(dRow.Score_1)
                     End If
                 End If
             Next
