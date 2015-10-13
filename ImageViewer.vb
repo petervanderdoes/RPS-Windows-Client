@@ -1,12 +1,14 @@
+Imports System.Linq
+
 Public Class ImageViewer
     Inherits System.Windows.Forms.Form
 
     Dim theMainForm As MainForm
-    Dim ImageList As DataSet
+    Dim ImageList As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry)
     Dim numImages As Integer
     Dim currentIndex As Integer
     Dim currentFileName As String
-    Dim currentRow As DataRow
+    Dim currentRow As CompetitionEntry
     Dim currentScoreStr As String
     Dim currentScoreSubStr As String
     Dim statusBarVisible As Integer = 0
@@ -21,7 +23,7 @@ Public Class ImageViewer
 
 #Region " Windows Form Designer generated code "
 
-    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As DataSet, ByVal idx As Integer, ByVal splash As Boolean, ByVal statusBarState As Integer)
+    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry), ByVal idx As Integer, ByVal splash As Boolean, ByVal statusBarState As Integer)
         MyBase.New()
 
         'This call is required by the Windows Form Designer.
@@ -294,8 +296,8 @@ Public Class ImageViewer
                     ScorePopUp.Visible = False
                     MoveToImage(numImages - 1)
                 Case Keys.Delete                        ' Del key = clear score and award
-                    currentRow("Score 1") = DBNull.Value
-                    currentRow("Award") = DBNull.Value
+                    currentRow.Score_1 = Nothing
+                    currentRow.Award = Nothing
                     StatusBarScore.Text = ""
                     StatusBarAward.Text = ""
                     ScorePopUp.Visible = False
@@ -400,11 +402,11 @@ Public Class ImageViewer
                         statusBarVisible = 1
                     ElseIf statusBarVisible = 1 Then
                         showPhotogName = True
-                        StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + MainForm.GetDBStringField(currentRow, "Maker", "")
+                        StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + currentRow.Maker
                         statusBarVisible = 2
                     ElseIf statusBarVisible = 2 Then
                         showPhotogName = False
-                        StatusBarTitle.Text = MainForm.GetDBStringField(currentRow, "Title", "")
+                        StatusBarTitle.Text = currentRow.Title
                         StatusBar.Visible = False
                         statusBarVisible = 0
                     End If
@@ -419,16 +421,16 @@ Public Class ImageViewer
     End Sub
 
     Private Sub ImageViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim row As DataRow
+        'Dim row As CompetitionEntry
         Try
             ' Create an instance of the Thumbnail class to render thumbnail as necessary
             thumb = New Thumbnail(theMainForm)
 
             ' How many images are there in this slideshow?
-            numImages = ImageList.Tables("Competition Entries").Rows.Count
+            numImages = ImageList.Count
 
             ' Grab the first row of the table to get some values
-            row = ImageList.Tables("Competition Entries").Rows(0)
+            'row = ImageList.First
 
             ' Configure the splash screen
             splashClub.Text = theMainForm.cameraClubName
@@ -486,18 +488,18 @@ Public Class ImageViewer
             MsgBox(ex.Message, , "Error in DoScorePopUp()")
         End Try
     End Sub
-    Private Sub DoScorePopUp_2(ByVal mode As Integer, ByVal value As String, ByRef currentRow As DataRow)
+    Private Sub DoScorePopUp_2(ByVal mode As Integer, ByVal value As String, ByRef currentRow As CompetitionEntry)
         Try
             ' When entering scores, allow the user to enter up to two digit
             If mode = SCORE Then
                 If Len(value) > 0 Then
-                    currentRow("Score 1") = CType(value, Integer)
+                    currentRow.Score_1 = CType(value, Integer)
                     StatusBarScore.Text = value + " Points"
                     If CType(value, Integer) >= (theMainForm.minScoreForAward * theMainForm.numJudges) Then
-                        RenderThumbnail(MainForm.GetDBStringField(currentRow, "Image File Name", ""))
+                        RenderThumbnail(currentRow.Image_File_Name)
                     End If
                 Else
-                    currentRow("Score 1") = DBNull.Value
+                    currentRow.Score_1 = Nothing
                     StatusBarScore.Text = ""
                 End If
                 ScorePopUp.Text = value
@@ -505,7 +507,7 @@ Public Class ImageViewer
 
                 ' When entering awards, just allow one key
             Else
-                currentRow("Award") = value
+                currentRow.Award = value
                 ScorePopUp.Text = value
                 StatusBarAward.Text = value
                 ScorePopUp.Visible = True
@@ -534,8 +536,8 @@ Public Class ImageViewer
 
                 ' Get the selected image file name from the database
                 currentIndex = index
-                currentRow = ImageList.Tables("Competition Entries").Rows(currentIndex)
-                currentFileName = MainForm.GetDBStringField(currentRow, "Image File Name", "")
+                currentRow = ImageList.ElementAt(currentIndex)
+                currentFileName = currentRow.Image_File_Name
 
                 ' If it's a relative path, convert to an absolute path
                 If Not InStr(1, currentFileName, ":\") = 2 Then
@@ -543,16 +545,16 @@ Public Class ImageViewer
                 End If
 
                 ' Prepare the Status Bar
-                StatusBarTitle.Text = MainForm.GetDBStringField(currentRow, "Title", "")
+                StatusBarTitle.Text = currentRow.Title
                 If statusBarVisible = 2 Then 'include Maker name
-                    StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + MainForm.GetDBStringField(currentRow, "Maker", "")
+                    StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + currentRow.Maker
                 End If
                 currentScoreStr = ""
-                StatusBarScore.Text = MainForm.GetDBStringField(currentRow, "Score 1", "")
+                StatusBarScore.Text = currentRow.Score_1
                 If StatusBarScore.Text > "" Then
                     StatusBarScore.Text = StatusBarScore.Text + " Points"
                 End If
-                StatusBarAward.Text = MainForm.GetDBStringField(currentRow, "Award", "")
+                StatusBarAward.Text = currentRow.Award
 
                 ' Show the image
                 picShowPicture.Image = Image.FromFile(currentFileName)

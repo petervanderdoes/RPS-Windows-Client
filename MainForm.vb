@@ -1160,7 +1160,7 @@ Public Class MainForm
         ' Display the splash screen if about to view all images in a competition starting
         ' from the beginning
         'If AllScoresRadioButton.Checked And grdCompetition_Entries.CurrentRowIndex <= 0 Then
-        If AllScoresSelected And grdCompetition_Entries.CurrentRowIndex <= 0 Then
+        If AllScoresSelected And DataGridView1.FirstDisplayedScrollingRowIndex <= 0 Then
             showSplash = True
         Else
             showSplash = False
@@ -1178,7 +1178,7 @@ Public Class MainForm
             statusBarState = 0
         End If
 
-        Viewer = New ImageViewer(Me, objSelectedPhotos, DataGridView1.FirstDisplayedScrollingRowIndex, showSplash, statusBarState)
+        Viewer = New ImageViewer(Me, entries, DataGridView1.FirstDisplayedScrollingRowIndex, showSplash, statusBarState)
         Viewer.setSizes()
         Cursor.Hide()
         Viewer.ShowDialog()
