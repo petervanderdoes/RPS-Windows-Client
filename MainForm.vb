@@ -1,8 +1,7 @@
 Imports System.Runtime.ExceptionServices
 Imports System.Linq
 Imports System.Data.Entity.Core.EntityClient
-
-
+Imports System.Data.Entity.Core
 
 Public Class MainForm
     Inherits System.Windows.Forms.Form
@@ -102,7 +101,7 @@ Public Class MainForm
 
         Dim connectionString As String = New EntityClient.EntityConnectionStringBuilder() _
          With {.Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
-               .Provider = "System.Data.SQLite",
+               .Provider = "System.Data.SQLite.EF6",
                .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() _
                  With {.DataSource = databaseFileNameSqlite,
                        .ForeignKeys = True}.ConnectionString}.ConnectionString
@@ -2512,20 +2511,18 @@ Public Class MainForm
 
             ' Delete any competitions in the local database that already have this date
             dateParts = Split(comp_date, "-")
-            sql = "DELETE FROM [Competition Entries] WHERE [Competition Date 1] = " +
-                "#" + dateParts(1) + "/" + dateParts(2) + "/" + dateParts(0) + "#"
+            Dim d As Date
+            d = Date.ParseExact(comp_date, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture)
+            sql = "DELETE FROM CompetitionEntries WHERE Competition_Date_1 = '" +
+                Format(d, "M/dd/yyyy") + "'"
             If download_digital And Not download_prints Then
                 sql += " AND Medium like '%Digital'"
             End If
             If download_prints And Not download_digital Then
                 sql += " AND Medium like '%Prints'"
             End If
-            sqlCommand.Connection = OleDbConnection1
-            OleDbConnection1.Open()
-            sqlCommand.CommandText = sql
-            sqlCommand.ExecuteNonQuery()
-            OleDbConnection1.Close()
 
+            query = rpsContext.Database.ExecuteSqlCommand(sql)
             Application.DoEvents()
 
             ' Retrieve the competition Manifest from the server
