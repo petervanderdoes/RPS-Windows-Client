@@ -3,6 +3,7 @@ Imports System.Linq
 Imports System.Data.Entity.Core.EntityClient
 
 
+
 Public Class MainForm
     Inherits System.Windows.Forms.Form
 
@@ -52,7 +53,18 @@ Public Class MainForm
     ' For the thumbnail view
     Private ninePointThumbViewTitle As String
     Private eightPointThumbViewTitle As String
+    Friend WithEvents DataGridTableStyle1 As DataGridTableStyle
+    Friend WithEvents grdCompetition_Entries As DataGrid
+    Friend WithEvents DataGridTextBoxColumn3 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn2 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn1 As DataGridTextBoxColumn
+    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents GridCaption As Label
     Private sevenPointThumbViewTitle As String
+    Friend WithEvents Score As DataGridViewTextBoxColumn
+    Friend WithEvents Award As DataGridViewTextBoxColumn
+    Friend WithEvents Title As DataGridViewTextBoxColumn
+    Private centerCellStyle As New DataGridViewCellStyle
 
     Private Sub InitializeStatusBar()
         Dim info As StatusBarPanel = New System.Windows.Forms.StatusBarPanel
@@ -89,11 +101,13 @@ Public Class MainForm
 
         Dim connectionString As String = New EntityClient.EntityConnectionStringBuilder() _
          With {.Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
-               .Provider = "System.Data.SQLite.EF6",
+               .Provider = "System.Data.SQLite",
                .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() _
                  With {.DataSource = databaseFileNameSqlite,
                        .ForeignKeys = True}.ConnectionString}.ConnectionString
         rpsContext = New rpsEntities(connectionString)
+        centerCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -115,9 +129,6 @@ Public Class MainForm
     Friend WithEvents btnLoad As System.Windows.Forms.Button
     Friend WithEvents btnUpdate As System.Windows.Forms.Button
     Friend WithEvents btnCancelAll As System.Windows.Forms.Button
-    Friend WithEvents grdCompetition_Entries As System.Windows.Forms.DataGrid
-    Friend WithEvents DataGridTableStyle1 As System.Windows.Forms.DataGridTableStyle
-    Friend WithEvents DataGridTextBoxColumn3 As System.Windows.Forms.DataGridTextBoxColumn
     Friend WithEvents MainMenu1 As System.Windows.Forms.MainMenu
     Friend WithEvents FileExitMenu As System.Windows.Forms.MenuItem
     Friend WithEvents ReportsResultsReportMenu As System.Windows.Forms.MenuItem
@@ -129,8 +140,6 @@ Public Class MainForm
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents RecalcAwards As System.Windows.Forms.Button
     Friend WithEvents ReportsMenu As System.Windows.Forms.MenuItem
-    Friend WithEvents DataGridTextBoxColumn2 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn1 As System.Windows.Forms.DataGridTextBoxColumn
     Friend WithEvents FileMenu As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem1 As System.Windows.Forms.MenuItem
     Friend WithEvents AwardsTableTitleBar As System.Windows.Forms.Label
@@ -177,15 +186,12 @@ Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OleDbConnection1 = New System.Data.OleDb.OleDbConnection()
         Me.btnLoad = New System.Windows.Forms.Button()
         Me.btnUpdate = New System.Windows.Forms.Button()
         Me.btnCancelAll = New System.Windows.Forms.Button()
-        Me.grdCompetition_Entries = New System.Windows.Forms.DataGrid()
-        Me.DataGridTableStyle1 = New System.Windows.Forms.DataGridTableStyle()
-        Me.DataGridTextBoxColumn1 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridTextBoxColumn2 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridTextBoxColumn3 = New System.Windows.Forms.DataGridTextBoxColumn()
         Me.MainMenu1 = New System.Windows.Forms.MainMenu(Me.components)
         Me.FileMenu = New System.Windows.Forms.MenuItem()
         Me.FilePreferencesMenu = New System.Windows.Forms.MenuItem()
@@ -239,8 +245,19 @@ Public Class MainForm
         Me.btnThumbnails = New System.Windows.Forms.Button()
         Me.btnSlideShow = New System.Windows.Forms.Button()
         Me.objSelectedPhotos = New RPS_Digital_Viewer.SelectedPhotos()
-        CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.DataGridTableStyle1 = New System.Windows.Forms.DataGridTableStyle()
+        Me.grdCompetition_Entries = New System.Windows.Forms.DataGrid()
+        Me.DataGridTextBoxColumn3 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.DataGridTextBoxColumn2 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.DataGridTextBoxColumn1 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.Score = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Award = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Title = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.GridCaption = New System.Windows.Forms.Label()
         CType(Me.objSelectedPhotos, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OleDbConnection1
@@ -273,56 +290,6 @@ Public Class MainForm
         Me.btnCancelAll.Size = New System.Drawing.Size(75, 24)
         Me.btnCancelAll.TabIndex = 2
         Me.btnCancelAll.Text = "Ca&ncel All"
-        '
-        'grdCompetition_Entries
-        '
-        Me.grdCompetition_Entries.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.grdCompetition_Entries.DataMember = ""
-        Me.grdCompetition_Entries.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.grdCompetition_Entries.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.grdCompetition_Entries.Location = New System.Drawing.Point(209, 10)
-        Me.grdCompetition_Entries.Name = "grdCompetition_Entries"
-        Me.grdCompetition_Entries.Size = New System.Drawing.Size(731, 442)
-        Me.grdCompetition_Entries.TabIndex = 3
-        Me.grdCompetition_Entries.TableStyles.AddRange(New System.Windows.Forms.DataGridTableStyle() {Me.DataGridTableStyle1})
-        '
-        'DataGridTableStyle1
-        '
-        Me.DataGridTableStyle1.DataGrid = Me.grdCompetition_Entries
-        Me.DataGridTableStyle1.GridColumnStyles.AddRange(New System.Windows.Forms.DataGridColumnStyle() {Me.DataGridTextBoxColumn1, Me.DataGridTextBoxColumn2, Me.DataGridTextBoxColumn3})
-        Me.DataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.DataGridTableStyle1.MappingName = "Competition Entries"
-        '
-        'DataGridTextBoxColumn1
-        '
-        Me.DataGridTextBoxColumn1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
-        Me.DataGridTextBoxColumn1.Format = ""
-        Me.DataGridTextBoxColumn1.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn1.HeaderText = "Score"
-        Me.DataGridTextBoxColumn1.MappingName = "Score 1"
-        Me.DataGridTextBoxColumn1.NullText = ""
-        Me.DataGridTextBoxColumn1.Width = 50
-        '
-        'DataGridTextBoxColumn2
-        '
-        Me.DataGridTextBoxColumn2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
-        Me.DataGridTextBoxColumn2.Format = ""
-        Me.DataGridTextBoxColumn2.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn2.HeaderText = "Award"
-        Me.DataGridTextBoxColumn2.MappingName = "Award"
-        Me.DataGridTextBoxColumn2.NullText = ""
-        Me.DataGridTextBoxColumn2.Width = 50
-        '
-        'DataGridTextBoxColumn3
-        '
-        Me.DataGridTextBoxColumn3.Format = ""
-        Me.DataGridTextBoxColumn3.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn3.HeaderText = "Title"
-        Me.DataGridTextBoxColumn3.MappingName = "Title"
-        Me.DataGridTextBoxColumn3.NullText = ""
-        Me.DataGridTextBoxColumn3.Width = 270
         '
         'MainMenu1
         '
@@ -507,7 +474,7 @@ Public Class MainForm
         Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
         Me.NumNinesHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumNinesHeadingButton.TabIndex = 34
-        Me.NumNinesHeadingButton.Text = "9S"
+        Me.NumNinesHeadingButton.Text = "9s"
         '
         'NumEightsHeadingButton
         '
@@ -518,7 +485,7 @@ Public Class MainForm
         Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
         Me.NumEightsHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumEightsHeadingButton.TabIndex = 35
-        Me.NumEightsHeadingButton.Text = "8S"
+        Me.NumEightsHeadingButton.Text = "8s"
         '
         'NumSevensHeadingButton
         '
@@ -529,7 +496,7 @@ Public Class MainForm
         Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
         Me.NumSevensHeadingButton.Size = New System.Drawing.Size(59, 24)
         Me.NumSevensHeadingButton.TabIndex = 36
-        Me.NumSevensHeadingButton.Text = "7S"
+        Me.NumSevensHeadingButton.Text = "7s"
         '
         'tbEligibleNines
         '
@@ -719,11 +686,143 @@ Public Class MainForm
         Me.objSelectedPhotos.Locale = New System.Globalization.CultureInfo("en-US")
         Me.objSelectedPhotos.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
+        'DataGridTableStyle1
+        '
+        Me.DataGridTableStyle1.DataGrid = Me.grdCompetition_Entries
+        Me.DataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText
+        Me.DataGridTableStyle1.MappingName = "Competition Entries"
+        '
+        'grdCompetition_Entries
+        '
+        Me.grdCompetition_Entries.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grdCompetition_Entries.DataMember = ""
+        Me.grdCompetition_Entries.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.grdCompetition_Entries.HeaderForeColor = System.Drawing.SystemColors.ControlText
+        Me.grdCompetition_Entries.Location = New System.Drawing.Point(0, 490)
+        Me.grdCompetition_Entries.Name = "grdCompetition_Entries"
+        Me.grdCompetition_Entries.Size = New System.Drawing.Size(34, 32)
+        Me.grdCompetition_Entries.TabIndex = 3
+        Me.grdCompetition_Entries.TableStyles.AddRange(New System.Windows.Forms.DataGridTableStyle() {Me.DataGridTableStyle1})
+        '
+        'DataGridTextBoxColumn3
+        '
+        Me.DataGridTextBoxColumn3.Format = ""
+        Me.DataGridTextBoxColumn3.FormatInfo = Nothing
+        Me.DataGridTextBoxColumn3.HeaderText = "Title"
+        Me.DataGridTextBoxColumn3.MappingName = "Title"
+        Me.DataGridTextBoxColumn3.NullText = ""
+        Me.DataGridTextBoxColumn3.Width = 270
+        '
+        'DataGridTextBoxColumn2
+        '
+        Me.DataGridTextBoxColumn2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
+        Me.DataGridTextBoxColumn2.Format = ""
+        Me.DataGridTextBoxColumn2.FormatInfo = Nothing
+        Me.DataGridTextBoxColumn2.HeaderText = "Award"
+        Me.DataGridTextBoxColumn2.MappingName = "Award"
+        Me.DataGridTextBoxColumn2.NullText = ""
+        Me.DataGridTextBoxColumn2.Width = 50
+        '
+        'DataGridTextBoxColumn1
+        '
+        Me.DataGridTextBoxColumn1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
+        Me.DataGridTextBoxColumn1.Format = ""
+        Me.DataGridTextBoxColumn1.FormatInfo = Nothing
+        Me.DataGridTextBoxColumn1.HeaderText = "Score"
+        Me.DataGridTextBoxColumn1.MappingName = "Score_1"
+        Me.DataGridTextBoxColumn1.NullText = ""
+        Me.DataGridTextBoxColumn1.Width = 50
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.AllowUserToAddRows = False
+        Me.DataGridView1.AllowUserToDeleteRows = False
+        Me.DataGridView1.AllowUserToResizeColumns = False
+        Me.DataGridView1.AllowUserToResizeRows = False
+        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.DataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
+        Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Score, Me.Award, Me.Title})
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle2
+        Me.DataGridView1.EnableHeadersVisualStyles = False
+        Me.DataGridView1.Location = New System.Drawing.Point(209, 32)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.ReadOnly = True
+        Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.DataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.DataGridView1.Size = New System.Drawing.Size(729, 433)
+        Me.DataGridView1.TabIndex = 53
+        '
+        'Score
+        '
+        Me.Score.DataPropertyName = "Score_1"
+        Me.Score.FillWeight = 21.80233!
+        Me.Score.HeaderText = "Score"
+        Me.Score.Name = "Score"
+        Me.Score.ReadOnly = True
+        Me.Score.Width = 73
+        '
+        'Award
+        '
+        Me.Award.DataPropertyName = "Award"
+        Me.Award.FillWeight = 21.80233!
+        Me.Award.HeaderText = "Award"
+        Me.Award.Name = "Award"
+        Me.Award.ReadOnly = True
+        Me.Award.Width = 75
+        '
+        'Title
+        '
+        Me.Title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Title.DataPropertyName = "Title"
+        Me.Title.FillWeight = 256.3954!
+        Me.Title.HeaderText = "Title"
+        Me.Title.Name = "Title"
+        Me.Title.ReadOnly = True
+        '
+        'GridCaption
+        '
+        Me.GridCaption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GridCaption.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.GridCaption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.GridCaption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCaption.ForeColor = System.Drawing.Color.Black
+        Me.GridCaption.Location = New System.Drawing.Point(209, 9)
+        Me.GridCaption.Margin = New System.Windows.Forms.Padding(0)
+        Me.GridCaption.Name = "GridCaption"
+        Me.GridCaption.Size = New System.Drawing.Size(729, 24)
+        Me.GridCaption.TabIndex = 54
+        Me.GridCaption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
         Me.ClientSize = New System.Drawing.Size(950, 523)
+        Me.Controls.Add(Me.GridCaption)
+        Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.SelectDate)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.SelectScore)
@@ -758,8 +857,9 @@ Public Class MainForm
         Me.Menu = Me.MainMenu1
         Me.Name = "MainForm"
         Me.Text = "RPS Digital Competition Viewer"
-        CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.objSelectedPhotos, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1025,7 +1125,7 @@ Public Class MainForm
 
     Private Sub MainForm_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Resize
         'GridResizeColumns(grdCompetition_Entries, 60, 0, 10, 10, 50, 30)
-        GridResizeColumns(grdCompetition_Entries, 60, 0, 15, 15, 70)
+        'GridResizeColumns(grdCompetition_Entries, 60, 0, 15, 15, 70)
     End Sub
 
     Private Sub FilePreferencesMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FilePreferencesMenu.Click
@@ -1406,35 +1506,38 @@ Public Class MainForm
         Dim select_stmt As String
         Dim where_clause As String
         Dim order_clause As String
-        Dim DataGridCaptionText As String
 
         If SelectDate.Text > "" And SelectMedium.Text > "" And SelectClassification.Text > "" Then
             Try
                 ' Build the complete SQL statement to select the records specified
                 ' by the selection criteria on the main form.
                 ' Start with a basic SQL statement that selects records by date.
-                select_stmt = "SELECT Award, Classification, [Competition Date 1], [Display Sequence], [Image File Name], Maker, Medium, Photo_ID, [Score 1], [Server Entry ID], Theme, Title FROM [Competition Entries]"
-                where_clause = " WHERE [Competition Date 1]=#" + Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy") + "#"
-                order_clause = " ORDER BY [Display Sequence], Title"
-                DataGridCaptionText = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy") + "                    "
+                select_stmt = "SELECT Award, Classification, Competition_Date_1, Display_Sequence, Image_File_Name, Maker, Medium, Photo_ID, Score_1, Server_Entry_ID, Theme, Title FROM CompetitionEntries"
+                where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") + "'"
+                order_clause = " ORDER BY Display_Sequence, Title"
+                GridCaption.Text = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
 
+                'Dim q As System.Linq.IQueryable(Of CompetitionEntry)
+                'q = From entry In rpsContext.CompetitionEntries
+                'Select Case entry.Award, entry.Classification, entry.Competition_Date_1, entry.Display_Sequence, entry.Image_File_Name, entry.Maker, entry.Medium, entry.Photo_ID, entry.Score_1, entry.Server_Entry_ID, entry.Theme, entry.Title
+
+                'q = q.Where(Function(entry) entry.Competition_Date_1 = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy"))
                 ' If enabled, add the value of the Classification field to the selection criteria
                 If EnableClassification.CheckState = CheckState.Checked Then
-                    If SelectClassification.Text > "" Then
-                        where_clause += " AND Classification='" + SelectClassification.Text + "'"
-                        DataGridCaptionText += SelectClassification.Text
-                        If EnableMedium.CheckState = CheckState.Checked Then
-                            DataGridCaptionText += " / "
-                        End If
+                    where_clause += " AND Classification='" + SelectClassification.Text + "'"
+                    GridCaption.Text += "  -  " + SelectClassification.Text
+                    If EnableMedium.CheckState = CheckState.Checked Then
+                        GridCaption.Text += " / "
                     End If
                 End If
 
                 ' If enabled, add the value of the Medium field to the selection criteria
                 If EnableMedium.CheckState = CheckState.Checked Then
-                    If SelectMedium.Text > "" Then
-                        where_clause += " AND Medium='" + SelectMedium.Text + "'"
-                        DataGridCaptionText += SelectMedium.Text
+                    If EnableClassification.CheckState = CheckState.Unchecked Then
+                        GridCaption.Text += "  -  "
                     End If
+                    where_clause += " AND Medium='" + SelectMedium.Text + "'"
+                    GridCaption.Text += SelectMedium.Text
                 End If
 
                 ' If one of the Score radio buttons, other than "All", is selected in the SelectScore
@@ -1442,30 +1545,30 @@ Public Class MainForm
                 'If Not AllScoresRadioButton.Checked Then
                 '    If NineScoreRadioButton.Checked Then
                 '        where_clause += " AND [Score 1]=9"
-                '        DataGridCaptionText += " (9 points only)"
+                '        GridCaption.Text  += " (9 points only)"
                 '    ElseIf EightScoreRadioButton.Checked Then
                 '        where_clause += " AND [Score 1]=8"
-                '        DataGridCaptionText += " (8 points only)"
+                '        GridCaption.Text t += " (8 points only)"
                 '    ElseIf SevenScoreRadioButton.Checked Then
                 '        where_clause += " AND [Score 1]=7"
-                '        DataGridCaptionText += " (7 points only)"
+                '        GridCaption.Text  += " (7 points only)"
                 '    ElseIf EightsAndAwardsRadioButton.Checked Then
                 '        where_clause += " AND ((Not Award Is Null) OR ([Score 1]>=8 AND Award Is Null))"
                 '        order_clause = " ORDER BY IIf(IsNull(Award), ""Null"", Award) DESC, [Score 1] ASC"
-                '        DataGridCaptionText += " (8s and Awards)"
+                '       GridCaption.Text  += " (8s and Awards)"
                 '    End If
                 'End If
                 If Not AllScoresSelected Then
                     If EightsAndAwardsSelected Then
-                        where_clause += " AND ((Not Award Is Null) OR (round([Score 1]/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
+                        where_clause += " AND ((Not Award Is Null) OR (round(Score_1/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
                         order_clause = " ORDER BY IIf(IsNull(Award), ""Null"", Award) DESC, [Score 1] ASC"
-                        DataGridCaptionText += " (8s and Awards)"
+                        GridCaption.Text += " (8s and Awards)"
                     ElseIf SelectedAvgScore > 0 Then
-                        where_clause += " AND round([Score 1]/" + CType(numJudges, String) + ", 0) = " + CType(SelectedAvgScore, String)
-                        DataGridCaptionText += " (Avg of " + CType(SelectedAvgScore, String) + " points)"
+                        where_clause += " AND round(Score_1/" + CType(numJudges, String) + ", 0) = " + CType(SelectedAvgScore, String)
+                        GridCaption.Text += " (Avg of " + CType(SelectedAvgScore, String) + " points)"
                     Else
-                        where_clause += " AND [Score 1]=" + CType(SelectedScore, String)
-                        DataGridCaptionText += " (" + CType(SelectedScore, String) + " points only)"
+                        where_clause += " AND Score_1=" + CType(SelectedScore, String)
+                        GridCaption.Text += " (" + CType(SelectedScore, String) + " points only)"
                     End If
                 End If
 
@@ -1480,20 +1583,28 @@ Public Class MainForm
                 If EnableAward.CheckState = CheckState.Checked Then
                     If SelectAward.Text > "" Then
                         where_clause += " AND Award='" + SelectAward.Text + "'"
-                        DataGridCaptionText += SelectAward.Text + " only"
+                        GridCaption.Text += SelectAward.Text + " only"
                     End If
                 End If
 
                 ' Install the updated SQL SELECT statement
                 OleDbSelectCommand1.CommandText = select_stmt + where_clause + order_clause
-
+                query = select_stmt + where_clause + order_clause
                 ' Attempt to load the dataset.
-                Me.LoadDataSet()
+                'Me.LoadDataSet()
+                Dim entries As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry)
+                entries = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query)
+                With DataGridView1
+                    .Columns("Score").DefaultCellStyle = centerCellStyle
+                    .Columns("Award").DefaultCellStyle = centerCellStyle
+                    .AutoGenerateColumns = False
+                    .DataSource = entries.ToList()
+                End With
 
                 ' Count the number of rows selected and add it to the caption of the DataGrid
-                numSelected = objSelectedPhotos.Tables("Competition Entries").Rows.Count
+                numSelected = DataGridView1.RowCount()
 
-                grdCompetition_Entries.CaptionText = DataGridCaptionText + "                   " + numSelected.ToString + " Images"
+                GridCaption.Text += "  -  " + numSelected.ToString + " Images"
 
                 ' Recalculate the awards
                 'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
@@ -1520,7 +1631,7 @@ Public Class MainForm
         Dim numEligibleEights As Integer
         Dim numEligibleSevens As Integer
         Dim totalNumScores As Integer
-        Dim awardNames() As String = {"1st", "2nd", "3rd", "HM"}
+        Dim awardNames() As String = {"1St", "2nd", "3Rd", "HM"}
         Dim delim_9, delim_8, delim_7 As String
         Dim numNineHM, numEightHM, numSevenHM As Integer
 
@@ -1585,7 +1696,7 @@ Public Class MainForm
             ' Update the 9 point thumbnail screen title to include the HMs
             If numNineHM > 0 Then
                 If ninePointThumbViewTitle > "" Then
-                    ninePointThumbViewTitle += " and "
+                    ninePointThumbViewTitle += " And "
                 End If
                 If numNineHM = 1 Then
                     ninePointThumbViewTitle += "1 HM"
@@ -1597,7 +1708,7 @@ Public Class MainForm
             ' Update the 8 point thumbnail screen title to include the HMs
             If numEightHM > 0 Then
                 If eightPointThumbViewTitle > "" Then
-                    eightPointThumbViewTitle += " and "
+                    eightPointThumbViewTitle += " And "
                 End If
                 If numEightHM = 1 Then
                     eightPointThumbViewTitle += "1 HM"
@@ -1609,7 +1720,7 @@ Public Class MainForm
             ' Update the 7 point thumbnail screen title to include the HMs
             If numSevenHM > 0 Then
                 If sevenPointThumbViewTitle > "" Then
-                    sevenPointThumbViewTitle += " and "
+                    sevenPointThumbViewTitle += " And "
                 End If
                 If numSevenHM = 1 Then
                     sevenPointThumbViewTitle += "1 HM"
@@ -1646,7 +1757,7 @@ Public Class MainForm
             tbEligibleSevens.Text = numEligibleSevens.ToString
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CalculateAwards()")
+            MsgBox(ex.Message, , "Error In CalculateAwards()")
         End Try
     End Sub
 
@@ -1661,8 +1772,8 @@ Public Class MainForm
         Try
             ' Bail out if the dataset is empty
             If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-                MsgBox("No images selected." + vbCrLf + "Select one or more images before running the report",
-                    MsgBoxStyle.Exclamation, "Error in ResultsReport()")
+                MsgBox("No images selected." + vbCrLf + "Select one Or more images before running the report",
+                    MsgBoxStyle.Exclamation, "Error In ResultsReport()")
                 Exit Sub
             End If
 
