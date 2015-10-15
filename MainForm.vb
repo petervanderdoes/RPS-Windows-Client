@@ -739,12 +739,12 @@ Public Class MainForm
 #End Region
 
     Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim dirinfo As DirectoryInfo
         Try
             ' Set up the connection string for the database connection
             SetDatabaseName(databaseFileName)
             ' Load the user preferences from the registry
             LoadPreferences()
-
 
             ' Setup Database Variables
             connectionString = New EntityConnectionStringBuilder() With
@@ -764,6 +764,14 @@ Public Class MainForm
                 InitializaDatabase()
             End If
 
+            dirinfo = New DirectoryInfo(imagesRootFolder)
+            If Not dirInfo.Exists Then
+                dirInfo.Create()
+            End If
+            dirinfo = New DirectoryInfo(reportsOutputFolder)
+            If Not dirInfo.Exists Then
+                dirInfo.Create()
+            End If
 
             ' Setup Datagrid Styles
             centerCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -1705,7 +1713,7 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             sw.WriteLine("<th>Title</th><th>Photographer</th></tr>")
             '
             ' Print a row for each image in the category
-            For Each img In entries 
+            For Each img In entries
                 sw.WriteLine("<tr>")
                 If displayScores Then
                     sw.WriteLine("  <td class=""score"">" + img.Score_1.ToString + "</td>")
@@ -2661,9 +2669,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Dim comp_medium_list As New ArrayList
         Dim sqlSelect As String
         Dim sqlWhere As String
-        Dim sqlOrderBy As String
         Dim sqlCommand As New OleDbCommand
-        Dim recs As OleDbDataReader
+        Dim recs As Object
         Dim compNum As Integer
         Dim classification As String
         Dim medium As String
@@ -2735,25 +2742,28 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 selectedMedium = " AND Medium like '%Prints'"
             End If
             '@TODO Fix
-            sqlSelect = "SELECT DISTINCT Classification, Medium FROM [Competition Entries] "
-            sqlWhere = "WHERE [Competition Date 1] = #" + comp_date + "#" + selectedMedium
-            sqlCommand.CommandText = sqlSelect + sqlWhere
-            recs = sqlCommand.ExecuteReader()
-            While recs.Read
-                comp_class_list.Add(recs.GetString(0))
-                comp_medium_list.Add(recs.GetString(1))
-            End While
-            recs.Close()
+            Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture)
+            sqlSelect = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
+            sqlWhere = "WHERE Competition_Date_1 = '" +
+                Format(d, "M/dd/yyyy") + "'" +
+                selectedMedium
+            query = sqlSelect + sqlWhere
+            recs = rpsContext.Database.SqlQuery(Of UploadEntity_Classification_Medium)(query).ToList
+
+            For Each record As UploadEntity_Classification_Medium In recs
+                comp_class_list.Add(record.Classification)
+                comp_medium_list.Add(record.Medium)
+            Next
 
             ' Iterate through all the competition for this date
             For compNum = 0 To comp_class_list.Count - 1
                 ' Query the database for the entries of this competition
                 classification = comp_class_list.Item(compNum)
                 medium = comp_medium_list.Item(compNum)
-                sqlSelect = "SELECT Maker, Title, [Score 1], Award, [Server Entry ID] FROM [Competition Entries] "
-                sqlWhere = "WHERE [Competition Date 1] = #" + comp_date + "# AND Classification = '" + classification + "' AND Medium = '" + medium + "'"
-                sqlCommand.CommandText = sqlSelect + sqlWhere
-                recs = sqlCommand.ExecuteReader()
+                sqlSelect = "Select * FROM CompetitionEntries "
+                sqlWhere = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" + classification + "' AND Medium = '" + medium + "'"
+                query = sqlSelect + sqlWhere
+                recs = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
                 ' Output the tags that describe this competition
                 sw.WriteLine("  <Competition>")
                 sw.WriteLine("    <Date>{0}</Date>", HttpUtility.HtmlEncode(comp_date))
@@ -2761,28 +2771,28 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 sw.WriteLine("    <Medium>{0}</Medium>", HttpUtility.HtmlEncode(medium))
                 sw.WriteLine("    <Entries>")
                 ' Iterate through all the entries of this competition
-                While recs.Read
+                For Each record As CompetitionEntry In recs
                     ' Read the entry data from the database
-                    maker = recs.GetString(0)
+                    maker = record.Maker
                     'fields = Split(maker, " ")
                     posn = InStr(1, maker, " ")
                     firstName = Mid(maker, 1, posn - 1)
                     lastName = Mid(maker, posn + 1)
-                    title = recs.GetString(1)
-                    If Not recs.IsDBNull(2) Then
-                        score = recs.GetInt32(2).ToString()
-                    Else
+                    title = record.Title
+                    If IsNothing(record.Score_1) Then
                         score = ""
-                    End If
-                    If Not recs.IsDBNull(3) Then
-                        award = recs.GetString(3)
                     Else
+                        score = record.Score_1.ToString()
+                    End If
+                    If IsNothing(record.Award) Then
                         award = ""
-                    End If
-                    If Not recs.IsDBNull(4) Then
-                        entry_id = recs.GetInt32(4)
                     Else
+                        award = record.Award
+                    End If
+                    If IsNothing(record.Server_Entry_ID) Then
                         entry_id = ""
+                    Else
+                        entry_id = record.Server_Entry_ID
                     End If
                     ' Write this entry to the xml file
                     sw.WriteLine("      <Entry>")
@@ -2793,9 +2803,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                     sw.WriteLine("        <Score>{0}</Score>", HttpUtility.HtmlEncode(score))
                     sw.WriteLine("        <Award>{0}</Award>", HttpUtility.HtmlEncode(award))
                     sw.WriteLine("      </Entry>")
-                End While
+                Next
                 ' Close out this competition
-                recs.Close()
                 sw.WriteLine("    </Entries>")
                 sw.WriteLine("  </Competition>")
             Next

@@ -214,6 +214,7 @@
     <Compile Include="Download Competitions Dialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Entities\UploadEntities.vb" />
     <Compile Include="Helper.vb" />
     <Compile Include="ImageViewer.vb">
       <SubType>Form</SubType>
