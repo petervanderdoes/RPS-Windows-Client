@@ -1,10 +1,12 @@
 Imports System.Linq
+Imports System.Data.Entity.Core.EntityClient
+Imports System.Data.Entity.Core
 
 Public Class ImageViewer
     Inherits System.Windows.Forms.Form
 
     Dim theMainForm As MainForm
-    Dim ImageList As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry)
+    Dim ImageList As IList
     Dim numImages As Integer
     Dim currentIndex As Integer
     Dim currentFileName As String
@@ -23,7 +25,7 @@ Public Class ImageViewer
 
 #Region " Windows Form Designer generated code "
 
-    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry), ByVal idx As Integer, ByVal splash As Boolean, ByVal statusBarState As Integer)
+    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As IList, ByVal idx As Integer, ByVal splash As Boolean, ByVal statusBarState As Integer)
         MyBase.New()
 
         'This call is required by the Windows Form Designer.
@@ -35,6 +37,8 @@ Public Class ImageViewer
         currentIndex = idx
         splashScreenVisible = splash
         statusBarVisible = statusBarState
+        setSizes()
+
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -55,11 +59,6 @@ Public Class ImageViewer
     'Do not modify it using the code editor.
     Friend WithEvents picShowPicture As System.Windows.Forms.PictureBox
     Friend WithEvents ofdSelectPicture As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents OdbcSelectCommand1 As System.Data.Odbc.OdbcCommand
-    Friend WithEvents OdbcInsertCommand1 As System.Data.Odbc.OdbcCommand
-    Friend WithEvents OdbcUpdateCommand1 As System.Data.Odbc.OdbcCommand
-    Friend WithEvents OdbcDeleteCommand1 As System.Data.Odbc.OdbcCommand
-    Friend WithEvents OdbcDataAdapter1 As System.Data.Odbc.OdbcDataAdapter
     Friend WithEvents ScorePopUp As System.Windows.Forms.Label
     Friend WithEvents StatusBar As System.Windows.Forms.Panel
     Friend WithEvents StatusBarTitle As System.Windows.Forms.Label
@@ -71,11 +70,6 @@ Public Class ImageViewer
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.picShowPicture = New System.Windows.Forms.PictureBox()
         Me.ofdSelectPicture = New System.Windows.Forms.OpenFileDialog()
-        Me.OdbcSelectCommand1 = New System.Data.Odbc.OdbcCommand()
-        Me.OdbcInsertCommand1 = New System.Data.Odbc.OdbcCommand()
-        Me.OdbcUpdateCommand1 = New System.Data.Odbc.OdbcCommand()
-        Me.OdbcDeleteCommand1 = New System.Data.Odbc.OdbcCommand()
-        Me.OdbcDataAdapter1 = New System.Data.Odbc.OdbcDataAdapter()
         Me.ScorePopUp = New System.Windows.Forms.Label()
         Me.StatusBar = New System.Windows.Forms.Panel()
         Me.StatusBarAward = New System.Windows.Forms.Label()
@@ -91,6 +85,7 @@ Public Class ImageViewer
         'picShowPicture
         '
         Me.picShowPicture.BackColor = System.Drawing.Color.Black
+        Me.picShowPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.picShowPicture.Location = New System.Drawing.Point(0, 0)
         Me.picShowPicture.Margin = New System.Windows.Forms.Padding(0)
         Me.picShowPicture.Name = "picShowPicture"
@@ -106,13 +101,6 @@ Public Class ImageViewer
         Me.ofdSelectPicture.FilterIndex = 2
         Me.ofdSelectPicture.Title = "Select Picture"
         '
-        'OdbcDataAdapter1
-        '
-        Me.OdbcDataAdapter1.DeleteCommand = Me.OdbcDeleteCommand1
-        Me.OdbcDataAdapter1.InsertCommand = Me.OdbcInsertCommand1
-        Me.OdbcDataAdapter1.SelectCommand = Me.OdbcSelectCommand1
-        Me.OdbcDataAdapter1.UpdateCommand = Me.OdbcUpdateCommand1
-        '
         'ScorePopUp
         '
         Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -120,7 +108,7 @@ Public Class ImageViewer
         Me.ScorePopUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.ScorePopUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 56.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ScorePopUp.ForeColor = System.Drawing.Color.White
-        Me.ScorePopUp.Location = New System.Drawing.Point(728, 104)
+        Me.ScorePopUp.Location = New System.Drawing.Point(803, 29)
         Me.ScorePopUp.Margin = New System.Windows.Forms.Padding(0)
         Me.ScorePopUp.Name = "ScorePopUp"
         Me.ScorePopUp.Size = New System.Drawing.Size(192, 115)
@@ -512,6 +500,7 @@ Public Class ImageViewer
                 StatusBarAward.Text = value
                 ScorePopUp.Visible = True
             End If
+
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in DoScorePopUp()")
         End Try
@@ -536,7 +525,7 @@ Public Class ImageViewer
 
                 ' Get the selected image file name from the database
                 currentIndex = index
-                currentRow = ImageList.ElementAt(currentIndex)
+                currentRow = ImageList(currentIndex)
                 currentFileName = currentRow.Image_File_Name
 
                 ' If it's a relative path, convert to an absolute path
@@ -588,25 +577,28 @@ Public Class ImageViewer
         splashScreenVisible = True
     End Sub
 
-    Private Function RenderThumbnail(ByVal fileName As String)
+    Private Sub RenderThumbnail(ByVal fileName As String)
         ' Set the name of the image from which to create a thumbnail
         thumb.imageFile = fileName
 
         ' Spawn a separate thread to render the thumbnail image
         thumbnailThread = New Thread(AddressOf thumb.Render)
         thumbnailThread.Start()
-    End Function
+    End Sub
 
     Friend Sub setSizes()
         Dim I As RpsImageSize = New RpsImageSize
         Dim splash_location_y As Integer
+        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight())
+        MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
+        MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
 
-        picShowPicture.Size = New Size(I.getFullWidth(), I.getFullHeight)
+        picShowPicture.Size = New Size(I.getFullWidth(), I.getFullHeight())
 
-        ScorePopUp.Location = New Point(I.getFullWidth() - 192, 0)
+        ScorePopUp.Location = New Point(I.getFullWidth() - 221, 29)
         ScorePopUp.Size = New Size(192, 115)
 
-        StatusBar.Location = New Point(0, I.getFullHeight - 28)
+        StatusBar.Location = New Point(0, I.getFullHeight() - 28)
         StatusBar.Size = New Size(I.getFullWidth(), 28)
 
         StatusBarAward.Location = New Point(0, 0)
@@ -628,9 +620,6 @@ Public Class ImageViewer
         splashClassification.Location = New Point(0, splash_location_y * 3)
         splashClassification.Size = New Size(I.getFullWidth(), 100)
 
-        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight)
-        MaximumSize = New Size(I.getFullWidth(), I.getFullHeight)
-        MinimumSize = New Size(I.getFullWidth(), I.getFullHeight)
     End Sub
 End Class
 

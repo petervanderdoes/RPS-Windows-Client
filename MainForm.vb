@@ -2,6 +2,7 @@ Imports System.Runtime.ExceptionServices
 Imports System.Linq
 Imports System.Data.Entity.Core.EntityClient
 Imports System.Data.Entity.Core
+Imports System.Collections.Generic
 
 Public Class MainForm
     Inherits System.Windows.Forms.Form
@@ -21,9 +22,10 @@ Public Class MainForm
     ' Database 
     Private sqliteConnectionString As SQLite.SQLiteConnectionStringBuilder = New SQLite.SQLiteConnectionStringBuilder()
     Private efConnection As EntityConnectionStringBuilder = New EntityConnectionStringBuilder()
-    Private rpsContext As rpsEntities
+    Public rpsContext As rpsEntities
     Private query As Object
     Private record As Object
+    Public entries As IList(Of CompetitionEntry)
 
     ' User Preferences (defaults)
     Private connection_string As String = "Data Source=" + databaseFileName + ";Version=3;New=False;Compress=True;"
@@ -46,7 +48,6 @@ Public Class MainForm
     Private SelectedScore As Integer
     Private SelectedAvgScore As Integer
     Public lastAdminUsername As String
-    Public entries As System.Data.Entity.Infrastructure.DbRawSqlQuery(Of CompetitionEntry)
 
     Public StatusBar As New ProgressStatus
 
@@ -1178,14 +1179,21 @@ Public Class MainForm
         End If
 
         Viewer = New ImageViewer(Me, entries, DataGridView1.CurrentCell.RowIndex, showSplash, statusBarState)
-        Viewer.setSizes()
         Cursor.Hide()
         Viewer.ShowDialog()
         Cursor.Show()
         Try
             ' Attempt to update the datasource.
-            Me.UpdateDataSet()
+            DataGridView1.Refresh()
 
+            For Each entry As CompetitionEntry In entries
+                query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                rpsContext.Database.ExecuteSqlCommand(query,
+                                                      New SQLite.SQLiteParameter("@score", entry.Score_1),
+                                                      New SQLite.SQLiteParameter("@award", entry.Award),
+                                                      New SQLite.SQLiteParameter("@key", entry.Server_Entry_ID)
+                                                      )
+            Next
             ' If we've just completed entering scores, calculate the eligible awards
             'If AllScoresRadioButton.Checked Then
             If AllScoresSelected Then
@@ -1512,7 +1520,7 @@ Public Class MainForm
                 ' Build the complete SQL statement to select the records specified
                 ' by the selection criteria on the main form.
                 ' Start with a basic SQL statement that selects records by date.
-                select_stmt = "SELECT Award, Classification, Competition_Date_1, Display_Sequence, Image_File_Name, Maker, Medium, Photo_ID, Score_1, Server_Entry_ID, Theme, Title FROM CompetitionEntries"
+                select_stmt = "SELECT * FROM CompetitionEntries"
                 where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") + "'"
                 order_clause = " ORDER BY Display_Sequence, Title"
                 GridCaption.Text = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
@@ -1588,17 +1596,14 @@ Public Class MainForm
                 End If
 
                 ' Install the updated SQL SELECT statement
-                OleDbSelectCommand1.CommandText = select_stmt + where_clause + order_clause
                 query = select_stmt + where_clause + order_clause
-                ' Attempt to load the dataset.
-
-                entries = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query)
+                entries = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
 
                 With DataGridView1
                     .Columns("Score").DefaultCellStyle = centerCellStyle
                     .Columns("Award").DefaultCellStyle = centerCellStyle
                     .AutoGenerateColumns = False
-                    .DataSource = entries.ToList()
+                    .DataSource = entries
                 End With
 
                 ' Count the number of rows selected and add it to the caption of the DataGrid
