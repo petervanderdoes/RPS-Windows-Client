@@ -1259,28 +1259,10 @@ Public Class MainForm
                     GridCaption.Text += SelectMedium.Text
                 End If
 
-                ' If one of the Score radio buttons, other than "All", is selected in the SelectScore
-                ' group, update the WHERE clause to include the score criterion
-                'If Not AllScoresRadioButton.Checked Then
-                '    If NineScoreRadioButton.Checked Then
-                '        where_clause += " AND [Score 1]=9"
-                '        GridCaption.Text  += " (9 points only)"
-                '    ElseIf EightScoreRadioButton.Checked Then
-                '        where_clause += " AND [Score 1]=8"
-                '        GridCaption.Text t += " (8 points only)"
-                '    ElseIf SevenScoreRadioButton.Checked Then
-                '        where_clause += " AND [Score 1]=7"
-                '        GridCaption.Text  += " (7 points only)"
-                '    ElseIf EightsAndAwardsRadioButton.Checked Then
-                '        where_clause += " AND ((Not Award Is Null) OR ([Score 1]>=8 AND Award Is Null))"
-                '        order_clause = " ORDER BY IIf(IsNull(Award), ""Null"", Award) DESC, [Score 1] ASC"
-                '       GridCaption.Text  += " (8s and Awards)"
-                '    End If
-                'End If
                 If Not AllScoresSelected Then
                     If EightsAndAwardsSelected Then
-                        where_clause += " AND ((Not Award Is Null) OR (round(Score_1/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
-                        order_clause = " ORDER BY IIf(IsNull(Award), ""Null"", Award) DESC, [Score 1] ASC"
+                        where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
+                        order_clause = " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
                         GridCaption.Text += " (8s and Awards)"
                     ElseIf SelectedAvgScore > 0 Then
                         where_clause += " AND round(Score_1/" + CType(numJudges, String) + ", 0) = " + CType(SelectedAvgScore, String)
