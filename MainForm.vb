@@ -1,25 +1,15 @@
-Imports System.Runtime.ExceptionServices
-Imports System.Linq
-Imports System.Data.Entity.Core.EntityClient
-Imports System.Data.Entity.Core
 Imports System.Collections.Generic
+Imports System.Data.Entity.Core.EntityClient
+Imports System.Linq
 
 Public Class MainForm
     Inherits System.Windows.Forms.Form
 
-    Private connectStringEpilog As String = "Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Registry Path=;Jet OLEDB:Database L" &
-        "ocking Mode=1;Jet OLEDB:Database Password=;Data Source="""
-    Private connectStringProlog As String = """;Password=;Jet O" &
-        "LEDB:Engine Type=5;Jet OLEDB:Global Bulk Transactions=1;Provider=""Microsoft.Jet." &
-        "OLEDB.4.0"";Jet OLEDB:System database=;Jet OLEDB:SFP=False;Extended Properties=;M" &
-        "ode=Share Deny None;Jet OLEDB:New Database Password=;Jet OLEDB:Create System Dat" &
-        "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" &
-        "ut Replica Repair=False;User ID=Admin;Jet OLEDB:Encrypt Database=False"
     Private dataFolder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
-    Private databaseFileNameSqlite As String = dataFolder + "\rps.db"
-    Private databaseFileName As String = dataFolder + "\rps.mdb"
+    Private databaseFileName As String = dataFolder + "\rps.db"
 
     ' Database 
+    Dim connectionString As String
     Private sqliteConnectionString As SQLite.SQLiteConnectionStringBuilder = New SQLite.SQLiteConnectionStringBuilder()
     Private efConnection As EntityConnectionStringBuilder = New EntityConnectionStringBuilder()
     Public rpsContext As rpsEntities
@@ -28,7 +18,6 @@ Public Class MainForm
     Public entries As IList(Of CompetitionEntry)
 
     ' User Preferences (defaults)
-    Private connection_string As String = "Data Source=" + databaseFileName + ";Version=3;New=False;Compress=True;"
     Public reportsOutputFolder As String = dataFolder + "\Reports"
     Public imagesRootFolder As String = dataFolder + "\Photos"
     Private ServerName As String = "localhost"
@@ -97,16 +86,6 @@ Public Class MainForm
         Application.EnableVisualStyles()
         'This call is required by the Windows Form Designer.
         InitializeComponent()
-
-        Dim connectionString As String = New EntityClient.EntityConnectionStringBuilder() _
-         With {.Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
-               .Provider = "System.Data.SQLite.EF6",
-               .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() _
-                 With {.DataSource = databaseFileNameSqlite,
-                       .ForeignKeys = True}.ConnectionString}.ConnectionString
-        rpsContext = New rpsEntities(connectionString)
-        centerCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -765,6 +744,32 @@ Public Class MainForm
             SetDatabaseName(databaseFileName)
             ' Load the user preferences from the registry
             LoadPreferences()
+
+
+            ' Setup Database Variables
+            connectionString = New EntityConnectionStringBuilder() With
+                {
+                    .Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
+                    .Provider = "System.Data.SQLite.EF6",
+                    .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() With
+                        {
+                            .DataSource = databaseFileName,
+                            .ForeignKeys = True
+                        }.ConnectionString
+                }.ConnectionString
+
+            rpsContext = New rpsEntities(connectionString)
+            If Not File.Exists(databaseFileName) Then
+                SQLite.SQLiteConnection.CreateFile(databaseFileName)
+                InitializaDatabase()
+            End If
+
+
+            ' Setup Datagrid Styles
+            centerCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+            LoadClubRules()
+
             ' Initialize the StatusBar and ProgressBar
             InitializeStatusBar()
             StatusBar.progressBar.Value = 0
@@ -774,6 +779,97 @@ Public Class MainForm
         Catch ex As Exception
             MsgBox(ex.Message, , "Error In MainForm_Load()")
         End Try
+    End Sub
+
+    Private Sub InitializaDatabase()
+        query = "CREATE TABLE `medium` (
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+);
+CREATE TABLE 'club_medium' (
+	`club_id`	INTEGER Not NULL,
+	`medium_id`	INTEGER Not NULL,
+	`sort_key`	INTEGER DEFAULT 0,
+	PRIMARY KEY(club_id, medium_id),
+    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
+	FOREIGN KEY(`medium_id`) REFERENCES medium ( id )
+);
+CREATE TABLE 'club_classification' (
+	`club_id`	INTEGER Not NULL,
+	`classification_id`	INTEGER Not NULL,
+	`sort_key`	INTEGER DEFAULT 0,
+	PRIMARY KEY(club_id, classification_id),
+    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
+	FOREIGN KEY(`classification_id`) REFERENCES classification ( id )
+);
+CREATE TABLE 'club_award' (
+	`club_id`	INTEGER Not NULL,
+	`award_id`	INTEGER Not NULL,
+	`points`	INTEGER,
+	`sort_key`	INTEGER,
+	PRIMARY KEY(club_id, award_id),
+    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
+	FOREIGN KEY(`award_id`) REFERENCES award ( id )
+);
+CREATE TABLE 'club' (
+	`short_name`	TEXT,
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`min_score`	INTEGER DEFAULT 0,
+	`max_score`	INTEGER DEFAULT 0,
+	`min_score_for_award`	INTEGER DEFAULT 0
+);
+
+CREATE TABLE 'classification' (
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+);
+CREATE TABLE 'award' (
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+);
+CREATE TABLE 'CompetitionEntries' (
+	`Photo_ID`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,
+	`Title`	TEXT,
+	`Maker`	TEXT,
+	`Classification`	TEXT,
+	`Medium`	TEXT,
+	`Theme`	TEXT,
+	`Competition_Date_1`	TEXT,
+	`Score_1`	INTEGER DEFAULT 0,
+	`Award`	TEXT,
+	`Image_File_Name`	TEXT,
+	`Display_Sequence`	INTEGER DEFAULT 0,
+	`Server_Entry_ID`	INTEGER DEFAULT 0
+);
+"
+        rpsContext.Database.ExecuteSqlCommand(query)
+
+        query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);
+INSERT INTO `medium` (name,id) VALUES ('Color Prints',2);
+INSERT INTO `medium` (name,id) VALUES ('B&W Digital',3);
+INSERT INTO `medium` (name,id) VALUES ('B&W Prints',4);
+INSERT INTO `club` (short_name,name,id,min_score,max_score,min_score_for_award) VALUES ('RPS','Raritan Photographic Society',1,5,9,7);
+INSERT INTO `classification` (name,id) VALUES ('Beginner',1);
+INSERT INTO `classification` (name,id) VALUES ('Advanced',2);
+INSERT INTO `classification` (name,id) VALUES ('Salon',3);
+INSERT INTO `award` (name,id) VALUES ('1st',1);
+INSERT INTO `award` (name,id) VALUES ('2nd',2);
+INSERT INTO `award` (name,id) VALUES ('3rd',3);
+INSERT INTO `award` (name,id) VALUES ('HM',4);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,1,1);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,2,3);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,3,0);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,4,2);
+INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,1,0);
+INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,2,1);
+INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,3,2);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,1,NULL,1);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,2,NULL,2);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,3,NULL,3);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
+"
+        rpsContext.Database.ExecuteSqlCommand(query)
     End Sub
 
     Private Sub btnUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpdate.Click
@@ -1262,6 +1358,7 @@ Public Class MainForm
                 If Not AllScoresSelected Then
                     If EightsAndAwardsSelected Then
                         where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
+                        ' "CASE WHEN Award is NULL THEN 0 ELSE 1 END" Ensure the NULL values are shown first.
                         order_clause = " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
                         GridCaption.Text += " (8s and Awards)"
                     ElseIf SelectedAvgScore > 0 Then
@@ -1868,8 +1965,6 @@ Public Class MainForm
             If value > "" Then
                 numJudges = value
             End If
-
-            LoadClubRules()
 
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in LoadPreferences()")
