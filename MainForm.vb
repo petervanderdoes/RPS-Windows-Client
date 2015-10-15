@@ -1225,7 +1225,7 @@ Public Class MainForm
         Dim Viewer As ThumbnailViewer
         Try
             ' Bail out if the dataset is empty
-            If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
+            If entries.Count <= 0 Then
                 MsgBox("No images loaded.", MsgBoxStyle.Exclamation, "Error In PickAwards()")
                 Exit Sub
             End If
@@ -1264,14 +1264,20 @@ Public Class MainForm
             End If
 
             ' Launch the thumbnail screen
-            Viewer = New ThumbnailViewer(Me, objSelectedPhotos, screenTitle)
-            Viewer.setSizes()
-            'Cursor.Hide()
+            Viewer = New ThumbnailViewer(Me, entries, screenTitle)
             Viewer.ShowDialog()
-            'Cursor.Show()
 
-            ' Write the results back to the database
-            Me.UpdateDataSet()
+            ' Attempt to update the datasource.
+            DataGridView1.Refresh()
+
+            For Each entry As CompetitionEntry In entries
+                query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                rpsContext.Database.ExecuteSqlCommand(query,
+                                                      New SQLite.SQLiteParameter("@score", entry.Score_1),
+                                                      New SQLite.SQLiteParameter("@award", entry.Award),
+                                                      New SQLite.SQLiteParameter("@key", entry.Server_Entry_ID)
+                                                      )
+            Next
 
         Catch ex As Exception
             MsgBox(ex.Message, , "Error In PickAwards()")
@@ -2204,6 +2210,7 @@ Public Class MainForm
                     Select c.name
 
             For Each record In query
+                classifications.Add(record)
                 SelectClassification.Items.Add(record)
             Next
             SelectClassification.SelectedIndex = 0 ' Select the first element in the combobox
@@ -2219,6 +2226,7 @@ Public Class MainForm
                     Select c.name
 
             For Each record In query
+                mediums.Add(record)
                 SelectMedium.Items.Add(record)
             Next
             SelectMedium.SelectedIndex = 0 ' Select the first element in the combobox
@@ -2233,6 +2241,7 @@ Public Class MainForm
                     Select c.name Distinct
 
             For Each record In query
+                awards.Add(record)
                 SelectAward.Items.Add(record)
             Next
             SelectAward.SelectedIndex = 0 ' Select the first element in the combobox
