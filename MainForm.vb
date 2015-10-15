@@ -1629,7 +1629,7 @@ Public Class MainForm
             For Each img In entries 
                 sw.WriteLine("<tr>")
                 If displayScores Then
-                    sw.WriteLine("  <td class=""score"">" + img.Score_1 + "</td>")
+                    sw.WriteLine("  <td class=""score"">" + img.Score_1.ToString + "</td>")
                     sw.WriteLine("  <td class=""award"">" + img.Award + "</td>")
                 Else
                     sw.WriteLine("  <td class=""score"">&nbsp;</td>")
