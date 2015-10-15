@@ -1,7 +1,7 @@
-﻿Class RpsImage
+Class RpsImageSize
 
-    Private full_width = 1440
-    Private full_height = 900
+    Private full_width As Int64 = 1440
+    Private full_height As Int64 = 900
     Public ReadOnly Property getFullWidth() As Integer
         Get
             Return full_width

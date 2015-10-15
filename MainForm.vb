@@ -1,30 +1,27 @@
-Imports System.Runtime.ExceptionServices
+Imports System.Collections.Generic
+Imports System.Data.Entity.Core.EntityClient
+Imports System.Linq
 
 Public Class MainForm
     Inherits System.Windows.Forms.Form
 
-    'Dim MonthNames() As String = New String() {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+    Private dataFolder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
+    Private databaseFileName As String = dataFolder + "\rps.db"
 
-    Private connectStringEpilog As String = "Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Registry Path=;Jet OLEDB:Database L" &
-        "ocking Mode=1;Jet OLEDB:Database Password=;Data Source="""
-    Private connectStringProlog As String = """;Password=;Jet O" &
-        "LEDB:Engine Type=5;Jet OLEDB:Global Bulk Transactions=1;Provider=""Microsoft.Jet." &
-        "OLEDB.4.0"";Jet OLEDB:System database=;Jet OLEDB:SFP=False;Extended Properties=;M" &
-        "ode=Share Deny None;Jet OLEDB:New Database Password=;Jet OLEDB:Create System Dat" &
-        "abase=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet OLEDB:Compact Witho" &
-        "ut Replica Repair=False;User ID=Admin;Jet OLEDB:Encrypt Database=False"
+    ' Database 
+    Dim connectionString As String
+    Private sqliteConnectionString As SQLite.SQLiteConnectionStringBuilder = New SQLite.SQLiteConnectionStringBuilder()
+    Private efConnection As EntityConnectionStringBuilder = New EntityConnectionStringBuilder()
+    Public rpsContext As rpsEntities
+    Private query As Object
+    Private record As Object
+    Public entries As IList(Of CompetitionEntry)
 
     ' User Preferences (defaults)
-    'Private databaseFileName As String = "rps.mdb"
-    'Public reportsOutputFolder As String = "Reports"
-    'Public imagesRootFolder As String = "Photos"
-    Private dataFolder As String = Application.LocalUserAppDataPath
-
-    Private databaseFileName As String = dataFolder + "\rps.mdb"
     Public reportsOutputFolder As String = dataFolder + "\Reports"
     Public imagesRootFolder As String = dataFolder + "\Photos"
     Private ServerName As String = "localhost"
-    Private ServerScriptDir As String = "/scripts"
+    Private ServerScriptDir As String = "/"
     Public cameraClubName As String = "Raritan Photographic Society"
     Public cameraClubId As Integer = 1
     Public classifications As New ArrayList
@@ -46,7 +43,16 @@ Public Class MainForm
     ' For the thumbnail view
     Private ninePointThumbViewTitle As String
     Private eightPointThumbViewTitle As String
+    Friend WithEvents DataGridTextBoxColumn3 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn2 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn1 As DataGridTextBoxColumn
+    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents GridCaption As Label
     Private sevenPointThumbViewTitle As String
+    Friend WithEvents Score As DataGridViewTextBoxColumn
+    Friend WithEvents Award As DataGridViewTextBoxColumn
+    Friend WithEvents Title As DataGridViewTextBoxColumn
+    Private centerCellStyle As New DataGridViewCellStyle
 
     Private Sub InitializeStatusBar()
         Dim info As StatusBarPanel = New System.Windows.Forms.StatusBarPanel
@@ -80,9 +86,6 @@ Public Class MainForm
         Application.EnableVisualStyles()
         'This call is required by the Windows Form Designer.
         InitializeComponent()
-
-        'Add any initialization after the InitializeComponent() call
-
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -104,9 +107,6 @@ Public Class MainForm
     Friend WithEvents btnLoad As System.Windows.Forms.Button
     Friend WithEvents btnUpdate As System.Windows.Forms.Button
     Friend WithEvents btnCancelAll As System.Windows.Forms.Button
-    Friend WithEvents grdCompetition_Entries As System.Windows.Forms.DataGrid
-    Friend WithEvents DataGridTableStyle1 As System.Windows.Forms.DataGridTableStyle
-    Friend WithEvents DataGridTextBoxColumn3 As System.Windows.Forms.DataGridTextBoxColumn
     Friend WithEvents MainMenu1 As System.Windows.Forms.MainMenu
     Friend WithEvents FileExitMenu As System.Windows.Forms.MenuItem
     Friend WithEvents ReportsResultsReportMenu As System.Windows.Forms.MenuItem
@@ -118,8 +118,6 @@ Public Class MainForm
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents RecalcAwards As System.Windows.Forms.Button
     Friend WithEvents ReportsMenu As System.Windows.Forms.MenuItem
-    Friend WithEvents DataGridTextBoxColumn2 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn1 As System.Windows.Forms.DataGridTextBoxColumn
     Friend WithEvents FileMenu As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem1 As System.Windows.Forms.MenuItem
     Friend WithEvents AwardsTableTitleBar As System.Windows.Forms.Label
@@ -132,13 +130,6 @@ Public Class MainForm
     Friend WithEvents tbEligibleEights As System.Windows.Forms.TextBox
     Friend WithEvents tbEligibleSevens As System.Windows.Forms.TextBox
     Friend WithEvents MenuItem6 As System.Windows.Forms.MenuItem
-    Friend WithEvents OleDbDataAdapter1 As System.Data.OleDb.OleDbDataAdapter
-    Friend WithEvents objSelectedPhotos As RPS_Digital_Viewer.SelectedPhotos
-    Friend WithEvents OleDbSelectCommand1 As System.Data.OleDb.OleDbCommand
-    Friend WithEvents OleDbInsertCommand1 As System.Data.OleDb.OleDbCommand
-    Friend WithEvents OleDbUpdateCommand1 As System.Data.OleDb.OleDbCommand
-    Friend WithEvents OleDbDeleteCommand1 As System.Data.OleDb.OleDbCommand
-    Public WithEvents OleDbConnection1 As System.Data.OleDb.OleDbConnection
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents SelectAward As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
@@ -158,36 +149,26 @@ Public Class MainForm
     Friend WithEvents SelectMedium As System.Windows.Forms.ComboBox
     Friend WithEvents SelectDate As System.Windows.Forms.ComboBox
     Friend WithEvents MenuItem5 As System.Windows.Forms.MenuItem
-    Friend WithEvents CompCatalogImagesIndividual As System.Windows.Forms.MenuItem
-    Friend WithEvents CompCatalogImagesByFolder As System.Windows.Forms.MenuItem
     Friend WithEvents CompCatalogImagesDownload As System.Windows.Forms.MenuItem
-    Friend WithEvents CompCreateSeasonEndComp As System.Windows.Forms.MenuItem
     Friend WithEvents CompUploadScores As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Me.OleDbConnection1 = New System.Data.OleDb.OleDbConnection()
         Me.btnLoad = New System.Windows.Forms.Button()
         Me.btnUpdate = New System.Windows.Forms.Button()
         Me.btnCancelAll = New System.Windows.Forms.Button()
-        Me.grdCompetition_Entries = New System.Windows.Forms.DataGrid()
-        Me.DataGridTableStyle1 = New System.Windows.Forms.DataGridTableStyle()
-        Me.DataGridTextBoxColumn1 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridTextBoxColumn2 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridTextBoxColumn3 = New System.Windows.Forms.DataGridTextBoxColumn()
         Me.MainMenu1 = New System.Windows.Forms.MainMenu(Me.components)
         Me.FileMenu = New System.Windows.Forms.MenuItem()
         Me.FilePreferencesMenu = New System.Windows.Forms.MenuItem()
         Me.MenuItem3 = New System.Windows.Forms.MenuItem()
         Me.FileExitMenu = New System.Windows.Forms.MenuItem()
         Me.MenuItem5 = New System.Windows.Forms.MenuItem()
-        Me.CompCatalogImagesIndividual = New System.Windows.Forms.MenuItem()
-        Me.CompCatalogImagesByFolder = New System.Windows.Forms.MenuItem()
         Me.MenuItem1 = New System.Windows.Forms.MenuItem()
         Me.CompCatalogImagesDownload = New System.Windows.Forms.MenuItem()
         Me.CompUploadScores = New System.Windows.Forms.MenuItem()
         Me.MenuItem6 = New System.Windows.Forms.MenuItem()
-        Me.CompCreateSeasonEndComp = New System.Windows.Forms.MenuItem()
         Me.MenuItem2 = New System.Windows.Forms.MenuItem()
         Me.ViewSlideShowMenu = New System.Windows.Forms.MenuItem()
         Me.ViewThumbnailsMenu = New System.Windows.Forms.MenuItem()
@@ -209,12 +190,6 @@ Public Class MainForm
         Me.tbEligibleNines = New System.Windows.Forms.TextBox()
         Me.tbEligibleEights = New System.Windows.Forms.TextBox()
         Me.tbEligibleSevens = New System.Windows.Forms.TextBox()
-        Me.OleDbDataAdapter1 = New System.Data.OleDb.OleDbDataAdapter()
-        Me.OleDbDeleteCommand1 = New System.Data.OleDb.OleDbCommand()
-        Me.OleDbInsertCommand1 = New System.Data.OleDb.OleDbCommand()
-        Me.OleDbSelectCommand1 = New System.Data.OleDb.OleDbCommand()
-        Me.OleDbUpdateCommand1 = New System.Data.OleDb.OleDbCommand()
-        Me.objSelectedPhotos = New RPS_Digital_Viewer.SelectedPhotos()
         Me.SelectAward = New System.Windows.Forms.ComboBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -228,18 +203,21 @@ Public Class MainForm
         Me.SelectDate = New System.Windows.Forms.ComboBox()
         Me.btnThumbnails = New System.Windows.Forms.Button()
         Me.btnSlideShow = New System.Windows.Forms.Button()
-        CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.objSelectedPhotos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.DataGridTextBoxColumn3 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.DataGridTextBoxColumn2 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.DataGridTextBoxColumn1 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.Score = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Award = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Title = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.GridCaption = New System.Windows.Forms.Label()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'OleDbConnection1
-        '
-        Me.OleDbConnection1.ConnectionString = resources.GetString("OleDbConnection1.ConnectionString")
         '
         'btnLoad
         '
         Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnLoad.Location = New System.Drawing.Point(701, 492)
+        Me.btnLoad.Location = New System.Drawing.Point(701, 471)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(75, 24)
         Me.btnLoad.TabIndex = 0
@@ -248,7 +226,7 @@ Public Class MainForm
         'btnUpdate
         '
         Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnUpdate.Location = New System.Drawing.Point(783, 492)
+        Me.btnUpdate.Location = New System.Drawing.Point(783, 471)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(75, 24)
         Me.btnUpdate.TabIndex = 1
@@ -257,61 +235,11 @@ Public Class MainForm
         'btnCancelAll
         '
         Me.btnCancelAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCancelAll.Location = New System.Drawing.Point(865, 492)
+        Me.btnCancelAll.Location = New System.Drawing.Point(865, 471)
         Me.btnCancelAll.Name = "btnCancelAll"
         Me.btnCancelAll.Size = New System.Drawing.Size(75, 24)
         Me.btnCancelAll.TabIndex = 2
         Me.btnCancelAll.Text = "Ca&ncel All"
-        '
-        'grdCompetition_Entries
-        '
-        Me.grdCompetition_Entries.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.grdCompetition_Entries.DataMember = ""
-        Me.grdCompetition_Entries.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.grdCompetition_Entries.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.grdCompetition_Entries.Location = New System.Drawing.Point(209, 10)
-        Me.grdCompetition_Entries.Name = "grdCompetition_Entries"
-        Me.grdCompetition_Entries.Size = New System.Drawing.Size(731, 463)
-        Me.grdCompetition_Entries.TabIndex = 3
-        Me.grdCompetition_Entries.TableStyles.AddRange(New System.Windows.Forms.DataGridTableStyle() {Me.DataGridTableStyle1})
-        '
-        'DataGridTableStyle1
-        '
-        Me.DataGridTableStyle1.DataGrid = Me.grdCompetition_Entries
-        Me.DataGridTableStyle1.GridColumnStyles.AddRange(New System.Windows.Forms.DataGridColumnStyle() {Me.DataGridTextBoxColumn1, Me.DataGridTextBoxColumn2, Me.DataGridTextBoxColumn3})
-        Me.DataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.DataGridTableStyle1.MappingName = "Competition Entries"
-        '
-        'DataGridTextBoxColumn1
-        '
-        Me.DataGridTextBoxColumn1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
-        Me.DataGridTextBoxColumn1.Format = ""
-        Me.DataGridTextBoxColumn1.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn1.HeaderText = "Score"
-        Me.DataGridTextBoxColumn1.MappingName = "Score 1"
-        Me.DataGridTextBoxColumn1.NullText = ""
-        Me.DataGridTextBoxColumn1.Width = 50
-        '
-        'DataGridTextBoxColumn2
-        '
-        Me.DataGridTextBoxColumn2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
-        Me.DataGridTextBoxColumn2.Format = ""
-        Me.DataGridTextBoxColumn2.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn2.HeaderText = "Award"
-        Me.DataGridTextBoxColumn2.MappingName = "Award"
-        Me.DataGridTextBoxColumn2.NullText = ""
-        Me.DataGridTextBoxColumn2.Width = 50
-        '
-        'DataGridTextBoxColumn3
-        '
-        Me.DataGridTextBoxColumn3.Format = ""
-        Me.DataGridTextBoxColumn3.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn3.HeaderText = "Title"
-        Me.DataGridTextBoxColumn3.MappingName = "Title"
-        Me.DataGridTextBoxColumn3.NullText = ""
-        Me.DataGridTextBoxColumn3.Width = 270
         '
         'MainMenu1
         '
@@ -341,45 +269,28 @@ Public Class MainForm
         'MenuItem5
         '
         Me.MenuItem5.Index = 1
-        Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.CompCatalogImagesIndividual, Me.CompCatalogImagesByFolder, Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores, Me.MenuItem6, Me.CompCreateSeasonEndComp})
+        Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores, Me.MenuItem6})
         Me.MenuItem5.Text = "Competitions"
-        '
-        'CompCatalogImagesIndividual
-        '
-        Me.CompCatalogImagesIndividual.Index = 0
-        Me.CompCatalogImagesIndividual.Text = "Catalog Individual Images..."
-        '
-        'CompCatalogImagesByFolder
-        '
-        Me.CompCatalogImagesByFolder.Index = 1
-        Me.CompCatalogImagesByFolder.Text = "Catalog a Folder of Images..."
         '
         'MenuItem1
         '
-        Me.MenuItem1.Index = 2
+        Me.MenuItem1.Index = 0
         Me.MenuItem1.Text = "-"
         '
         'CompCatalogImagesDownload
         '
-        Me.CompCatalogImagesDownload.Index = 3
+        Me.CompCatalogImagesDownload.Index = 1
         Me.CompCatalogImagesDownload.Text = "Download Images from Server..."
         '
         'CompUploadScores
         '
-        Me.CompUploadScores.Index = 4
+        Me.CompUploadScores.Index = 2
         Me.CompUploadScores.Text = "Upload Scores..."
         '
         'MenuItem6
         '
-        Me.MenuItem6.Index = 5
+        Me.MenuItem6.Index = 3
         Me.MenuItem6.Text = "-"
-        '
-        'CompCreateSeasonEndComp
-        '
-        Me.CompCreateSeasonEndComp.Enabled = False
-        Me.CompCreateSeasonEndComp.Index = 6
-        Me.CompCreateSeasonEndComp.Text = "Create Best Of... Competition..."
-        Me.CompCreateSeasonEndComp.Visible = False
         '
         'MenuItem2
         '
@@ -553,45 +464,6 @@ Public Class MainForm
         Me.tbEligibleSevens.TabIndex = 39
         Me.tbEligibleSevens.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'OleDbDataAdapter1
-        '
-        Me.OleDbDataAdapter1.DeleteCommand = Me.OleDbDeleteCommand1
-        Me.OleDbDataAdapter1.InsertCommand = Me.OleDbInsertCommand1
-        Me.OleDbDataAdapter1.SelectCommand = Me.OleDbSelectCommand1
-        Me.OleDbDataAdapter1.TableMappings.AddRange(New System.Data.Common.DataTableMapping() {New System.Data.Common.DataTableMapping("Table", "Competition Entries", New System.Data.Common.DataColumnMapping() {New System.Data.Common.DataColumnMapping("Award", "Award"), New System.Data.Common.DataColumnMapping("Classification", "Classification"), New System.Data.Common.DataColumnMapping("Competition Date 1", "Competition Date 1"), New System.Data.Common.DataColumnMapping("Display Sequence", "Display Sequence"), New System.Data.Common.DataColumnMapping("Image File Name", "Image File Name"), New System.Data.Common.DataColumnMapping("Maker", "Maker"), New System.Data.Common.DataColumnMapping("Medium", "Medium"), New System.Data.Common.DataColumnMapping("Photo_ID", "Photo_ID"), New System.Data.Common.DataColumnMapping("Score 1", "Score 1"), New System.Data.Common.DataColumnMapping("Server Entry ID", "Server Entry ID"), New System.Data.Common.DataColumnMapping("Theme", "Theme"), New System.Data.Common.DataColumnMapping("Title", "Title")})})
-        Me.OleDbDataAdapter1.UpdateCommand = Me.OleDbUpdateCommand1
-        '
-        'OleDbDeleteCommand1
-        '
-        Me.OleDbDeleteCommand1.CommandText = "DELETE FROM [Competition Entries] WHERE (Photo_ID = ?)"
-        Me.OleDbDeleteCommand1.Connection = Me.OleDbConnection1
-        Me.OleDbDeleteCommand1.Parameters.AddRange(New System.Data.OleDb.OleDbParameter() {New System.Data.OleDb.OleDbParameter("Original_Photo_ID", System.Data.OleDb.OleDbType.[Integer], 0, System.Data.ParameterDirection.Input, False, CType(0, Byte), CType(0, Byte), "Photo_ID", System.Data.DataRowVersion.Original, Nothing)})
-        '
-        'OleDbInsertCommand1
-        '
-        Me.OleDbInsertCommand1.CommandText = resources.GetString("OleDbInsertCommand1.CommandText")
-        Me.OleDbInsertCommand1.Connection = Me.OleDbConnection1
-        Me.OleDbInsertCommand1.Parameters.AddRange(New System.Data.OleDb.OleDbParameter() {New System.Data.OleDb.OleDbParameter("Award", System.Data.OleDb.OleDbType.VarWChar, 50, "Award"), New System.Data.OleDb.OleDbParameter("Classification", System.Data.OleDb.OleDbType.VarWChar, 50, "Classification"), New System.Data.OleDb.OleDbParameter("Competition_Date_1", System.Data.OleDb.OleDbType.DBDate, 0, "Competition Date 1"), New System.Data.OleDb.OleDbParameter("Display_Sequence", System.Data.OleDb.OleDbType.[Integer], 0, "Display Sequence"), New System.Data.OleDb.OleDbParameter("Image_File_Name", System.Data.OleDb.OleDbType.VarWChar, 255, "Image File Name"), New System.Data.OleDb.OleDbParameter("Maker", System.Data.OleDb.OleDbType.VarWChar, 128, "Maker"), New System.Data.OleDb.OleDbParameter("Medium", System.Data.OleDb.OleDbType.VarWChar, 50, "Medium"), New System.Data.OleDb.OleDbParameter("Score_1", System.Data.OleDb.OleDbType.[Integer], 0, "Score 1"), New System.Data.OleDb.OleDbParameter("Server_Entry_ID", System.Data.OleDb.OleDbType.[Integer], 0, "Server Entry ID"), New System.Data.OleDb.OleDbParameter("Theme", System.Data.OleDb.OleDbType.VarWChar, 128, "Theme"), New System.Data.OleDb.OleDbParameter("Title", System.Data.OleDb.OleDbType.VarWChar, 128, "Title")})
-        '
-        'OleDbSelectCommand1
-        '
-        Me.OleDbSelectCommand1.CommandText = "SELECT Award, Classification, [Competition Date 1], [Display Sequence], [Image Fi" &
-    "le Name], Maker, Medium, Photo_ID, [Score 1], [Server Entry ID], Theme, Title FR" &
-    "OM [Competition Entries]"
-        Me.OleDbSelectCommand1.Connection = Me.OleDbConnection1
-        '
-        'OleDbUpdateCommand1
-        '
-        Me.OleDbUpdateCommand1.CommandText = resources.GetString("OleDbUpdateCommand1.CommandText")
-        Me.OleDbUpdateCommand1.Connection = Me.OleDbConnection1
-        Me.OleDbUpdateCommand1.Parameters.AddRange(New System.Data.OleDb.OleDbParameter() {New System.Data.OleDb.OleDbParameter("Award", System.Data.OleDb.OleDbType.VarWChar, 50, "Award"), New System.Data.OleDb.OleDbParameter("Classification", System.Data.OleDb.OleDbType.VarWChar, 50, "Classification"), New System.Data.OleDb.OleDbParameter("Competition_Date_1", System.Data.OleDb.OleDbType.DBDate, 0, "Competition Date 1"), New System.Data.OleDb.OleDbParameter("Display_Sequence", System.Data.OleDb.OleDbType.[Integer], 0, "Display Sequence"), New System.Data.OleDb.OleDbParameter("Image_File_Name", System.Data.OleDb.OleDbType.VarWChar, 255, "Image File Name"), New System.Data.OleDb.OleDbParameter("Maker", System.Data.OleDb.OleDbType.VarWChar, 128, "Maker"), New System.Data.OleDb.OleDbParameter("Medium", System.Data.OleDb.OleDbType.VarWChar, 50, "Medium"), New System.Data.OleDb.OleDbParameter("Score_1", System.Data.OleDb.OleDbType.[Integer], 0, "Score 1"), New System.Data.OleDb.OleDbParameter("Server_Entry_ID", System.Data.OleDb.OleDbType.[Integer], 0, "Server Entry ID"), New System.Data.OleDb.OleDbParameter("Theme", System.Data.OleDb.OleDbType.VarWChar, 128, "Theme"), New System.Data.OleDb.OleDbParameter("Title", System.Data.OleDb.OleDbType.VarWChar, 128, "Title"), New System.Data.OleDb.OleDbParameter("Original_Photo_ID", System.Data.OleDb.OleDbType.[Integer], 0, System.Data.ParameterDirection.Input, False, CType(0, Byte), CType(0, Byte), "Photo_ID", System.Data.DataRowVersion.Original, Nothing)})
-        '
-        'objSelectedPhotos
-        '
-        Me.objSelectedPhotos.DataSetName = "SelectedPhotos"
-        Me.objSelectedPhotos.Locale = New System.Globalization.CultureInfo("en-US")
-        Me.objSelectedPhotos.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
         'SelectAward
         '
         Me.SelectAward.Enabled = False
@@ -708,11 +580,123 @@ Public Class MainForm
         Me.btnSlideShow.TabIndex = 22
         Me.btnSlideShow.UseVisualStyleBackColor = False
         '
+        'DataGridTextBoxColumn3
+        '
+        Me.DataGridTextBoxColumn3.Format = ""
+        Me.DataGridTextBoxColumn3.FormatInfo = Nothing
+        Me.DataGridTextBoxColumn3.HeaderText = "Title"
+        Me.DataGridTextBoxColumn3.MappingName = "Title"
+        Me.DataGridTextBoxColumn3.NullText = ""
+        Me.DataGridTextBoxColumn3.Width = 270
+        '
+        'DataGridTextBoxColumn2
+        '
+        Me.DataGridTextBoxColumn2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
+        Me.DataGridTextBoxColumn2.Format = ""
+        Me.DataGridTextBoxColumn2.FormatInfo = Nothing
+        Me.DataGridTextBoxColumn2.HeaderText = "Award"
+        Me.DataGridTextBoxColumn2.MappingName = "Award"
+        Me.DataGridTextBoxColumn2.NullText = ""
+        Me.DataGridTextBoxColumn2.Width = 50
+        '
+        'DataGridTextBoxColumn1
+        '
+        Me.DataGridTextBoxColumn1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
+        Me.DataGridTextBoxColumn1.Format = ""
+        Me.DataGridTextBoxColumn1.FormatInfo = Nothing
+        Me.DataGridTextBoxColumn1.HeaderText = "Score"
+        Me.DataGridTextBoxColumn1.MappingName = "Score_1"
+        Me.DataGridTextBoxColumn1.NullText = ""
+        Me.DataGridTextBoxColumn1.Width = 50
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.AllowUserToAddRows = False
+        Me.DataGridView1.AllowUserToDeleteRows = False
+        Me.DataGridView1.AllowUserToResizeColumns = False
+        Me.DataGridView1.AllowUserToResizeRows = False
+        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.DataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
+        Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Score, Me.Award, Me.Title})
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle2
+        Me.DataGridView1.EnableHeadersVisualStyles = False
+        Me.DataGridView1.Location = New System.Drawing.Point(209, 32)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.ReadOnly = True
+        Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.DataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.DataGridView1.Size = New System.Drawing.Size(729, 433)
+        Me.DataGridView1.TabIndex = 53
+        '
+        'Score
+        '
+        Me.Score.DataPropertyName = "Score_1"
+        Me.Score.FillWeight = 21.80233!
+        Me.Score.HeaderText = "Score"
+        Me.Score.Name = "Score"
+        Me.Score.ReadOnly = True
+        Me.Score.Width = 73
+        '
+        'Award
+        '
+        Me.Award.DataPropertyName = "Award"
+        Me.Award.FillWeight = 21.80233!
+        Me.Award.HeaderText = "Award"
+        Me.Award.Name = "Award"
+        Me.Award.ReadOnly = True
+        Me.Award.Width = 75
+        '
+        'Title
+        '
+        Me.Title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Title.DataPropertyName = "Title"
+        Me.Title.FillWeight = 256.3954!
+        Me.Title.HeaderText = "Title"
+        Me.Title.Name = "Title"
+        Me.Title.ReadOnly = True
+        '
+        'GridCaption
+        '
+        Me.GridCaption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GridCaption.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.GridCaption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.GridCaption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCaption.ForeColor = System.Drawing.Color.Black
+        Me.GridCaption.Location = New System.Drawing.Point(209, 9)
+        Me.GridCaption.Margin = New System.Windows.Forms.Padding(0)
+        Me.GridCaption.Name = "GridCaption"
+        Me.GridCaption.Size = New System.Drawing.Size(729, 24)
+        Me.GridCaption.TabIndex = 54
+        Me.GridCaption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-        Me.ClientSize = New System.Drawing.Size(950, 544)
+        Me.ClientSize = New System.Drawing.Size(950, 523)
+        Me.Controls.Add(Me.GridCaption)
+        Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.SelectDate)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.SelectScore)
@@ -742,13 +726,11 @@ Public Class MainForm
         Me.Controls.Add(Me.btnLoad)
         Me.Controls.Add(Me.btnUpdate)
         Me.Controls.Add(Me.btnCancelAll)
-        Me.Controls.Add(Me.grdCompetition_Entries)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Menu = Me.MainMenu1
         Me.Name = "MainForm"
         Me.Text = "RPS Digital Competition Viewer"
-        CType(Me.grdCompetition_Entries, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.objSelectedPhotos, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -756,103 +738,46 @@ Public Class MainForm
 
 #End Region
 
-
-    Public Sub UpdateDataSet()
-        'Create a new dataset to hold the changes that have been made to the main dataset.
-        Dim objDataSetChanges As RPS_Digital_Viewer.SelectedPhotos = New RPS_Digital_Viewer.SelectedPhotos
-        'Stop any current edits.
-        Me.BindingContext(objSelectedPhotos, "Competition Entries").EndCurrentEdit()
-        'Get the changes that have been made to the main dataset.
-        objDataSetChanges = CType(objSelectedPhotos.GetChanges, RPS_Digital_Viewer.SelectedPhotos)
-        'Check to see if any changes have been made.
-        If (Not (objDataSetChanges) Is Nothing) Then
-            Try
-                'There are changes that need to be made, so attempt to update the datasource by
-                'calling the update method and passing the dataset and any parameters.
-                Me.UpdateDataSource(objDataSetChanges)
-                objSelectedPhotos.Merge(objDataSetChanges)
-                objSelectedPhotos.AcceptChanges()
-            Catch eUpdate As System.Exception
-                'Add your error handling code here.
-                ExceptionDispatchInfo.Capture(eUpdate).Throw()
-            End Try
-            'Add your code to check the returned dataset for any errors that may have been
-            'pushed into the row object's error.
-        End If
-
-    End Sub
-    Public Sub LoadDataSet()
-        'Create a new dataset to hold the records returned from the call to FillDataSet.
-        'A temporary dataset is used because filling the existing dataset would
-        'require the databindings to be rebound.
-        Dim objDataSetTemp As RPS_Digital_Viewer.SelectedPhotos
-        objDataSetTemp = New RPS_Digital_Viewer.SelectedPhotos
-        Try
-            'Attempt to fill the temporary dataset.
-            Me.FillDataSet(objDataSetTemp)
-        Catch eFillDataSet As System.Exception
-            'Add your error handling code here.
-            ExceptionDispatchInfo.Capture(eFillDataSet).Throw()
-        End Try
-        Try
-            grdCompetition_Entries.DataSource = Nothing
-            'Empty the old records from the dataset.
-            objSelectedPhotos.Clear()
-            'Merge the records into the main dataset.
-            objSelectedPhotos.Merge(objDataSetTemp)
-            grdCompetition_Entries.SetDataBinding(objSelectedPhotos, "Competition Entries")
-        Catch eLoadMerge As System.Exception
-            'Add your error handling code here.
-            ExceptionDispatchInfo.Capture(eLoadMerge).Throw()
-        End Try
-
-    End Sub
-    Public Sub UpdateDataSource(ByVal ChangedRows As RPS_Digital_Viewer.SelectedPhotos)
-        Try
-            'The data source only needs to be updated if there are changes pending.
-            If (Not (ChangedRows) Is Nothing) Then
-                'Open the connection.
-                Me.OleDbConnection1.Open()
-                'Attempt to update the data source.
-                OleDbDataAdapter1.Update(ChangedRows)
-            End If
-        Catch updateException As System.Exception
-            'Add your error handling code here.
-            ExceptionDispatchInfo.Capture(updateException).Throw()
-        Finally
-            'Close the connection whether or not the exception was thrown.
-            Me.OleDbConnection1.Close()
-        End Try
-
-    End Sub
-    Public Sub FillDataSet(ByVal dataSet As RPS_Digital_Viewer.SelectedPhotos)
-        'Turn off constraint checking before the dataset is filled.
-        'This allows the adapters to fill the dataset without concern
-        'for dependencies between the tables.
-        dataSet.EnforceConstraints = False
-        Try
-            'Open the connection.
-            Me.OleDbConnection1.Open()
-            'Attempt to fill the dataset through the OleDbDataAdapter1.
-            Me.OleDbDataAdapter1.Fill(dataSet)
-        Catch fillException As System.Exception
-            'Add your error handling code here.
-            ExceptionDispatchInfo.Capture(fillException).Throw()
-        Finally
-            'Turn constraint checking back on.
-            dataSet.EnforceConstraints = True
-            'Close the connection whether or not the exception was thrown.
-            Me.OleDbConnection1.Close()
-        End Try
-
-    End Sub
-
     Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim dirinfo As DirectoryInfo
         Try
             ' Set up the connection string for the database connection
             SetDatabaseName(databaseFileName)
             ' Load the user preferences from the registry
             LoadPreferences()
+
+            ' Setup Database Variables
+            connectionString = New EntityConnectionStringBuilder() With
+                {
+                    .Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
+                    .Provider = "System.Data.SQLite.EF6",
+                    .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() With
+                        {
+                            .DataSource = databaseFileName,
+                            .ForeignKeys = True
+                        }.ConnectionString
+                }.ConnectionString
+
+            rpsContext = New rpsEntities(connectionString)
+            If Not File.Exists(databaseFileName) Then
+                SQLite.SQLiteConnection.CreateFile(databaseFileName)
+                InitializaDatabase()
+            End If
+
+            dirinfo = New DirectoryInfo(imagesRootFolder)
+            If Not dirInfo.Exists Then
+                dirInfo.Create()
+            End If
+            dirinfo = New DirectoryInfo(reportsOutputFolder)
+            If Not dirInfo.Exists Then
+                dirInfo.Create()
+            End If
+
+            ' Setup Datagrid Styles
+            centerCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+            LoadClubRules()
+
             ' Initialize the StatusBar and ProgressBar
             InitializeStatusBar()
             StatusBar.progressBar.Value = 0
@@ -860,21 +785,109 @@ Public Class MainForm
             LoadCompDates()
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in MainForm_Load()")
+            MsgBox(ex.Message, , "Error In MainForm_Load()")
         End Try
+    End Sub
+
+    Private Sub InitializaDatabase()
+        query = "CREATE TABLE `medium` (
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+);
+CREATE TABLE 'club_medium' (
+	`club_id`	INTEGER Not NULL,
+	`medium_id`	INTEGER Not NULL,
+	`sort_key`	INTEGER DEFAULT 0,
+	PRIMARY KEY(club_id, medium_id),
+    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
+	FOREIGN KEY(`medium_id`) REFERENCES medium ( id )
+);
+CREATE TABLE 'club_classification' (
+	`club_id`	INTEGER Not NULL,
+	`classification_id`	INTEGER Not NULL,
+	`sort_key`	INTEGER DEFAULT 0,
+	PRIMARY KEY(club_id, classification_id),
+    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
+	FOREIGN KEY(`classification_id`) REFERENCES classification ( id )
+);
+CREATE TABLE 'club_award' (
+	`club_id`	INTEGER Not NULL,
+	`award_id`	INTEGER Not NULL,
+	`points`	INTEGER,
+	`sort_key`	INTEGER,
+	PRIMARY KEY(club_id, award_id),
+    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
+	FOREIGN KEY(`award_id`) REFERENCES award ( id )
+);
+CREATE TABLE 'club' (
+	`short_name`	TEXT,
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`min_score`	INTEGER DEFAULT 0,
+	`max_score`	INTEGER DEFAULT 0,
+	`min_score_for_award`	INTEGER DEFAULT 0
+);
+
+CREATE TABLE 'classification' (
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+);
+CREATE TABLE 'award' (
+	`name`	TEXT,
+	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+);
+CREATE TABLE 'CompetitionEntries' (
+	`Photo_ID`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,
+	`Title`	TEXT,
+	`Maker`	TEXT,
+	`Classification`	TEXT,
+	`Medium`	TEXT,
+	`Theme`	TEXT,
+	`Competition_Date_1`	TEXT,
+	`Score_1`	INTEGER DEFAULT 0,
+	`Award`	TEXT,
+	`Image_File_Name`	TEXT,
+	`Display_Sequence`	INTEGER DEFAULT 0,
+	`Server_Entry_ID`	INTEGER DEFAULT 0
+);
+"
+        rpsContext.Database.ExecuteSqlCommand(query)
+
+        query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);
+INSERT INTO `medium` (name,id) VALUES ('Color Prints',2);
+INSERT INTO `medium` (name,id) VALUES ('B&W Digital',3);
+INSERT INTO `medium` (name,id) VALUES ('B&W Prints',4);
+INSERT INTO `club` (short_name,name,id,min_score,max_score,min_score_for_award) VALUES ('RPS','Raritan Photographic Society',1,5,9,7);
+INSERT INTO `classification` (name,id) VALUES ('Beginner',1);
+INSERT INTO `classification` (name,id) VALUES ('Advanced',2);
+INSERT INTO `classification` (name,id) VALUES ('Salon',3);
+INSERT INTO `award` (name,id) VALUES ('1st',1);
+INSERT INTO `award` (name,id) VALUES ('2nd',2);
+INSERT INTO `award` (name,id) VALUES ('3rd',3);
+INSERT INTO `award` (name,id) VALUES ('HM',4);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,1,1);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,2,3);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,3,0);
+INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,4,2);
+INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,1,0);
+INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,2,1);
+INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,3,2);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,1,NULL,1);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,2,NULL,2);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,3,NULL,3);
+INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
+"
+        rpsContext.Database.ExecuteSqlCommand(query)
     End Sub
 
     Private Sub btnUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpdate.Click
         Try
-            'Attempt to update the datasource.
-            Me.UpdateDataSet()
-
             ' Recalculate the awards
             CalculateAwards()
         Catch eUpdate As System.Exception
             'Add your error handling code here.
             'Display error message, if any.
-            MsgBox(eUpdate.Message, , "Error in btnUpdate_Click()")
+            MsgBox(eUpdate.Message, , "Error In btnUpdate_Click()")
         End Try
 
     End Sub
@@ -885,7 +898,7 @@ Public Class MainForm
 
 
     Private Sub btnCancelAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelAll.Click
-        Me.objSelectedPhotos.RejectChanges()
+        'Me.objSelectedPhotos.RejectChanges()
 
     End Sub
     Private Sub btnSlideShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSlideShow.Click
@@ -896,24 +909,10 @@ Public Class MainForm
         PickAwards()
     End Sub
 
-
-    Private Sub FileCatalogImagesIndividual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompCatalogImagesIndividual.Click
-        CatalogIndividualImages()
-    End Sub
-
-    Private Sub FileCatalogImagesByFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompCatalogImagesByFolder.Click
-        CatalogImages()
-    End Sub
-
     Private Sub FileCatalogImagesDownload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompCatalogImagesDownload.Click
         DownloadCompetitionImages()
         LoadCompDates()
     End Sub
-
-    Private Sub FileCatalogCreateSeasonEndComp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompCreateSeasonEndComp.Click
-        CreateBestOfCompetition()
-    End Sub
-
     Private Sub FileUploadScores_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompUploadScores.Click
         UploadScores()
     End Sub
@@ -1014,17 +1013,12 @@ Public Class MainForm
 
     Private Sub MainForm_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Resize
         'GridResizeColumns(grdCompetition_Entries, 60, 0, 10, 10, 50, 30)
-        GridResizeColumns(grdCompetition_Entries, 60, 0, 15, 15, 70)
+        'GridResizeColumns(grdCompetition_Entries, 60, 0, 15, 15, 70)
     End Sub
 
     Private Sub FilePreferencesMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FilePreferencesMenu.Click
         GetUserPreferences()
     End Sub
-
-    Private Sub FileCreateSeasonEndMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        CreateBestOfCompetition()
-    End Sub
-
     Private Sub ReportsResultsReportMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReportsResultsReportMenu.Click
         ResultsReport(True)
     End Sub
@@ -1040,15 +1034,15 @@ Public Class MainForm
         Dim statusBarState As Integer
 
         ' Bail out if the dataset is empty
-        If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-            MsgBox("No competition has been loaded.", MsgBoxStyle.Exclamation, "Error in DoSlideShow()")
+        If DataGridView1.RowCount() <= 0 Then
+            MsgBox("No competition has been loaded.", MsgBoxStyle.Exclamation, "Error In DoSlideShow()")
             Exit Sub
         End If
 
         ' Display the splash screen if about to view all images in a competition starting
         ' from the beginning
         'If AllScoresRadioButton.Checked And grdCompetition_Entries.CurrentRowIndex <= 0 Then
-        If AllScoresSelected And grdCompetition_Entries.CurrentRowIndex <= 0 Then
+        If AllScoresSelected And DataGridView1.CurrentCell.RowIndex <= 0 Then
             showSplash = True
         Else
             showSplash = False
@@ -1066,15 +1060,22 @@ Public Class MainForm
             statusBarState = 0
         End If
 
-        Viewer = New ImageViewer(Me, objSelectedPhotos, grdCompetition_Entries.CurrentRowIndex, showSplash, statusBarState)
-        Viewer.setSizes()
+        Viewer = New ImageViewer(Me, entries, DataGridView1.CurrentCell.RowIndex, showSplash, statusBarState)
         Cursor.Hide()
         Viewer.ShowDialog()
         Cursor.Show()
         Try
             ' Attempt to update the datasource.
-            Me.UpdateDataSet()
+            DataGridView1.Refresh()
 
+            For Each entry As CompetitionEntry In entries
+                query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                rpsContext.Database.ExecuteSqlCommand(query,
+                                                      New SQLite.SQLiteParameter("@score", entry.Score_1),
+                                                      New SQLite.SQLiteParameter("@award", entry.Award),
+                                                      New SQLite.SQLiteParameter("@key", entry.Server_Entry_ID)
+                                                      )
+            Next
             ' If we've just completed entering scores, calculate the eligible awards
             'If AllScoresRadioButton.Checked Then
             If AllScoresSelected Then
@@ -1084,7 +1085,7 @@ Public Class MainForm
         Catch eUpdate As System.Exception
             'Add your error handling code here.
             'Display error message, if any.
-            MsgBox(eUpdate.Message, , "Error in DoSlideShow()")
+            MsgBox(eUpdate.Message, , "Error In DoSlideShow()")
         End Try
     End Sub
     '
@@ -1096,7 +1097,7 @@ Public Class MainForm
             d = Date.ParseExact(s, "dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
             Return d
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ParseSelectedDate()")
+            MsgBox(ex.Message, , "Error In ParseSelectedDate()")
             Return d
         End Try
     End Function
@@ -1106,8 +1107,8 @@ Public Class MainForm
         Dim Viewer As ThumbnailViewer
         Try
             ' Bail out if the dataset is empty
-            If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-                MsgBox("No images loaded.", MsgBoxStyle.Exclamation, "Error in PickAwards()")
+            If entries.Count <= 0 Then
+                MsgBox("No images loaded.", MsgBoxStyle.Exclamation, "Error In PickAwards()")
                 Exit Sub
             End If
 
@@ -1128,9 +1129,9 @@ Public Class MainForm
                 screenTitle = SelectClassification.Text + " " + SelectMedium.Text
             ElseIf EightsAndAwardsSelected Then
                 If numJudges > 1 Then
-                    screenTitle = "Award winners and images averaging 8 points or more"
+                    screenTitle = "Award winners And images averaging 8 points Or more"
                 Else
-                    screenTitle = "Award winners and images with 8 points or more"
+                    screenTitle = "Award winners And images With 8 points Or more"
                 End If
             ElseIf SelectedAvgScore > 0 Then
                 If SelectedAvgScore = 9 Then
@@ -1145,17 +1146,23 @@ Public Class MainForm
             End If
 
             ' Launch the thumbnail screen
-            Viewer = New ThumbnailViewer(Me, objSelectedPhotos, screenTitle)
-            Viewer.setSizes()
-            'Cursor.Hide()
+            Viewer = New ThumbnailViewer(Me, entries, screenTitle)
             Viewer.ShowDialog()
-            'Cursor.Show()
 
-            ' Write the results back to the database
-            Me.UpdateDataSet()
+            ' Attempt to update the datasource.
+            DataGridView1.Refresh()
+
+            For Each entry As CompetitionEntry In entries
+                query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                rpsContext.Database.ExecuteSqlCommand(query,
+                                                      New SQLite.SQLiteParameter("@score", entry.Score_1),
+                                                      New SQLite.SQLiteParameter("@award", entry.Award),
+                                                      New SQLite.SQLiteParameter("@key", entry.Server_Entry_ID)
+                                                      )
+            Next
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in PickAwards()")
+            MsgBox(ex.Message, , "Error In PickAwards()")
         End Try
     End Sub
 
@@ -1205,7 +1212,7 @@ Public Class MainForm
                 CheckFileName = True
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CheckFileName()")
+            MsgBox(ex.Message, , "Error In CheckFileName()")
             CheckFileName = False
         End Try
     End Function
@@ -1238,7 +1245,7 @@ Public Class MainForm
             ' Insert a new row in to the database table
             InsertImageIntoDatabase(file, maker, title, score, award, classification, medium, competitionDate, competitionTheme, "", 0)
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CatalogOneImage()")
+            MsgBox(ex.Message, , "Error In CatalogOneImage()")
         End Try
     End Sub
 
@@ -1256,7 +1263,7 @@ Public Class MainForm
             ByVal sequence As Integer)
 
         Dim relativePath As String
-        Dim dRow As DataRow
+        Dim entry As CompetitionEntry = New CompetitionEntry
 
         Try
             ' Calculate the relative path to the file.  The path is relative to the
@@ -1267,119 +1274,43 @@ Public Class MainForm
                 relativePath = file.FullName    ' Store absolute path if can't calculate relative path
             End If
 
-            ' Insert a new row in to the database table
-            dRow = objSelectedPhotos.Tables("Competition Entries").NewRow
-
             ' Fill in the field values
-            dRow("Title") = title
-            dRow("Maker") = maker
-            dRow("Classification") = classification
-            dRow("Medium") = medium
-            dRow("Theme") = competitionTheme
-            dRow("Competition Date 1") = competitionDate
-            dRow("Image File Name") = relativePath
+            entry.Title = title
+            entry.Maker = maker
+            entry.Classification = classification
+            entry.Medium = medium
+            entry.Theme = competitionTheme
+            entry.Competition_Date_1 = competitionDate
+            entry.Image_File_Name = relativePath
             If sequence = 0 Then
-                dRow("Display Sequence") = file.Length Mod 61
+                entry.Display_Sequence = file.Length Mod 61
             Else
-                dRow("Display Sequence") = sequence
+                entry.Display_Sequence = sequence
             End If
             If entry_id > "" Then
-                dRow("Server Entry ID") = entry_id
+                entry.Server_Entry_ID = entry_id
             Else
-                dRow("Server Entry ID") = DBNull.Value
+                entry.Server_Entry_ID = Nothing
             End If
             If score > "" Then
-                dRow("Score 1") = score
+                entry.Score_1 = score
             Else
-                dRow("Score 1") = DBNull.Value
+                entry.Score_1 = Nothing
             End If
             If award > "" Then
-                dRow("Award") = award
+                entry.Award = award
             Else
-                dRow("Award") = DBNull.Value
+                entry.Award = Nothing
             End If
 
             ' Add it to the database
-            objSelectedPhotos.Tables("Competition Entries").Rows.Add(dRow)
-            OleDbDataAdapter1.Update(objSelectedPhotos)
+            rpsContext.CompetitionEntries.Add(entry)
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in InsertImageInDatabase()")
+            MsgBox(ex.Message, , "Error In InsertImageInDatabase()")
         End Try
+        rpsContext.SaveChanges()
     End Sub
-
-    Private Sub CatalogImages()
-        Dim imageFileNames As New ArrayList
-        Dim Catalog_Dialog As New Catalog_Images_Dialog(Me, "Folder", imageFileNames)
-        Dim competitionDate As String
-        Dim competitionTheme As String
-        Dim medium As String
-        Dim classification As String
-        Dim folderPath As String
-        Dim DataGridCaptionText As String
-        Dim numSelected As Integer
-        Dim files As FileInfo()
-        Dim file_info As FileInfo
-
-        Try
-            ' Open the Catalog Images dialog
-            Catalog_Dialog.ShowDialog(Me)
-            If Catalog_Dialog.DialogResult = DialogResult.OK Then
-                competitionDate = Catalog_Dialog.dpCompetitionDate.Text()
-                competitionTheme = Trim(Catalog_Dialog.tbTheme.Text())
-                medium = Catalog_Dialog.cbMedium.Text()
-                classification = Catalog_Dialog.cbClassification.Text()
-                folderPath = Trim(Catalog_Dialog.tbNewImageFolder.Text())
-            Else
-                Exit Sub
-            End If
-
-            ' Make sure the folder exists
-            Dim dirInfo As New DirectoryInfo(folderPath)
-            If Not dirInfo.Exists Then
-                MsgBox("Folder """ + folderPath + """ doesn't exist", , "Error in FileCatalogImagesMenu_Click()")
-                Exit Sub
-            End If
-
-
-            ' Iterate though all the .jpg files in the folder
-            files = dirInfo.GetFiles    ' Get all files in the folder
-            StatusBar.progressBar.Minimum = 0
-            StatusBar.progressBar.Maximum = files.Length
-            StatusBar.progressBar.Value = 0
-
-            For Each file_info In files
-
-                If CheckFileName(File_info) Then
-                    CatalogOneImage(File_info, classification, medium, competitionDate, competitionTheme)
-                End If
-
-                ' Update the Progressbar
-                StatusBar.progressBar.Value = StatusBar.progressBar.Value + 1
-                Application.DoEvents()
-            Next
-            ' Clear the ProgressBar
-            StatusBar.progressBar.Value = 0
-
-            ' Count the number of rows selected and add it to the caption of the DataGrid
-            SelectDate.Text = Format(Date.Parse(competitionDate), "dd-MMM-yyyy")
-            SelectClassification.Text = classification
-            SelectMedium.Text = medium
-
-            numSelected = objSelectedPhotos.Tables("Competition Entries").Rows.Count
-
-            DataGridCaptionText = competitionDate + " - " + SelectClassification.Text + " / " + SelectMedium.Text
-            grdCompetition_Entries.CaptionText = DataGridCaptionText + " - " +
-                numSelected.ToString + " Images"
-
-            ' Update the list of dates in the Competition Date combobox
-            LoadCompDates()
-
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CatalogImages()")
-        End Try
-    End Sub
-
 
     Private Function MaxAwards(ByVal numImages As Double) As Integer
         Try
@@ -1398,66 +1329,52 @@ Public Class MainForm
         Dim select_stmt As String
         Dim where_clause As String
         Dim order_clause As String
-        Dim DataGridCaptionText As String
 
         If SelectDate.Text > "" And SelectMedium.Text > "" And SelectClassification.Text > "" Then
             Try
                 ' Build the complete SQL statement to select the records specified
                 ' by the selection criteria on the main form.
                 ' Start with a basic SQL statement that selects records by date.
-                select_stmt = "SELECT Award, Classification, [Competition Date 1], [Display Sequence], [Image File Name], Maker, Medium, Photo_ID, [Score 1], [Server Entry ID], Theme, Title FROM [Competition Entries]"
-                where_clause = " WHERE [Competition Date 1]=#" + Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy") + "#"
-                order_clause = " ORDER BY [Display Sequence], Title"
-                DataGridCaptionText = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy") + "                    "
+                select_stmt = "SELECT * FROM CompetitionEntries"
+                where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") + "'"
+                order_clause = " ORDER BY Display_Sequence, Title"
+                GridCaption.Text = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
 
+                'Dim q As System.Linq.IQueryable(Of CompetitionEntry)
+                'q = From entry In rpsContext.CompetitionEntries
+                'Select Case entry.Award, entry.Classification, entry.Competition_Date_1, entry.Display_Sequence, entry.Image_File_Name, entry.Maker, entry.Medium, entry.Photo_ID, entry.Score_1, entry.Server_Entry_ID, entry.Theme, entry.Title
+
+                'q = q.Where(Function(entry) entry.Competition_Date_1 = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy"))
                 ' If enabled, add the value of the Classification field to the selection criteria
                 If EnableClassification.CheckState = CheckState.Checked Then
-                    If SelectClassification.Text > "" Then
-                        where_clause += " AND Classification='" + SelectClassification.Text + "'"
-                        DataGridCaptionText += SelectClassification.Text
-                        If EnableMedium.CheckState = CheckState.Checked Then
-                            DataGridCaptionText += " / "
-                        End If
+                    where_clause += " AND Classification='" + SelectClassification.Text + "'"
+                    GridCaption.Text += "  -  " + SelectClassification.Text
+                    If EnableMedium.CheckState = CheckState.Checked Then
+                        GridCaption.Text += " / "
                     End If
                 End If
 
                 ' If enabled, add the value of the Medium field to the selection criteria
                 If EnableMedium.CheckState = CheckState.Checked Then
-                    If SelectMedium.Text > "" Then
-                        where_clause += " AND Medium='" + SelectMedium.Text + "'"
-                        DataGridCaptionText += SelectMedium.Text
+                    If EnableClassification.CheckState = CheckState.Unchecked Then
+                        GridCaption.Text += "  -  "
                     End If
+                    where_clause += " AND Medium='" + SelectMedium.Text + "'"
+                    GridCaption.Text += SelectMedium.Text
                 End If
 
-                ' If one of the Score radio buttons, other than "All", is selected in the SelectScore
-                ' group, update the WHERE clause to include the score criterion
-                'If Not AllScoresRadioButton.Checked Then
-                '    If NineScoreRadioButton.Checked Then
-                '        where_clause += " AND [Score 1]=9"
-                '        DataGridCaptionText += " (9 points only)"
-                '    ElseIf EightScoreRadioButton.Checked Then
-                '        where_clause += " AND [Score 1]=8"
-                '        DataGridCaptionText += " (8 points only)"
-                '    ElseIf SevenScoreRadioButton.Checked Then
-                '        where_clause += " AND [Score 1]=7"
-                '        DataGridCaptionText += " (7 points only)"
-                '    ElseIf EightsAndAwardsRadioButton.Checked Then
-                '        where_clause += " AND ((Not Award Is Null) OR ([Score 1]>=8 AND Award Is Null))"
-                '        order_clause = " ORDER BY IIf(IsNull(Award), ""Null"", Award) DESC, [Score 1] ASC"
-                '        DataGridCaptionText += " (8s and Awards)"
-                '    End If
-                'End If
                 If Not AllScoresSelected Then
                     If EightsAndAwardsSelected Then
-                        where_clause += " AND ((Not Award Is Null) OR (round([Score 1]/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
-                        order_clause = " ORDER BY IIf(IsNull(Award), ""Null"", Award) DESC, [Score 1] ASC"
-                        DataGridCaptionText += " (8s and Awards)"
+                        where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
+                        ' "CASE WHEN Award is NULL THEN 0 ELSE 1 END" Ensure the NULL values are shown first.
+                        order_clause = " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
+                        GridCaption.Text += " (8s and Awards)"
                     ElseIf SelectedAvgScore > 0 Then
-                        where_clause += " AND round([Score 1]/" + CType(numJudges, String) + ", 0) = " + CType(SelectedAvgScore, String)
-                        DataGridCaptionText += " (Avg of " + CType(SelectedAvgScore, String) + " points)"
+                        where_clause += " AND round(Score_1/" + CType(numJudges, String) + ", 0) = " + CType(SelectedAvgScore, String)
+                        GridCaption.Text += " (Avg of " + CType(SelectedAvgScore, String) + " points)"
                     Else
-                        where_clause += " AND [Score 1]=" + CType(SelectedScore, String)
-                        DataGridCaptionText += " (" + CType(SelectedScore, String) + " points only)"
+                        where_clause += " AND Score_1=" + CType(SelectedScore, String)
+                        GridCaption.Text += " (" + CType(SelectedScore, String) + " points only)"
                     End If
                 End If
 
@@ -1472,20 +1389,25 @@ Public Class MainForm
                 If EnableAward.CheckState = CheckState.Checked Then
                     If SelectAward.Text > "" Then
                         where_clause += " AND Award='" + SelectAward.Text + "'"
-                        DataGridCaptionText += SelectAward.Text + " only"
+                        GridCaption.Text += SelectAward.Text + " only"
                     End If
                 End If
 
                 ' Install the updated SQL SELECT statement
-                OleDbSelectCommand1.CommandText = select_stmt + where_clause + order_clause
+                query = select_stmt + where_clause + order_clause
+                entries = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
 
-                ' Attempt to load the dataset.
-                Me.LoadDataSet()
+                With DataGridView1
+                    .Columns("Score").DefaultCellStyle = centerCellStyle
+                    .Columns("Award").DefaultCellStyle = centerCellStyle
+                    .AutoGenerateColumns = False
+                    .DataSource = entries
+                End With
 
                 ' Count the number of rows selected and add it to the caption of the DataGrid
-                numSelected = objSelectedPhotos.Tables("Competition Entries").Rows.Count
+                numSelected = DataGridView1.RowCount()
 
-                grdCompetition_Entries.CaptionText = DataGridCaptionText + "                   " + numSelected.ToString + " Images"
+                GridCaption.Text += "  -  " + numSelected.ToString + " Images"
 
                 ' Recalculate the awards
                 'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
@@ -1506,26 +1428,26 @@ Public Class MainForm
     Private Sub CalculateAwards()
         Dim eligibleScores As New System.Collections.ArrayList
         Dim maximumAwards As Integer
-        Dim dRow As DataRow
+        Dim dRow As CompetitionEntry
         Dim i As Integer
         Dim numEligibleNines As Integer
         Dim numEligibleEights As Integer
         Dim numEligibleSevens As Integer
         Dim totalNumScores As Integer
-        Dim awardNames() As String = {"1st", "2nd", "3rd", "HM"}
+        Dim awardNames() As String = {"1St", "2nd", "3Rd", "HM"}
         Dim delim_9, delim_8, delim_7 As String
         Dim numNineHM, numEightHM, numSevenHM As Integer
 
         Try
             ' What is the maximum number of Awards possible
-            maximumAwards = MaxAwards(CType(objSelectedPhotos.Tables("Competition Entries").Rows.Count, Double))
+            maximumAwards = MaxAwards(CType(entries.Count, Double))
 
             ' Iterate through the dataset and record all the scores which are eligible for an award
-            For Each dRow In objSelectedPhotos.Tables("Competition Entries").Rows
-                If Not dRow("Score 1") Is DBNull.Value Then
+            For Each dRow In entries
+                If IsNumeric(dRow.Score_1) Then
                     totalNumScores = totalNumScores + 1
-                    If dRow("Score 1") >= (minScoreForAward * numJudges) And dRow("Score 1") <= (maxScore * numJudges) Then
-                        eligibleScores.Add(dRow("Score 1"))
+                    If dRow.Score_1 >= (minScoreForAward * numJudges) And dRow.Score_1 <= (maxScore * numJudges) Then
+                        eligibleScores.Add(dRow.Score_1)
                     End If
                 End If
             Next
@@ -1577,7 +1499,7 @@ Public Class MainForm
             ' Update the 9 point thumbnail screen title to include the HMs
             If numNineHM > 0 Then
                 If ninePointThumbViewTitle > "" Then
-                    ninePointThumbViewTitle += " and "
+                    ninePointThumbViewTitle += " And "
                 End If
                 If numNineHM = 1 Then
                     ninePointThumbViewTitle += "1 HM"
@@ -1589,7 +1511,7 @@ Public Class MainForm
             ' Update the 8 point thumbnail screen title to include the HMs
             If numEightHM > 0 Then
                 If eightPointThumbViewTitle > "" Then
-                    eightPointThumbViewTitle += " and "
+                    eightPointThumbViewTitle += " And "
                 End If
                 If numEightHM = 1 Then
                     eightPointThumbViewTitle += "1 HM"
@@ -1601,7 +1523,7 @@ Public Class MainForm
             ' Update the 7 point thumbnail screen title to include the HMs
             If numSevenHM > 0 Then
                 If sevenPointThumbViewTitle > "" Then
-                    sevenPointThumbViewTitle += " and "
+                    sevenPointThumbViewTitle += " And "
                 End If
                 If numSevenHM = 1 Then
                     sevenPointThumbViewTitle += "1 HM"
@@ -1638,7 +1560,7 @@ Public Class MainForm
             tbEligibleSevens.Text = numEligibleSevens.ToString
 
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CalculateAwards()")
+            MsgBox(ex.Message, , "Error In CalculateAwards()")
         End Try
     End Sub
 
@@ -1647,19 +1569,19 @@ Public Class MainForm
         Dim tempFile As String
         Dim reportType As String
         Dim competitionDate As Date
-        Dim img As DataRow
+        Dim img As CompetitionEntry
         Dim f As System.IO.File
         Dim sw As System.IO.StreamWriter
         Try
             ' Bail out if the dataset is empty
-            If objSelectedPhotos.Tables("Competition Entries").Rows.Count <= 0 Then
-                MsgBox("No images selected." + vbCrLf + "Select one or more images before running the report",
-                    MsgBoxStyle.Exclamation, "Error in ResultsReport()")
+            If entries.Count <= 0 Then
+                MsgBox("No images selected." + vbCrLf + "Select one Or more images before running the report",
+                    MsgBoxStyle.Exclamation, "Error In ResultsReport()")
                 Exit Sub
             End If
 
             ' Grab the first row of the collection to get some values for the report header
-            img = objSelectedPhotos.Tables("Competition Entries").Rows(0)
+            img = entries.First
 
             ' Open the output file and write the HTML preamble
             'competitionDate = CType(SelectDate.Text, Date)
@@ -1784,24 +1706,24 @@ Public Class MainForm
             End If
             sw.WriteLine("</p></td></tr>")
             If Not displayScores Then
-                sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">(" + MaxAwards(objSelectedPhotos.Tables("Competition Entries").Rows.Count).ToString + " Awards)</p></td></tr>")
+                sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">(" + MaxAwards(entries.Count).ToString + " Awards)</p></td></tr>")
             End If
             sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">&nbsp;</p></td></tr>")
             sw.WriteLine("<tr><th>Score</th><th>Award</th>")
             sw.WriteLine("<th>Title</th><th>Photographer</th></tr>")
             '
             ' Print a row for each image in the category
-            For Each img In objSelectedPhotos.Tables("Competition Entries").Rows
+            For Each img In entries
                 sw.WriteLine("<tr>")
                 If displayScores Then
-                    sw.WriteLine("  <td class=""score"">" + GetDBStringField(img, "Score 1", "&nbsp;") + "</td>")
-                    sw.WriteLine("  <td class=""award"">" + GetDBStringField(img, "Award", "&nbsp;") + "</td>")
+                    sw.WriteLine("  <td class=""score"">" + img.Score_1.ToString + "</td>")
+                    sw.WriteLine("  <td class=""award"">" + img.Award + "</td>")
                 Else
                     sw.WriteLine("  <td class=""score"">&nbsp;</td>")
                     sw.WriteLine("  <td class=""award"">&nbsp;</td>")
                 End If
-                sw.WriteLine("  <td class=""title"">" + GetDBStringField(img, "Title", "&npsp;") + "</td>")
-                sw.WriteLine("  <td class=""photographer"">" + GetDBStringField(img, "Maker", "&npsp;") + "</td>")
+                sw.WriteLine("  <td class=""title"">" + img.Title + "</td>")
+                sw.WriteLine("  <td class=""photographer"">" + img.Maker + "</td>")
                 sw.WriteLine("</tr>")
             Next img
             '
@@ -1885,7 +1807,12 @@ Public Class MainForm
             End If
             prefsDialog.tbServerName.Text = ServerName
             prefsDialog.tbServerScriptDir.Text = ServerScriptDir
-            LoadKeyValueListFromDatabase(prefsDialog.cbCameraClubName, "SELECT id, name FROM club")
+            query = From club In rpsContext.clubs
+                    Select club.id, club.name
+
+            For Each record In query
+                prefsDialog.cbCameraClubName.Items.Add(New DataItem(record.id, record.name))
+            Next
             prefsDialog.cbCameraClubName.Text = cameraClubName
             prefsDialog.cbNumJudges.Text = CType(numJudges, String)
 
@@ -1904,11 +1831,7 @@ Public Class MainForm
             If prefsDialog.DialogResult = DialogResult.OK Then
                 If irf > "" Then
                     ' If necessary, strip off a trailing "\"
-                    If InStrRev(irf, "\") = Len(irf) Then
-                        imagesRootFolder = Mid(irf, 1, Len(irf) - 1)
-                    Else
-                        imagesRootFolder = irf
-                    End If
+                    imagesRootFolder = Helper.TrimTrailingSlash(imagesRootFolder)
                     ' write it to the registry
                     WriteRegistryString("Software\RPS Digital Viewer", "Images Root Folder", imagesRootFolder)
                 End If
@@ -1920,11 +1843,8 @@ Public Class MainForm
                 End If
                 If rof > "" Then
                     ' If necessary, strip off a trailing "\"
-                    If InStrRev(rof, "\") = Len(rof) Then
-                        reportsOutputFolder = Mid(rof, 1, Len(rof) - 1)
-                    Else
-                        reportsOutputFolder = rof
-                    End If
+                    reportsOutputFolder = Helper.TrimTrailingSlash(reportsOutputFolder)
+
                     ' write it to the registry
                     WriteRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reportsOutputFolder)
                 End If
@@ -1970,8 +1890,6 @@ Public Class MainForm
     Private Sub SetDatabaseName(ByVal fileName As String)
         Try
             databaseFileName = fileName
-            OleDbConnection1.ConnectionString =
-                connectStringEpilog + fileName + connectStringProlog
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in SetDatabasename()")
         End Try
@@ -2056,8 +1974,6 @@ Public Class MainForm
                 numJudges = value
             End If
 
-            LoadClubRules()
-
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in LoadPreferences()")
         End Try
@@ -2075,41 +1991,57 @@ Public Class MainForm
             ' Fetch the list of club classifications from the database
             classifications.Clear()
             SelectClassification.Items.Clear()     ' remove any items in the classifications combobox
-            LoadStringListFromDatabase(classifications, "SELECT c.name FROM club a, club_classification b, classification c WHERE a.id=b.club_id AND b.classification_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
-            For Each s As String In classifications
-                SelectClassification.Items.Add(s)
+            query = From c In rpsContext.classifications
+                    From b In rpsContext.club_classification
+                    From a In rpsContext.clubs
+                    Where a.id = cameraClubId AndAlso b.classification_id = c.id
+                    Select c.name
+
+            For Each record In query
+                classifications.Add(record)
+                SelectClassification.Items.Add(record)
             Next
             SelectClassification.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the list of club mediums from the database
             mediums.Clear()
             SelectMedium.Items.Clear()     ' remove any items in the mediums combobox
-            LoadStringListFromDatabase(mediums, "SELECT c.name FROM club a, club_medium b, medium c WHERE a.id=b.club_id AND b.medium_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
-            For Each s As String In mediums
-                SelectMedium.Items.Add(s)
+            query = From c In rpsContext.media
+                    From b In rpsContext.club_medium
+                    From a In rpsContext.clubs
+                    Where a.id = cameraClubId AndAlso b.medium_id = c.id
+                    Order By b.sort_key
+                    Select c.name
+
+            For Each record In query
+                mediums.Add(record)
+                SelectMedium.Items.Add(record)
             Next
             SelectMedium.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the list of club awards from the database
             awards.Clear()
             SelectAward.Items.Clear()
-            LoadStringListFromDatabase(awards, "SELECT c.name FROM club a, club_award b, award c WHERE a.id=b.club_id AND b.award_id=c.id AND a.id=" + CType(cameraClubId, String) + " ORDER BY b.sort_key")
-            For Each s As String In awards
-                SelectAward.Items.Add(s)
+            query = From c In rpsContext.awards
+                    From b In rpsContext.club_award
+                    From a In rpsContext.clubs
+                    Where a.id = cameraClubId AndAlso b.award_id = c.id
+                    Select c.name Distinct
+
+            For Each record In query
+                awards.Add(record)
+                SelectAward.Items.Add(record)
             Next
             SelectAward.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the club's min and max scores from the database
-            Dim sql As String
-            sql = "SELECT min_score, max_score, min_score_for_award FROM club WHERE id=" + CType(cameraClubId, String)
-            rec = SqlSelect("SELECT min_score, max_score, min_score_for_award FROM club WHERE id=" + CType(cameraClubId, String))
-            If Not rec Is Nothing Then
-                rec.Read()
-                minScore = rec.GetInt16(0)
-                maxScore = rec.GetInt16(1)
-                minScoreForAward = rec.GetInt16(2)
-            End If
-            OleDbConnection1.Close()
+            record = (From club In rpsContext.clubs
+                      Where club.id = cameraClubId
+                      Select club.max_score, club.min_score, club.min_score_for_award).SingleOrDefault
+
+            minScore = record.min_score
+            maxScore = record.max_score
+            minScoreForAward = record.min_score_for_award
             ' Fill the SelectScore combobox
             SelectScore.Items.Clear()
             SelectScore.Items.Add("All")
@@ -2128,7 +2060,10 @@ Public Class MainForm
     ' Load the list of unique competition dates into the Competition Dates combobox
     '
     Private Sub LoadCompDates()
-        Dim recs As OleDbDataReader
+
+        query = From entries In rpsContext.CompetitionEntries
+                Order By entries.Competition_Date_1
+                Select entries.Competition_Date_1 Distinct
 
         Try
             ' Empty the list if it's not already empty
@@ -2136,123 +2071,21 @@ Public Class MainForm
                 SelectDate.Items.Clear()
             End If
 
-            ' Load the list of unique competition dates into the combobox
-            recs = SqlSelect("SELECT DISTINCT [Competition Date 1] FROM [Competition Entries] ORDER BY [Competition Date 1] DESC")
-            If Not recs Is Nothing Then
-                While recs.Read
-                    SelectDate.Items.Add(Format(recs.GetDateTime(0), "dd-MMM-yyyy"))
-                End While
-            End If
-            OleDbConnection1.Close()
+            For Each record In query
+                Dim item As DateTime
+                item = Convert.ToDateTime(record)
 
+                SelectDate.Items.Add(item.ToString("dd-MMM-yyyy"))
+            Next
             ' Select the first item in the list
             If SelectDate.Items.Count > 0 Then
                 SelectDate.SelectedIndex = 0
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadCompDates()")
+            MsgBox(ex.Message, , "Error In LoadCompDates()")
         End Try
 
     End Sub
-
-    Private Sub CreateBestOfCompetition()
-        Dim seasonEnd As New BestOfDialog(Me)
-        Dim seasonEndDate As Date
-        Dim startDate As Date
-        Dim endDate As Date
-        Dim theme As String
-        Dim i As Integer
-        Dim delim As String
-        Dim sqlInsert As String = "INSERT INTO [Competition Entries] (Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],[Score 1],[Server Entry ID],[Competition Date 1],Theme) "
-        'Dim sqlSelect As String = "SELECT Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],NULL,[Server Entry ID]"
-        Dim sqlSelect As String = "SELECT Title,Maker,Classification,Medium,[Image File Name],[Display Sequence],[Score 1],[Server Entry ID]"
-        Dim sqlWhere As String = "WHERE Award IN ("
-        Dim sqlOrderBy As String = "ORDER BY Classification"
-        Dim sqlCommand As New OleDbCommand
-
-        Try
-            seasonEnd.ShowDialog()
-            If seasonEnd.DialogResult = DialogResult.OK Then
-
-                ' Get the dates entered into the dialog
-                seasonEndDate = seasonEnd.dtSeasonEndDate.Value
-                startDate = seasonEnd.dtStartDate.Value
-                endDate = seasonEnd.dtEndDate.Value
-                theme = seasonEnd.tbTheme.Text
-                For i = 0 To seasonEnd.lbSelectedAwards.SelectedItems.Count - 1
-                    sqlWhere += delim + "'" + seasonEnd.lbSelectedAwards.SelectedItems.Item(i) + "'"
-                    delim = ","
-                Next
-                sqlWhere += ") "
-
-                ' Customize the SQL INSERT command
-                sqlSelect = sqlSelect + ",""" + seasonEndDate.ToShortDateString + """,""" + theme + """ FROM [Competition Entries] "
-                sqlWhere = sqlWhere + "AND [Competition Date 1] >= #" + startDate.ToShortDateString + "# AND [Competition Date 1] <= #" + endDate.ToShortDateString + "# "
-
-                ' Execute the SQL statement
-                sqlCommand.Connection = OleDbConnection1
-                OleDbConnection1.Open()
-                sqlCommand.CommandText = sqlInsert + sqlSelect + sqlWhere + sqlOrderBy
-                sqlCommand.ExecuteNonQuery()
-                OleDbConnection1.Close()
-
-                ' Update the Themes combobox
-                LoadUniqueThemes()
-                '
-                MsgBox("BestOf Competition Created.", MsgBoxStyle.Information, "Create Year End Competition")
-
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in CreateBestOfCompetition()")
-        Finally
-            If OleDbConnection1.State = ConnectionState.Open Then
-                OleDbConnection1.Close()
-            End If
-        End Try
-    End Sub
-
-    Public Sub CatalogIndividualImages()
-        Dim competitionDate As Date
-        Dim competitionTheme As String
-        Dim medium As String
-        Dim classification As String
-        Dim fileNames As New ArrayList
-        Dim fileName As String
-        Dim Catalog_Dialog As New Catalog_Images_Dialog(Me, "Files", fileNames)
-        Dim fields()
-
-        ' Open the  Catalog Images dialog
-        Catalog_Dialog.ShowDialog(Me)
-        If Catalog_Dialog.DialogResult = DialogResult.OK Then
-            competitionDate = Catalog_Dialog.dpCompetitionDate.Text()
-            competitionTheme = Trim(Catalog_Dialog.tbTheme.Text())
-            medium = Catalog_Dialog.cbMedium.Text()
-            classification = Catalog_Dialog.cbClassification.Text()
-            ' Did the user manually type a file name into the text box?
-            If fileNames.Count = 0 And Trim(Catalog_Dialog.tbNewImageFolder.Text) > "" Then
-                ' Yes, parse the names out of the text box
-                fields = Split(Trim(Catalog_Dialog.tbNewImageFolder.Text), ";")
-                For Each fileName In fields
-                    fileNames.Add(Trim(fileName))
-                Next
-            End If
-        Else
-            Exit Sub
-        End If
-
-        ' Store each image in the database
-        For Each fileName In fileNames
-            Dim file As New FileInfo(fileName)
-            If CheckFileName(file) Then
-                CatalogOneImage(file, classification, medium, competitionDate, competitionTheme)
-            End If
-        Next
-
-        ' Update the list of dates in the Competition Date combobox
-        LoadCompDates()
-
-    End Sub
-
     ' Call the REST service on the server to retrieve the list of available
     ' competition dates.
     Private Function GetCompetitionDates(ByVal params As Hashtable) As ArrayList
@@ -2264,7 +2097,8 @@ Public Class MainForm
 
         Try
             ' Retrieve the list of competition dates from the server
-            If REST(ServerName, ServerScriptDir + "/?rpswinclient=getcompdata", "GET", params, response) Then
+            params.Add("rpswinclient", "getcompdate")
+            If REST(ServerName, ServerScriptDir, "GET", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/Competition_Date")
                 While nodes.MoveNext()
@@ -2380,25 +2214,24 @@ Public Class MainForm
 
             ' Delete any competitions in the local database that already have this date
             dateParts = Split(comp_date, "-")
-            sql = "DELETE FROM [Competition Entries] WHERE [Competition Date 1] = " +
-                "#" + dateParts(1) + "/" + dateParts(2) + "/" + dateParts(0) + "#"
+            Dim d As Date
+            d = Date.ParseExact(comp_date, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture)
+            sql = "DELETE FROM CompetitionEntries WHERE Competition_Date_1 = '" +
+                Format(d, "M/dd/yyyy") + "'"
             If download_digital And Not download_prints Then
                 sql += " AND Medium like '%Digital'"
             End If
             If download_prints And Not download_digital Then
                 sql += " AND Medium like '%Prints'"
             End If
-            sqlCommand.Connection = OleDbConnection1
-            OleDbConnection1.Open()
-            sqlCommand.CommandText = sql
-            sqlCommand.ExecuteNonQuery()
-            OleDbConnection1.Close()
 
+            query = rpsContext.Database.ExecuteSqlCommand(sql)
             Application.DoEvents()
 
             ' Retrieve the competition Manifest from the server
             Cursor.Current = Cursors.WaitCursor
             params.Clear()
+            params.Add("rpswinclient", "download")
             params.Add("username", username)
             params.Add("password", password)
             params.Add("comp_date", comp_date)
@@ -2408,7 +2241,7 @@ Public Class MainForm
             If download_prints And Not download_digital Then
                 params.Add("medium", "prints")
             End If
-            If Not REST(ServerName, ServerScriptDir + "/?rpswinclient=download", "POST", params, response) Then
+            If Not REST(ServerName, ServerScriptDir, "POST", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
                 nodes.MoveNext()
@@ -2697,7 +2530,8 @@ Public Class MainForm
             'End If
 
             ' Parse the status out of the xml response
-            XPathDoc = New XPathDocument(response.GetResponseStream())
+            Dim response_stream As Stream = response.GetResponseStream()
+            XPathDoc = New XPathDocument(response_stream)
             If responseOK(XPathDoc) Then
                 REST = True
             Else
@@ -2770,29 +2604,6 @@ Public Class MainForm
         End Try
     End Sub
 
-    Private Function MD5Hash(ByVal SourceText As String) As String
-        Dim MD5 As New MD5CryptoServiceProvider
-        Dim ENC As New UTF8Encoding
-        Dim HashArray As Byte()
-        Dim sb As New StringBuilder
-        Dim i As Integer
-
-        Try
-            HashArray = MD5.ComputeHash(ENC.GetBytes(SourceText))
-            For i = 0 To HashArray.Length - 1
-                sb.AppendFormat("{0:x2}", HashArray(i))
-            Next
-            MD5Hash = sb.ToString()
-
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in MD5Hash()")
-            MD5Hash = ""
-        Finally
-            ENC = Nothing
-            MD5 = Nothing
-        End Try
-    End Function
-
     ' Map characters within a string.  Replace all occurrances of each character in
     ' MapWhat with the corresponding character in toWhat.
     '
@@ -2858,9 +2669,8 @@ Public Class MainForm
         Dim comp_medium_list As New ArrayList
         Dim sqlSelect As String
         Dim sqlWhere As String
-        Dim sqlOrderBy As String
         Dim sqlCommand As New OleDbCommand
-        Dim recs As OleDbDataReader
+        Dim recs As Object
         Dim compNum As Integer
         Dim classification As String
         Dim medium As String
@@ -2923,10 +2733,6 @@ Public Class MainForm
             sw.WriteLine("<?xml version=""1.0"" encoding=""utf-8"" ?>")
             sw.WriteLine("<Competitions>")
 
-            ' Get ready to start querying the Access database
-            sqlCommand.Connection = OleDbConnection1
-            OleDbConnection1.Open()
-
             ' Select the unique competitions for the given date
             selectedMedium = ""
             If upload_digital And Not upload_prints Then
@@ -2935,25 +2741,29 @@ Public Class MainForm
             If upload_prints And Not upload_digital Then
                 selectedMedium = " AND Medium like '%Prints'"
             End If
-            sqlSelect = "SELECT DISTINCT Classification, Medium FROM [Competition Entries] "
-            sqlWhere = "WHERE [Competition Date 1] = #" + comp_date + "#" + selectedMedium
-            sqlCommand.CommandText = sqlSelect + sqlWhere
-            recs = sqlCommand.ExecuteReader()
-            While recs.Read
-                comp_class_list.Add(recs.GetString(0))
-                comp_medium_list.Add(recs.GetString(1))
-            End While
-            recs.Close()
+            '@TODO Fix
+            Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture)
+            sqlSelect = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
+            sqlWhere = "WHERE Competition_Date_1 = '" +
+                Format(d, "M/dd/yyyy") + "'" +
+                selectedMedium
+            query = sqlSelect + sqlWhere
+            recs = rpsContext.Database.SqlQuery(Of UploadEntity_Classification_Medium)(query).ToList
+
+            For Each record As UploadEntity_Classification_Medium In recs
+                comp_class_list.Add(record.Classification)
+                comp_medium_list.Add(record.Medium)
+            Next
 
             ' Iterate through all the competition for this date
             For compNum = 0 To comp_class_list.Count - 1
                 ' Query the database for the entries of this competition
                 classification = comp_class_list.Item(compNum)
                 medium = comp_medium_list.Item(compNum)
-                sqlSelect = "SELECT Maker, Title, [Score 1], Award, [Server Entry ID] FROM [Competition Entries] "
-                sqlWhere = "WHERE [Competition Date 1] = #" + comp_date + "# AND Classification = '" + classification + "' AND Medium = '" + medium + "'"
-                sqlCommand.CommandText = sqlSelect + sqlWhere
-                recs = sqlCommand.ExecuteReader()
+                sqlSelect = "Select * FROM CompetitionEntries "
+                sqlWhere = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" + classification + "' AND Medium = '" + medium + "'"
+                query = sqlSelect + sqlWhere
+                recs = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
                 ' Output the tags that describe this competition
                 sw.WriteLine("  <Competition>")
                 sw.WriteLine("    <Date>{0}</Date>", HttpUtility.HtmlEncode(comp_date))
@@ -2961,28 +2771,28 @@ Public Class MainForm
                 sw.WriteLine("    <Medium>{0}</Medium>", HttpUtility.HtmlEncode(medium))
                 sw.WriteLine("    <Entries>")
                 ' Iterate through all the entries of this competition
-                While recs.Read
+                For Each record As CompetitionEntry In recs
                     ' Read the entry data from the database
-                    maker = recs.GetString(0)
+                    maker = record.Maker
                     'fields = Split(maker, " ")
                     posn = InStr(1, maker, " ")
                     firstName = Mid(maker, 1, posn - 1)
                     lastName = Mid(maker, posn + 1)
-                    title = recs.GetString(1)
-                    If Not recs.IsDBNull(2) Then
-                        score = recs.GetInt32(2).ToString()
-                    Else
+                    title = record.Title
+                    If IsNothing(record.Score_1) Then
                         score = ""
-                    End If
-                    If Not recs.IsDBNull(3) Then
-                        award = recs.GetString(3)
                     Else
+                        score = record.Score_1.ToString()
+                    End If
+                    If IsNothing(record.Award) Then
                         award = ""
-                    End If
-                    If Not recs.IsDBNull(4) Then
-                        entry_id = recs.GetInt32(4)
                     Else
+                        award = record.Award
+                    End If
+                    If IsNothing(record.Server_Entry_ID) Then
                         entry_id = ""
+                    Else
+                        entry_id = record.Server_Entry_ID
                     End If
                     ' Write this entry to the xml file
                     sw.WriteLine("      <Entry>")
@@ -2993,18 +2803,14 @@ Public Class MainForm
                     sw.WriteLine("        <Score>{0}</Score>", HttpUtility.HtmlEncode(score))
                     sw.WriteLine("        <Award>{0}</Award>", HttpUtility.HtmlEncode(award))
                     sw.WriteLine("      </Entry>")
-                End While
+                Next
                 ' Close out this competition
-                recs.Close()
                 sw.WriteLine("    </Entries>")
                 sw.WriteLine("  </Competition>")
             Next
             ' Close out the xml file
             sw.WriteLine("</Competitions>")
             sw.Close()
-
-            ' Close the database connection
-            OleDbConnection1.Close()
 
             ' Call the web service to upload the xml file to the server
             Application.DoEvents()
@@ -3047,85 +2853,23 @@ Public Class MainForm
             Cursor.Current = Cursors.Default
         End Try
     End Function
-
-    '
-    ' Execute a SQL SELECT statement and return the result set.
-    ' N.B. The caller is responsible for closing the connection object.
-    '
-    Public Function SqlSelect(ByVal sql As String) As OleDbDataReader
-        Dim sqlCommand As New OleDbCommand
-        Dim recs As OleDbDataReader
-
-        Try
-            sqlCommand.Connection = OleDbConnection1
-            OleDbConnection1.Open()
-            sqlCommand.CommandText = sql
-            recs = sqlCommand.ExecuteReader()
-            'OleDbConnection1.Close()
-            Return recs
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in SqlSelect()")
-            If OleDbConnection1.State = ConnectionState.Open Then
-                OleDbConnection1.Close()
-            End If
-            Return Nothing
-        End Try
-
-    End Function
-
-    '
-    ' Load a list of key-value pairs from the database into a Windows list control 
-    '
-    Public Sub LoadKeyValueListFromDatabase(ByVal list As Object, ByVal sql As String)
-        Dim recs As OleDbDataReader
-
-        Try
-            recs = SqlSelect(sql)
-            If Not recs Is Nothing Then
-                While recs.Read
-                    list.Items.Add(New DataItem(recs.GetInt32(0), recs.GetString(1)))
-                End While
-            End If
-            OleDbConnection1.Close()
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadKeyValueListFromDatabase()")
-        End Try
-
-    End Sub
-
-    '
-    ' Load a list of strings from the database into an ArrayList
-    '
-    Public Sub LoadStringListFromDatabase(ByVal list As Object, ByVal sql As String)
-        Dim recs As OleDbDataReader
-
-        Try
-            recs = SqlSelect(sql)
-            If Not recs Is Nothing Then
-                While recs.Read
-                    list.Add(recs.GetString(0))
-                End While
-            End If
-            OleDbConnection1.Close()
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadStringListFromDatabase()")
-        End Try
-
-    End Sub
-
     '
     ' Enter the unique list of competition themes for this date into the Theme combobox
     '
     Private Sub LoadUniqueThemes()
         Try
-            Dim compDate As String = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
+            Dim compDate As String = Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy")
             themes.Clear()
             SelectTheme.Items.Clear()
-            LoadStringListFromDatabase(themes, "SELECT DISTINCT Theme from [Competition Entries] WHERE [Competition Date 1]=#" + compDate + "#")
-            For Each s As String In themes
-                SelectTheme.Items.Add(s)
+
+            query = From entries In rpsContext.CompetitionEntries
+                    Where entries.Competition_Date_1.Equals(compDate)
+                    Select entries.Theme Distinct
+
+            For Each record In query
+                SelectTheme.Items.Add(record)
             Next
-            If themes.Count > 0 Then
+            If SelectTheme.Items.Count > 0 Then
                 SelectTheme.SelectedIndex = 0
             Else
                 SelectTheme.Text = ""
@@ -3194,6 +2938,16 @@ Public Class MainForm
         EightsAndAwardsSelected = False
         SelectImages()
     End Sub
+
+    Private Function CreateDataTable(ByVal sourceTable As DataTable, ByVal rows As DataRow()) As DataTable
+        Dim result As DataTable
+
+        result = sourceTable.Clone()
+        For Each row As DataRow In rows
+            result.Rows.Add(row.ItemArray)
+        Next
+        Return result
+    End Function
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()

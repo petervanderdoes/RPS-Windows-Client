@@ -2,11 +2,11 @@ Public Class ThumbnailViewer
     Inherits System.Windows.Forms.Form
 
     Dim theMainForm As MainForm
-    Dim ImageList As DataSet
+    Dim ImageList As IList
     Dim numImages As Integer
     Dim currentIndex As Integer
     Dim currentFileName As String
-    Dim currentRow As DataRow
+    Dim currentRow As CompetitionEntry
     Dim fullSizeFileName As String
     Dim Zoomed As Boolean
     Dim thumbnailViewTitle As String
@@ -51,7 +51,7 @@ Public Class ThumbnailViewer
 
 #Region " Windows Form Designer generated code "
 
-    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As DataSet, ByVal screenTitle As String)
+    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As IList, ByVal screenTitle As String)
         MyBase.New()
 
         'This call is required by the Windows Form Designer.
@@ -61,6 +61,7 @@ Public Class ThumbnailViewer
         theMainForm = myMainForm
         ImageList = ds
         thumbnailViewTitle = screenTitle
+        setSizes()
 
     End Sub
 
@@ -189,14 +190,11 @@ Public Class ThumbnailViewer
                 Case Keys.F1
                     If ThumbnailListView.SelectedIndices.Count > 0 And
                        theMainForm.awards.Count >= 1 Then
-                        'ThumbnailListView.SelectedItems(0).Text = "1st"
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(0)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
                         datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        'currentRow = ImageList.Tables("Competition Entries").Rows(currentIndex)
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        'currentRow("Award") = "1st"
-                        currentRow("Award") = theMainForm.awards.Item(0)
+                        currentRow = ImageList.Item(datasetRowNum)
+                        currentRow.Award = theMainForm.awards.Item(0)
                     End If
                 Case Keys.F2
                     If ThumbnailListView.SelectedIndices.Count > 0 And
@@ -204,8 +202,8 @@ Public Class ThumbnailViewer
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(1)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
                         datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(1)
+                        currentRow = ImageList.Item(datasetRowNum)
+                        currentRow.Award = theMainForm.awards.Item(1)
                     End If
                 Case Keys.F3
                     If ThumbnailListView.SelectedIndices.Count > 0 And
@@ -213,8 +211,8 @@ Public Class ThumbnailViewer
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(2)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
                         datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(2)
+                        currentRow = ImageList.Item(datasetRowNum)
+                        currentRow.Award = theMainForm.awards.Item(2)
                     End If
                 Case Keys.F4
                     If ThumbnailListView.SelectedIndices.Count > 0 And
@@ -222,70 +220,16 @@ Public Class ThumbnailViewer
                         ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(3)
                         currentIndex = ThumbnailListView.SelectedIndices(0)
                         datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(3)
-                    End If
-                Case Keys.F5
-                    If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 5 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(4)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(4)
-                    End If
-                Case Keys.F6
-                    If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 6 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(5)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(5)
-                    End If
-                Case Keys.F7
-                    If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 7 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(6)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(6)
-                    End If
-                Case Keys.F8
-                    If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 8 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(7)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(7)
-                    End If
-                Case Keys.F9
-                    If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 9 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(8)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(8)
-                    End If
-                Case Keys.F10
-                    If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 10 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(9)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = theMainForm.awards.Item(9)
+                        currentRow = ImageList.Item(datasetRowNum)
+                        currentRow.Award = theMainForm.awards.Item(3)
                     End If
                 Case Keys.Delete, Keys.Back
                     If ThumbnailListView.SelectedIndices.Count > 0 Then
                         ThumbnailListView.SelectedItems(0).Text = ""
                         currentIndex = ThumbnailListView.SelectedIndices(0)
                         datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                        currentRow("Award") = DBNull.Value
+                        currentRow = ImageList.Item(datasetRowNum)
+                        currentRow.Award = Nothing
                     End If
                 Case Keys.R
                     If ThumbnailListView.SelectedIndices.Count > 0 Then
@@ -306,8 +250,8 @@ Public Class ThumbnailViewer
                             ' database
                             currentIndex = ThumbnailListView.SelectedIndices(0)
                             datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                            currentRow = ImageList.Tables("Competition Entries").Rows(datasetRowNum)
-                            fullSizeFileName = MainForm.GetDBStringField(currentRow, "Image File Name", "")
+                            currentRow = ImageList.Item(datasetRowNum)
+                            fullSizeFileName = currentRow.Image_File_Name
                             ' If it's a relative path, convert to an absolute path
                             If Not InStr(1, fullSizeFileName, ":\") = 2 Then
                                 fullSizeFileName = theMainForm.imagesRootFolder + "\" + fullSizeFileName
@@ -336,8 +280,6 @@ Public Class ThumbnailViewer
     End Sub
 
     Private Sub ThumbnailViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim row As DataRow
-        Dim i As Integer
         Dim imageFileName As String
         Dim posn As Integer
         Dim path As String
@@ -356,17 +298,17 @@ Public Class ThumbnailViewer
             ' three fit nicely on the 1024 x 768 screen.  If there are more
             ' than 6 thumnails, dynamically downsize them to fit three rows
             ' of four.
-            numImages = ImageList.Tables("Competition Entries").Rows.Count
+            numImages = ImageList.Count
             If numImages > 6 Then
                 ThumbnailImageList.ImageSize = New System.Drawing.Size(185, 185)
             End If
 
             ' Iterate through the dataset to load the thumbnails into the imagelist
-            For i = 0 To numImages - 1
-                row = ImageList.Tables("Competition Entries").Rows(i)
+            Dim i As Int16 = 0
+            For Each entry As CompetitionEntry In ImageList
 
                 ' Compute the file name of the thumbnail image
-                imageFileName = MainForm.GetDBStringField(row, "Image File Name", "")
+                imageFileName = entry.Image_File_Name
                 posn = InStrRev(imageFileName, "\")
                 If posn = 0 Then
                     path = "."
@@ -391,8 +333,9 @@ Public Class ThumbnailViewer
                 ThumbnailImageList.Images.Add(thumbImage)
 
                 ' Add the image to the ListView
-                thisItem = ThumbnailListView.Items.Add(MainForm.GetDBStringField(row, "Award", ""), i)
-                thisItem.Tag = CInt(i)    ' Store the corresponding run number of the dataset in the listview item
+                thisItem = ThumbnailListView.Items.Add(entry.Award, i)
+                thisItem.Tag = i    ' Store the corresponding run number of the dataset in the listview item
+                i = i + 1
             Next
 
             ' Make sure the first item is selected
@@ -422,15 +365,18 @@ Public Class ThumbnailViewer
     End Sub
 
     Friend Sub setSizes()
-        Dim I As RpsImage = New RpsImage
+        Dim I As RpsImageSize = New RpsImageSize
+        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight())
+        MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
+        MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
 
         ThumbnailListView.Location = New Point(0, 43)
-        ThumbnailListView.Size = New Size(I.getFullWidth(), I.getFullHeight - 37 - 2)
+        ThumbnailListView.Size = New Size(I.getFullWidth(), I.getFullHeight() - 37 - 2)
 
         ThumbnailImageList.ImageSize = New Size(256, 256)
 
         ZoomedImage.Location = New Point(0, 0)
-        ZoomedImage.Size = New Size(I.getFullWidth(), I.getFullHeight)
+        ZoomedImage.Size = New Size(I.getFullWidth(), I.getFullHeight())
 
         ThumbnailViewTitleBar.Location = New Point(0, 0)
         ThumbnailViewTitleBar.Size = New Size(I.getFullWidth(), 37)
@@ -438,9 +384,7 @@ Public Class ThumbnailViewer
         Divider.Location = New Point(0, 37)
         Divider.Size = New Size(I.getFullWidth(), 2)
 
-        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight)
-        MaximumSize = New Size(I.getFullWidth(), I.getFullHeight)
-        MinimumSize = New Size(I.getFullWidth(), I.getFullHeight)
+
     End Sub
 
 End Class
