@@ -1,3 +1,5 @@
+Imports System.Drawing.Drawing2D
+
 Public Class Thumbnail
     Dim theMainForm As MainForm
     Dim imageFileName As String
@@ -55,7 +57,7 @@ Public Class Thumbnail
             img = New Bitmap(path + "\" + fileName)
             thumb = New Bitmap(width, height)
             gr = Graphics.FromImage(thumb)
-            gr.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+            gr.InterpolationMode = InterpolationMode.HighQualityBicubic
 
             ' Compute the size of the thumbnail to paint on the canvas
             If img.Width > img.Height Then  ' Landscape image
@@ -85,7 +87,7 @@ Public Class Thumbnail
             thumbFileName = thumbnailPath + "\" + fileName
 
             ' Write the thumbnail image to the destination file
-            encoderParams.Param(0) = New EncoderParameter(System.Drawing.Imaging.Encoder.Quality, jpgQuality)
+            encoderParams.Param(0) = New EncoderParameter(Imaging.Encoder.Quality, jpgQuality)
             thumb.Save(thumbFileName, jpgEncoder, encoderParams)
             img.Dispose()
             thumb.Dispose()

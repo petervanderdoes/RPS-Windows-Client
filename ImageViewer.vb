@@ -3,7 +3,7 @@ Imports System.Data.Entity.Core.EntityClient
 Imports System.Data.Entity.Core
 
 Public Class ImageViewer
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
     Dim theMainForm As MainForm
     Dim ImageList As IList
@@ -237,13 +237,13 @@ Public Class ImageViewer
 
 #End Region
 
-    Private Sub btnQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnQuit_Click(ByVal sender As Object, ByVal e As EventArgs)
         ' Unload Form
         Me.Close()
     End Sub
 
 
-    Private Sub fclsViewer_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
+    Private Sub fclsViewer_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown
 
         Try
             ' Don't accept any more keystrokes until the rendering thread is complete
@@ -408,7 +408,7 @@ Public Class ImageViewer
         End Try
     End Sub
 
-    Private Sub ImageViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub ImageViewer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         'Dim row As CompetitionEntry
         Try
             ' Create an instance of the Thumbnail class to render thumbnail as necessary
@@ -455,7 +455,7 @@ Public Class ImageViewer
             numIterations = ms / 100
             inDelayLoop = True
             While i < numIterations And inDelayLoop
-                System.Threading.Thread.Sleep(100)
+                Thread.Sleep(100)
                 i = i + 1
                 Application.DoEvents()
             End While
@@ -589,7 +589,7 @@ Public Class ImageViewer
     Friend Sub setSizes()
         Dim I As RpsImageSize = New RpsImageSize
         Dim splash_location_y As Integer
-        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight())
+        ClientSize = New Size(I.getFullWidth(), I.getFullHeight())
         MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
         MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
 

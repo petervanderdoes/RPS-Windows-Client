@@ -1,5 +1,7 @@
+Imports System.ComponentModel
+
 Public Class Download_Competitions_Dialog
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
     Dim theMainForm As MainForm
 #Region " Windows Form Designer generated code "
@@ -109,7 +111,7 @@ Public Class Download_Competitions_Dialog
         Me.Password.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Password.Location = New System.Drawing.Point(176, 48)
         Me.Password.Name = "Password"
-        Me.Password.PasswordChar = Microsoft.VisualBasic.ChrW(42)
+        Me.Password.PasswordChar = ChrW(42)
         Me.Password.Size = New System.Drawing.Size(208, 23)
         Me.Password.TabIndex = 3
         Me.Password.Text = ""
@@ -241,7 +243,7 @@ Public Class Download_Competitions_Dialog
 #End Region
 
 
-    Private Sub BrowseButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BrowseButton.Click
+    Private Sub BrowseButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BrowseButton.Click
         'Dim fileOpenDialog As New OpenFileDialog
 
         FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
@@ -252,7 +254,7 @@ Public Class Download_Competitions_Dialog
 
     End Sub
 
-    Private Sub Download_Competitions_Dialog_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+    Private Sub Download_Competitions_Dialog_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles MyBase.Closing
         Dim InvalidInput As Boolean = False
         Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 

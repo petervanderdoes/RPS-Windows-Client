@@ -18,7 +18,7 @@ Public Class ProgressStatus : Inherits StatusBar
         End Set
     End Property
 
-    Private Sub Reposition(ByVal sender As Object, ByVal sbdevent As System.Windows.Forms.StatusBarDrawItemEventArgs) Handles MyBase.DrawItem
+    Private Sub Reposition(ByVal sender As Object, ByVal sbdevent As StatusBarDrawItemEventArgs) Handles MyBase.DrawItem
         progressBar.Location = New Point(sbdevent.Bounds.X, sbdevent.Bounds.Y)
         progressBar.Size = New Size(sbdevent.Bounds.Width, sbdevent.Bounds.Height)
         progressBar.Show()

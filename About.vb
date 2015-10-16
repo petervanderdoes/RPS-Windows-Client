@@ -1,5 +1,5 @@
 Public Class About
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
 #Region " Windows Form Designer generated code "
 
@@ -68,18 +68,18 @@ Public Class About
 
 #End Region
 
-    Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub About_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
         ' fields = Split(Application.ProductVersion, ".")
 
         Label1.Text = "RPS Digital Competition Viewer" + vbCrLf +
             "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
-            "© Jake Chapple, Peter van der Does" + vbCrLf +
+            "ï¿½ Jake Chapple, Peter van der Does" + vbCrLf +
             "Raritan Photographic Society"
 
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         Me.Close()
     End Sub
 End Class

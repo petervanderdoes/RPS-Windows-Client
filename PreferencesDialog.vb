@@ -1,5 +1,5 @@
 Public Class PreferencesDialog
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
     Dim theMainForm As MainForm
 
@@ -287,7 +287,7 @@ Public Class PreferencesDialog
 
 #End Region
 
-    Private Sub btnBrowseRootFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseRootFolder.Click
+    Private Sub btnBrowseRootFolder_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBrowseRootFolder.Click
         Dim folderBrowser As New FolderBrowserDialog
 
         Try
@@ -300,7 +300,7 @@ Public Class PreferencesDialog
         End Try
     End Sub
 
-    Private Sub btnDatabaseFileName_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDatabaseFileName.Click
+    Private Sub btnDatabaseFileName_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDatabaseFileName.Click
         Dim fileOpenDialog As New OpenFileDialog
         Try
             fileOpenDialog.InitialDirectory = Application.StartupPath
@@ -312,7 +312,7 @@ Public Class PreferencesDialog
         End Try
     End Sub
 
-    Private Sub btnReportsOutputFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReportsOutputFolder.Click
+    Private Sub btnReportsOutputFolder_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnReportsOutputFolder.Click
         Dim folderBrowser As New FolderBrowserDialog
 
         Try

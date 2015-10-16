@@ -11,51 +11,57 @@
 Option Strict Off
 Option Explicit On
 
+Imports System.CodeDom.Compiler
+Imports System.ComponentModel
+Imports System.ComponentModel.Design
+Imports System.Runtime.Serialization
+Imports System.Xml.Schema
+Imports System.Xml.Serialization
 
 
 '''<summary>
 '''Represents a strongly typed in-memory cache of data.
 '''</summary>
-<Global.System.Serializable(),  _
- Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
- Global.System.ComponentModel.ToolboxItem(true),  _
- Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema"),  _
- Global.System.Xml.Serialization.XmlRootAttribute("SelectedPhotos"),  _
- Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")>  _
+<Serializable(),  _
+ DesignerCategory("code"),  _
+ ToolboxItem(true),  _
+ XmlSchemaProvider("GetTypedDataSetSchema"),  _
+ XmlRoot("SelectedPhotos"),  _
+ HelpKeyword("vs.data.DataSet")>  _
 Partial Public Class SelectedPhotos
-    Inherits Global.System.Data.DataSet
+    Inherits DataSet
     
     Private tableCompetition_Entries As Competition_EntriesDataTable
     
-    Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
+    Private _schemaSerializationMode As SchemaSerializationMode = SchemaSerializationMode.IncludeSchema
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Sub New()
         MyBase.New
         Me.BeginInit
         Me.InitClass
-        Dim schemaChangedHandler As Global.System.ComponentModel.CollectionChangeEventHandler = AddressOf Me.SchemaChanged
+        Dim schemaChangedHandler As CollectionChangeEventHandler = AddressOf Me.SchemaChanged
         AddHandler MyBase.Tables.CollectionChanged, schemaChangedHandler
         AddHandler MyBase.Relations.CollectionChanged, schemaChangedHandler
         Me.EndInit
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
         MyBase.New(info, context, false)
         If (Me.IsBinarySerialized(info, context) = true) Then
             Me.InitVars(false)
-            Dim schemaChangedHandler1 As Global.System.ComponentModel.CollectionChangeEventHandler = AddressOf Me.SchemaChanged
+            Dim schemaChangedHandler1 As CollectionChangeEventHandler = AddressOf Me.SchemaChanged
             AddHandler Me.Tables.CollectionChanged, schemaChangedHandler1
             AddHandler Me.Relations.CollectionChanged, schemaChangedHandler1
             Return
         End If
         Dim strSchema As String = CType(info.GetValue("XmlSchema", GetType(String)),String)
-        If (Me.DetermineSchemaSerializationMode(info, context) = Global.System.Data.SchemaSerializationMode.IncludeSchema) Then
-            Dim ds As Global.System.Data.DataSet = New Global.System.Data.DataSet()
-            ds.ReadXmlSchema(New Global.System.Xml.XmlTextReader(New Global.System.IO.StringReader(strSchema)))
+        If (Me.DetermineSchemaSerializationMode(info, context) = SchemaSerializationMode.IncludeSchema) Then
+            Dim ds As DataSet = New DataSet()
+            ds.ReadXmlSchema(New XmlTextReader(New StringReader(strSchema)))
             If (Not (ds.Tables("Competition Entries")) Is Nothing) Then
                 MyBase.Tables.Add(New Competition_EntriesDataTable(ds.Tables("Competition Entries")))
             End If
@@ -65,32 +71,32 @@ Partial Public Class SelectedPhotos
             Me.Locale = ds.Locale
             Me.CaseSensitive = ds.CaseSensitive
             Me.EnforceConstraints = ds.EnforceConstraints
-            Me.Merge(ds, false, Global.System.Data.MissingSchemaAction.Add)
+            Me.Merge(ds, false, MissingSchemaAction.Add)
             Me.InitVars
         Else
-            Me.ReadXmlSchema(New Global.System.Xml.XmlTextReader(New Global.System.IO.StringReader(strSchema)))
+            Me.ReadXmlSchema(New XmlTextReader(New StringReader(strSchema)))
         End If
         Me.GetSerializationData(info, context)
-        Dim schemaChangedHandler As Global.System.ComponentModel.CollectionChangeEventHandler = AddressOf Me.SchemaChanged
+        Dim schemaChangedHandler As CollectionChangeEventHandler = AddressOf Me.SchemaChanged
         AddHandler MyBase.Tables.CollectionChanged, schemaChangedHandler
         AddHandler Me.Relations.CollectionChanged, schemaChangedHandler
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     Global.System.ComponentModel.Browsable(false),  _
-     Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Browsable(false),  _
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>  _
     Public ReadOnly Property Competition_Entries() As Competition_EntriesDataTable
         Get
             Return Me.tableCompetition_Entries
         End Get
     End Property
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     Global.System.ComponentModel.BrowsableAttribute(true),  _
-     Global.System.ComponentModel.DesignerSerializationVisibilityAttribute(Global.System.ComponentModel.DesignerSerializationVisibility.Visible)>  _
-    Public Overrides Property SchemaSerializationMode() As Global.System.Data.SchemaSerializationMode
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Browsable(true),  _
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)>  _
+    Public Overrides Property SchemaSerializationMode() As SchemaSerializationMode
         Get
             Return Me._schemaSerializationMode
         End Get
@@ -99,59 +105,59 @@ Partial Public Class SelectedPhotos
         End Set
     End Property
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     Global.System.ComponentModel.DesignerSerializationVisibilityAttribute(Global.System.ComponentModel.DesignerSerializationVisibility.Hidden)>  _
-    Public Shadows ReadOnly Property Tables() As Global.System.Data.DataTableCollection
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>  _
+    Public Shadows ReadOnly Property Tables() As DataTableCollection
         Get
             Return MyBase.Tables
         End Get
     End Property
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     Global.System.ComponentModel.DesignerSerializationVisibilityAttribute(Global.System.ComponentModel.DesignerSerializationVisibility.Hidden)>  _
-    Public Shadows ReadOnly Property Relations() As Global.System.Data.DataRelationCollection
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>  _
+    Public Shadows ReadOnly Property Relations() As DataRelationCollection
         Get
             Return MyBase.Relations
         End Get
     End Property
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Protected Overrides Sub InitializeDerivedDataSet()
         Me.BeginInit
         Me.InitClass
         Me.EndInit
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Overrides Function Clone() As Global.System.Data.DataSet
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Public Overrides Function Clone() As DataSet
         Dim cln As SelectedPhotos = CType(MyBase.Clone,SelectedPhotos)
         cln.InitVars
         cln.SchemaSerializationMode = Me.SchemaSerializationMode
         Return cln
     End Function
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Protected Overrides Function ShouldSerializeTables() As Boolean
         Return false
     End Function
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Protected Overrides Function ShouldSerializeRelations() As Boolean
         Return false
     End Function
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Protected Overrides Sub ReadXmlSerializable(ByVal reader As Global.System.Xml.XmlReader)
-        If (Me.DetermineSchemaSerializationMode(reader) = Global.System.Data.SchemaSerializationMode.IncludeSchema) Then
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Protected Overrides Sub ReadXmlSerializable(ByVal reader As XmlReader)
+        If (Me.DetermineSchemaSerializationMode(reader) = SchemaSerializationMode.IncludeSchema) Then
             Me.Reset
-            Dim ds As Global.System.Data.DataSet = New Global.System.Data.DataSet()
+            Dim ds As DataSet = New DataSet()
             ds.ReadXml(reader)
             If (Not (ds.Tables("Competition Entries")) Is Nothing) Then
                 MyBase.Tables.Add(New Competition_EntriesDataTable(ds.Tables("Competition Entries")))
@@ -162,7 +168,7 @@ Partial Public Class SelectedPhotos
             Me.Locale = ds.Locale
             Me.CaseSensitive = ds.CaseSensitive
             Me.EnforceConstraints = ds.EnforceConstraints
-            Me.Merge(ds, false, Global.System.Data.MissingSchemaAction.Add)
+            Me.Merge(ds, false, MissingSchemaAction.Add)
             Me.InitVars
         Else
             Me.ReadXml(reader)
@@ -170,23 +176,23 @@ Partial Public Class SelectedPhotos
         End If
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Protected Overrides Function GetSchemaSerializable() As Global.System.Xml.Schema.XmlSchema
-        Dim stream As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-        Me.WriteXmlSchema(New Global.System.Xml.XmlTextWriter(stream, Nothing))
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Protected Overrides Function GetSchemaSerializable() As XmlSchema
+        Dim stream As MemoryStream = New MemoryStream()
+        Me.WriteXmlSchema(New XmlTextWriter(stream, Nothing))
         stream.Position = 0
-        Return Global.System.Xml.Schema.XmlSchema.Read(New Global.System.Xml.XmlTextReader(stream), Nothing)
+        Return XmlSchema.Read(New XmlTextReader(stream), Nothing)
     End Function
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Friend Overloads Sub InitVars()
         Me.InitVars(true)
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Friend Overloads Sub InitVars(ByVal initTable As Boolean)
         Me.tableCompetition_Entries = CType(MyBase.Tables("Competition Entries"),Competition_EntriesDataTable)
         If (initTable = true) Then
@@ -196,52 +202,52 @@ Partial Public Class SelectedPhotos
         End If
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Private Sub InitClass()
         Me.DataSetName = "SelectedPhotos"
         Me.Prefix = ""
         Me.Namespace = "http://www.tempuri.org/SelectedPhotos.xsd"
         Me.EnforceConstraints = true
-        Me.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
+        Me.SchemaSerializationMode = SchemaSerializationMode.IncludeSchema
         Me.tableCompetition_Entries = New Competition_EntriesDataTable()
         MyBase.Tables.Add(Me.tableCompetition_Entries)
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Private Function ShouldSerializeCompetition_Entries() As Boolean
         Return false
     End Function
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Private Sub SchemaChanged(ByVal sender As Object, ByVal e As Global.System.ComponentModel.CollectionChangeEventArgs)
-        If (e.Action = Global.System.ComponentModel.CollectionChangeAction.Remove) Then
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Private Sub SchemaChanged(ByVal sender As Object, ByVal e As CollectionChangeEventArgs)
+        If (e.Action = CollectionChangeAction.Remove) Then
             Me.InitVars
         End If
     End Sub
     
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Shared Function GetTypedDataSetSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
+    <DebuggerNonUserCode(),  _
+     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Public Shared Function GetTypedDataSetSchema(ByVal xs As XmlSchemaSet) As XmlSchemaComplexType
         Dim ds As SelectedPhotos = New SelectedPhotos()
-        Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
-        Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
-        Dim any As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+        Dim type As XmlSchemaComplexType = New XmlSchemaComplexType()
+        Dim sequence As XmlSchemaSequence = New XmlSchemaSequence()
+        Dim any As XmlSchemaAny = New XmlSchemaAny()
         any.Namespace = ds.Namespace
         sequence.Items.Add(any)
         type.Particle = sequence
-        Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
+        Dim dsSchema As XmlSchema = ds.GetSchemaSerializable
         If xs.Contains(dsSchema.TargetNamespace) Then
-            Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-            Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+            Dim s1 As MemoryStream = New MemoryStream()
+            Dim s2 As MemoryStream = New MemoryStream()
             Try 
-                Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
+                Dim schema As XmlSchema = Nothing
                 dsSchema.Write(s1)
-                Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                Dim schemas As IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
                 Do While schemas.MoveNext
-                    schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
+                    schema = CType(schemas.Current,XmlSchema)
                     s2.SetLength(0)
                     schema.Write(s2)
                     If (s1.Length = s2.Length) Then
@@ -272,43 +278,43 @@ Partial Public Class SelectedPhotos
         Return type
     End Function
     
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Delegate Sub Competition_EntriesRowChangeEventHandler(ByVal sender As Object, ByVal e As Competition_EntriesRowChangeEvent)
     
     '''<summary>
     '''Represents the strongly named DataTable class.
     '''</summary>
-    <Global.System.Serializable(),  _
-     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
+    <Serializable(),  _
+     XmlSchemaProvider("GetTypedTableSchema")>  _
     Partial Public Class Competition_EntriesDataTable
-        Inherits Global.System.Data.TypedTableBase(Of Competition_EntriesRow)
+        Inherits TypedTableBase(Of Competition_EntriesRow)
         
-        Private columnAward As Global.System.Data.DataColumn
+        Private columnAward As DataColumn
         
-        Private columnClassification As Global.System.Data.DataColumn
+        Private columnClassification As DataColumn
         
-        Private columnCompetition_Date_1 As Global.System.Data.DataColumn
+        Private columnCompetition_Date_1 As DataColumn
         
-        Private columnDisplay_Sequence As Global.System.Data.DataColumn
+        Private columnDisplay_Sequence As DataColumn
         
-        Private columnImage_File_Name As Global.System.Data.DataColumn
+        Private columnImage_File_Name As DataColumn
         
-        Private columnMaker As Global.System.Data.DataColumn
+        Private columnMaker As DataColumn
         
-        Private columnMedium As Global.System.Data.DataColumn
+        Private columnMedium As DataColumn
         
-        Private columnPhoto_ID As Global.System.Data.DataColumn
+        Private columnPhoto_ID As DataColumn
         
-        Private columnScore_1 As Global.System.Data.DataColumn
+        Private columnScore_1 As DataColumn
         
-        Private columnServer_Entry_ID As Global.System.Data.DataColumn
+        Private columnServer_Entry_ID As DataColumn
         
-        Private columnTheme As Global.System.Data.DataColumn
+        Private columnTheme As DataColumn
         
-        Private columnTitle As Global.System.Data.DataColumn
+        Private columnTitle As DataColumn
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub New()
             MyBase.New
             Me.TableName = "Competition Entries"
@@ -317,9 +323,9 @@ Partial Public Class SelectedPhotos
             Me.EndInit
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal table As Global.System.Data.DataTable)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal table As DataTable)
             MyBase.New
             Me.TableName = table.TableName
             If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
@@ -335,146 +341,146 @@ Partial Public Class SelectedPhotos
             Me.MinimumCapacity = table.MinimumCapacity
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
             MyBase.New(info, context)
             Me.InitVars
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AwardColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AwardColumn() As DataColumn
             Get
                 Return Me.columnAward
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ClassificationColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ClassificationColumn() As DataColumn
             Get
                 Return Me.columnClassification
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Competition_Date_1Column() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Competition_Date_1Column() As DataColumn
             Get
                 Return Me.columnCompetition_Date_1
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Display_SequenceColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Display_SequenceColumn() As DataColumn
             Get
                 Return Me.columnDisplay_Sequence
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Image_File_NameColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Image_File_NameColumn() As DataColumn
             Get
                 Return Me.columnImage_File_Name
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property MakerColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property MakerColumn() As DataColumn
             Get
                 Return Me.columnMaker
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property MediumColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property MediumColumn() As DataColumn
             Get
                 Return Me.columnMedium
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Photo_IDColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Photo_IDColumn() As DataColumn
             Get
                 Return Me.columnPhoto_ID
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Score_1Column() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Score_1Column() As DataColumn
             Get
                 Return Me.columnScore_1
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Server_Entry_IDColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Server_Entry_IDColumn() As DataColumn
             Get
                 Return Me.columnServer_Entry_ID
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ThemeColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ThemeColumn() As DataColumn
             Get
                 Return Me.columnTheme
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property TitleColumn() As Global.System.Data.DataColumn
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property TitleColumn() As DataColumn
             Get
                 Return Me.columnTitle
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Browsable(false)>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
             Get
                 Return Me.Rows.Count
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Default ReadOnly Property Item(ByVal index As Integer) As Competition_EntriesRow
             Get
                 Return CType(Me.Rows(index),Competition_EntriesRow)
             End Get
         End Property
         
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event Competition_EntriesRowChanging As Competition_EntriesRowChangeEventHandler
         
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event Competition_EntriesRowChanged As Competition_EntriesRowChangeEventHandler
         
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event Competition_EntriesRowDeleting As Competition_EntriesRowChangeEventHandler
         
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event Competition_EntriesRowDeleted As Competition_EntriesRowChangeEventHandler
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Overloads Sub AddCompetition_EntriesRow(ByVal row As Competition_EntriesRow)
             Me.Rows.Add(row)
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Overloads Function AddCompetition_EntriesRow(ByVal Award As String, ByVal Classification As String, ByVal Competition_Date_1 As Date, ByVal Display_Sequence As Integer, ByVal Image_File_Name As String, ByVal Maker As String, ByVal Medium As String, ByVal Score_1 As Integer, ByVal Server_Entry_ID As Integer, ByVal Theme As String, ByVal Title As String) As Competition_EntriesRow
             Dim rowCompetition_EntriesRow As Competition_EntriesRow = CType(Me.NewRow,Competition_EntriesRow)
             Dim columnValuesArray() As Object = New Object() {Award, Classification, Competition_Date_1, Display_Sequence, Image_File_Name, Maker, Medium, Nothing, Score_1, Server_Entry_ID, Theme, Title}
@@ -483,28 +489,28 @@ Partial Public Class SelectedPhotos
             Return rowCompetition_EntriesRow
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function FindByPhoto_ID(ByVal Photo_ID As Integer) As Competition_EntriesRow
             Return CType(Me.Rows.Find(New Object() {Photo_ID}),Competition_EntriesRow)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overrides Function Clone() As Global.System.Data.DataTable
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overrides Function Clone() As DataTable
             Dim cln As Competition_EntriesDataTable = CType(MyBase.Clone,Competition_EntriesDataTable)
             cln.InitVars
             Return cln
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function CreateInstance() As DataTable
             Return New Competition_EntriesDataTable()
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Friend Sub InitVars()
             Me.columnAward = MyBase.Columns("Award")
             Me.columnClassification = MyBase.Columns("Classification")
@@ -520,135 +526,135 @@ Partial Public Class SelectedPhotos
             Me.columnTitle = MyBase.Columns("Title")
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Private Sub InitClass()
-            Me.columnAward = New Global.System.Data.DataColumn("Award", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnAward = New DataColumn("Award", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnAward)
-            Me.columnClassification = New Global.System.Data.DataColumn("Classification", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnClassification = New DataColumn("Classification", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnClassification)
-            Me.columnCompetition_Date_1 = New Global.System.Data.DataColumn("Competition Date 1", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnCompetition_Date_1 = New DataColumn("Competition Date 1", GetType(Date), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnCompetition_Date_1)
-            Me.columnDisplay_Sequence = New Global.System.Data.DataColumn("Display Sequence", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnDisplay_Sequence = New DataColumn("Display Sequence", GetType(Integer), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnDisplay_Sequence)
-            Me.columnImage_File_Name = New Global.System.Data.DataColumn("Image File Name", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnImage_File_Name = New DataColumn("Image File Name", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnImage_File_Name)
-            Me.columnMaker = New Global.System.Data.DataColumn("Maker", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnMaker = New DataColumn("Maker", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnMaker)
-            Me.columnMedium = New Global.System.Data.DataColumn("Medium", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnMedium = New DataColumn("Medium", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnMedium)
-            Me.columnPhoto_ID = New Global.System.Data.DataColumn("Photo_ID", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnPhoto_ID = New DataColumn("Photo_ID", GetType(Integer), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnPhoto_ID)
-            Me.columnScore_1 = New Global.System.Data.DataColumn("Score 1", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnScore_1 = New DataColumn("Score 1", GetType(Integer), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnScore_1)
-            Me.columnServer_Entry_ID = New Global.System.Data.DataColumn("Server Entry ID", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnServer_Entry_ID = New DataColumn("Server Entry ID", GetType(Integer), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnServer_Entry_ID)
-            Me.columnTheme = New Global.System.Data.DataColumn("Theme", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnTheme = New DataColumn("Theme", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnTheme)
-            Me.columnTitle = New Global.System.Data.DataColumn("Title", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnTitle = New DataColumn("Title", GetType(String), Nothing, MappingType.Element)
             MyBase.Columns.Add(Me.columnTitle)
-            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnPhoto_ID}, true))
+            Me.Constraints.Add(New UniqueConstraint("Constraint1", New DataColumn() {Me.columnPhoto_ID}, true))
             Me.columnPhoto_ID.AutoIncrement = true
             Me.columnPhoto_ID.AllowDBNull = false
             Me.columnPhoto_ID.Unique = true
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function NewCompetition_EntriesRow() As Competition_EntriesRow
             Return CType(Me.NewRow,Competition_EntriesRow)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow
             Return New Competition_EntriesRow(builder)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function GetRowType() As Global.System.Type
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function GetRowType() As Type
             Return GetType(Competition_EntriesRow)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanged(ByVal e As DataRowChangeEventArgs)
             MyBase.OnRowChanged(e)
             If (Not (Me.Competition_EntriesRowChangedEvent) Is Nothing) Then
                 RaiseEvent Competition_EntriesRowChanged(Me, New Competition_EntriesRowChangeEvent(CType(e.Row,Competition_EntriesRow), e.Action))
             End If
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanging(ByVal e As DataRowChangeEventArgs)
             MyBase.OnRowChanging(e)
             If (Not (Me.Competition_EntriesRowChangingEvent) Is Nothing) Then
                 RaiseEvent Competition_EntriesRowChanging(Me, New Competition_EntriesRowChangeEvent(CType(e.Row,Competition_EntriesRow), e.Action))
             End If
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleted(ByVal e As DataRowChangeEventArgs)
             MyBase.OnRowDeleted(e)
             If (Not (Me.Competition_EntriesRowDeletedEvent) Is Nothing) Then
                 RaiseEvent Competition_EntriesRowDeleted(Me, New Competition_EntriesRowChangeEvent(CType(e.Row,Competition_EntriesRow), e.Action))
             End If
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleting(ByVal e As DataRowChangeEventArgs)
             MyBase.OnRowDeleting(e)
             If (Not (Me.Competition_EntriesRowDeletingEvent) Is Nothing) Then
                 RaiseEvent Competition_EntriesRowDeleting(Me, New Competition_EntriesRowChangeEvent(CType(e.Row,Competition_EntriesRow), e.Action))
             End If
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub RemoveCompetition_EntriesRow(ByVal row As Competition_EntriesRow)
             Me.Rows.Remove(row)
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
-            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
-            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Shared Function GetTypedTableSchema(ByVal xs As XmlSchemaSet) As XmlSchemaComplexType
+            Dim type As XmlSchemaComplexType = New XmlSchemaComplexType()
+            Dim sequence As XmlSchemaSequence = New XmlSchemaSequence()
             Dim ds As SelectedPhotos = New SelectedPhotos()
-            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            Dim any1 As XmlSchemaAny = New XmlSchemaAny()
             any1.Namespace = "http://www.w3.org/2001/XMLSchema"
             any1.MinOccurs = New Decimal(0)
             any1.MaxOccurs = Decimal.MaxValue
-            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            any1.ProcessContents = XmlSchemaContentProcessing.Lax
             sequence.Items.Add(any1)
-            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            Dim any2 As XmlSchemaAny = New XmlSchemaAny()
             any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
             any2.MinOccurs = New Decimal(1)
-            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            any2.ProcessContents = XmlSchemaContentProcessing.Lax
             sequence.Items.Add(any2)
-            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            Dim attribute1 As XmlSchemaAttribute = New XmlSchemaAttribute()
             attribute1.Name = "namespace"
             attribute1.FixedValue = ds.Namespace
             type.Attributes.Add(attribute1)
-            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            Dim attribute2 As XmlSchemaAttribute = New XmlSchemaAttribute()
             attribute2.Name = "tableTypeName"
             attribute2.FixedValue = "Competition_EntriesDataTable"
             type.Attributes.Add(attribute2)
             type.Particle = sequence
-            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
+            Dim dsSchema As XmlSchema = ds.GetSchemaSerializable
             If xs.Contains(dsSchema.TargetNamespace) Then
-                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Dim s1 As MemoryStream = New MemoryStream()
+                Dim s2 As MemoryStream = New MemoryStream()
                 Try 
-                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
+                    Dim schema As XmlSchema = Nothing
                     dsSchema.Write(s1)
-                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                    Dim schemas As IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
                     Do While schemas.MoveNext
-                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
+                        schema = CType(schemas.Current,XmlSchema)
                         s2.SetLength(0)
                         schema.Write(s2)
                         If (s1.Length = s2.Length) Then
@@ -684,25 +690,25 @@ Partial Public Class SelectedPhotos
     '''Represents strongly named DataRow class.
     '''</summary>
     Partial Public Class Competition_EntriesRow
-        Inherits Global.System.Data.DataRow
+        Inherits DataRow
         
         Private tableCompetition_Entries As Competition_EntriesDataTable
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal rb As DataRowBuilder)
             MyBase.New(rb)
             Me.tableCompetition_Entries = CType(Me.Table,Competition_EntriesDataTable)
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Award() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.AwardColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Award' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Award' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -710,14 +716,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Classification() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.ClassificationColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Classification' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Classification' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -725,14 +731,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Competition_Date_1() As Date
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.Competition_Date_1Column),Date)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Competition Date 1' in table 'Competition Entries' is DBNul"& _ 
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Competition Date 1' in table 'Competition Entries' is DBNul"& _ 
                             "l.", e)
                 End Try
             End Get
@@ -741,14 +747,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Display_Sequence() As Integer
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.Display_SequenceColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Display Sequence' in table 'Competition Entries' is DBNull."& _ 
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Display Sequence' in table 'Competition Entries' is DBNull."& _ 
                             "", e)
                 End Try
             End Get
@@ -757,14 +763,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Image_File_Name() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.Image_File_NameColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Image File Name' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Image File Name' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -772,14 +778,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Maker() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.MakerColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Maker' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Maker' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -787,14 +793,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Medium() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.MediumColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Medium' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Medium' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -802,8 +808,8 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Photo_ID() As Integer
             Get
                 Return CType(Me(Me.tableCompetition_Entries.Photo_IDColumn),Integer)
@@ -813,14 +819,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Score_1() As Integer
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.Score_1Column),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Score 1' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Score 1' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -828,14 +834,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Server_Entry_ID() As Integer
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.Server_Entry_IDColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Server Entry ID' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Server Entry ID' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -843,14 +849,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Theme() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.ThemeColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Theme' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Theme' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -858,14 +864,14 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property Title() As String
             Get
                 Try 
                     Return CType(Me(Me.tableCompetition_Entries.TitleColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Title' in table 'Competition Entries' is DBNull.", e)
+                Catch e As InvalidCastException
+                    Throw New StrongTypingException("The value for column 'Title' in table 'Competition Entries' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -873,169 +879,169 @@ Partial Public Class SelectedPhotos
             End Set
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsAwardNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.AwardColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetAwardNull()
-            Me(Me.tableCompetition_Entries.AwardColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.AwardColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsClassificationNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.ClassificationColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetClassificationNull()
-            Me(Me.tableCompetition_Entries.ClassificationColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.ClassificationColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsCompetition_Date_1Null() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.Competition_Date_1Column)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetCompetition_Date_1Null()
-            Me(Me.tableCompetition_Entries.Competition_Date_1Column) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.Competition_Date_1Column) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsDisplay_SequenceNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.Display_SequenceColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetDisplay_SequenceNull()
-            Me(Me.tableCompetition_Entries.Display_SequenceColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.Display_SequenceColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsImage_File_NameNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.Image_File_NameColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetImage_File_NameNull()
-            Me(Me.tableCompetition_Entries.Image_File_NameColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.Image_File_NameColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsMakerNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.MakerColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetMakerNull()
-            Me(Me.tableCompetition_Entries.MakerColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.MakerColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsMediumNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.MediumColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetMediumNull()
-            Me(Me.tableCompetition_Entries.MediumColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.MediumColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsScore_1Null() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.Score_1Column)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetScore_1Null()
-            Me(Me.tableCompetition_Entries.Score_1Column) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.Score_1Column) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsServer_Entry_IDNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.Server_Entry_IDColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetServer_Entry_IDNull()
-            Me(Me.tableCompetition_Entries.Server_Entry_IDColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.Server_Entry_IDColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsThemeNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.ThemeColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetThemeNull()
-            Me(Me.tableCompetition_Entries.ThemeColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.ThemeColumn) = Convert.DBNull
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsTitleNull() As Boolean
             Return Me.IsNull(Me.tableCompetition_Entries.TitleColumn)
         End Function
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetTitleNull()
-            Me(Me.tableCompetition_Entries.TitleColumn) = Global.System.Convert.DBNull
+            Me(Me.tableCompetition_Entries.TitleColumn) = Convert.DBNull
         End Sub
     End Class
     
     '''<summary>
     '''Row event argument class
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Class Competition_EntriesRowChangeEvent
-        Inherits Global.System.EventArgs
+        Inherits EventArgs
         
         Private eventRow As Competition_EntriesRow
         
-        Private eventAction As Global.System.Data.DataRowAction
+        Private eventAction As DataRowAction
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New(ByVal row As Competition_EntriesRow, ByVal action As Global.System.Data.DataRowAction)
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New(ByVal row As Competition_EntriesRow, ByVal action As DataRowAction)
             MyBase.New
             Me.eventRow = row
             Me.eventAction = action
         End Sub
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public ReadOnly Property Row() As Competition_EntriesRow
             Get
                 Return Me.eventRow
             End Get
         End Property
         
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Action() As Global.System.Data.DataRowAction
+        <DebuggerNonUserCode(),  _
+         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Action() As DataRowAction
             Get
                 Return Me.eventAction
             End Get

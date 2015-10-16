@@ -54,14 +54,14 @@ Public Class MainForm
     Friend WithEvents title As DataGridViewTextBoxColumn
     Private ReadOnly _center_cell_style As New DataGridViewCellStyle
 
-    Private Sub initializeStatusBar()
+    Private Sub Initialize_status_bar()
         Dim info As StatusBarPanel = New StatusBarPanel
         Dim progress As StatusBarPanel = New StatusBarPanel
 
         'info.Text = "Ready"
         'info.Width = 592
         progress.Width = 200
-        info.Width = Me.Width - progress.Width
+        info.Width = Width - progress.Width
 
         'progress.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring
         info.AutoSize = StatusBarPanelAutoSize.Spring
@@ -892,7 +892,7 @@ Public Class MainForm
             LoadClubRules()
 
             ' Initialize the StatusBar and ProgressBar
-            initializeStatusBar()
+            Initialize_status_bar()
             status_bar.progressBar.Value = 0
             ' Load the unique competition dates into the Competition Date combobox
             LoadCompDates()

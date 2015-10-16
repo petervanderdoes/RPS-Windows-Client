@@ -1,5 +1,7 @@
+Imports System.ComponentModel
+
 Public Class Upload_Scores_Dialog
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
 #Region " Windows Form Designer generated code "
 
@@ -105,7 +107,7 @@ Public Class Upload_Scores_Dialog
         Me.Password.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Password.Location = New System.Drawing.Point(182, 55)
         Me.Password.Name = "Password"
-        Me.Password.PasswordChar = Microsoft.VisualBasic.ChrW(42)
+        Me.Password.PasswordChar = ChrW(42)
         Me.Password.Size = New System.Drawing.Size(173, 26)
         Me.Password.TabIndex = 4
         Me.Password.Text = ""
@@ -184,7 +186,7 @@ Public Class Upload_Scores_Dialog
 
 #End Region
 
-    Private Sub Upload_Scores_Dialog_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+    Private Sub Upload_Scores_Dialog_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles MyBase.Closing
         Dim InvalidInput As Boolean = False
 
         Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf

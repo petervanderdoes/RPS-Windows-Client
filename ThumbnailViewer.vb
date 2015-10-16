@@ -1,5 +1,5 @@
 Public Class ThumbnailViewer
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
     Dim theMainForm As MainForm
     Dim ImageList As IList
@@ -179,7 +179,7 @@ Public Class ThumbnailViewer
 
 #End Region
 
-    Private Sub ThumbnailListView_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles ThumbnailListView.KeyDown
+    Private Sub ThumbnailListView_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ThumbnailListView.KeyDown
         Dim datasetRowNum As Integer
         Dim newIndex As Integer
 
@@ -279,13 +279,13 @@ Public Class ThumbnailViewer
         End Try
     End Sub
 
-    Private Sub ThumbnailViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub ThumbnailViewer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Dim imageFileName As String
         Dim posn As Integer
         Dim path As String
         Dim fileName As String
         Dim thumbFileName As String
-        Dim thumbImage As System.Drawing.Image
+        Dim thumbImage As Image
         Dim numImages As Integer
         Dim thumb As Thumbnail
         Dim thisItem As ListViewItem
@@ -300,7 +300,7 @@ Public Class ThumbnailViewer
             ' of four.
             numImages = ImageList.Count
             If numImages > 6 Then
-                ThumbnailImageList.ImageSize = New System.Drawing.Size(185, 185)
+                ThumbnailImageList.ImageSize = New Size(185, 185)
             End If
 
             ' Iterate through the dataset to load the thumbnails into the imagelist
@@ -366,7 +366,7 @@ Public Class ThumbnailViewer
 
     Friend Sub setSizes()
         Dim I As RpsImageSize = New RpsImageSize
-        ClientSize = New System.Drawing.Size(I.getFullWidth(), I.getFullHeight())
+        ClientSize = New Size(I.getFullWidth(), I.getFullHeight())
         MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
         MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
 
