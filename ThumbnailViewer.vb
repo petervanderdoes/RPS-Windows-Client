@@ -254,7 +254,7 @@ Public Class ThumbnailViewer
                             fullSizeFileName = currentRow.Image_File_Name
                             ' If it's a relative path, convert to an absolute path
                             If Not InStr(1, fullSizeFileName, ":\") = 2 Then
-                                fullSizeFileName = theMainForm.imagesRootFolder + "\" + fullSizeFileName
+                                fullSizeFileName = theMainForm.images_root_folder + "\" + fullSizeFileName
                             End If
                             ' Load it into the PictureBox
                             ZoomedImage.Image = Image.FromFile(fullSizeFileName)
@@ -319,7 +319,7 @@ Public Class ThumbnailViewer
                 thumbFileName = path + "\Thumbnails\" + fileName
                 ' If it's a relative path, convert to an absolute path
                 If Not InStr(1, thumbFileName, ":\") = 2 Then
-                    thumbFileName = theMainForm.imagesRootFolder + "\" + thumbFileName
+                    thumbFileName = theMainForm.images_root_folder + "\" + thumbFileName
                 End If
                 ' If the thumbnail file doesn't exist, render it now
                 If Not File.Exists(thumbFileName) Then

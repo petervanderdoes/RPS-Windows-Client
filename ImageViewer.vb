@@ -421,7 +421,7 @@ Public Class ImageViewer
             'row = ImageList.First
 
             ' Configure the splash screen
-            splashClub.Text = theMainForm.cameraClubName
+            splashClub.Text = theMainForm.camera_club_name
             splashTheme.Text = ""
             If theMainForm.EnableTheme.CheckState = CheckState.Checked Then
                 splashTheme.Text = theMainForm.SelectTheme.Text
@@ -483,7 +483,7 @@ Public Class ImageViewer
                 If Len(value) > 0 Then
                     currentRow.Score_1 = CType(value, Integer)
                     StatusBarScore.Text = value + " Points"
-                    If CType(value, Integer) >= (theMainForm.minScoreForAward * theMainForm.numJudges) Then
+                    If CType(value, Integer) >= (theMainForm.min_score_for_award * theMainForm.num_judges) Then
                         RenderThumbnail(currentRow.Image_File_Name)
                     End If
                 Else
@@ -530,7 +530,7 @@ Public Class ImageViewer
 
                 ' If it's a relative path, convert to an absolute path
                 If Not InStr(1, currentFileName, ":\") = 2 Then
-                    currentFileName = theMainForm.imagesRootFolder + "\" + currentFileName
+                    currentFileName = theMainForm.images_root_folder + "\" + currentFileName
                 End If
 
                 ' Prepare the Status Bar

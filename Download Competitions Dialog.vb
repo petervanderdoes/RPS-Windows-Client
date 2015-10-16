@@ -245,7 +245,7 @@ Public Class Download_Competitions_Dialog
         'Dim fileOpenDialog As New OpenFileDialog
 
         FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
-        FolderBrowserDialog1.SelectedPath = theMainForm.imagesRootFolder
+        FolderBrowserDialog1.SelectedPath = theMainForm.images_root_folder
         If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
             OutputFolder.Text = FolderBrowserDialog1.SelectedPath
         End If

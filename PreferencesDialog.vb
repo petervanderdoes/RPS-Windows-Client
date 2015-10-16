@@ -292,7 +292,7 @@ Public Class PreferencesDialog
 
         Try
             folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
-            folderBrowser.SelectedPath = theMainForm.imagesRootFolder
+            folderBrowser.SelectedPath = theMainForm.images_root_folder
             folderBrowser.ShowDialog()
             tbImagesRootFolder.Text = folderBrowser.SelectedPath
         Catch ex As Exception

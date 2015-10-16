@@ -48,7 +48,7 @@ Public Class Thumbnail
             fileName = Mid(imageFileName, posn + 1)
             ' If it's a relative path, convert to an absolute path
             If Not InStr(1, path, ":\") = 2 Then
-                path = theMainForm.imagesRootFolder + "\" + path
+                path = theMainForm.images_root_folder + "\" + path
             End If
 
             ' Create a source and destination bitmap and a background canvas

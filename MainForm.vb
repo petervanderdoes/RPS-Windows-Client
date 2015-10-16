@@ -7,54 +7,52 @@ Imports System.Linq
 Public Class MainForm
     Inherits Form
 
-    Private ReadOnly dataFolder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
-    Private databaseFileName As String = dataFolder + "\rps.db"
+    Private ReadOnly _data_folder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
+    Private _database_file_name As String = _data_folder + "\rps.db"
 
     ' Database 
-    Dim connectionString As String
-    Private sqliteConnectionString As SQLiteConnectionStringBuilder = New SQLiteConnectionStringBuilder()
-    Private efConnection As EntityConnectionStringBuilder = New EntityConnectionStringBuilder()
-    Public rpsContext As rpsEntities
-    Private query As Object
-    Private record As Object
+    Dim _connection_string As String
+    Public rps_context As rpsEntities
+    Private _query As Object
+    Private _record As Object
     Public entries As IList(Of CompetitionEntry)
 
     ' User Preferences (defaults)
-    Public reportsOutputFolder As String = dataFolder + "\Reports"
-    Public imagesRootFolder As String = dataFolder + "\Photos"
-    Private ServerName As String = "localhost"
-    Private ServerScriptDir As String = "/"
-    Public cameraClubName As String = "Raritan Photographic Society"
-    Public cameraClubId As Integer = 1
+    Public reports_output_folder As String = _data_folder + "\Reports"
+    Public images_root_folder As String = _data_folder + "\Photos"
+    Private _server_name As String = "localhost"
+    Private _server_script_dir As String = "/"
+    Public camera_club_name As String = "Raritan Photographic Society"
+    Public camera_club_id As Integer = 1
     Public classifications As New ArrayList
     Public mediums As New ArrayList
     Public awards As New ArrayList
     Public themes As New ArrayList
-    Public minScore As Integer
-    Public maxScore As Integer
-    Public minScoreForAward As Integer
-    Public numJudges As Integer = 1
-    Private AllScoresSelected As Boolean
-    Private EightsAndAwardsSelected As Boolean
-    Private SelectedScore As Integer
-    Private SelectedAvgScore As Integer
-    Public lastAdminUsername As String
+    Public min_score As Integer
+    Public max_score As Integer
+    Public min_score_for_award As Integer
+    Public num_judges As Integer = 1
+    Private _all_scores_selected As Boolean
+    Private _eights_and_awards_selected As Boolean
+    Private _selected_score As Integer
+    Private _selected_avg_score As Integer
+    Public last_admin_username As String
 
-    Public StatusBar As New ProgressStatus
+    Public status_bar As New ProgressStatus
 
     ' For the thumbnail view
-    Private ninePointThumbViewTitle As String
-    Private eightPointThumbViewTitle As String
-    Friend WithEvents DataGridTextBoxColumn3 As DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn2 As DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn1 As DataGridTextBoxColumn
-    Friend WithEvents DataGridView1 As DataGridView
-    Friend WithEvents GridCaption As Label
-    Private sevenPointThumbViewTitle As String
-    Friend WithEvents Score As DataGridViewTextBoxColumn
-    Friend WithEvents Award As DataGridViewTextBoxColumn
-    Friend WithEvents Title As DataGridViewTextBoxColumn
-    Private ReadOnly centerCellStyle As New DataGridViewCellStyle
+    Private _nine_point_thumb_view_title As String
+    Private _eight_point_thumb_view_title As String
+    Friend WithEvents data_grid_text_box_column3 As DataGridTextBoxColumn
+    Friend WithEvents data_grid_text_box_column2 As DataGridTextBoxColumn
+    Friend WithEvents data_grid_text_box_column1 As DataGridTextBoxColumn
+    Friend WithEvents data_grid_entries_view As DataGridView
+    Friend WithEvents grid_caption As Label
+    Private _seven_point_thumb_view_title As String
+    Friend WithEvents score As DataGridViewTextBoxColumn
+    Friend WithEvents award As DataGridViewTextBoxColumn
+    Friend WithEvents title As DataGridViewTextBoxColumn
+    Private ReadOnly _center_cell_style As New DataGridViewCellStyle
 
     Private Sub InitializeStatusBar()
         Dim info As StatusBarPanel = New StatusBarPanel
@@ -68,7 +66,7 @@ Public Class MainForm
         'progress.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring
         info.AutoSize = StatusBarPanelAutoSize.Spring
 
-        With StatusBar
+        With status_bar
             .Panels.Add(info)
             .Panels.Add(progress)
             .ShowPanels = True
@@ -78,7 +76,7 @@ Public Class MainForm
             .progressBar.Maximum = 100
         End With
 
-        Me.Controls.Add(StatusBar)
+        Me.Controls.Add(status_bar)
     End Sub
 
 #Region " Windows Form Designer generated code "
@@ -210,15 +208,15 @@ Public Class MainForm
         Me.SelectDate = New System.Windows.Forms.ComboBox()
         Me.btnThumbnails = New System.Windows.Forms.Button()
         Me.btnSlideShow = New System.Windows.Forms.Button()
-        Me.DataGridTextBoxColumn3 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridTextBoxColumn2 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridTextBoxColumn1 = New System.Windows.Forms.DataGridTextBoxColumn()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.Score = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Award = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Title = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.GridCaption = New System.Windows.Forms.Label()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.data_grid_text_box_column3 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.data_grid_text_box_column2 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.data_grid_text_box_column1 = New System.Windows.Forms.DataGridTextBoxColumn()
+        Me.data_grid_entries_view = New System.Windows.Forms.DataGridView()
+        Me.score = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.award = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.title = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.grid_caption = New System.Windows.Forms.Label()
+        CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnLoad
@@ -681,47 +679,47 @@ Public Class MainForm
         '
         'DataGridTextBoxColumn3
         '
-        Me.DataGridTextBoxColumn3.Format = ""
-        Me.DataGridTextBoxColumn3.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn3.HeaderText = "Title"
-        Me.DataGridTextBoxColumn3.MappingName = "Title"
-        Me.DataGridTextBoxColumn3.NullText = ""
-        Me.DataGridTextBoxColumn3.Width = 270
+        Me.data_grid_text_box_column3.Format = ""
+        Me.data_grid_text_box_column3.FormatInfo = Nothing
+        Me.data_grid_text_box_column3.HeaderText = "Title"
+        Me.data_grid_text_box_column3.MappingName = "Title"
+        Me.data_grid_text_box_column3.NullText = ""
+        Me.data_grid_text_box_column3.Width = 270
         '
         'DataGridTextBoxColumn2
         '
-        Me.DataGridTextBoxColumn2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
-        Me.DataGridTextBoxColumn2.Format = ""
-        Me.DataGridTextBoxColumn2.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn2.HeaderText = "Award"
-        Me.DataGridTextBoxColumn2.MappingName = "Award"
-        Me.DataGridTextBoxColumn2.NullText = ""
-        Me.DataGridTextBoxColumn2.Width = 50
+        Me.data_grid_text_box_column2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
+        Me.data_grid_text_box_column2.Format = ""
+        Me.data_grid_text_box_column2.FormatInfo = Nothing
+        Me.data_grid_text_box_column2.HeaderText = "Award"
+        Me.data_grid_text_box_column2.MappingName = "Award"
+        Me.data_grid_text_box_column2.NullText = ""
+        Me.data_grid_text_box_column2.Width = 50
         '
         'DataGridTextBoxColumn1
         '
-        Me.DataGridTextBoxColumn1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
-        Me.DataGridTextBoxColumn1.Format = ""
-        Me.DataGridTextBoxColumn1.FormatInfo = Nothing
-        Me.DataGridTextBoxColumn1.HeaderText = "Score"
-        Me.DataGridTextBoxColumn1.MappingName = "Score_1"
-        Me.DataGridTextBoxColumn1.NullText = ""
-        Me.DataGridTextBoxColumn1.Width = 50
+        Me.data_grid_text_box_column1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
+        Me.data_grid_text_box_column1.Format = ""
+        Me.data_grid_text_box_column1.FormatInfo = Nothing
+        Me.data_grid_text_box_column1.HeaderText = "Score"
+        Me.data_grid_text_box_column1.MappingName = "Score_1"
+        Me.data_grid_text_box_column1.NullText = ""
+        Me.data_grid_text_box_column1.Width = 50
         '
         'DataGridView1
         '
-        Me.DataGridView1.AllowUserToAddRows = False
-        Me.DataGridView1.AllowUserToDeleteRows = False
-        Me.DataGridView1.AllowUserToResizeColumns = False
-        Me.DataGridView1.AllowUserToResizeRows = False
-        Me.DataGridView1.Anchor =
+        Me.data_grid_entries_view.AllowUserToAddRows = False
+        Me.data_grid_entries_view.AllowUserToDeleteRows = False
+        Me.data_grid_entries_view.AllowUserToResizeColumns = False
+        Me.data_grid_entries_view.AllowUserToResizeRows = False
+        Me.data_grid_entries_view.Anchor =
             CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                    Or System.Windows.Forms.AnchorStyles.Right),
                   System.Windows.Forms.AnchorStyles)
-        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
-        Me.DataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.data_grid_entries_view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.data_grid_entries_view.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
+        Me.data_grid_entries_view.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif",
@@ -733,10 +731,10 @@ Public Class MainForm
         DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.DataGridView1.ColumnHeadersHeightSizeMode =
+        Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
             System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Score, Me.Award, Me.Title})
+        Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.score, Me.award, Me.title})
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif",
@@ -748,71 +746,71 @@ Public Class MainForm
         DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle2
-        Me.DataGridView1.EnableHeadersVisualStyles = False
-        Me.DataGridView1.Location = New System.Drawing.Point(209, 32)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.ReadOnly = True
-        Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        Me.DataGridView1.RowHeadersWidthSizeMode =
+        Me.data_grid_entries_view.DefaultCellStyle = DataGridViewCellStyle2
+        Me.data_grid_entries_view.EnableHeadersVisualStyles = False
+        Me.data_grid_entries_view.Location = New System.Drawing.Point(209, 32)
+        Me.data_grid_entries_view.Name = "data_grid_entries_view"
+        Me.data_grid_entries_view.ReadOnly = True
+        Me.data_grid_entries_view.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.data_grid_entries_view.RowHeadersWidthSizeMode =
             System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.DataGridView1.Size = New System.Drawing.Size(729, 433)
-        Me.DataGridView1.TabIndex = 53
+        Me.data_grid_entries_view.Size = New System.Drawing.Size(729, 433)
+        Me.data_grid_entries_view.TabIndex = 53
         '
         'Score
         '
-        Me.Score.DataPropertyName = "Score_1"
-        Me.Score.FillWeight = 21.80233!
-        Me.Score.HeaderText = "Score"
-        Me.Score.Name = "Score"
-        Me.Score.ReadOnly = True
-        Me.Score.Width = 73
+        Me.score.DataPropertyName = "Score_1"
+        Me.score.FillWeight = 21.80233!
+        Me.score.HeaderText = "Score"
+        Me.score.Name = "Score"
+        Me.score.ReadOnly = True
+        Me.score.Width = 73
         '
         'Award
         '
-        Me.Award.DataPropertyName = "Award"
-        Me.Award.FillWeight = 21.80233!
-        Me.Award.HeaderText = "Award"
-        Me.Award.Name = "Award"
-        Me.Award.ReadOnly = True
-        Me.Award.Width = 75
+        Me.award.DataPropertyName = "Award"
+        Me.award.FillWeight = 21.80233!
+        Me.award.HeaderText = "Award"
+        Me.award.Name = "Award"
+        Me.award.ReadOnly = True
+        Me.award.Width = 75
         '
         'Title
         '
-        Me.Title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.Title.DataPropertyName = "Title"
-        Me.Title.FillWeight = 256.3954!
-        Me.Title.HeaderText = "Title"
-        Me.Title.Name = "Title"
-        Me.Title.ReadOnly = True
+        Me.title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.title.DataPropertyName = "Title"
+        Me.title.FillWeight = 256.3954!
+        Me.title.HeaderText = "Title"
+        Me.title.Name = "Title"
+        Me.title.ReadOnly = True
         '
         'GridCaption
         '
-        Me.GridCaption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                                        Or System.Windows.Forms.AnchorStyles.Right),
                                       System.Windows.Forms.AnchorStyles)
-        Me.GridCaption.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.GridCaption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.GridCaption.Font = New System.Drawing.Font("Microsoft Sans Serif",
+        Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.grid_caption.Font = New System.Drawing.Font("Microsoft Sans Serif",
                                                       9.75!,
                                                       System.Drawing.FontStyle.Bold,
                                                       System.Drawing.GraphicsUnit.Point,
                                                       CType(0, Byte))
-        Me.GridCaption.ForeColor = System.Drawing.Color.Black
-        Me.GridCaption.Location = New System.Drawing.Point(209, 9)
-        Me.GridCaption.Margin = New System.Windows.Forms.Padding(0)
-        Me.GridCaption.Name = "GridCaption"
-        Me.GridCaption.Size = New System.Drawing.Size(729, 24)
-        Me.GridCaption.TabIndex = 54
-        Me.GridCaption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.grid_caption.ForeColor = System.Drawing.Color.Black
+        Me.grid_caption.Location = New System.Drawing.Point(209, 9)
+        Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
+        Me.grid_caption.Name = "grid_caption"
+        Me.grid_caption.Size = New System.Drawing.Size(729, 24)
+        Me.grid_caption.TabIndex = 54
+        Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
         Me.ClientSize = New System.Drawing.Size(950, 523)
-        Me.Controls.Add(Me.GridCaption)
-        Me.Controls.Add(Me.DataGridView1)
+        Me.Controls.Add(Me.grid_caption)
+        Me.Controls.Add(Me.data_grid_entries_view)
         Me.Controls.Add(Me.SelectDate)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.SelectScore)
@@ -846,7 +844,7 @@ Public Class MainForm
         Me.Menu = Me.MainMenu1
         Me.Name = "MainForm"
         Me.Text = "RPS Digital Competition Viewer"
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
     End Sub
@@ -857,45 +855,45 @@ Public Class MainForm
         Dim dirinfo As DirectoryInfo
         Try
             ' Set up the connection string for the database connection
-            SetDatabaseName(databaseFileName)
+            SetDatabaseName(_database_file_name)
             ' Load the user preferences from the registry
             LoadPreferences()
 
             ' Setup Database Variables
-            connectionString = New EntityConnectionStringBuilder() With
+            _connection_string = New EntityConnectionStringBuilder() With
                 {
                 .Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
                 .Provider = "System.Data.SQLite.EF6",
                 .ProviderConnectionString = New SQLiteConnectionStringBuilder() With
                     {
-                    .DataSource = databaseFileName,
+                    .DataSource = _database_file_name,
                     .ForeignKeys = True
                     }.ConnectionString
                 }.ConnectionString
 
-            rpsContext = New rpsEntities(connectionString)
-            If Not File.Exists(databaseFileName) Then
-                SQLiteConnection.CreateFile(databaseFileName)
+            rps_context = New rpsEntities(_connection_string)
+            If Not File.Exists(_database_file_name) Then
+                SQLiteConnection.CreateFile(_database_file_name)
                 InitializaDatabase()
             End If
 
-            dirinfo = New DirectoryInfo(imagesRootFolder)
+            dirinfo = New DirectoryInfo(images_root_folder)
             If Not dirinfo.Exists Then
                 dirinfo.Create()
             End If
-            dirinfo = New DirectoryInfo(reportsOutputFolder)
+            dirinfo = New DirectoryInfo(reports_output_folder)
             If Not dirinfo.Exists Then
                 dirinfo.Create()
             End If
 
             ' Setup Datagrid Styles
-            centerCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            _center_cell_style.Alignment = DataGridViewContentAlignment.MiddleCenter
 
             LoadClubRules()
 
             ' Initialize the StatusBar and ProgressBar
             InitializeStatusBar()
-            StatusBar.progressBar.Value = 0
+            status_bar.progressBar.Value = 0
             ' Load the unique competition dates into the Competition Date combobox
             LoadCompDates()
 
@@ -905,7 +903,7 @@ Public Class MainForm
     End Sub
 
     Private Sub InitializaDatabase()
-        query = "CREATE TABLE `medium` (`name` TEXT, `id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
+        _query = "CREATE TABLE `medium` (`name` TEXT, `id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                 "CREATE TABLE 'club_medium' (`club_id` INTEGER Not NULL,`medium_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0, PRIMARY KEY(club_id, medium_id), FOREIGN KEY(`club_id`) REFERENCES club ( id ), FOREIGN KEY(`medium_id`) REFERENCES medium ( id ));" &
                 "CREATE TABLE 'club_classification' (`club_id` INTEGER Not NULL,`classification_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0,PRIMARY KEY(club_id, classification_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`classification_id`) REFERENCES classification ( id ));" &
                 "CREATE TABLE 'club_award' (`club_id` INTEGER Not NULL,`award_id` INTEGER Not NULL,`points` INTEGER,`sort_key` INTEGER,PRIMARY KEY(club_id, award_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`award_id`) REFERENCES award ( id ));" &
@@ -913,9 +911,9 @@ Public Class MainForm
                 "CREATE TABLE 'classification' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                 "CREATE TABLE 'award' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                 "CREATE TABLE 'CompetitionEntries' (`Photo_ID` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,`Title` TEXT,`Maker` TEXT,`Classification` TEXT,`Medium` TEXT,`Theme` TEXT,`Competition_Date_1` TEXT,`Score_1` INTEGER DEFAULT 0,`Award` TEXT,`Image_File_Name` TEXT,`Display_Sequence` INTEGER DEFAULT 0,`Server_Entry_ID` INTEGER DEFAULT 0);"
-        rpsContext.Database.ExecuteSqlCommand(query)
+        rps_context.Database.ExecuteSqlCommand(_query)
 
-        query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);" &
+        _query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);" &
                 "INSERT INTO `medium` (name,id) VALUES ('Color Prints',2);" &
                 "INSERT INTO `medium` (name,id) VALUES ('B&W Digital',3);" &
                 "INSERT INTO `medium` (name,id) VALUES ('B&W Prints',4);" &
@@ -938,7 +936,7 @@ Public Class MainForm
                 "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,2,NULL,2);" &
                 "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,3,NULL,3);" &
                 "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);"
-        rpsContext.Database.ExecuteSqlCommand(query)
+        rps_context.Database.ExecuteSqlCommand(_query)
     End Sub
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
@@ -992,32 +990,32 @@ Public Class MainForm
     Private Sub SelectMedium_SelectedIndexChanged(sender As Object, e As EventArgs) _
         Handles SelectMedium.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
-        AllScoresSelected = True
-        EightsAndAwardsSelected = False
+        _all_scores_selected = True
+        _eights_and_awards_selected = False
         SelectImages()
     End Sub
 
     Private Sub SelectClassification_SelectedIndexChanged(sender As Object, e As EventArgs) _
         Handles SelectClassification.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
-        AllScoresSelected = True
-        EightsAndAwardsSelected = False
+        _all_scores_selected = True
+        _eights_and_awards_selected = False
         SelectImages()
     End Sub
 
     Private Sub SelectTheme_SelectedIndexChanged(sender As Object, e As EventArgs) _
         Handles SelectTheme.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
-        AllScoresSelected = True
-        EightsAndAwardsSelected = False
+        _all_scores_selected = True
+        _eights_and_awards_selected = False
         SelectImages()
     End Sub
 
     Private Sub SelectAward_SelectedIndexChanged(sender As Object, e As EventArgs) _
         Handles SelectAward.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
-        AllScoresSelected = True
-        EightsAndAwardsSelected = False
+        _all_scores_selected = True
+        _eights_and_awards_selected = False
         SelectImages()
     End Sub
 
@@ -1117,7 +1115,7 @@ Public Class MainForm
         Dim statusBarState As Integer
 
         ' Bail out if the dataset is empty
-        If DataGridView1.RowCount() <= 0 Then
+        If data_grid_entries_view.RowCount() <= 0 Then
             MsgBox("No competition has been loaded.", MsgBoxStyle.Exclamation, "Error In DoSlideShow()")
             Exit Sub
         End If
@@ -1125,7 +1123,7 @@ Public Class MainForm
         ' Display the splash screen if about to view all images in a competition starting
         ' from the beginning
         'If AllScoresRadioButton.Checked And grdCompetition_Entries.CurrentRowIndex <= 0 Then
-        If AllScoresSelected And DataGridView1.CurrentCell.RowIndex <= 0 Then
+        If _all_scores_selected And data_grid_entries_view.CurrentCell.RowIndex <= 0 Then
             showSplash = True
         Else
             showSplash = False
@@ -1133,27 +1131,27 @@ Public Class MainForm
 
         ' Set the status bar to show the title and maker name if we're announcing the winners
         'If EightsAndAwardsRadioButton.Checked Then
-        If EightsAndAwardsSelected Then
+        If _eights_and_awards_selected Then
             statusBarState = 2
             ' Set the status bar to show the title only if we're assigning awards
             'ElseIf NineScoreRadioButton.Checked Or EightScoreRadioButton.Checked Or SevenScoreRadioButton.Checked Then
-        ElseIf Not AllScoresSelected Then
+        ElseIf Not _all_scores_selected Then
             statusBarState = 1
         Else
             statusBarState = 0
         End If
 
-        Viewer = New ImageViewer(Me, entries, DataGridView1.CurrentCell.RowIndex, showSplash, statusBarState)
+        Viewer = New ImageViewer(Me, entries, data_grid_entries_view.CurrentCell.RowIndex, showSplash, statusBarState)
         Cursor.Hide()
         Viewer.ShowDialog()
         Cursor.Show()
         Try
             ' Attempt to update the datasource.
-            DataGridView1.Refresh()
+            data_grid_entries_view.Refresh()
 
             For Each entry As CompetitionEntry In entries
-                query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
-                rpsContext.Database.ExecuteSqlCommand(query,
+                _query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                rps_context.Database.ExecuteSqlCommand(_query,
                                                       New SQLiteParameter("@score", entry.Score_1),
                                                       New SQLiteParameter("@award", entry.Award),
                                                       New SQLiteParameter("@key", entry.Server_Entry_ID)
@@ -1161,7 +1159,7 @@ Public Class MainForm
             Next
             ' If we've just completed entering scores, calculate the eligible awards
             'If AllScoresRadioButton.Checked Then
-            If AllScoresSelected Then
+            If _all_scores_selected Then
                 CalculateAwards()
                 'PickAwards()
             End If
@@ -1208,24 +1206,24 @@ Public Class MainForm
 
 
             ' Configure the title for the thumbnail screen
-            If AllScoresSelected Then
+            If _all_scores_selected Then
                 screenTitle = SelectClassification.Text + " " + SelectMedium.Text
-            ElseIf EightsAndAwardsSelected Then
-                If numJudges > 1 Then
+            ElseIf _eights_and_awards_selected Then
+                If num_judges > 1 Then
                     screenTitle = "Award winners And images averaging 8 points Or more"
                 Else
                     screenTitle = "Award winners And images With 8 points Or more"
                 End If
-            ElseIf SelectedAvgScore > 0 Then
-                If SelectedAvgScore = 9 Then
-                    screenTitle = ninePointThumbViewTitle
-                ElseIf SelectedAvgScore = 8 Then
-                    screenTitle = eightPointThumbViewTitle
-                ElseIf SelectedAvgScore = 7 Then
-                    screenTitle = sevenPointThumbViewTitle
+            ElseIf _selected_avg_score > 0 Then
+                If _selected_avg_score = 9 Then
+                    screenTitle = _nine_point_thumb_view_title
+                ElseIf _selected_avg_score = 8 Then
+                    screenTitle = _eight_point_thumb_view_title
+                ElseIf _selected_avg_score = 7 Then
+                    screenTitle = _seven_point_thumb_view_title
                 End If
             Else
-                screenTitle = "Images scoring " + CType(SelectedScore, String) + " points"
+                screenTitle = "Images scoring " + CType(_selected_score, String) + " points"
             End If
 
             ' Launch the thumbnail screen
@@ -1233,11 +1231,11 @@ Public Class MainForm
             Viewer.ShowDialog()
 
             ' Attempt to update the datasource.
-            DataGridView1.Refresh()
+            data_grid_entries_view.Refresh()
 
             For Each entry As CompetitionEntry In entries
-                query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
-                rpsContext.Database.ExecuteSqlCommand(query,
+                _query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                rps_context.Database.ExecuteSqlCommand(_query,
                                                       New SQLiteParameter("@score", entry.Score_1),
                                                       New SQLiteParameter("@award", entry.Award),
                                                       New SQLiteParameter("@key", entry.Server_Entry_ID)
@@ -1363,8 +1361,8 @@ Public Class MainForm
         Try
             ' Calculate the relative path to the file.  The path is relative to the
             ' imagesRootFolder set in File -> Preferences
-            If InStr(1, file.FullName, imagesRootFolder) = 1 Then
-                relativePath = Mid(file.FullName, Len(imagesRootFolder) + 2)
+            If InStr(1, file.FullName, images_root_folder) = 1 Then
+                relativePath = Mid(file.FullName, Len(images_root_folder) + 2)
             Else
                 relativePath = file.FullName    ' Store absolute path if can't calculate relative path
             End If
@@ -1399,12 +1397,12 @@ Public Class MainForm
             End If
 
             ' Add it to the database
-            rpsContext.CompetitionEntries.Add(entry)
+            rps_context.CompetitionEntries.Add(entry)
 
         Catch ex As Exception
             MsgBox(ex.Message, , "Error In InsertImageInDatabase()")
         End Try
-        rpsContext.SaveChanges()
+        rps_context.SaveChanges()
     End Sub
 
     Private Function MaxAwards(numImages As Double) As Integer
@@ -1434,7 +1432,7 @@ Public Class MainForm
                 where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") +
                                "'"
                 order_clause = " ORDER BY Display_Sequence, Title"
-                GridCaption.Text = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
+                grid_caption.Text = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
 
                 'Dim q As System.Linq.IQueryable(Of CompetitionEntry)
                 'q = From entry In rpsContext.CompetitionEntries
@@ -1444,35 +1442,35 @@ Public Class MainForm
                 ' If enabled, add the value of the Classification field to the selection criteria
                 If EnableClassification.CheckState = CheckState.Checked Then
                     where_clause += " AND Classification='" + SelectClassification.Text + "'"
-                    GridCaption.Text += "  -  " + SelectClassification.Text
+                    grid_caption.Text += "  -  " + SelectClassification.Text
                     If EnableMedium.CheckState = CheckState.Checked Then
-                        GridCaption.Text += " / "
+                        grid_caption.Text += " / "
                     End If
                 End If
 
                 ' If enabled, add the value of the Medium field to the selection criteria
                 If EnableMedium.CheckState = CheckState.Checked Then
                     If EnableClassification.CheckState = CheckState.Unchecked Then
-                        GridCaption.Text += "  -  "
+                        grid_caption.Text += "  -  "
                     End If
                     where_clause += " AND Medium='" + SelectMedium.Text + "'"
-                    GridCaption.Text += SelectMedium.Text
+                    grid_caption.Text += SelectMedium.Text
                 End If
 
-                If Not AllScoresSelected Then
-                    If EightsAndAwardsSelected Then
-                        where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(numJudges, String) +
+                If Not _all_scores_selected Then
+                    If _eights_and_awards_selected Then
+                        where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(num_judges, String) +
                                         ", 0) >= 8 AND Award Is Null))"
                         ' "CASE WHEN Award is NULL THEN 0 ELSE 1 END" Ensure the NULL values are shown first.
                         order_clause = " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
-                        GridCaption.Text += " (8s and Awards)"
-                    ElseIf SelectedAvgScore > 0 Then
-                        where_clause += " AND round(Score_1/" + CType(numJudges, String) + ", 0) = " +
-                                        CType(SelectedAvgScore, String)
-                        GridCaption.Text += " (Avg of " + CType(SelectedAvgScore, String) + " points)"
+                        grid_caption.Text += " (8s and Awards)"
+                    ElseIf _selected_avg_score > 0 Then
+                        where_clause += " AND round(Score_1/" + CType(num_judges, String) + ", 0) = " +
+                                        CType(_selected_avg_score, String)
+                        grid_caption.Text += " (Avg of " + CType(_selected_avg_score, String) + " points)"
                     Else
-                        where_clause += " AND Score_1=" + CType(SelectedScore, String)
-                        GridCaption.Text += " (" + CType(SelectedScore, String) + " points only)"
+                        where_clause += " AND Score_1=" + CType(_selected_score, String)
+                        grid_caption.Text += " (" + CType(_selected_score, String) + " points only)"
                     End If
                 End If
 
@@ -1487,29 +1485,29 @@ Public Class MainForm
                 If EnableAward.CheckState = CheckState.Checked Then
                     If SelectAward.Text > "" Then
                         where_clause += " AND Award='" + SelectAward.Text + "'"
-                        GridCaption.Text += SelectAward.Text + " only"
+                        grid_caption.Text += SelectAward.Text + " only"
                     End If
                 End If
 
                 ' Install the updated SQL SELECT statement
-                query = select_stmt + where_clause + order_clause
-                entries = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
+                _query = select_stmt + where_clause + order_clause
+                entries = rps_context.Database.SqlQuery(Of CompetitionEntry)(_query).ToList
 
-                With DataGridView1
-                    .Columns("Score").DefaultCellStyle = centerCellStyle
-                    .Columns("Award").DefaultCellStyle = centerCellStyle
+                With data_grid_entries_view
+                    .Columns("Score").DefaultCellStyle = _center_cell_style
+                    .Columns("Award").DefaultCellStyle = _center_cell_style
                     .AutoGenerateColumns = False
                     .DataSource = entries
                 End With
 
                 ' Count the number of rows selected and add it to the caption of the DataGrid
-                numSelected = DataGridView1.RowCount()
+                numSelected = data_grid_entries_view.RowCount()
 
-                GridCaption.Text += "  -  " + numSelected.ToString + " Images"
+                grid_caption.Text += "  -  " + numSelected.ToString + " Images"
 
                 ' Recalculate the awards
                 'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
-                If AllScoresSelected And EnableAward.CheckState = CheckState.Unchecked Then
+                If _all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
                     CalculateAwards()
                 End If
 
@@ -1543,7 +1541,7 @@ Public Class MainForm
             For Each dRow In entries
                 If IsNumeric(dRow.Score_1) Then
                     totalNumScores = totalNumScores + 1
-                    If dRow.Score_1 >= (minScoreForAward * numJudges) And dRow.Score_1 <= (maxScore * numJudges) Then
+                    If dRow.Score_1 >= (min_score_for_award * num_judges) And dRow.Score_1 <= (max_score * num_judges) Then
                         eligibleScores.Add(dRow.Score_1)
                     End If
                 End If
@@ -1554,18 +1552,18 @@ Public Class MainForm
 
             ' Step through the eligible scores until all possible awards have been allocated
             ' or until the number of eligible scores exhausted.
-            ninePointThumbViewTitle = ""
-            eightPointThumbViewTitle = ""
-            sevenPointThumbViewTitle = ""
+            _nine_point_thumb_view_title = ""
+            _eight_point_thumb_view_title = ""
+            _seven_point_thumb_view_title = ""
             For i = 0 To Math.Min(maximumAwards, eligibleScores.Count) - 1
                 ' Count up the number of eligible 9s, 8s and 7s
-                Select Case Math.Round(eligibleScores(i) / numJudges, 0)
+                Select Case Math.Round(eligibleScores(i) / num_judges, 0)
                     Case 9
                         ' Count the number of 9 point awards for the distribution on the main screen
                         numEligibleNines = numEligibleNines + 1
                         ' Build the title for the thumbnail screen
                         If i < 3 Then
-                            ninePointThumbViewTitle += delim_9 + awardNames(i)
+                            _nine_point_thumb_view_title += delim_9 + awardNames(i)
                         Else
                             numNineHM += 1
                         End If
@@ -1575,7 +1573,7 @@ Public Class MainForm
                         numEligibleEights = numEligibleEights + 1
                         ' Build the title for the thumbnail screen
                         If i < 3 Then
-                            eightPointThumbViewTitle += delim_8 + awardNames(i)
+                            _eight_point_thumb_view_title += delim_8 + awardNames(i)
                         Else
                             numEightHM += 1
                         End If
@@ -1585,7 +1583,7 @@ Public Class MainForm
                         numEligibleSevens = numEligibleSevens + 1
                         ' Build the title for the thumbnail screen
                         If i < 3 Then
-                            sevenPointThumbViewTitle += delim_7 + awardNames(i)
+                            _seven_point_thumb_view_title += delim_7 + awardNames(i)
                         Else
                             numSevenHM += 1
                         End If
@@ -1595,55 +1593,55 @@ Public Class MainForm
 
             ' Update the 9 point thumbnail screen title to include the HMs
             If numNineHM > 0 Then
-                If ninePointThumbViewTitle > "" Then
-                    ninePointThumbViewTitle += " And "
+                If _nine_point_thumb_view_title > "" Then
+                    _nine_point_thumb_view_title += " And "
                 End If
                 If numNineHM = 1 Then
-                    ninePointThumbViewTitle += "1 HM"
+                    _nine_point_thumb_view_title += "1 HM"
                 Else
-                    ninePointThumbViewTitle += CStr(numNineHM) + " HMs"
+                    _nine_point_thumb_view_title += CStr(numNineHM) + " HMs"
                 End If
             End If
 
             ' Update the 8 point thumbnail screen title to include the HMs
             If numEightHM > 0 Then
-                If eightPointThumbViewTitle > "" Then
-                    eightPointThumbViewTitle += " And "
+                If _eight_point_thumb_view_title > "" Then
+                    _eight_point_thumb_view_title += " And "
                 End If
                 If numEightHM = 1 Then
-                    eightPointThumbViewTitle += "1 HM"
+                    _eight_point_thumb_view_title += "1 HM"
                 Else
-                    eightPointThumbViewTitle += CStr(numEightHM) + " HMs"
+                    _eight_point_thumb_view_title += CStr(numEightHM) + " HMs"
                 End If
             End If
 
             ' Update the 7 point thumbnail screen title to include the HMs
             If numSevenHM > 0 Then
-                If sevenPointThumbViewTitle > "" Then
-                    sevenPointThumbViewTitle += " And "
+                If _seven_point_thumb_view_title > "" Then
+                    _seven_point_thumb_view_title += " And "
                 End If
                 If numSevenHM = 1 Then
-                    sevenPointThumbViewTitle += "1 HM"
+                    _seven_point_thumb_view_title += "1 HM"
                 Else
-                    sevenPointThumbViewTitle += CStr(numSevenHM) + " HMs"
+                    _seven_point_thumb_view_title += CStr(numSevenHM) + " HMs"
                 End If
             End If
 
             ' Add a prefix to the thumbnail screen title
-            If ninePointThumbViewTitle > "" Then
-                ninePointThumbViewTitle = "Choose " + ninePointThumbViewTitle
+            If _nine_point_thumb_view_title > "" Then
+                _nine_point_thumb_view_title = "Choose " + _nine_point_thumb_view_title
             Else
-                ninePointThumbViewTitle = "Choose (none)"
+                _nine_point_thumb_view_title = "Choose (none)"
             End If
-            If eightPointThumbViewTitle > "" Then
-                eightPointThumbViewTitle = "Choose " + eightPointThumbViewTitle
+            If _eight_point_thumb_view_title > "" Then
+                _eight_point_thumb_view_title = "Choose " + _eight_point_thumb_view_title
             Else
-                eightPointThumbViewTitle = "Choose (none)"
+                _eight_point_thumb_view_title = "Choose (none)"
             End If
-            If sevenPointThumbViewTitle > "" Then
-                sevenPointThumbViewTitle = "Choose " + sevenPointThumbViewTitle
+            If _seven_point_thumb_view_title > "" Then
+                _seven_point_thumb_view_title = "Choose " + _seven_point_thumb_view_title
             Else
-                sevenPointThumbViewTitle = "Choose (none)"
+                _seven_point_thumb_view_title = "Choose (none)"
             End If
 
             ' Enter the total awards to be chosen into the "caption"
@@ -1689,7 +1687,7 @@ Public Class MainForm
             Else
                 reportType = "Scoresheet"
             End If
-            tempFile = reportsOutputFolder + "\" +
+            tempFile = reports_output_folder + "\" +
                        reportType + "_" + CType(competitionDate.Year, String) + "-" +
                        CType(competitionDate.Month, String) + "-" +
                        CType(competitionDate.Day, String)
@@ -1782,7 +1780,7 @@ Public Class MainForm
             sw.WriteLine("<body>")
             sw.WriteLine("<table class=""worksheet"">")
             sw.WriteLine(
-                "<tr><td colspan=""4"" class=""header_center""><p class=""title"">" + cameraClubName +
+                "<tr><td colspan=""4"" class=""header_center""><p class=""title"">" + camera_club_name +
                 " Competition Results</p></td></tr>")
             If _
                 EnableClassification.Checked Or EnableMedium.Checked Or EnableTheme.Checked Or SelectScore.Text <> "All" Or
@@ -1901,27 +1899,27 @@ Public Class MainForm
 
         Try
             ' Load the current perferences into the dialog
-            prefsDialog.tbDatabaseFileName.Text = databaseFileName
-            If Len(imagesRootFolder) = 2 And Mid(imagesRootFolder, 2, 1) = ":" Then
-                prefsDialog.tbImagesRootFolder.Text = imagesRootFolder + "\"
+            prefsDialog.tbDatabaseFileName.Text = _database_file_name
+            If Len(images_root_folder) = 2 And Mid(images_root_folder, 2, 1) = ":" Then
+                prefsDialog.tbImagesRootFolder.Text = images_root_folder + "\"
             Else
-                prefsDialog.tbImagesRootFolder.Text = imagesRootFolder
+                prefsDialog.tbImagesRootFolder.Text = images_root_folder
             End If
-            If Len(reportsOutputFolder) = 2 And Mid(reportsOutputFolder, 2, 1) = ":" Then
-                prefsDialog.tbReportsOutputFolder.Text = reportsOutputFolder + "\"
+            If Len(reports_output_folder) = 2 And Mid(reports_output_folder, 2, 1) = ":" Then
+                prefsDialog.tbReportsOutputFolder.Text = reports_output_folder + "\"
             Else
-                prefsDialog.tbReportsOutputFolder.Text = reportsOutputFolder
+                prefsDialog.tbReportsOutputFolder.Text = reports_output_folder
             End If
-            prefsDialog.tbServerName.Text = ServerName
-            prefsDialog.tbServerScriptDir.Text = ServerScriptDir
-            query = From club In rpsContext.clubs
-                    Select club.id, club.name
+            prefsDialog.tbServerName.Text = _server_name
+            prefsDialog.tbServerScriptDir.Text = _server_script_dir
+            _query = From club In rps_context.clubs
+                     Select club.id, club.name
 
-            For Each record In query
-                prefsDialog.cbCameraClubName.Items.Add(New DataItem(record.id, record.name))
+            For Each _record In _query
+                prefsDialog.cbCameraClubName.Items.Add(New DataItem(_record.id, _record.name))
             Next
-            prefsDialog.cbCameraClubName.Text = cameraClubName
-            prefsDialog.cbNumJudges.Text = CType(numJudges, String)
+            prefsDialog.cbCameraClubName.Text = camera_club_name
+            prefsDialog.cbNumJudges.Text = CType(num_judges, String)
 
             ' Display the dialog
             prefsDialog.ShowDialog()
@@ -1938,48 +1936,48 @@ Public Class MainForm
             If prefsDialog.DialogResult = DialogResult.OK Then
                 If irf > "" Then
                     ' If necessary, strip off a trailing "\"
-                    imagesRootFolder = Helper.TrimTrailingSlash(imagesRootFolder)
+                    images_root_folder = Helper.TrimTrailingSlash(images_root_folder)
                     ' write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Images Root Folder", imagesRootFolder)
+                    WriteRegistryString("Software\RPS Digital Viewer", "Images Root Folder", images_root_folder)
                 End If
                 If dbfn > "" Then
                     ' update the connection string
                     SetDatabaseName(dbfn)
                     ' write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Database File Name", databaseFileName)
+                    WriteRegistryString("Software\RPS Digital Viewer", "Database File Name", _database_file_name)
                 End If
                 If rof > "" Then
                     ' If necessary, strip off a trailing "\"
-                    reportsOutputFolder = Helper.TrimTrailingSlash(reportsOutputFolder)
+                    reports_output_folder = Helper.TrimTrailingSlash(reports_output_folder)
 
                     ' write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reportsOutputFolder)
+                    WriteRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reports_output_folder)
                 End If
                 If sn > "" Then
                     ' Store the new server name in memory
-                    ServerName = sn
+                    _server_name = sn
                     ' Write it to the registry
                     WriteRegistryString("Software\RPS Digital Viewer", "Server Name", sn)
                 End If
                 If ssd > "" Then
                     ' Store the new server script directory in memory
-                    ServerScriptDir = ssd
+                    _server_script_dir = ssd
                     ' Write it to the registry
                     WriteRegistryString("Software\RPS Digital Viewer", "Server Script Directory", ssd)
                 End If
                 If ccid > 0 Then
                     ' Set and store the club id
-                    cameraClubId = ccid
+                    camera_club_id = ccid
                     WriteRegistryString("Software\RPS Digital Viewer", "Camera Club ID", CType(ccid, String))
                 End If
                 If ccn > "" Then
                     ' Set and store the club name
-                    cameraClubName = ccn
+                    camera_club_name = ccn
                     WriteRegistryString("Software\RPS Digital Viewer", "Camera Club Name", ccn)
                 End If
                 If nj > 0 Then
                     ' Set and store the number of judges
-                    numJudges = nj
+                    num_judges = nj
                     WriteRegistryString("Software\RPS Digital Viewer", "Number of Judges", CType(nj, String))
                 End If
 
@@ -1995,7 +1993,7 @@ Public Class MainForm
 
     Private Sub SetDatabaseName(fileName As String)
         Try
-            databaseFileName = fileName
+            _database_file_name = fileName
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in SetDatabasename()")
         End Try
@@ -2044,7 +2042,7 @@ Public Class MainForm
         Try
             value = ReadRegistryString("Software\RPS Digital Viewer", "Images Root Folder")
             If value > "" Then
-                imagesRootFolder = value
+                images_root_folder = value
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Database File Name")
             If value > "" Then
@@ -2052,31 +2050,31 @@ Public Class MainForm
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Reports Output Folder")
             If value > "" Then
-                reportsOutputFolder = value
+                reports_output_folder = value
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Server Name")
             If value > "" Then
-                ServerName = value
+                _server_name = value
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Server Script Directory")
             If value > "" Then
-                ServerScriptDir = value
+                _server_script_dir = value
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Camera Club ID")
             If value > "" Then
-                cameraClubId = CType(value, Integer)
+                camera_club_id = CType(value, Integer)
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Camera Club Name")
             If value > "" Then
-                cameraClubName = value
+                camera_club_name = value
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Last Admin Username")
             If value > "" Then
-                lastAdminUsername = value
+                last_admin_username = value
             End If
             value = ReadRegistryString("Software\RPS Digital Viewer", "Number of Judges")
             If value > "" Then
-                numJudges = value
+                num_judges = value
             End If
 
         Catch ex As Exception
@@ -2095,65 +2093,65 @@ Public Class MainForm
             ' Fetch the list of club classifications from the database
             classifications.Clear()
             SelectClassification.Items.Clear()     ' remove any items in the classifications combobox
-            query = From c In rpsContext.classifications
-                    From b In rpsContext.club_classification
-                    From a In rpsContext.clubs
-                    Where a.id = cameraClubId AndAlso b.classification_id = c.id
-                    Select c.name
+            _query = From c In rps_context.classifications
+                     From b In rps_context.club_classification
+                     From a In rps_context.clubs
+                     Where a.id = camera_club_id AndAlso b.classification_id = c.id
+                     Select c.name
 
-            For Each record In query
-                classifications.Add(record)
-                SelectClassification.Items.Add(record)
+            For Each _record In _query
+                classifications.Add(_record)
+                SelectClassification.Items.Add(_record)
             Next
             SelectClassification.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the list of club mediums from the database
             mediums.Clear()
             SelectMedium.Items.Clear()     ' remove any items in the mediums combobox
-            query = From c In rpsContext.media
-                    From b In rpsContext.club_medium
-                    From a In rpsContext.clubs
-                    Where a.id = cameraClubId AndAlso b.medium_id = c.id
-                    Order By b.sort_key
-                    Select c.name
+            _query = From c In rps_context.media
+                     From b In rps_context.club_medium
+                     From a In rps_context.clubs
+                     Where a.id = camera_club_id AndAlso b.medium_id = c.id
+                     Order By b.sort_key
+                     Select c.name
 
-            For Each record In query
-                mediums.Add(record)
-                SelectMedium.Items.Add(record)
+            For Each _record In _query
+                mediums.Add(_record)
+                SelectMedium.Items.Add(_record)
             Next
             SelectMedium.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the list of club awards from the database
             awards.Clear()
             SelectAward.Items.Clear()
-            query = From c In rpsContext.awards
-                    From b In rpsContext.club_award
-                    From a In rpsContext.clubs
-                    Where a.id = cameraClubId AndAlso b.award_id = c.id
-                    Select c.name Distinct
+            _query = From c In rps_context.awards
+                     From b In rps_context.club_award
+                     From a In rps_context.clubs
+                     Where a.id = camera_club_id AndAlso b.award_id = c.id
+                     Select c.name Distinct
 
-            For Each record In query
-                awards.Add(record)
-                SelectAward.Items.Add(record)
+            For Each _record In _query
+                awards.Add(_record)
+                SelectAward.Items.Add(_record)
             Next
             SelectAward.SelectedIndex = 0 ' Select the first element in the combobox
 
             ' Fetch the club's min and max scores from the database
-            record = (From club In rpsContext.clubs
-                      Where club.id = cameraClubId
-                      Select club.max_score, club.min_score, club.min_score_for_award).SingleOrDefault
+            _record = (From club In rps_context.clubs
+                       Where club.id = camera_club_id
+                       Select club.max_score, club.min_score, club.min_score_for_award).SingleOrDefault
 
-            minScore = record.min_score
-            maxScore = record.max_score
-            minScoreForAward = record.min_score_for_award
+            min_score = _record.min_score
+            max_score = _record.max_score
+            min_score_for_award = _record.min_score_for_award
             ' Fill the SelectScore combobox
             SelectScore.Items.Clear()
             SelectScore.Items.Add("All")
-            For i As Integer = (maxScore * numJudges) To (minScore * numJudges) Step -1
+            For i As Integer = (max_score * num_judges) To (min_score * num_judges) Step -1
                 SelectScore.Items.Add(CType(i, String))
             Next
             SelectScore.SelectedIndex = 0
-            AllScoresSelected = True
+            _all_scores_selected = True
 
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in LoadClubRules()")
@@ -2165,9 +2163,9 @@ Public Class MainForm
     '
     Private Sub LoadCompDates()
 
-        query = From entries In rpsContext.CompetitionEntries
-                Order By entries.Competition_Date_1
-                Select entries.Competition_Date_1 Distinct
+        _query = From entries In rps_context.CompetitionEntries
+                 Order By entries.Competition_Date_1
+                 Select entries.Competition_Date_1 Distinct
 
         Try
             ' Empty the list if it's not already empty
@@ -2175,9 +2173,9 @@ Public Class MainForm
                 SelectDate.Items.Clear()
             End If
 
-            For Each record In query
+            For Each _record In _query
                 Dim item As DateTime
-                item = Convert.ToDateTime(record)
+                item = Convert.ToDateTime(_record)
 
                 SelectDate.Items.Add(item.ToString("dd-MMM-yyyy"))
             Next
@@ -2201,7 +2199,7 @@ Public Class MainForm
         Try
             ' Retrieve the list of competition dates from the server
             params.Add("rpswinclient", "getcompdate")
-            If REST(ServerName, ServerScriptDir, "GET", params, response) Then
+            If REST(_server_name, _server_script_dir, "GET", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/Competition_Date")
                 While nodes.MoveNext()
@@ -2298,7 +2296,7 @@ Public Class MainForm
             Cursor.Current = Cursors.Default
 
             ' Open the Download Competitions dialog
-            Download_Dialog = New Download_Competitions_Dialog(Me, lastAdminUsername, comp_dates, imagesRootFolder)
+            Download_Dialog = New Download_Competitions_Dialog(Me, last_admin_username, comp_dates, images_root_folder)
             Download_Dialog.ShowDialog(Me)
             If Download_Dialog.DialogResult = DialogResult.OK Then
                 username = Trim(Download_Dialog.Username.Text())
@@ -2312,8 +2310,8 @@ Public Class MainForm
             End If
 
             ' Save the username in the registry as the default admin username
-            lastAdminUsername = username
-            WriteRegistryString("Software\RPS Digital Viewer", "Last Admin Username", lastAdminUsername)
+            last_admin_username = username
+            WriteRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
 
             ' Delete any competitions in the local database that already have this date
             dateParts = Split(comp_date, "-")
@@ -2328,7 +2326,7 @@ Public Class MainForm
                 sql += " AND Medium like '%Prints'"
             End If
 
-            query = rpsContext.Database.ExecuteSqlCommand(sql)
+            _query = rps_context.Database.ExecuteSqlCommand(sql)
             Application.DoEvents()
 
             ' Retrieve the competition Manifest from the server
@@ -2344,7 +2342,7 @@ Public Class MainForm
             If download_prints And Not download_digital Then
                 params.Add("medium", "prints")
             End If
-            If Not REST(ServerName, ServerScriptDir, "POST", params, response) Then
+            If Not REST(_server_name, _server_script_dir, "POST", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
                 nodes.MoveNext()
@@ -2354,11 +2352,11 @@ Public Class MainForm
             End If
 
             ' Initialize the progress bar
-            StatusBar.progressBar.Minimum = 0
-            StatusBar.progressBar.Value = 0
+            status_bar.progressBar.Minimum = 0
+            status_bar.progressBar.Value = 0
             navigator = response.CreateNavigator()
             nodes = navigator.Select("/descendant::*[name()='Image_URL']") ' Count the images in the manifest
-            StatusBar.progressBar.Maximum = nodes.Count
+            status_bar.progressBar.Maximum = nodes.Count
 
             ' Select the list of Competitions from the manifest
             'navigator = response.CreateNavigator()
@@ -2504,7 +2502,7 @@ Public Class MainForm
                         sequence_num)
 
                     ' Update the Progressbar
-                    StatusBar.progressBar.Value = StatusBar.progressBar.Value + 1
+                    status_bar.progressBar.Value = status_bar.progressBar.Value + 1
                     Application.DoEvents()
 
                     sequence_num += 1
@@ -2522,7 +2520,7 @@ Public Class MainForm
             MsgBox(ex.Message, , "Error in DownloadCompetitionImages()")
         Finally
             ' Clear the ProgressBar
-            StatusBar.progressBar.Value = 0
+            status_bar.progressBar.Value = 0
             Cursor.Current = Cursors.Default
         End Try
     End Sub
@@ -2816,7 +2814,7 @@ Public Class MainForm
             Cursor.Current = Cursors.Default
 
             ' Open the Upload Scores dialog
-            Upload_Dialog = New Upload_Scores_Dialog(lastAdminUsername, comp_dates)
+            Upload_Dialog = New Upload_Scores_Dialog(last_admin_username, comp_dates)
             Upload_Dialog.ShowDialog(Me)
             If Upload_Dialog.DialogResult = DialogResult.OK Then
                 username = Trim(Upload_Dialog.Username.Text())
@@ -2829,14 +2827,14 @@ Public Class MainForm
             End If
 
             ' Save the username in the registry as the default admin username
-            lastAdminUsername = username
-            WriteRegistryString("Software\RPS Digital Viewer", "Last Admin Username", lastAdminUsername)
+            last_admin_username = username
+            WriteRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
 
             Cursor.Current = Cursors.WaitCursor
             Application.DoEvents()
 
             ' Open a local text file to receive the XML
-            fileName = reportsOutputFolder + "\" + "Scores_" + comp_date + ".xml"
+            fileName = reports_output_folder + "\" + "Scores_" + comp_date + ".xml"
             sw = f.CreateText(fileName)
             sw.WriteLine("<?xml version=""1.0"" encoding=""utf-8"" ?>")
             sw.WriteLine("<Competitions>")
@@ -2854,8 +2852,8 @@ Public Class MainForm
             sqlWhere = "WHERE Competition_Date_1 = '" +
                        Format(d, "M/dd/yyyy") + "'" +
                        selectedMedium
-            query = sqlSelect + sqlWhere
-            recs = rpsContext.Database.SqlQuery(Of UploadEntity_Classification_Medium)(query).ToList
+            _query = sqlSelect + sqlWhere
+            recs = rps_context.Database.SqlQuery(Of UploadEntity_Classification_Medium)(_query).ToList
 
             For Each record As UploadEntity_Classification_Medium In recs
                 comp_class_list.Add(record.Classification)
@@ -2870,8 +2868,8 @@ Public Class MainForm
                 sqlSelect = "Select * FROM CompetitionEntries "
                 sqlWhere = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
                            classification + "' AND Medium = '" + medium + "'"
-                query = sqlSelect + sqlWhere
-                recs = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
+                _query = sqlSelect + sqlWhere
+                recs = rps_context.Database.SqlQuery(Of CompetitionEntry)(_query).ToList
                 ' Output the tags that describe this competition
                 sw.WriteLine("  <Competition>")
                 sw.WriteLine("    <Date>{0}</Date>", HttpUtility.HtmlEncode(comp_date))
@@ -2927,7 +2925,7 @@ Public Class MainForm
             params.Add("username", username)
             params.Add("password", password)
             params.Add("file", fileName)
-            If Not REST(ServerName, ServerScriptDir + "/?rpswinclient=uploadscore", "POST", params, response) Then
+            If Not REST(_server_name, _server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) Then
                 ' If the web service returned an error, display it
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
@@ -2970,12 +2968,12 @@ Public Class MainForm
             themes.Clear()
             SelectTheme.Items.Clear()
 
-            query = From entries In rpsContext.CompetitionEntries
-                    Where entries.Competition_Date_1.Equals(compDate)
-                    Select entries.Theme Distinct
+            _query = From entries In rps_context.CompetitionEntries
+                     Where entries.Competition_Date_1.Equals(compDate)
+                     Select entries.Theme Distinct
 
-            For Each record In query
-                SelectTheme.Items.Add(record)
+            For Each _record In _query
+                SelectTheme.Items.Add(_record)
             Next
             If SelectTheme.Items.Count > 0 Then
                 SelectTheme.SelectedIndex = 0
@@ -2990,10 +2988,10 @@ Public Class MainForm
     Private Sub NumNinesHeadingButton_Click(sender As Object, e As EventArgs) _
         Handles NumNinesHeadingButton.Click
         'NineScoreRadioButton.Checked = True
-        AllScoresSelected = False
-        EightsAndAwardsSelected = False
-        SelectedAvgScore = 9
-        SelectedScore = 0
+        _all_scores_selected = False
+        _eights_and_awards_selected = False
+        _selected_avg_score = 9
+        _selected_score = 0
         SelectImages()
         PickAwards()
     End Sub
@@ -3001,10 +2999,10 @@ Public Class MainForm
     Private Sub NumEightsHeadingButton_Click(sender As Object, e As EventArgs) _
         Handles NumEightsHeadingButton.Click
         'EightScoreRadioButton.Checked = True
-        AllScoresSelected = False
-        EightsAndAwardsSelected = False
-        SelectedAvgScore = 8
-        SelectedScore = 0
+        _all_scores_selected = False
+        _eights_and_awards_selected = False
+        _selected_avg_score = 8
+        _selected_score = 0
         SelectImages()
         PickAwards()
     End Sub
@@ -3012,10 +3010,10 @@ Public Class MainForm
     Private Sub NumSevensHeadingButton_Click(sender As Object, e As EventArgs) _
         Handles NumSevensHeadingButton.Click
         'SevenScoreRadioButton.Checked = True
-        AllScoresSelected = False
-        EightsAndAwardsSelected = False
-        SelectedAvgScore = 7
-        SelectedScore = 0
+        _all_scores_selected = False
+        _eights_and_awards_selected = False
+        _selected_avg_score = 7
+        _selected_score = 0
         SelectImages()
         PickAwards()
     End Sub
@@ -3023,8 +3021,8 @@ Public Class MainForm
     Private Sub AwardsTableTitleBar_Click(sender As Object, e As EventArgs) _
         Handles AwardsTableTitleBar.Click
         'EightsAndAwardsRadioButton.Checked = True
-        EightsAndAwardsSelected = True
-        AllScoresSelected = False
+        _eights_and_awards_selected = True
+        _all_scores_selected = False
         SelectImages()
         DoSlideShow()
     End Sub
@@ -3032,14 +3030,14 @@ Public Class MainForm
     Private Sub SelectScore_SelectedIndexChanged(sender As Object, e As EventArgs) _
         Handles SelectScore.SelectedIndexChanged
         If SelectScore.SelectedIndex = 0 Then
-            AllScoresSelected = True
-            EightsAndAwardsSelected = False
+            _all_scores_selected = True
+            _eights_and_awards_selected = False
         Else
-            AllScoresSelected = False
-            EightsAndAwardsSelected = False
-            SelectedScore = CType(SelectScore.SelectedItem(), Integer)
+            _all_scores_selected = False
+            _eights_and_awards_selected = False
+            _selected_score = CType(SelectScore.SelectedItem(), Integer)
         End If
-        SelectedAvgScore = 0
+        _selected_avg_score = 0
         SelectImages()
     End Sub
 
@@ -3047,8 +3045,8 @@ Public Class MainForm
         Handles SelectDate.SelectedIndexChanged
         LoadUniqueThemes()
         SelectScore.SelectedItem = "All"
-        AllScoresSelected = True
-        EightsAndAwardsSelected = False
+        _all_scores_selected = True
+        _eights_and_awards_selected = False
         SelectImages()
     End Sub
 

@@ -225,12 +225,12 @@ Public Class Catalog_Images_Dialog
             If imageSelectionMode = "Folder" Then
                 ' Get the folder name containing the new images
                 FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
-                FolderBrowserDialog1.SelectedPath = theMainForm.imagesRootFolder
+                FolderBrowserDialog1.SelectedPath = theMainForm.images_root_folder
                 If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
                     tbNewImageFolder.Text = FolderBrowserDialog1.SelectedPath
                 End If
             Else ' Select individual images
-                fileOpenDialog.InitialDirectory = theMainForm.imagesRootFolder
+                fileOpenDialog.InitialDirectory = theMainForm.images_root_folder
                 fileOpenDialog.Filter = "JPEG Images (*.jpg)|*.jpg|All files (*.*)|*.*"
                 fileOpenDialog.Multiselect = True
                 fileOpenDialog.RestoreDirectory = True
