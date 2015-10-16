@@ -1,6 +1,6 @@
 Imports System.ComponentModel
 
-Public Class Upload_Scores_Dialog
+Public Class UploadScoresDialog
     Inherits Form
 
 #Region " Windows Form Designer generated code "
@@ -50,7 +50,7 @@ Public Class Upload_Scores_Dialog
     Friend WithEvents Upload_digital_scores As System.Windows.Forms.CheckBox
     Friend WithEvents Upload_print_scores As System.Windows.Forms.CheckBox
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(Upload_Scores_Dialog))
+        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(UploadScoresDialog))
         Me.Label1 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
@@ -177,7 +177,7 @@ Public Class Upload_Scores_Dialog
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "Upload_Scores_Dialog"
+        Me.Name = "UploadScoresDialog"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.Text = "Upload Scores"
         Me.ResumeLayout(False)
