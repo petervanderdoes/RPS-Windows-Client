@@ -1,24 +1,18 @@
-Imports System.Linq
-Imports System.Data.Entity.Core.EntityClient
-Imports System.Data.Entity.Core
-
 Public Class ImageViewer
     Inherits Form
 
-    Dim theMainForm As MainForm
-    Dim ImageList As IList
-    Dim numImages As Integer
-    Dim currentIndex As Integer
-    Dim currentFileName As String
-    Dim currentRow As CompetitionEntry
-    Dim currentScoreStr As String
-    Dim currentScoreSubStr As String
-    Dim statusBarVisible As Integer = 0
-    Dim showPhotogName As Boolean = False
-    Dim splashScreenVisible As Boolean = True
-    Dim inDelayLoop As Boolean = False
-    Dim thumb As Thumbnail
-    Dim thumbnailThread As Thread
+    ReadOnly _the_main_form As MainForm
+    ReadOnly _image_list As IList
+    Private _num_images As Integer
+    Private _current_index As Integer
+    Private _current_file_name As String
+    Private _current_row As CompetitionEntry
+    Private _current_score_str As String
+    Private _status_bar_visible As Integer = 0
+    Private _splash_screen_visible As Boolean = True
+    Private _in_delay_loop As Boolean = False
+    Private _thumb As Thumbnail
+    Private _thumbnail_thread As Thread
 
     Private Const SCORE As Integer = 0
     Private Const AWARD As Integer = 1
@@ -32,11 +26,11 @@ Public Class ImageViewer
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
-        theMainForm = myMainForm
-        ImageList = ds
-        currentIndex = idx
-        splashScreenVisible = splash
-        statusBarVisible = statusBarState
+        _the_main_form = myMainForm
+        _image_list = ds
+        _current_index = idx
+        _splash_screen_visible = splash
+        _status_bar_visible = statusBarState
         setSizes()
 
     End Sub
@@ -67,6 +61,7 @@ Public Class ImageViewer
     Friend WithEvents splashClub As System.Windows.Forms.Label
     Friend WithEvents splashTheme As System.Windows.Forms.Label
     Friend WithEvents splashClassification As System.Windows.Forms.Label
+
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.picShowPicture = New System.Windows.Forms.PictureBox()
         Me.ofdSelectPicture = New System.Windows.Forms.OpenFileDialog()
@@ -237,18 +232,13 @@ Public Class ImageViewer
 
 #End Region
 
-    Private Sub btnQuit_Click(ByVal sender As Object, ByVal e As EventArgs)
-        ' Unload Form
-        Me.Close()
-    End Sub
-
 
     Private Sub fclsViewer_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown
 
         Try
             ' Don't accept any more keystrokes until the rendering thread is complete
-            If Not thumbnailThread Is Nothing Then
-                While thumbnailThread.IsAlive
+            If Not _thumbnail_thread Is Nothing Then
+                While _thumbnail_thread.IsAlive
                     Application.DoEvents()
                 End While
             End If
@@ -256,150 +246,148 @@ Public Class ImageViewer
             ' If a key was pressed while in the middle of a delay loop (e.g. while
             ' the status bar is visible), terminate the delay loop before processing
             ' the key press
-            If inDelayLoop Then
-                inDelayLoop = False
+            If _in_delay_loop Then
+                _in_delay_loop = False
                 Application.DoEvents()
             End If
 
             ' Examine which key was pressed and act accordingly
             Select Case e.KeyCode
                 Case Keys.Escape    ' Esc to exit
-                    thumb = Nothing
-                    Me.Close()
+                    _thumb = Nothing
+                    Close()
                 Case Keys.PageDown, Keys.Down, Keys.Right   ' PgDn, Down Arrow, Right Arrow = move to next image
-                    If splashScreenVisible Then
-                        HideSplashScreen()
-                        MoveToImage(currentIndex)
+                    If _splash_screen_visible Then
+                        hideSplashScreen()
+                        moveToImage(_current_index)
                     Else
                         ScorePopUp.Visible = False
-                        MoveToImage(currentIndex + 1)
+                        moveToImage(_current_index + 1)
                     End If
                 Case Keys.PageUp, Keys.Up, Keys.Left   ' PgUp, Up Arrow, Left Arrow = move to previous image
                     ScorePopUp.Visible = False
-                    MoveToImage(currentIndex - 1)
+                    moveToImage(_current_index - 1)
                 Case Keys.Home                          ' Home = Move to first image
                     ScorePopUp.Visible = False
-                    MoveToImage(0)
+                    moveToImage(0)
                 Case Keys.End                           ' End = Move to last image
                     ScorePopUp.Visible = False
-                    MoveToImage(numImages - 1)
+                    moveToImage(_num_images - 1)
                 Case Keys.Delete                        ' Del key = clear score and award
-                    currentRow.Score_1 = Nothing
-                    currentRow.Award = Nothing
+                    _current_row.Score_1 = Nothing
+                    _current_row.Award = Nothing
                     StatusBarScore.Text = ""
                     StatusBarAward.Text = ""
                     ScorePopUp.Visible = False
                 Case Keys.Back                          ' Backspace Key = Delete one character from score
-                    If Len(currentScoreStr) > 0 Then
-                        currentScoreStr = Mid(currentScoreStr, 1, Len(currentScoreStr) - 1) ' Remove rightmost character
-                        DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    If Len(_current_score_str) > 0 Then
+                        _current_score_str = Mid(_current_score_str, 1, Len(_current_score_str) - 1) ' Remove rightmost character
+                        doScorePopUp(SCORE, _current_score_str, _current_row)
                     End If
                 Case Keys.F1             ' F1 Key
-                    If theMainForm.awards.Count >= 1 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(0), currentRow)
+                    If _the_main_form.awards.Count >= 1 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(0), _current_row)
                     End If
                 Case Keys.F2             ' F2 Key
-                    If theMainForm.awards.Count >= 2 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(1), currentRow)
+                    If _the_main_form.awards.Count >= 2 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(1), _current_row)
                     End If
                 Case Keys.F3             ' F3 Key
-                    If theMainForm.awards.Count >= 3 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(2), currentRow)
+                    If _the_main_form.awards.Count >= 3 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(2), _current_row)
                     End If
                 Case Keys.F4             ' F4 Key
-                    If theMainForm.awards.Count >= 4 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(3), currentRow)
+                    If _the_main_form.awards.Count >= 4 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(3), _current_row)
                     End If
                 Case Keys.F5             ' F5 Key
-                    If theMainForm.awards.Count >= 5 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(4), currentRow)
+                    If _the_main_form.awards.Count >= 5 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(4), _current_row)
                     End If
                 Case Keys.F6             ' F6 Key
-                    If theMainForm.awards.Count >= 6 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(5), currentRow)
+                    If _the_main_form.awards.Count >= 6 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(5), _current_row)
                     End If
                 Case Keys.F7             ' F7 Key
-                    If theMainForm.awards.Count >= 7 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(6), currentRow)
+                    If _the_main_form.awards.Count >= 7 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(6), _current_row)
                     End If
                 Case Keys.F8             ' F8 Key
-                    If theMainForm.awards.Count >= 8 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(7), currentRow)
+                    If _the_main_form.awards.Count >= 8 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(7), _current_row)
                     End If
                 Case Keys.F9             ' F9 Key
-                    If theMainForm.awards.Count >= 9 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(8), currentRow)
+                    If _the_main_form.awards.Count >= 9 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(8), _current_row)
                     End If
                 Case Keys.F10           ' F10 Key
-                    If theMainForm.awards.Count >= 10 Then
-                        DoScorePopUp_2(AWARD, theMainForm.awards.Item(9), currentRow)
+                    If _the_main_form.awards.Count >= 10 Then
+                        doScorePopUp(AWARD, _the_main_form.awards.Item(9), _current_row)
                     End If
                 Case 48             ' 0 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "0"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "0"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 49             ' 1 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "1"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "1"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 50             ' 2 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "2"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "2"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 51             ' 3 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "3"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "3"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 52             ' 4 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "4"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "4"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 53             ' 5 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "5"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "5"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 54             ' 6 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "6"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "6"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 55             ' 7 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "7"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "7"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 56             ' 8 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "8"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "8"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case 57             ' 9 Key
-                    If Len(currentScoreStr) < 2 Then
-                        currentScoreStr += "9"
+                    If Len(_current_score_str) < 2 Then
+                        _current_score_str += "9"
                     End If
-                    DoScorePopUp_2(SCORE, currentScoreStr, currentRow)
+                    doScorePopUp(SCORE, _current_score_str, _current_row)
                 Case Keys.S         ' S key = toggle the status bar
-                    If statusBarVisible = 0 Then
+                    If _status_bar_visible = 0 Then
                         StatusBar.Visible = True
-                        statusBarVisible = 1
-                    ElseIf statusBarVisible = 1 Then
-                        showPhotogName = True
-                        StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + currentRow.Maker
-                        statusBarVisible = 2
-                    ElseIf statusBarVisible = 2 Then
-                        showPhotogName = False
-                        StatusBarTitle.Text = currentRow.Title
+                        _status_bar_visible = 1
+                    ElseIf _status_bar_visible = 1 Then
+                        StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + _current_row.Maker
+                        _status_bar_visible = 2
+                    ElseIf _status_bar_visible = 2 Then
+                        StatusBarTitle.Text = _current_row.Title
                         StatusBar.Visible = False
-                        statusBarVisible = 0
+                        _status_bar_visible = 0
                     End If
                 Case Keys.C         ' C Key = hide the status bar and score
-                    statusBarVisible = 0
+                    _status_bar_visible = 0
                     StatusBar.Visible = False
                     ScorePopUp.Visible = False
             End Select
@@ -412,49 +400,49 @@ Public Class ImageViewer
         'Dim row As CompetitionEntry
         Try
             ' Create an instance of the Thumbnail class to render thumbnail as necessary
-            thumb = New Thumbnail(theMainForm)
+            _thumb = New Thumbnail(_the_main_form)
 
             ' How many images are there in this slideshow?
-            numImages = ImageList.Count
+            _num_images = _image_list.Count
 
             ' Grab the first row of the table to get some values
             'row = ImageList.First
 
             ' Configure the splash screen
-            splashClub.Text = theMainForm.camera_club_name
+            splashClub.Text = _the_main_form.camera_club_name
             splashTheme.Text = ""
-            If theMainForm.EnableTheme.CheckState = CheckState.Checked Then
-                splashTheme.Text = theMainForm.SelectTheme.Text
+            If _the_main_form.EnableTheme.CheckState = CheckState.Checked Then
+                splashTheme.Text = _the_main_form.SelectTheme.Text
             End If
 
             splashClassification.Text = ""
-            If theMainForm.EnableClassification.CheckState = CheckState.Checked Then
-                splashClassification.Text += theMainForm.SelectClassification.Text
+            If _the_main_form.EnableClassification.CheckState = CheckState.Checked Then
+                splashClassification.Text += _the_main_form.SelectClassification.Text
             End If
-            If theMainForm.EnableMedium.CheckState = CheckState.Checked Then
-                splashClassification.Text += " " + theMainForm.SelectMedium.Text
+            If _the_main_form.EnableMedium.CheckState = CheckState.Checked Then
+                splashClassification.Text += " " + _the_main_form.SelectMedium.Text
             End If
 
             ' Display the Splash Screen or the selected image
-            If splashScreenVisible Then
-                ShowSplashScreen()
+            If _splash_screen_visible Then
+                showSplashScreen()
             Else
-                HideSplashScreen()
-                MoveToImage(currentIndex)
+                hideSplashScreen()
+                moveToImage(_current_index)
             End If
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub Delay(ByVal ms As Long)
+    Private Sub doDelay(ByVal ms As Long)
         Try
             Dim i As Integer = 0
-            Dim numIterations As Integer
+            Dim num_iterations As Integer
 
-            numIterations = ms / 100
-            inDelayLoop = True
-            While i < numIterations And inDelayLoop
+            num_iterations = ms / 100
+            _in_delay_loop = True
+            While i < num_iterations And _in_delay_loop
                 Thread.Sleep(100)
                 i = i + 1
                 Application.DoEvents()
@@ -462,21 +450,21 @@ Public Class ImageViewer
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
-            inDelayLoop = False
+            _in_delay_loop = False
         End Try
     End Sub
-    Private Sub DoScorePopUp_2(ByVal mode As Integer, ByVal value As String, ByRef currentRow As CompetitionEntry)
+    Private Sub doScorePopUp(ByVal mode As Integer, ByVal value As String, ByRef current_row As CompetitionEntry)
         Try
             ' When entering scores, allow the user to enter up to two digit
             If mode = SCORE Then
                 If Len(value) > 0 Then
-                    currentRow.Score_1 = CType(value, Integer)
+                    current_row.Score_1 = CType(value, Integer)
                     StatusBarScore.Text = value + " Points"
-                    If CType(value, Integer) >= (theMainForm.min_score_for_award * theMainForm.num_judges) Then
-                        RenderThumbnail(currentRow.Image_File_Name)
+                    If CType(value, Integer) >= (_the_main_form.min_score_for_award * _the_main_form.num_judges) Then
+                        renderThumbnail(current_row.Image_File_Name)
                     End If
                 Else
-                    currentRow.Score_1 = Nothing
+                    current_row.Score_1 = Nothing
                     StatusBarScore.Text = ""
                 End If
                 ScorePopUp.Text = value
@@ -484,7 +472,7 @@ Public Class ImageViewer
 
                 ' When entering awards, just allow one key
             Else
-                currentRow.Award = value
+                current_row.Award = value
                 ScorePopUp.Text = value
                 StatusBarAward.Text = value
                 ScorePopUp.Visible = True
@@ -494,52 +482,52 @@ Public Class ImageViewer
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
-    Private Sub DoStatusBarPopUp()
+    Private Sub doStatusBarPopUp()
         Try
             StatusBar.Visible = True
-            Delay(2000)
+            doDelay(2000)
             StatusBar.Visible = False
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub MoveToImage(ByVal index As Integer)
+    Private Sub moveToImage(ByVal index As Integer)
         Try
-            If index >= 0 And index <= numImages - 1 Then
+            If index >= 0 And index <= _num_images - 1 Then
                 ' Get rid of the splash screen
-                If splashScreenVisible Then
-                    HideSplashScreen()
+                If _splash_screen_visible Then
+                    hideSplashScreen()
                 End If
 
                 ' Get the selected image file name from the database
-                currentIndex = index
-                currentRow = ImageList(currentIndex)
-                currentFileName = currentRow.Image_File_Name
+                _current_index = index
+                _current_row = _image_list(_current_index)
+                _current_file_name = _current_row.Image_File_Name
 
                 ' If it's a relative path, convert to an absolute path
-                If Not InStr(1, currentFileName, ":\") = 2 Then
-                    currentFileName = theMainForm.images_root_folder + "\" + currentFileName
+                If Not InStr(1, _current_file_name, ":\") = 2 Then
+                    _current_file_name = _the_main_form.images_root_folder + "\" + _current_file_name
                 End If
 
                 ' Prepare the Status Bar
-                StatusBarTitle.Text = currentRow.Title
-                If statusBarVisible = 2 Then 'include Maker name
-                    StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + currentRow.Maker
+                StatusBarTitle.Text = _current_row.Title
+                If _status_bar_visible = 2 Then 'include Maker name
+                    StatusBarTitle.Text = """" + StatusBarTitle.Text + """  by  " + _current_row.Maker
                 End If
-                currentScoreStr = ""
-                StatusBarScore.Text = currentRow.Score_1
+                _current_score_str = ""
+                StatusBarScore.Text = _current_row.Score_1
                 If StatusBarScore.Text > "" Then
                     StatusBarScore.Text = StatusBarScore.Text + " Points"
                 End If
-                StatusBarAward.Text = currentRow.Award
+                StatusBarAward.Text = _current_row.Award
 
                 ' Show the image
-                picShowPicture.Image = Image.FromFile(currentFileName)
+                picShowPicture.Image = Image.FromFile(_current_file_name)
 
                 ' Show the Status Bar if necessary
-                If statusBarVisible = 0 Then
-                    DoStatusBarPopUp()
+                If _status_bar_visible = 0 Then
+                    doStatusBarPopUp()
                 Else
                     StatusBar.Visible = True
                 End If
@@ -552,27 +540,27 @@ Public Class ImageViewer
 
     End Sub
 
-    Private Sub HideSplashScreen()
+    Private Sub hideSplashScreen()
         splashClub.Visible = False
         splashTheme.Visible = False
         splashClassification.Visible = False
-        splashScreenVisible = False
+        _splash_screen_visible = False
     End Sub
 
-    Private Sub ShowSplashScreen()
+    Private Sub showSplashScreen()
         splashClub.Visible = True
         splashTheme.Visible = True
         splashClassification.Visible = True
-        splashScreenVisible = True
+        _splash_screen_visible = True
     End Sub
 
-    Private Sub RenderThumbnail(ByVal fileName As String)
+    Private Sub renderThumbnail(ByVal file_name As String)
         ' Set the name of the image from which to create a thumbnail
-        thumb.imageFile = fileName
+        _thumb.imageFile = file_name
 
         ' Spawn a separate thread to render the thumbnail image
-        thumbnailThread = New Thread(AddressOf thumb.Render)
-        thumbnailThread.Start()
+        _thumbnail_thread = New Thread(AddressOf _thumb.doRender)
+        _thumbnail_thread.Start()
     End Sub
 
     Friend Sub setSizes()

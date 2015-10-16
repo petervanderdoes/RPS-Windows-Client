@@ -1,15 +1,13 @@
 Public Class ThumbnailViewer
     Inherits Form
 
-    Dim theMainForm As MainForm
-    Dim ImageList As IList
-    Dim numImages As Integer
-    Dim currentIndex As Integer
-    Dim currentFileName As String
-    Dim currentRow As CompetitionEntry
-    Dim fullSizeFileName As String
-    Dim Zoomed As Boolean
-    Dim thumbnailViewTitle As String
+    Private ReadOnly _the_main_form As MainForm
+    Private ReadOnly _image_list As IList
+    Private _current_index As Integer
+    Private _current_row As CompetitionEntry
+    Private _full_size_file_name As String
+    Private _is_zoomed As Boolean
+    Private ReadOnly _thumbnail_view_title As String
 
     ' API parameters for setting border select style for the listview
     Public Const LVM_FIRST As Integer = &H1000
@@ -47,7 +45,7 @@ Public Class ThumbnailViewer
     End Enum 'LVM
 
     ' Windows API for setting border select style on the listview
-    Public Overloads Declare Auto Function SendMessage Lib "User32.dll" (ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As Integer
+    Public Overloads Declare Auto Function SendMessage Lib "User32.dll" (hwnd As IntPtr, msg As Integer, wParam As Integer, lParam As Integer) As Integer
 
 #Region " Windows Form Designer generated code "
 
@@ -58,9 +56,9 @@ Public Class ThumbnailViewer
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
-        theMainForm = myMainForm
-        ImageList = ds
-        thumbnailViewTitle = screenTitle
+        _the_main_form = myMainForm
+        _image_list = ds
+        _thumbnail_view_title = screenTitle
         setSizes()
 
     End Sub
@@ -179,97 +177,97 @@ Public Class ThumbnailViewer
 
 #End Region
 
-    Private Sub ThumbnailListView_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles ThumbnailListView.KeyDown
-        Dim datasetRowNum As Integer
-        Dim newIndex As Integer
+    Private Sub ThumbnailListView_KeyDown(sender As Object, e As KeyEventArgs) Handles ThumbnailListView.KeyDown
+        Dim dataset_row_num As Integer
+        Dim new_index As Integer
 
         Try
             Select Case e.KeyCode
                 Case Keys.Escape, Keys.X
-                    Me.Close()
+                    Close()
                 Case Keys.F1
                     If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 1 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(0)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Item(datasetRowNum)
-                        currentRow.Award = theMainForm.awards.Item(0)
+                       _the_main_form.awards.Count >= 1 Then
+                        ThumbnailListView.SelectedItems(0).Text = _the_main_form.awards.Item(0)
+                        _current_index = ThumbnailListView.SelectedIndices(0)
+                        dataset_row_num = ThumbnailListView.Items(_current_index).Tag
+                        _current_row = _image_list.Item(dataset_row_num)
+                        _current_row.Award = _the_main_form.awards.Item(0)
                     End If
                 Case Keys.F2
                     If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 2 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(1)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Item(datasetRowNum)
-                        currentRow.Award = theMainForm.awards.Item(1)
+                       _the_main_form.awards.Count >= 2 Then
+                        ThumbnailListView.SelectedItems(0).Text = _the_main_form.awards.Item(1)
+                        _current_index = ThumbnailListView.SelectedIndices(0)
+                        dataset_row_num = ThumbnailListView.Items(_current_index).Tag
+                        _current_row = _image_list.Item(dataset_row_num)
+                        _current_row.Award = _the_main_form.awards.Item(1)
                     End If
                 Case Keys.F3
                     If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 3 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(2)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Item(datasetRowNum)
-                        currentRow.Award = theMainForm.awards.Item(2)
+                       _the_main_form.awards.Count >= 3 Then
+                        ThumbnailListView.SelectedItems(0).Text = _the_main_form.awards.Item(2)
+                        _current_index = ThumbnailListView.SelectedIndices(0)
+                        dataset_row_num = ThumbnailListView.Items(_current_index).Tag
+                        _current_row = _image_list.Item(dataset_row_num)
+                        _current_row.Award = _the_main_form.awards.Item(2)
                     End If
                 Case Keys.F4
                     If ThumbnailListView.SelectedIndices.Count > 0 And
-                       theMainForm.awards.Count >= 4 Then
-                        ThumbnailListView.SelectedItems(0).Text = theMainForm.awards.Item(3)
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Item(datasetRowNum)
-                        currentRow.Award = theMainForm.awards.Item(3)
+                       _the_main_form.awards.Count >= 4 Then
+                        ThumbnailListView.SelectedItems(0).Text = _the_main_form.awards.Item(3)
+                        _current_index = ThumbnailListView.SelectedIndices(0)
+                        dataset_row_num = ThumbnailListView.Items(_current_index).Tag
+                        _current_row = _image_list.Item(dataset_row_num)
+                        _current_row.Award = _the_main_form.awards.Item(3)
                     End If
                 Case Keys.Delete, Keys.Back
                     If ThumbnailListView.SelectedIndices.Count > 0 Then
                         ThumbnailListView.SelectedItems(0).Text = ""
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                        currentRow = ImageList.Item(datasetRowNum)
-                        currentRow.Award = Nothing
+                        _current_index = ThumbnailListView.SelectedIndices(0)
+                        dataset_row_num = ThumbnailListView.Items(_current_index).Tag
+                        _current_row = _image_list.Item(dataset_row_num)
+                        _current_row.Award = Nothing
                     End If
                 Case Keys.R
                     If ThumbnailListView.SelectedIndices.Count > 0 Then
                         ' Remove the currently selected item from the ListView
-                        currentIndex = ThumbnailListView.SelectedIndices(0)
-                        ThumbnailListView.Items.RemoveAt(currentIndex)
+                        _current_index = ThumbnailListView.SelectedIndices(0)
+                        ThumbnailListView.Items.RemoveAt(_current_index)
                         ' Make sure a thumbnail is still selected
                         If ThumbnailListView.Items.Count > 0 Then
-                            newIndex = Math.Min(currentIndex, ThumbnailListView.Items.Count - 1)
-                            ThumbnailListView.Items(newIndex).Selected = True
+                            new_index = Math.Min(_current_index, ThumbnailListView.Items.Count - 1)
+                            ThumbnailListView.Items(new_index).Selected = True
                         End If
 
                     End If
                 Case Keys.Z
                     If ThumbnailListView.SelectedIndices.Count > 0 Then
-                        If Not Zoomed Then
+                        If Not _is_zoomed Then
                             ' Retrieve the file name of the currently selected image from the
                             ' database
-                            currentIndex = ThumbnailListView.SelectedIndices(0)
-                            datasetRowNum = ThumbnailListView.Items(currentIndex).Tag
-                            currentRow = ImageList.Item(datasetRowNum)
-                            fullSizeFileName = currentRow.Image_File_Name
+                            _current_index = ThumbnailListView.SelectedIndices(0)
+                            dataset_row_num = ThumbnailListView.Items(_current_index).Tag
+                            _current_row = _image_list.Item(dataset_row_num)
+                            _full_size_file_name = _current_row.Image_File_Name
                             ' If it's a relative path, convert to an absolute path
-                            If Not InStr(1, fullSizeFileName, ":\") = 2 Then
-                                fullSizeFileName = theMainForm.images_root_folder + "\" + fullSizeFileName
+                            If Not InStr(1, _full_size_file_name, ":\") = 2 Then
+                                _full_size_file_name = _the_main_form.images_root_folder + "\" + _full_size_file_name
                             End If
                             ' Load it into the PictureBox
-                            ZoomedImage.Image = Image.FromFile(fullSizeFileName)
+                            ZoomedImage.Image = Image.FromFile(_full_size_file_name)
                             ' Hide the ListView and reveal the PictureBox
                             ThumbnailListView.Visible = False
                             ThumbnailViewTitleBar.Visible = False
                             Divider.Visible = False
                             ZoomedImage.Visible = True
-                            Zoomed = True
+                            _is_zoomed = True
                         Else
                             ThumbnailListView.Visible = True
                             ThumbnailViewTitleBar.Visible = True
                             Divider.Visible = True
                             ZoomedImage.Visible = False
-                            Zoomed = False
+                            _is_zoomed = False
                         End If
                     End If
                     e.Handled = True
@@ -279,62 +277,62 @@ Public Class ThumbnailViewer
         End Try
     End Sub
 
-    Private Sub ThumbnailViewer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Dim imageFileName As String
+    Private Sub ThumbnailViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim image_file_name As String
         Dim posn As Integer
         Dim path As String
-        Dim fileName As String
-        Dim thumbFileName As String
-        Dim thumbImage As Image
-        Dim numImages As Integer
+        Dim file_name As String
+        Dim thumb_file_name As String
+        Dim thumb_image As Image
+        Dim num_images As Integer
         Dim thumb As Thumbnail
-        Dim thisItem As ListViewItem
+        Dim this_item As ListViewItem
 
         Try
-            ThumbnailViewTitleBar.Text = thumbnailViewTitle
-            SetListViewBorderSelect()
+            ThumbnailViewTitleBar.Text = _thumbnail_view_title
+            setListViewBorderSelect()
 
             ' The thumbnails are rendered to 256 x 256 pixels.  Two rows of
             ' three fit nicely on the 1024 x 768 screen.  If there are more
             ' than 6 thumnails, dynamically downsize them to fit three rows
             ' of four.
-            numImages = ImageList.Count
-            If numImages > 6 Then
+            num_images = _image_list.Count
+            If num_images > 6 Then
                 ThumbnailImageList.ImageSize = New Size(185, 185)
             End If
 
             ' Iterate through the dataset to load the thumbnails into the imagelist
             Dim i As Int16 = 0
-            For Each entry As CompetitionEntry In ImageList
+            For Each entry As CompetitionEntry In _image_list
 
                 ' Compute the file name of the thumbnail image
-                imageFileName = entry.Image_File_Name
-                posn = InStrRev(imageFileName, "\")
+                image_file_name = entry.Image_File_Name
+                posn = InStrRev(image_file_name, "\")
                 If posn = 0 Then
                     path = "."
                 Else
-                    path = Mid(imageFileName, 1, posn - 1)
+                    path = Mid(image_file_name, 1, posn - 1)
                 End If
-                fileName = Mid(imageFileName, posn + 1)
-                thumbFileName = path + "\Thumbnails\" + fileName
+                file_name = Mid(image_file_name, posn + 1)
+                thumb_file_name = path + "\Thumbnails\" + file_name
                 ' If it's a relative path, convert to an absolute path
-                If Not InStr(1, thumbFileName, ":\") = 2 Then
-                    thumbFileName = theMainForm.images_root_folder + "\" + thumbFileName
+                If Not InStr(1, thumb_file_name, ":\") = 2 Then
+                    thumb_file_name = _the_main_form.images_root_folder + "\" + thumb_file_name
                 End If
                 ' If the thumbnail file doesn't exist, render it now
-                If Not File.Exists(thumbFileName) Then
-                    thumb = New Thumbnail(theMainForm)
-                    thumb.imageFile = imageFileName
-                    thumb.Render()
+                If Not File.Exists(thumb_file_name) Then
+                    thumb = New Thumbnail(_the_main_form)
+                    thumb.imageFile = image_file_name
+                    thumb.doRender()
                 End If
 
                 ' Store the thumbnail image in the ImageList
-                thumbImage = Image.FromFile(thumbFileName)
-                ThumbnailImageList.Images.Add(thumbImage)
+                thumb_image = Image.FromFile(thumb_file_name)
+                ThumbnailImageList.Images.Add(thumb_image)
 
                 ' Add the image to the ListView
-                thisItem = ThumbnailListView.Items.Add(entry.Award, i)
-                thisItem.Tag = i    ' Store the corresponding run number of the dataset in the listview item
+                this_item = ThumbnailListView.Items.Add(entry.Award, i)
+                this_item.Tag = i    ' Store the corresponding run number of the dataset in the listview item
                 i = i + 1
             Next
 
@@ -343,16 +341,15 @@ Public Class ThumbnailViewer
                 ThumbnailListView.Items(0).Selected = True
             End If
 
-            Zoomed = False
+            _is_zoomed = False
 
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
-            thumb = Nothing
         End Try
     End Sub
 
-    Private Sub SetListViewBorderSelect()
+    Private Sub setListViewBorderSelect()
         Dim styles As Integer
 
         Try

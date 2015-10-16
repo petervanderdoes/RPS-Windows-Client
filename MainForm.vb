@@ -72,8 +72,8 @@ Public Class MainForm
             .ShowPanels = True
             .SizingGrip = False
             .setProgressBar = 1
-            .progressBar.Minimum = 0
-            .progressBar.Maximum = 100
+            .progress_bar.Minimum = 0
+            .progress_bar.Maximum = 100
         End With
 
         Controls.Add(status_bar)
@@ -209,10 +209,10 @@ Public Class MainForm
         Me.data_grid_text_box_column2 = New System.Windows.Forms.DataGridTextBoxColumn()
         Me.data_grid_text_box_column1 = New System.Windows.Forms.DataGridTextBoxColumn()
         Me.data_grid_entries_view = New System.Windows.Forms.DataGridView()
-        Me.grid_caption = New System.Windows.Forms.Label()
         Me.grid_entries_score = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.grid_entries_award = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.grid_entries_title = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.grid_caption = New System.Windows.Forms.Label()
         CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -650,21 +650,6 @@ Public Class MainForm
         Me.data_grid_entries_view.Size = New System.Drawing.Size(729, 433)
         Me.data_grid_entries_view.TabIndex = 53
         '
-        'grid_caption
-        '
-        Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.grid_caption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.grid_caption.ForeColor = System.Drawing.Color.Black
-        Me.grid_caption.Location = New System.Drawing.Point(209, 9)
-        Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
-        Me.grid_caption.Name = "grid_caption"
-        Me.grid_caption.Size = New System.Drawing.Size(729, 24)
-        Me.grid_caption.TabIndex = 54
-        Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'grid_entries_score
         '
         Me.grid_entries_score.DataPropertyName = "Score_1"
@@ -691,6 +676,21 @@ Public Class MainForm
         Me.grid_entries_title.HeaderText = "Title"
         Me.grid_entries_title.Name = "grid_entries_title"
         Me.grid_entries_title.ReadOnly = True
+        '
+        'grid_caption
+        '
+        Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.grid_caption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.grid_caption.ForeColor = System.Drawing.Color.Black
+        Me.grid_caption.Location = New System.Drawing.Point(209, 9)
+        Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
+        Me.grid_caption.Name = "grid_caption"
+        Me.grid_caption.Size = New System.Drawing.Size(729, 24)
+        Me.grid_caption.TabIndex = 54
+        Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'MainForm
         '
@@ -782,7 +782,7 @@ Public Class MainForm
 
             ' Initialize the StatusBar and ProgressBar
             initializeStatusBar()
-            status_bar.progressBar.Value = 0
+            status_bar.progress_bar.Value = 0
             ' Load the unique competition dates into the Competition Date combobox
             setCompetitionDatesCombobox()
 
@@ -1626,7 +1626,7 @@ Public Class MainForm
     End Sub
 
 
-    Private Sub doShellExecute(ByVal file As String)
+    Private Shared Sub doShellExecute(ByVal file As String)
         Try
             Dim my_process As New Process
             my_process.StartInfo.FileName = file
@@ -1659,7 +1659,7 @@ Public Class MainForm
                      Select club.id, club.name
 
             For Each _record In _query
-                prefs_dialog.cbCameraClubName.Items.Add(New DataItem(_record.id, _record.name))
+                prefs_dialog.cbCameraClubName.Items.Add(New Entities.DataItem(_record.id, _record.name))
             Next
             prefs_dialog.cbCameraClubName.Text = camera_club_name
             prefs_dialog.cbNumJudges.Text = CType(num_judges, String)
@@ -1673,13 +1673,13 @@ Public Class MainForm
             Dim rof As String = Trim(prefs_dialog.tbReportsOutputFolder.Text)
             Dim sn As String = Trim(prefs_dialog.tbServerName.Text)
             Dim ssd As String = Trim(prefs_dialog.tbServerScriptDir.Text)
-            Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).Value)
-            Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).ID
+            Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, Entities.DataItem).Value)
+            Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, Entities.DataItem).ID
             Dim nj As Integer = CType(prefs_dialog.cbNumJudges.Text, Integer)
             If prefs_dialog.DialogResult = DialogResult.OK Then
                 If irf > "" Then
                     ' If necessary, strip off a trailing "\"
-                    images_root_folder = Helper.TrimTrailingSlash(images_root_folder)
+                    images_root_folder = Helper.trimTrailingSlash(images_root_folder)
                     ' write it to the registry
                     writeRegistryString("Software\RPS Digital Viewer", "Images Root Folder", images_root_folder)
                 End If
@@ -1691,7 +1691,7 @@ Public Class MainForm
                 End If
                 If rof > "" Then
                     ' If necessary, strip off a trailing "\"
-                    reports_output_folder = Helper.TrimTrailingSlash(reports_output_folder)
+                    reports_output_folder = Helper.trimTrailingSlash(reports_output_folder)
 
                     ' write it to the registry
                     writeRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reports_output_folder)
@@ -1984,7 +1984,7 @@ Public Class MainForm
 
     Private Sub downloadCompetitionImages()
 
-        Dim download_dialog As Download_Competitions_Dialog
+        Dim download_dialog As DownloadCompetitionsDialog
         Dim username As String
         Dim password As String
         Dim comp_date As String
@@ -2038,7 +2038,7 @@ Public Class MainForm
             Cursor.Current = Cursors.Default
 
             ' Open the Download Competitions dialog
-            download_dialog = New Download_Competitions_Dialog(Me, last_admin_username, comp_dates, images_root_folder)
+            download_dialog = New DownloadCompetitionsDialog(Me, last_admin_username, comp_dates, images_root_folder)
             download_dialog.ShowDialog(Me)
             If download_dialog.DialogResult = DialogResult.OK Then
                 username = Trim(download_dialog.Username.Text())
@@ -2093,11 +2093,11 @@ Public Class MainForm
             End If
 
             ' Initialize the progress bar
-            status_bar.progressBar.Minimum = 0
-            status_bar.progressBar.Value = 0
+            status_bar.progress_bar.Minimum = 0
+            status_bar.progress_bar.Value = 0
             navigator = response.CreateNavigator()
             nodes = navigator.Select("/descendant::*[name()='Image_URL']") ' Count the images in the manifest
-            status_bar.progressBar.Maximum = nodes.Count
+            status_bar.progress_bar.Maximum = nodes.Count
 
             ' Select the list of Competitions from the manifest
             'navigator = response.CreateNavigator()
@@ -2212,7 +2212,7 @@ Public Class MainForm
                         sequence_num)
 
                     ' Update the Progressbar
-                    status_bar.progressBar.Value = status_bar.progressBar.Value + 1
+                    status_bar.progress_bar.Value = status_bar.progress_bar.Value + 1
                     Application.DoEvents()
 
                     sequence_num += 1
@@ -2230,7 +2230,7 @@ Public Class MainForm
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             ' Clear the ProgressBar
-            status_bar.progressBar.Value = 0
+            status_bar.progress_bar.Value = 0
             Cursor.Current = Cursors.Default
         End Try
     End Sub

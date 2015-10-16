@@ -1,6 +1,6 @@
 Imports System.ComponentModel
 
-Public Class Download_Competitions_Dialog
+Public Class DownloadCompetitionsDialog
     Inherits Form
 
     Dim theMainForm As MainForm
@@ -59,7 +59,7 @@ Public Class Download_Competitions_Dialog
     Friend WithEvents Download_digital As System.Windows.Forms.CheckBox
     Friend WithEvents Download_prints As System.Windows.Forms.CheckBox
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(Download_Competitions_Dialog))
+        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(DownloadCompetitionsDialog))
         Me.Label1 = New System.Windows.Forms.Label
         Me.Username = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
@@ -234,7 +234,7 @@ Public Class Download_Competitions_Dialog
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "Download_Competitions_Dialog"
+        Me.Name = "DownloadCompetitionsDialog"
         Me.Text = "Download Competitions"
         Me.ResumeLayout(False)
 
@@ -255,28 +255,28 @@ Public Class Download_Competitions_Dialog
     End Sub
 
     Private Sub Download_Competitions_Dialog_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles MyBase.Closing
-        Dim InvalidInput As Boolean = False
-        Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf
+        Dim invalid_input As Boolean = False
+        Dim err_msg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 
-        If Me.DialogResult = DialogResult.OK Then
+        If DialogResult = DialogResult.OK Then
             If Username.Text = "" Then
-                errMsg = errMsg + "* Username is empty" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* Username is empty" + vbCrLf
+                invalid_input = True
             End If
             If Password.Text = "" Then
-                errMsg = errMsg + "* Password is empty" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* Password is empty" + vbCrLf
+                invalid_input = True
             End If
             If (Not Download_digital.Checked) And (Not Download_prints.Checked) Then
-                errMsg = errMsg + "* No competition type selected" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* No competition type selected" + vbCrLf
+                invalid_input = True
             End If
             If OutputFolder.Text = "" Then
-                errMsg = errMsg + "* Output Folder is empty" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* Output Folder is empty" + vbCrLf
+                invalid_input = True
             End If
-            If InvalidInput = True Then
-                MessageBox.Show(errMsg, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            If invalid_input = True Then
+                MessageBox.Show(err_msg, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 e.Cancel = True
             Else
                 e.Cancel = False

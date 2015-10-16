@@ -187,25 +187,25 @@ Public Class Upload_Scores_Dialog
 #End Region
 
     Private Sub Upload_Scores_Dialog_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles MyBase.Closing
-        Dim InvalidInput As Boolean = False
+        Dim is_invalid_input As Boolean = False
 
-        Dim errMsg As String = "Please correct the following errors" + vbCrLf + vbCrLf
+        Dim err_msg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 
-        If Me.DialogResult = DialogResult.OK Then
+        If DialogResult = DialogResult.OK Then
             If Username.Text = "" Then
-                errMsg = errMsg + "* Username is empty" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* Username is empty" + vbCrLf
+                is_invalid_input = True
             End If
             If Password.Text = "" Then
-                errMsg = errMsg + "* Password is empty" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* Password is empty" + vbCrLf
+                is_invalid_input = True
             End If
             If (Not Upload_digital_scores.Checked) And (Not Upload_print_scores.Checked) Then
-                errMsg = errMsg + "* No competition type selected" + vbCrLf
-                InvalidInput = True
+                err_msg = err_msg + "* No competition type selected" + vbCrLf
+                is_invalid_input = True
             End If
-            If InvalidInput = True Then
-                MessageBox.Show(errMsg, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            If is_invalid_input = True Then
+                MessageBox.Show(err_msg, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 e.Cancel = True
             Else
                 e.Cancel = False
