@@ -2528,9 +2528,9 @@ Public Class MainForm
                        Format(d, "M/dd/yyyy") + "'" +
                        selected_medium
             _query = sql_select + sql_where
-            recs = rps_context.Database.SqlQuery(Of UploadEntity_Classification_Medium)(_query).ToList
+            recs = rps_context.Database.SqlQuery(Of Entities.ClassificationMedium)(_query).ToList
 
-            For Each record As UploadEntity_Classification_Medium In recs
+            For Each record As Entities.ClassificationMedium In recs
                 comp_class_list.Add(record.Classification)
                 comp_medium_list.Add(record.Medium)
             Next

@@ -1,20 +1,24 @@
-Public Class UploadEntity_Classification_Medium
-    Public Property Classification() As String
-        Get
-            Return m_Classification
-        End Get
-        Set
-            m_Classification = Value
-        End Set
-    End Property
-    Private m_Classification As String
-    Public Property Medium() As String
-        Get
-            Return m_Medium
-        End Get
-        Set
-            m_Medium = Value
-        End Set
-    End Property
-    Private m_Medium As String
-End Class
+Namespace Entities
+    Public Class ClassificationMedium
+        Public Property Classification As String
+            Get
+                Return _classification1
+            End Get
+            Set
+                _classification1 = Value
+            End Set
+        End Property
+
+        Public Property Medium As String
+            Get
+                Return _medium1
+            End Get
+            Set
+                _medium1 = Value
+            End Set
+        End Property
+
+        Private _classification1 As String
+        Private _medium1 As String
+    End Class
+End Namespace
