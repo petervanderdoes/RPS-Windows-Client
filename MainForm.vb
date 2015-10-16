@@ -49,9 +49,9 @@ Public Class MainForm
     Friend WithEvents data_grid_entries_view As DataGridView
     Friend WithEvents grid_caption As Label
     Private _seven_point_thumb_view_title As String
-    Friend WithEvents score As DataGridViewTextBoxColumn
-    Friend WithEvents award As DataGridViewTextBoxColumn
-    Friend WithEvents title As DataGridViewTextBoxColumn
+    Friend WithEvents grid_entries_score As DataGridViewTextBoxColumn
+    Friend WithEvents grid_entries_award As DataGridViewTextBoxColumn
+    Friend WithEvents grid_entries_title As DataGridViewTextBoxColumn
     Private ReadOnly _center_cell_style As New DataGridViewCellStyle
 
     Private Sub initializeStatusBar()
@@ -155,12 +155,9 @@ Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle =
-                New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle =
-                New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager =
-                New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.btnLoad = New System.Windows.Forms.Button()
         Me.btnUpdate = New System.Windows.Forms.Button()
         Me.btnCancelAll = New System.Windows.Forms.Button()
@@ -212,17 +209,16 @@ Public Class MainForm
         Me.data_grid_text_box_column2 = New System.Windows.Forms.DataGridTextBoxColumn()
         Me.data_grid_text_box_column1 = New System.Windows.Forms.DataGridTextBoxColumn()
         Me.data_grid_entries_view = New System.Windows.Forms.DataGridView()
-        Me.score = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.award = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.title = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.grid_caption = New System.Windows.Forms.Label()
+        Me.grid_entries_score = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.grid_entries_award = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.grid_entries_title = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnLoad
         '
-        Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),
-                                  System.Windows.Forms.AnchorStyles)
+        Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnLoad.Location = New System.Drawing.Point(701, 471)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(75, 24)
@@ -231,9 +227,7 @@ Public Class MainForm
         '
         'btnUpdate
         '
-        Me.btnUpdate.Anchor =
-            CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),
-                  System.Windows.Forms.AnchorStyles)
+        Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnUpdate.Location = New System.Drawing.Point(783, 471)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(75, 24)
@@ -242,9 +236,7 @@ Public Class MainForm
         '
         'btnCancelAll
         '
-        Me.btnCancelAll.Anchor =
-            CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),
-                  System.Windows.Forms.AnchorStyles)
+        Me.btnCancelAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancelAll.Location = New System.Drawing.Point(865, 471)
         Me.btnCancelAll.Name = "btnCancelAll"
         Me.btnCancelAll.Size = New System.Drawing.Size(75, 24)
@@ -253,16 +245,12 @@ Public Class MainForm
         '
         'MainMenu1
         '
-        Me.MainMenu1.MenuItems.AddRange(
-            New System.Windows.Forms.MenuItem() _
-                                           {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
+        Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
         '
         'FileMenu
         '
         Me.FileMenu.Index = 0
-        Me.FileMenu.MenuItems.AddRange(
-            New System.Windows.Forms.MenuItem() _
-                                          {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
+        Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
         Me.FileMenu.Text = "&File"
         '
         'FilePreferencesMenu
@@ -283,10 +271,7 @@ Public Class MainForm
         'MenuItem5
         '
         Me.MenuItem5.Index = 1
-        Me.MenuItem5.MenuItems.AddRange(
-            New System.Windows.Forms.MenuItem() _
-                                           {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores,
-                                            Me.MenuItem6})
+        Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores, Me.MenuItem6})
         Me.MenuItem5.Text = "Competitions"
         '
         'MenuItem1
@@ -312,9 +297,7 @@ Public Class MainForm
         'MenuItem2
         '
         Me.MenuItem2.Index = 2
-        Me.MenuItem2.MenuItems.AddRange(
-            New System.Windows.Forms.MenuItem() _
-                                           {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
+        Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
         Me.MenuItem2.Text = "&View"
         '
         'ViewSlideShowMenu
@@ -330,9 +313,7 @@ Public Class MainForm
         'ReportsMenu
         '
         Me.ReportsMenu.Index = 3
-        Me.ReportsMenu.MenuItems.AddRange(
-            New System.Windows.Forms.MenuItem() _
-                                             {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
+        Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
         Me.ReportsMenu.Text = "&Reports"
         '
         'ReportsScoreSheetMenu
@@ -358,11 +339,7 @@ Public Class MainForm
         '
         'SelectClassification
         '
-        Me.SelectClassification.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                               10.0!,
-                                                               System.Drawing.FontStyle.Regular,
-                                                               System.Drawing.GraphicsUnit.Point,
-                                                               CType(0, Byte))
+        Me.SelectClassification.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectClassification.Location = New System.Drawing.Point(28, 136)
         Me.SelectClassification.Name = "SelectClassification"
         Me.SelectClassification.Size = New System.Drawing.Size(174, 24)
@@ -370,11 +347,7 @@ Public Class MainForm
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(28, 114)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(168, 16)
@@ -383,11 +356,7 @@ Public Class MainForm
         '
         'SelectMedium
         '
-        Me.SelectMedium.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                       10.0!,
-                                                       System.Drawing.FontStyle.Regular,
-                                                       System.Drawing.GraphicsUnit.Point,
-                                                       CType(0, Byte))
+        Me.SelectMedium.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectMedium.Location = New System.Drawing.Point(28, 188)
         Me.SelectMedium.Name = "SelectMedium"
         Me.SelectMedium.Size = New System.Drawing.Size(174, 24)
@@ -395,11 +364,7 @@ Public Class MainForm
         '
         'Label2
         '
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(28, 166)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(175, 16)
@@ -408,11 +373,7 @@ Public Class MainForm
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(28, 10)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(175, 16)
@@ -430,11 +391,7 @@ Public Class MainForm
         'AwardsTableTitleBar
         '
         Me.AwardsTableTitleBar.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                              10.0!,
-                                                              System.Drawing.FontStyle.Bold,
-                                                              System.Drawing.GraphicsUnit.Point,
-                                                              CType(0, Byte))
+        Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.AwardsTableTitleBar.ForeColor = System.Drawing.Color.White
         Me.AwardsTableTitleBar.Location = New System.Drawing.Point(28, 336)
         Me.AwardsTableTitleBar.Margin = New System.Windows.Forms.Padding(0)
@@ -446,11 +403,7 @@ Public Class MainForm
         'NumNinesHeadingButton
         '
         Me.NumNinesHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                                10.0!,
-                                                                System.Drawing.FontStyle.Regular,
-                                                                System.Drawing.GraphicsUnit.Point,
-                                                                CType(0, Byte))
+        Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NumNinesHeadingButton.Location = New System.Drawing.Point(28, 360)
         Me.NumNinesHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
@@ -461,11 +414,7 @@ Public Class MainForm
         'NumEightsHeadingButton
         '
         Me.NumEightsHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                                 10.0!,
-                                                                 System.Drawing.FontStyle.Regular,
-                                                                 System.Drawing.GraphicsUnit.Point,
-                                                                 CType(0, Byte))
+        Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NumEightsHeadingButton.Location = New System.Drawing.Point(86, 360)
         Me.NumEightsHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
@@ -476,11 +425,7 @@ Public Class MainForm
         'NumSevensHeadingButton
         '
         Me.NumSevensHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                                 10.0!,
-                                                                 System.Drawing.FontStyle.Regular,
-                                                                 System.Drawing.GraphicsUnit.Point,
-                                                                 CType(0, Byte))
+        Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NumSevensHeadingButton.Location = New System.Drawing.Point(144, 360)
         Me.NumSevensHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
@@ -491,11 +436,7 @@ Public Class MainForm
         'tbEligibleNines
         '
         Me.tbEligibleNines.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbEligibleNines.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                          10.0!,
-                                                          System.Drawing.FontStyle.Bold,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+        Me.tbEligibleNines.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEligibleNines.Location = New System.Drawing.Point(28, 383)
         Me.tbEligibleNines.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleNines.Name = "tbEligibleNines"
@@ -506,11 +447,7 @@ Public Class MainForm
         'tbEligibleEights
         '
         Me.tbEligibleEights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbEligibleEights.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                           10.0!,
-                                                           System.Drawing.FontStyle.Bold,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+        Me.tbEligibleEights.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEligibleEights.Location = New System.Drawing.Point(86, 383)
         Me.tbEligibleEights.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleEights.Name = "tbEligibleEights"
@@ -521,11 +458,7 @@ Public Class MainForm
         'tbEligibleSevens
         '
         Me.tbEligibleSevens.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbEligibleSevens.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                           10.0!,
-                                                           System.Drawing.FontStyle.Bold,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+        Me.tbEligibleSevens.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEligibleSevens.Location = New System.Drawing.Point(144, 383)
         Me.tbEligibleSevens.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleSevens.Name = "tbEligibleSevens"
@@ -536,11 +469,7 @@ Public Class MainForm
         'SelectAward
         '
         Me.SelectAward.Enabled = False
-        Me.SelectAward.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                      10.0!,
-                                                      System.Drawing.FontStyle.Regular,
-                                                      System.Drawing.GraphicsUnit.Point,
-                                                      CType(0, Byte))
+        Me.SelectAward.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectAward.Location = New System.Drawing.Point(28, 292)
         Me.SelectAward.Name = "SelectAward"
         Me.SelectAward.Size = New System.Drawing.Size(175, 24)
@@ -549,11 +478,7 @@ Public Class MainForm
         'Label4
         '
         Me.Label4.Enabled = False
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(28, 270)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(176, 16)
@@ -562,11 +487,7 @@ Public Class MainForm
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(28, 62)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(175, 16)
@@ -575,11 +496,7 @@ Public Class MainForm
         '
         'SelectTheme
         '
-        Me.SelectTheme.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                      10.0!,
-                                                      System.Drawing.FontStyle.Regular,
-                                                      System.Drawing.GraphicsUnit.Point,
-                                                      CType(0, Byte))
+        Me.SelectTheme.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectTheme.Location = New System.Drawing.Point(28, 84)
         Me.SelectTheme.Name = "SelectTheme"
         Me.SelectTheme.Size = New System.Drawing.Size(174, 24)
@@ -621,11 +538,7 @@ Public Class MainForm
         '
         'SelectScore
         '
-        Me.SelectScore.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                      10.0!,
-                                                      System.Drawing.FontStyle.Regular,
-                                                      System.Drawing.GraphicsUnit.Point,
-                                                      CType(0, Byte))
+        Me.SelectScore.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectScore.Location = New System.Drawing.Point(28, 240)
         Me.SelectScore.Name = "SelectScore"
         Me.SelectScore.Size = New System.Drawing.Size(73, 24)
@@ -633,11 +546,7 @@ Public Class MainForm
         '
         'Label6
         '
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(28, 218)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(80, 16)
@@ -646,11 +555,7 @@ Public Class MainForm
         '
         'SelectDate
         '
-        Me.SelectDate.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                     10.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+        Me.SelectDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectDate.Location = New System.Drawing.Point(28, 32)
         Me.SelectDate.Name = "SelectDate"
         Me.SelectDate.Size = New System.Drawing.Size(174, 24)
@@ -677,7 +582,7 @@ Public Class MainForm
         Me.btnSlideShow.TabIndex = 22
         Me.btnSlideShow.UseVisualStyleBackColor = False
         '
-        'DataGridTextBoxColumn3
+        'data_grid_text_box_column3
         '
         Me.data_grid_text_box_column3.Format = ""
         Me.data_grid_text_box_column3.FormatInfo = Nothing
@@ -686,7 +591,7 @@ Public Class MainForm
         Me.data_grid_text_box_column3.NullText = ""
         Me.data_grid_text_box_column3.Width = 270
         '
-        'DataGridTextBoxColumn2
+        'data_grid_text_box_column2
         '
         Me.data_grid_text_box_column2.Alignment = System.Windows.Forms.HorizontalAlignment.Center
         Me.data_grid_text_box_column2.Format = ""
@@ -696,7 +601,7 @@ Public Class MainForm
         Me.data_grid_text_box_column2.NullText = ""
         Me.data_grid_text_box_column2.Width = 50
         '
-        'DataGridTextBoxColumn1
+        'data_grid_text_box_column1
         '
         Me.data_grid_text_box_column1.Alignment = System.Windows.Forms.HorizontalAlignment.Center
         Me.data_grid_text_box_column1.Format = ""
@@ -706,42 +611,31 @@ Public Class MainForm
         Me.data_grid_text_box_column1.NullText = ""
         Me.data_grid_text_box_column1.Width = 50
         '
-        'DataGridView1
+        'data_grid_entries_view
         '
         Me.data_grid_entries_view.AllowUserToAddRows = False
         Me.data_grid_entries_view.AllowUserToDeleteRows = False
         Me.data_grid_entries_view.AllowUserToResizeColumns = False
         Me.data_grid_entries_view.AllowUserToResizeRows = False
-        Me.data_grid_entries_view.Anchor =
-            CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                   Or System.Windows.Forms.AnchorStyles.Right),
-                  System.Windows.Forms.AnchorStyles)
+        Me.data_grid_entries_view.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.data_grid_entries_view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.data_grid_entries_view.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.data_grid_entries_view.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                              9.75!,
-                                                              System.Drawing.FontStyle.Bold,
-                                                              System.Drawing.GraphicsUnit.Point,
-                                                              CType(0, Byte))
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
-            System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.score, Me.award, Me.title})
+        Me.data_grid_entries_view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.grid_entries_score, Me.grid_entries_award, Me.grid_entries_title})
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                              9.75!,
-                                                              System.Drawing.FontStyle.Regular,
-                                                              System.Drawing.GraphicsUnit.Point,
-                                                              CType(0, Byte))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
@@ -752,50 +646,17 @@ Public Class MainForm
         Me.data_grid_entries_view.Name = "data_grid_entries_view"
         Me.data_grid_entries_view.ReadOnly = True
         Me.data_grid_entries_view.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        Me.data_grid_entries_view.RowHeadersWidthSizeMode =
-            System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.data_grid_entries_view.Size = New System.Drawing.Size(729, 433)
         Me.data_grid_entries_view.TabIndex = 53
         '
-        'Score
-        '
-        Me.score.DataPropertyName = "Score_1"
-        Me.score.FillWeight = 21.80233!
-        Me.score.HeaderText = "Score"
-        Me.score.Name = "Score"
-        Me.score.ReadOnly = True
-        Me.score.Width = 73
-        '
-        'Award
-        '
-        Me.award.DataPropertyName = "Award"
-        Me.award.FillWeight = 21.80233!
-        Me.award.HeaderText = "Award"
-        Me.award.Name = "Award"
-        Me.award.ReadOnly = True
-        Me.award.Width = 75
-        '
-        'Title
-        '
-        Me.title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.title.DataPropertyName = "Title"
-        Me.title.FillWeight = 256.3954!
-        Me.title.HeaderText = "Title"
-        Me.title.Name = "Title"
-        Me.title.ReadOnly = True
-        '
-        'GridCaption
+        'grid_caption
         '
         Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                                       Or System.Windows.Forms.AnchorStyles.Right),
-                                      System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.grid_caption.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                      9.75!,
-                                                      System.Drawing.FontStyle.Bold,
-                                                      System.Drawing.GraphicsUnit.Point,
-                                                      CType(0, Byte))
+        Me.grid_caption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.grid_caption.ForeColor = System.Drawing.Color.Black
         Me.grid_caption.Location = New System.Drawing.Point(209, 9)
         Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
@@ -803,6 +664,33 @@ Public Class MainForm
         Me.grid_caption.Size = New System.Drawing.Size(729, 24)
         Me.grid_caption.TabIndex = 54
         Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'grid_entries_score
+        '
+        Me.grid_entries_score.DataPropertyName = "Score_1"
+        Me.grid_entries_score.FillWeight = 21.80233!
+        Me.grid_entries_score.HeaderText = "Score"
+        Me.grid_entries_score.Name = "grid_entries_score"
+        Me.grid_entries_score.ReadOnly = True
+        Me.grid_entries_score.Width = 73
+        '
+        'grid_entries_award
+        '
+        Me.grid_entries_award.DataPropertyName = "Award"
+        Me.grid_entries_award.FillWeight = 21.80233!
+        Me.grid_entries_award.HeaderText = "Award"
+        Me.grid_entries_award.Name = "grid_entries_award"
+        Me.grid_entries_award.ReadOnly = True
+        Me.grid_entries_award.Width = 75
+        '
+        'grid_entries_title
+        '
+        Me.grid_entries_title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.grid_entries_title.DataPropertyName = "Title"
+        Me.grid_entries_title.FillWeight = 256.3954!
+        Me.grid_entries_title.HeaderText = "Title"
+        Me.grid_entries_title.Name = "grid_entries_title"
+        Me.grid_entries_title.ReadOnly = True
         '
         'MainForm
         '
@@ -847,6 +735,7 @@ Public Class MainForm
         CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
+
     End Sub
 
 #End Region
@@ -1250,21 +1139,21 @@ Public Class MainForm
                                         award As String,
                                         classification As String,
                                         medium As String,
-                                        competitionDate As Date,
-                                        competitionTheme As String,
+                                        competition_date As Date,
+                                        competition_theme As String,
                                         entry_id As String,
                                         sequence As Integer)
 
-        Dim relativePath As String
+        Dim relative_path As String
         Dim entry As CompetitionEntry = New CompetitionEntry
 
         Try
             ' Calculate the relative path to the file.  The path is relative to the
             ' imagesRootFolder set in File -> Preferences
             If InStr(1, file.FullName, images_root_folder) = 1 Then
-                relativePath = Mid(file.FullName, Len(images_root_folder) + 2)
+                relative_path = Mid(file.FullName, Len(images_root_folder) + 2)
             Else
-                relativePath = file.FullName    ' Store absolute path if can't calculate relative path
+                relative_path = file.FullName    ' Store absolute path if can't calculate relative path
             End If
 
             ' Fill in the field values
@@ -1272,9 +1161,9 @@ Public Class MainForm
             entry.Maker = maker
             entry.Classification = classification
             entry.Medium = medium
-            entry.Theme = competitionTheme
-            entry.Competition_Date_1 = competitionDate
-            entry.Image_File_Name = relativePath
+            entry.Theme = competition_theme
+            entry.Competition_Date_1 = competition_date
+            entry.Image_File_Name = relative_path
             If sequence = 0 Then
                 entry.Display_Sequence = file.Length Mod 61
             Else
@@ -1305,12 +1194,12 @@ Public Class MainForm
         rps_context.SaveChanges()
     End Sub
 
-    Private Function setMaxAwards(numImages As Double) As Integer
+    Private Function setMaxAwards(num_images As Double) As Integer
         Try
-            If numImages = 1 Then
+            If num_images.Equals(1) Then
                 setMaxAwards = 1
             Else
-                setMaxAwards = Int((numImages / 4) + 0.5)
+                setMaxAwards = Int((num_images / 4) + 0.5)
             End If
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
@@ -1318,7 +1207,7 @@ Public Class MainForm
     End Function
 
     Private Sub getSelectedEntries()
-        Dim numSelected As Double
+        Dim num_selected As Double
         Dim select_stmt As String
         Dim where_clause As String
         Dim order_clause As String
@@ -1394,16 +1283,16 @@ Public Class MainForm
                 entries = rps_context.Database.SqlQuery(Of CompetitionEntry)(_query).ToList
 
                 With data_grid_entries_view
-                    .Columns("Score").DefaultCellStyle = _center_cell_style
-                    .Columns("Award").DefaultCellStyle = _center_cell_style
+                    .Columns("grid_entries_score").DefaultCellStyle = _center_cell_style
+                    .Columns("grid_entries_award").DefaultCellStyle = _center_cell_style
                     .AutoGenerateColumns = False
                     .DataSource = entries
                 End With
 
                 ' Count the number of rows selected and add it to the caption of the DataGrid
-                numSelected = data_grid_entries_view.RowCount()
+                num_selected = data_grid_entries_view.RowCount()
 
-                grid_caption.Text += "  -  " + numSelected.ToString + " Images"
+                grid_caption.Text += "  -  " + num_selected.ToString + " Images"
 
                 ' Recalculate the awards
                 'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
@@ -1419,109 +1308,106 @@ Public Class MainForm
 
 
     Private Sub doCalculateAwards()
-        Dim eligibleScores As New ArrayList
-        Dim maximumAwards As Integer
-        Dim dRow As CompetitionEntry
+        Dim eligible_scores As New ArrayList
+        Dim maximum_awards As Integer
         Dim i As Integer
-        Dim numEligibleNines As Integer
-        Dim numEligibleEights As Integer
-        Dim numEligibleSevens As Integer
-        Dim totalNumScores As Integer
-        Dim awardNames() As String = {"1St", "2nd", "3Rd", "HM"}
+        Dim num_eligible_nines As Integer
+        Dim num_eligible_eights As Integer
+        Dim num_eligible_sevens As Integer
+        Dim total_num_scores As Integer
+        Dim award_names() As String = {"1St", "2nd", "3Rd", "HM"}
         Dim delim_9, delim_8, delim_7 As String
-        Dim numNineHM, numEightHM, numSevenHM As Integer
+        Dim num_nine_hm, num_eight_hm, num_seven_hm As Integer
 
         Try
             ' What is the maximum number of Awards possible
-            maximumAwards = setMaxAwards(CType(entries.Count, Double))
+            maximum_awards = setMaxAwards(CType(entries.Count, Double))
 
             ' Iterate through the dataset and record all the scores which are eligible for an award
-            For Each dRow In entries
-                If IsNumeric(dRow.Score_1) Then
-                    totalNumScores = totalNumScores + 1
-                    If dRow.Score_1 >= (min_score_for_award * num_judges) And dRow.Score_1 <= (max_score * num_judges) Then
-                        eligibleScores.Add(dRow.Score_1)
-                    End If
+            For Each entry As CompetitionEntry In From entry1 In entries Where IsNumeric(entry1.Score_1)
+                total_num_scores = total_num_scores + 1
+                If entry.Score_1 >= (min_score_for_award * num_judges) And entry.Score_1 <= (max_score * num_judges) Then
+                    eligible_scores.Add(entry.Score_1)
                 End If
             Next
             ' Sort descending
-            eligibleScores.Sort()
-            eligibleScores.Reverse()
+            eligible_scores.Sort()
+            eligible_scores.Reverse()
 
             ' Step through the eligible scores until all possible awards have been allocated
             ' or until the number of eligible scores exhausted.
             _nine_point_thumb_view_title = ""
             _eight_point_thumb_view_title = ""
             _seven_point_thumb_view_title = ""
-            For i = 0 To Math.Min(maximumAwards, eligibleScores.Count) - 1
+            For i = 0 To Math.Min(maximum_awards, eligible_scores.Count) - 1
                 ' Count up the number of eligible 9s, 8s and 7s
-                Select Case Math.Round(eligibleScores(i) / num_judges, 0)
+                Select Case Math.Round(eligible_scores(i) / num_judges, 0)
                     Case 9
                         ' Count the number of 9 point awards for the distribution on the main screen
-                        numEligibleNines = numEligibleNines + 1
+                        num_eligible_nines = num_eligible_nines + 1
                         ' Build the title for the thumbnail screen
                         If i < 3 Then
-                            _nine_point_thumb_view_title += delim_9 + awardNames(i)
+                            _nine_point_thumb_view_title += delim_9 + award_names(i)
                         Else
-                            numNineHM += 1
+                            num_nine_hm += 1
                         End If
                         delim_9 = ", "
                     Case 8
                         ' Count the number of 8 point awards for the distribution on the main screen
-                        numEligibleEights = numEligibleEights + 1
+                        num_eligible_eights = num_eligible_eights + 1
                         ' Build the title for the thumbnail screen
                         If i < 3 Then
-                            _eight_point_thumb_view_title += delim_8 + awardNames(i)
+                            _eight_point_thumb_view_title += delim_8 + award_names(i)
                         Else
-                            numEightHM += 1
+                            num_eight_hm += 1
                         End If
                         delim_8 = ", "
                     Case 7
                         ' Count the number of 7 point awards for the distribution on the main screen
-                        numEligibleSevens = numEligibleSevens + 1
+                        num_eligible_sevens = num_eligible_sevens + 1
                         ' Build the title for the thumbnail screen
                         If i < 3 Then
-                            _seven_point_thumb_view_title += delim_7 + awardNames(i)
+                            _seven_point_thumb_view_title += delim_7 + award_names(i)
                         Else
-                            numSevenHM += 1
+                            num_seven_hm += 1
                         End If
                         delim_7 = ", "
                 End Select
             Next
 
             ' Update the 9 point thumbnail screen title to include the HMs
-            If numNineHM > 0 Then
+            If num_nine_hm > 0 Then
                 If _nine_point_thumb_view_title > "" Then
                     _nine_point_thumb_view_title += " And "
                 End If
-                If numNineHM = 1 Then
+                If num_nine_hm = 1 Then
                     _nine_point_thumb_view_title += "1 HM"
                 Else
-                    _nine_point_thumb_view_title += CStr(numNineHM) + " HMs"
+                    _nine_point_thumb_view_title += CStr(num_nine_hm) + " HMs"
                 End If
             End If
 
             ' Update the 8 point thumbnail screen title to include the HMs
-            If numEightHM > 0 Then
+            If num_eight_hm > 0 Then
                 If _eight_point_thumb_view_title > "" Then
                     _eight_point_thumb_view_title += " And "
                 End If
-                If numEightHM = 1 Then
+                If num_eight_hm = 1 Then
                     _eight_point_thumb_view_title += "1 HM"
                 Else
-                    _eight_point_thumb_view_title += CStr(numEightHM) + " HMs"
+                    _eight_point_thumb_view_title += CStr(num_eight_hm) + " HMs"
                 End If
             End If
 
             ' Update the 7 point thumbnail screen title to include the HMs
-            If numSevenHM > 0 Then
+            If num_seven_hm > 0 Then
                 If _seven_point_thumb_view_title > "" Then
                     _seven_point_thumb_view_title += " And "
                 End If
-                If numSevenHM = 1 Then
+                If num_seven_hm = 1 Then
                     _seven_point_thumb_view_title += "1 HM"
                 Else
-                    _seven_point_thumb_view_title += CStr(numSevenHM) + " HMs"
+                    _seven_point_thumb_view_title += CStr(num_seven_hm) + " HMs"
                 End If
             End If
 
@@ -1543,14 +1429,14 @@ Public Class MainForm
             End If
 
             ' Enter the total awards to be chosen into the "caption"
-            If totalNumScores > 0 Then
-                AwardsTableTitleBar.Text = Math.Min(maximumAwards, eligibleScores.Count).ToString + " Awards"
+            If total_num_scores > 0 Then
+                AwardsTableTitleBar.Text = Math.Min(maximum_awards, eligible_scores.Count).ToString + " Awards"
             Else
-                AwardsTableTitleBar.Text = maximumAwards.ToString + " Awards"
+                AwardsTableTitleBar.Text = maximum_awards.ToString + " Awards"
             End If
-            tbEligibleNines.Text = numEligibleNines.ToString
-            tbEligibleEights.Text = numEligibleEights.ToString
-            tbEligibleSevens.Text = numEligibleSevens.ToString
+            tbEligibleNines.Text = num_eligible_nines.ToString
+            tbEligibleEights.Text = num_eligible_eights.ToString
+            tbEligibleSevens.Text = num_eligible_sevens.ToString
 
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
@@ -1558,12 +1444,11 @@ Public Class MainForm
     End Sub
 
 
-    Private Sub doResultReport(displayScores As Boolean)
-        Dim tempFile As String
-        Dim reportType As String
-        Dim competitionDate As Date
-        Dim img As CompetitionEntry
-        Dim f As File
+    Private Sub doResultReport(display_scores As Boolean)
+        Dim temp_file As String
+        Dim report_type As String
+        Dim competition_date As Date
+        Dim entry As CompetitionEntry
         Dim sw As StreamWriter
         Try
             ' Bail out if the dataset is empty
@@ -1574,38 +1459,35 @@ Public Class MainForm
                 Exit Sub
             End If
 
-            ' Grab the first row of the collection to get some values for the report header
-            img = entries.First
-
             ' Open the output file and write the HTML preamble
             'competitionDate = CType(SelectDate.Text, Date)
-            competitionDate = ParseSelectedDate(SelectDate.Text)
-            If displayScores Then
-                reportType = "Results"
+            competition_date = ParseSelectedDate(SelectDate.Text)
+            If display_scores Then
+                report_type = "Results"
             Else
-                reportType = "Scoresheet"
+                report_type = "Scoresheet"
             End If
-            tempFile = reports_output_folder + "\" +
-                       reportType + "_" + CType(competitionDate.Year, String) + "-" +
-                       CType(competitionDate.Month, String) + "-" +
-                       CType(competitionDate.Day, String)
+            temp_file = reports_output_folder + "\" +
+                       report_type + "_" + CType(competition_date.Year, String) + "-" +
+                       CType(competition_date.Month, String) + "-" +
+                       CType(competition_date.Day, String)
             If EnableTheme.Checked Then
-                tempFile += "_" + SelectTheme.Text
+                temp_file += "_" + SelectTheme.Text
             End If
             If EnableClassification.Checked Then
-                tempFile += "_" + SelectClassification.Text
+                temp_file += "_" + SelectClassification.Text
             End If
             If EnableMedium.Checked Then
-                tempFile += "_" + SelectMedium.Text
+                temp_file += "_" + SelectMedium.Text
             End If
             If SelectScore.Text <> "All" Then
-                tempFile += "_" + SelectScore.Text
+                temp_file += "_" + SelectScore.Text
             End If
             If EnableAward.Checked Then
-                tempFile += "_" + SelectAward.Text
+                temp_file += "_" + SelectAward.Text
             End If
-            tempFile = handleStrMap(tempFile, " ?[]/\=+<>:;"",*|", "_---------------") + ".html"
-            sw = f.CreateText(tempFile)
+            temp_file = handleStrMap(temp_file, " ?[]/\=+<>:;"",*|", "_---------------") + ".html"
+            sw = File.CreateText(temp_file)
             sw.WriteLine("<html><style type=""text/css"">")
             sw.WriteLine("<!--")
             sw.WriteLine("body {")
@@ -1700,13 +1582,13 @@ Public Class MainForm
             End If
             sw.Write(
                 "<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">" +
-                competitionDate.ToString("MMMM", CultureInfo.CurrentCulture) + " " +
-                competitionDate.Year.ToString)
+                competition_date.ToString("MMMM", CultureInfo.CurrentCulture) + " " +
+                competition_date.Year.ToString)
             If EnableTheme.Checked Then
                 sw.Write(" - " + SelectTheme.Text)
             End If
             sw.WriteLine("</p></td></tr>")
-            If Not displayScores Then
+            If Not display_scores Then
                 sw.WriteLine(
                     "<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">(" +
                     setMaxAwards(entries.Count).ToString + " Awards)</p></td></tr>")
@@ -1716,19 +1598,19 @@ Public Class MainForm
             sw.WriteLine("<th>Title</th><th>Photographer</th></tr>")
             '
             ' Print a row for each image in the category
-            For Each img In entries
+            For Each entry In entries
                 sw.WriteLine("<tr>")
-                If displayScores Then
-                    sw.WriteLine("  <td class=""score"">" + img.Score_1.ToString + "</td>")
-                    sw.WriteLine("  <td class=""award"">" + img.Award + "</td>")
+                If display_scores Then
+                    sw.WriteLine("  <td class=""score"">" + entry.Score_1.ToString + "</td>")
+                    sw.WriteLine("  <td class=""award"">" + entry.Award + "</td>")
                 Else
                     sw.WriteLine("  <td class=""score"">&nbsp;</td>")
                     sw.WriteLine("  <td class=""award"">&nbsp;</td>")
                 End If
-                sw.WriteLine("  <td class=""title"">" + img.Title + "</td>")
-                sw.WriteLine("  <td class=""photographer"">" + img.Maker + "</td>")
+                sw.WriteLine("  <td class=""title"">" + entry.Title + "</td>")
+                sw.WriteLine("  <td class=""photographer"">" + entry.Maker + "</td>")
                 sw.WriteLine("</tr>")
-            Next img
+            Next entry
             '
             ' Finish off the HTML
             sw.WriteLine("</table>")
@@ -1737,66 +1619,64 @@ Public Class MainForm
             sw.Close()
             '
             ' Launch a browser to display the worksheet
-            doShellExecute(tempFile)
+            doShellExecute(temp_file)
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
 
-    Private Function doShellExecute(File As String) As Boolean
+    Private Sub doShellExecute(ByVal file As String)
         Try
-            Dim myProcess As New Process
-            myProcess.StartInfo.FileName = File
-            myProcess.StartInfo.UseShellExecute = True
-            myProcess.StartInfo.RedirectStandardOutput = False
-            myProcess.Start()
-            myProcess.Dispose()
+            Dim my_process As New Process
+            my_process.StartInfo.FileName = file
+            my_process.StartInfo.UseShellExecute = True
+            my_process.StartInfo.RedirectStandardOutput = False
+            my_process.Start()
+            my_process.Dispose()
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
-    End Function
+    End Sub
     Private Sub getUserPreferences()
-        Dim prefsDialog As New PreferencesDialog(Me)
-        Dim s As String
-
+        Dim prefs_dialog As New PreferencesDialog(Me)
         Try
             ' Load the current perferences into the dialog
-            prefsDialog.tbDatabaseFileName.Text = _database_file_name
+            prefs_dialog.tbDatabaseFileName.Text = _database_file_name
             If Len(images_root_folder) = 2 And Mid(images_root_folder, 2, 1) = ":" Then
-                prefsDialog.tbImagesRootFolder.Text = images_root_folder + "\"
+                prefs_dialog.tbImagesRootFolder.Text = images_root_folder + "\"
             Else
-                prefsDialog.tbImagesRootFolder.Text = images_root_folder
+                prefs_dialog.tbImagesRootFolder.Text = images_root_folder
             End If
             If Len(reports_output_folder) = 2 And Mid(reports_output_folder, 2, 1) = ":" Then
-                prefsDialog.tbReportsOutputFolder.Text = reports_output_folder + "\"
+                prefs_dialog.tbReportsOutputFolder.Text = reports_output_folder + "\"
             Else
-                prefsDialog.tbReportsOutputFolder.Text = reports_output_folder
+                prefs_dialog.tbReportsOutputFolder.Text = reports_output_folder
             End If
-            prefsDialog.tbServerName.Text = _server_name
-            prefsDialog.tbServerScriptDir.Text = _server_script_dir
+            prefs_dialog.tbServerName.Text = _server_name
+            prefs_dialog.tbServerScriptDir.Text = _server_script_dir
             _query = From club In rps_context.clubs
                      Select club.id, club.name
 
             For Each _record In _query
-                prefsDialog.cbCameraClubName.Items.Add(New DataItem(_record.id, _record.name))
+                prefs_dialog.cbCameraClubName.Items.Add(New DataItem(_record.id, _record.name))
             Next
-            prefsDialog.cbCameraClubName.Text = camera_club_name
-            prefsDialog.cbNumJudges.Text = CType(num_judges, String)
+            prefs_dialog.cbCameraClubName.Text = camera_club_name
+            prefs_dialog.cbNumJudges.Text = CType(num_judges, String)
 
             ' Display the dialog
-            prefsDialog.ShowDialog()
+            prefs_dialog.ShowDialog()
 
             ' Check the results
-            Dim irf As String = Trim(prefsDialog.tbImagesRootFolder.Text)
-            Dim dbfn As String = Trim(prefsDialog.tbDatabaseFileName.Text)
-            Dim rof As String = Trim(prefsDialog.tbReportsOutputFolder.Text)
-            Dim sn As String = Trim(prefsDialog.tbServerName.Text)
-            Dim ssd As String = Trim(prefsDialog.tbServerScriptDir.Text)
-            Dim ccn As String = Trim(CType(prefsDialog.cbCameraClubName.SelectedItem, DataItem).Value)
-            Dim ccid As Integer = CType(prefsDialog.cbCameraClubName.SelectedItem, DataItem).ID
-            Dim nj As Integer = CType(prefsDialog.cbNumJudges.Text, Integer)
-            If prefsDialog.DialogResult = DialogResult.OK Then
+            Dim irf As String = Trim(prefs_dialog.tbImagesRootFolder.Text)
+            Dim dbfn As String = Trim(prefs_dialog.tbDatabaseFileName.Text)
+            Dim rof As String = Trim(prefs_dialog.tbReportsOutputFolder.Text)
+            Dim sn As String = Trim(prefs_dialog.tbServerName.Text)
+            Dim ssd As String = Trim(prefs_dialog.tbServerScriptDir.Text)
+            Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).Value)
+            Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).ID
+            Dim nj As Integer = CType(prefs_dialog.cbNumJudges.Text, Integer)
+            If prefs_dialog.DialogResult = DialogResult.OK Then
                 If irf > "" Then
                     ' If necessary, strip off a trailing "\"
                     images_root_folder = Helper.TrimTrailingSlash(images_root_folder)
@@ -1854,47 +1734,48 @@ Public Class MainForm
         End Try
     End Sub
 
-    Private Sub Set_database_name(fileName As String)
+    Private Sub Set_database_name(file_name As String)
         Try
-            _database_file_name = fileName
+            _database_file_name = file_name
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub writeRegistryString(key As String, name As String, value As String)
-        Dim regKey As RegistryKey
+    Private Sub writeRegistryString(key As String, registry_name As String, registry_value As String)
+        Dim reg_key As RegistryKey = Nothing
 
         Try
-            regKey = Registry.CurrentUser.OpenSubKey(key, True)
-            If regKey Is Nothing Then
-                regKey = Registry.CurrentUser.CreateSubKey(key)
+            reg_key = Registry.CurrentUser.OpenSubKey(key, True)
+            If reg_key Is Nothing Then
+                reg_key = Registry.CurrentUser.CreateSubKey(key)
             End If
-            regKey.SetValue(name, value)
+            reg_key.SetValue(registry_name, registry_value)
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
-            If Not regKey Is Nothing Then
-                regKey.Close()
+            If Not reg_key Is Nothing Then
+                reg_key.Close()
             End If
         End Try
     End Sub
 
-    Private Function getRegistryString(key As String, name As String) As String
-        Dim regKey As RegistryKey
+    Private Function getRegistryString(registry_key As String, registry_name As String) As String
+        Dim reg_key As RegistryKey = Nothing
 
         Try
-            regKey = Registry.CurrentUser.OpenSubKey(key, False)
-            If regKey Is Nothing Then
+            reg_key = Registry.CurrentUser.OpenSubKey(registry_key, False)
+            If reg_key Is Nothing Then
                 getRegistryString = ""
             Else
-                getRegistryString = regKey.GetValue(name, "")
+                getRegistryString = reg_key.GetValue(registry_name, "")
             End If
         Catch exception As Exception
+            getRegistryString = ""
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
-            If Not regKey Is Nothing Then
-                regKey.Close()
+            If Not reg_key Is Nothing Then
+                reg_key.Close()
             End If
         End Try
     End Function
@@ -2024,9 +1905,9 @@ Public Class MainForm
     '
     Private Sub setCompetitionDatesCombobox()
 
-        _query = From entries In rps_context.CompetitionEntries
-                 Order By entries.Competition_Date_1
-                 Select entries.Competition_Date_1 Distinct
+        _query = From entry In rps_context.CompetitionEntries
+                 Order By entry.Competition_Date_1
+                 Select entry.Competition_Date_1 Distinct
 
         Try
             ' Empty the list if it's not already empty
@@ -2068,17 +1949,19 @@ Public Class MainForm
                     dates.Add(node.Value)
                 End While
             Else
+                getRestCompetitionDates = dates
                 Exit Function
             End If
 
-            Return dates
+            getRestCompetitionDates = dates
 
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            getRestCompetitionDates = dates
         End Try
     End Function
 
-    Structure comp_entry
+    Structure CompEntry
         Implements IComparable
 
         Public entry_id As String
@@ -2091,17 +1974,17 @@ Public Class MainForm
         Public bucket As Integer
 
         Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
-            If Me.bucket.CompareTo(CType(obj, comp_entry).bucket) = 0 Then
-                Return Me.first_name.CompareTo(CType(obj, comp_entry).first_name)
+            If bucket.CompareTo(CType(obj, CompEntry).bucket) = 0 Then
+                Return String.Compare(first_name, CType(obj, CompEntry).first_name, StringComparison.Ordinal)
             Else
-                Return Me.bucket.CompareTo(CType(obj, comp_entry).bucket)
+                Return bucket.CompareTo(CType(obj, CompEntry).bucket)
             End If
         End Function
     End Structure
 
     Private Sub downloadCompetitionImages()
 
-        Dim Download_Dialog As Download_Competitions_Dialog
+        Dim download_dialog As Download_Competitions_Dialog
         Dim username As String
         Dim password As String
         Dim comp_date As String
@@ -2115,13 +1998,13 @@ Public Class MainForm
         'Dim award As String
         'Dim url As String
         'Dim entry_id As String
-        Dim localImageFileName As String
-        Dim outputFolder As String
-        Dim competitionFolder As String
-        Dim dirInfo As DirectoryInfo
+        Dim local_image_file_name As String
+        Dim output_folder As String
+        Dim competition_folder As String
+        Dim dir_info As DirectoryInfo
         Dim params As New Hashtable
         Dim response As XPathDocument
-        Dim comp_dates As New ArrayList
+        Dim comp_dates As ArrayList
         Dim navigator As XPathNavigator
         Dim nodes As XPathNodeIterator
         Dim node As XPathNavigator
@@ -2131,11 +2014,9 @@ Public Class MainForm
         Dim entry_node As XPathNavigator
         Dim entry_properties As XPathNodeIterator
         Dim entry_property As XPathNavigator
-        Dim sqlCommand As New OleDbCommand
         Dim sql As String
-        Dim dateParts() As String
-        Dim entries As New ArrayList
-        Dim this_entry As comp_entry
+        Dim entries_array_list As New ArrayList
+        Dim this_entry As CompEntry
         Dim member As String
         Dim prev_member As String
         Dim bucket As Integer
@@ -2157,15 +2038,15 @@ Public Class MainForm
             Cursor.Current = Cursors.Default
 
             ' Open the Download Competitions dialog
-            Download_Dialog = New Download_Competitions_Dialog(Me, last_admin_username, comp_dates, images_root_folder)
-            Download_Dialog.ShowDialog(Me)
-            If Download_Dialog.DialogResult = DialogResult.OK Then
-                username = Trim(Download_Dialog.Username.Text())
-                password = Trim(Download_Dialog.Password.Text())
-                comp_date = Download_Dialog.CompetitionDate.Text()
-                download_digital = Download_Dialog.Download_digital.Checked
-                download_prints = Download_Dialog.Download_prints.Checked
-                outputFolder = Trim(Download_Dialog.OutputFolder.Text())
+            download_dialog = New Download_Competitions_Dialog(Me, last_admin_username, comp_dates, images_root_folder)
+            download_dialog.ShowDialog(Me)
+            If download_dialog.DialogResult = DialogResult.OK Then
+                username = Trim(download_dialog.Username.Text())
+                password = Trim(download_dialog.Password.Text())
+                comp_date = download_dialog.CompetitionDate.Text()
+                download_digital = download_dialog.Download_digital.Checked
+                download_prints = download_dialog.Download_prints.Checked
+                output_folder = Trim(download_dialog.OutputFolder.Text())
             Else
                 Exit Sub
             End If
@@ -2175,7 +2056,6 @@ Public Class MainForm
             writeRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
 
             ' Delete any competitions in the local database that already have this date
-            dateParts = Split(comp_date, "-")
             Dim d As Date
             d = Date.ParseExact(comp_date, "yyyy-MM-dd", CultureInfo.CurrentCulture)
             sql = "DELETE FROM CompetitionEntries WHERE Competition_Date_1 = '" +
@@ -2250,7 +2130,7 @@ Public Class MainForm
                 ' Now iterate through the <Entry> nodes of this competition
                 prev_member = ""
                 bucket = 0
-                entries.Clear()
+                entries_array_list.Clear()
                 While entry_nodes.MoveNext
                     entry_node = entry_nodes.Current
                     ' Select all the properties (i.e. subnodes) of this entry
@@ -2292,65 +2172,34 @@ Public Class MainForm
                         bucket += 1
                     End If
                     this_entry.bucket = bucket  ' store the bucket number in the record
-                    entries.Add(this_entry)     ' Store the record in a list
+                    entries_array_list.Add(this_entry)     ' Store the record in a list
                     prev_member = member
-
-
-                    ' If necessary, create the folder for this entry
-                    'competitionFolder = outputFolder + "\" + comp_date + " " + comp_classification + " " + comp_medium
-                    'dirInfo = New DirectoryInfo(competitionFolder)
-                    'If Not dirInfo.Exists Then
-                    '   dirInfo.Create()
-                    'End If
-
-                    ' Fetch the image file from the server
-                    'localImageFileName = competitionFolder + "\" + _
-                    '    StrMap(title, " ?[]/\=+<>:;"",*|", "_---------------") + _
-                    '    "+" + first_name + "_" + last_name + ".jpg"
-                    'DownloadImage(url, localImageFileName)
-
-                    ' Insert this image into the database
-                    'InsertImageIntoDatabase( _
-                    '    New FileInfo(localImageFileName), _
-                    '    first_name + " " + last_name, _
-                    '    title, _
-                    '    score, _
-                    '    award, _
-                    '    comp_classification, _
-                    '    comp_medium, _
-                    '    comp_date, _
-                    '    comp_theme, _
-                    '    entry_id)
-
-                    ' Update the Progressbar
-                    'StatusBar.progressBar.Value = StatusBar.progressBar.Value + 1
-                    'Application.DoEvents()
 
                 End While
 
                 ' Sort the list of entries by bucket
-                entries.Sort()
+                entries_array_list.Sort()
 
                 ' Iterate through all the entries and download the images
                 ' and update the database
                 sequence_num = 1
-                For Each entry As comp_entry In entries
+                For Each entry As CompEntry In entries_array_list
                     ' If necessary, create the folder for this entry
-                    competitionFolder = outputFolder + "\" + comp_date + " " + comp_classification + " " + comp_medium
-                    dirInfo = New DirectoryInfo(competitionFolder)
-                    If Not dirInfo.Exists Then
-                        dirInfo.Create()
+                    competition_folder = output_folder + "\" + comp_date + " " + comp_classification + " " + comp_medium
+                    dir_info = New DirectoryInfo(competition_folder)
+                    If Not dir_info.Exists Then
+                        dir_info.Create()
                     End If
 
                     ' Fetch the image file from the server
-                    localImageFileName = competitionFolder + "\" +
+                    local_image_file_name = competition_folder + "\" +
                                          handleStrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
                                          "+" + entry.first_name + "_" + entry.last_name + ".jpg"
-                    downloadImage(entry.url, localImageFileName)
+                    My.Computer.Network.DownloadFile(entry.url, local_image_file_name, False, 500)
 
                     ' Insert this image into the database
                     addImageToDatabase(
-                        New FileInfo(localImageFileName),
+                        New FileInfo(local_image_file_name),
                         entry.first_name + " " + entry.last_name,
                         entry.title,
                         entry.score,
@@ -2394,29 +2243,29 @@ Public Class MainForm
                           ByRef results As XPathDocument) As Boolean
         Dim request As HttpWebRequest
         Dim response As HttpWebResponse = Nothing
-        Dim URL As String
+        Dim url As String
         Dim delim As String
-        Dim XPathDoc As XPathDocument
+        Dim x_path_doc As XPathDocument
         Dim data As New StringBuilder
-        Dim byteData() As Byte
-        Dim postStream As Stream = Nothing
+        Dim byte_data() As Byte
+        Dim post_stream As Stream = Nothing
         Dim fs As FileStream
         Dim br As BinaryReader
         Dim ms As New MemoryStream
 
         Try
             ' Build the URL
-            URL = "http://" + server + operation
+            url = "http://" + server + operation
             If http_method = "GET" Then
                 delim = "?"
                 For Each key As String In params.Keys
-                    URL = URL + delim + key + "=" + params.Item(key)
+                    url = url + delim + key + "=" + params.Item(key)
                     delim = "&"
                 Next
             End If
 
             ' Create the web request  
-            request = HttpWebRequest.Create(URL)
+            request = HttpWebRequest.Create(url)
             If http_method = "POST" Then
                 ' Set type to POST  
                 request.Method = "POST"
@@ -2438,8 +2287,8 @@ Public Class MainForm
                 Next
 
                 ' Write the POST header, thus far, to a binary stream
-                byteData = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                ms.Write(byteData, 0, byteData.Length)
+                byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
+                ms.Write(byte_data, 0, byte_data.Length)
                 data.Remove(0, data.Length)
 
                 ' Attach any files in the param list
@@ -2452,36 +2301,36 @@ Public Class MainForm
                         data.Append("Content-Type: Image/jpeg" + vbCrLf)
                         data.Append(vbCrLf)
                         ' Write the MIME header to a binary stream
-                        byteData = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                        ms.Write(byteData, 0, byteData.Length)
+                        byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
+                        ms.Write(byte_data, 0, byte_data.Length)
                         ' Open the file and write it to a binary stream
                         fs = New FileStream(params(param), FileMode.Open, FileAccess.Read)
                         br = New BinaryReader(fs)
-                        byteData = br.ReadBytes(fs.Length)
-                        ms.Write(byteData, 0, fs.Length)
+                        byte_data = br.ReadBytes(fs.Length)
+                        ms.Write(byte_data, 0, fs.Length)
                         br.Close()
                         fs.Close()
                         ' Write the terminating boundry marker
                         data.Remove(0, data.Length)
                         data.Append("--" + "AaB03x" + vbCrLf)
-                        byteData = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                        ms.Write(byteData, 0, byteData.Length)
+                        byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
+                        ms.Write(byte_data, 0, byte_data.Length)
                     End If
                 Next
 
                 ' Read the entire contents of the memory stream back into a byte array
-                byteData = ms.ToArray
+                byte_data = ms.ToArray
                 'MsgBox(UTF8Encoding.UTF8.GetString(byteData))
 
                 ' Set the content length in the request headers
-                request.ContentLength = byteData.Length
+                request.ContentLength = byte_data.Length
 
                 ' Write data
                 Try
-                    postStream = request.GetRequestStream()
-                    postStream.Write(byteData, 0, byteData.Length)
+                    post_stream = request.GetRequestStream()
+                    post_stream.Write(byte_data, 0, byte_data.Length)
                 Finally
-                    If Not postStream Is Nothing Then postStream.Close()
+                    If Not post_stream Is Nothing Then post_stream.Close()
                 End Try
             End If
 
@@ -2498,13 +2347,13 @@ Public Class MainForm
 
             ' Parse the status out of the xml response
             Dim response_stream As Stream = response.GetResponseStream()
-            XPathDoc = New XPathDocument(response_stream)
-            If getRestStatResponse(XPathDoc) Then
+            x_path_doc = New XPathDocument(response_stream)
+            If getRestStatResponse(x_path_doc) Then
                 doRest = True
             Else
                 doRest = False
             End If
-            results = XPathDoc
+            results = x_path_doc
 
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
@@ -2535,40 +2384,6 @@ Public Class MainForm
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
-
-    Public Sub downloadImage(URL As String, outputFileName As String)
-        Dim Req As HttpWebRequest
-        Dim SourceStream As Stream
-        Dim Response As HttpWebResponse
-        Dim Buffer(4096) As Byte
-        Dim BlockSize As Integer
-        Dim outputFile As New FileStream(outputFileName, FileMode.Create, FileAccess.Write)
-
-        Try
-            'create a web request to the URL
-            Req = HttpWebRequest.Create(URL)
-
-            'get a response from web site
-            Response = Req.GetResponse()
-
-            'Source stream with requested document
-            SourceStream = Response.GetResponseStream()
-
-            'SourceStream has no ReadAll, so we must read data block-by-block
-            Do
-                BlockSize = SourceStream.Read(Buffer, 0, 4096)
-                If BlockSize > 0 Then outputFile.Write(Buffer, 0, BlockSize)
-            Loop While BlockSize > 0
-
-        Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-        Finally
-            SourceStream.Close()
-            outputFile.Close()
-            Response.Close()
-        End Try
-    End Sub
-
     ' Map characters within a string.  Replace all occurrances of each character in
     ' MapWhat with the corresponding character in toWhat.
     '
@@ -2580,10 +2395,10 @@ Public Class MainForm
     '       MyString = StrMap(MyString, "àéùxyz", "aeu")
     ' will translate all occurrances of à, é, ù and will delete all occurrances of x,y,z.
 
-    Public Function handleStrMap(S As String,
-                           MapWhat As String,
-                           ToWhat As String,
-                           Optional ByVal Compare As Long = 0) As String
+    Public Function handleStrMap(original_string As String,
+                           map_what As String,
+                           to_what As String,
+                           Optional ByVal compare As Long = 0) As String
 
         Dim output_ptr As Long
         Dim input_ptr As Long
@@ -2591,54 +2406,54 @@ Public Class MainForm
         Dim map_index As Long
 
         Try
-            For input_ptr = 1 To Len(S)
+            For input_ptr = 1 To Len(original_string)
                 ' get the next char in the source string
-                c = Mid$(S, input_ptr, 1)
+                c = Mid$(original_string, input_ptr, 1)
                 ' is this a character to be mapped?
-                map_index = InStr(1, MapWhat, c, Compare)
+                map_index = InStr(1, map_what, c, compare)
                 ' No. If the output string is shorter than the input string
                 ' (because previous characters have been deleted) relocate this character
                 ' to the end of the output string.
                 If map_index = 0 Then
                     output_ptr = output_ptr + 1
                     If output_ptr < input_ptr Then
-                        Mid$(S, output_ptr) = c
+                        Mid$(original_string, output_ptr) = c
                     End If
-                ElseIf map_index <= Len(ToWhat) Then
+                ElseIf map_index <= Len(to_what) Then
                     ' Yes, this character is to be remapped (or deleted).  If there is a
                     ' corresponding character to map it to, replace the original character,
                     ' otherwise do nothing.  Doing nothing will effectively delete the
                     ' character from the output string.
                     output_ptr = output_ptr + 1
-                    Mid$(S, output_ptr) = Mid$(ToWhat, map_index, 1)
+                    Mid$(original_string, output_ptr) = Mid$(to_what, map_index, 1)
                 End If
             Next
             ' If the output string is the same length as the input string (i.e. there have
             ' been no deletions) return the original string length.  If there have been 
             ' deletions, return the shortened string.
-            If output_ptr = Len(S) Then
-                handleStrMap = S
+            If output_ptr = Len(original_string) Then
+                handleStrMap = original_string
             Else
-                handleStrMap = Microsoft.VisualBasic.Left(S, output_ptr)
+                handleStrMap = Microsoft.VisualBasic.Left(original_string, output_ptr)
             End If
         Catch exception As Exception
+            handleStrMap = original_string
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
 
     Function uploadScores() As Boolean
-        Dim Upload_Dialog As Upload_Scores_Dialog
+        Dim upload_dialog As Upload_Scores_Dialog
         Dim username As String
         Dim password As String
         Dim comp_date As String
         Dim comp_dates As ArrayList
         Dim comp_class_list As New ArrayList
         Dim comp_medium_list As New ArrayList
-        Dim sqlSelect As String
-        Dim sqlWhere As String
-        Dim sqlCommand As New OleDbCommand
+        Dim sql_select As String
+        Dim sql_where As String
         Dim recs As Object
-        Dim compNum As Integer
+        Dim comp_num As Integer
         Dim classification As String
         Dim medium As String
         Dim maker As String
@@ -2646,9 +2461,8 @@ Public Class MainForm
         Dim score As String
         Dim award As String
         Dim entry_id As String
-        Dim f As File
         Dim sw As StreamWriter
-        Dim fileName As String
+        Dim file_name As String
         Dim params As New Hashtable
         Dim response As XPathDocument
         Dim navigator As XPathNavigator
@@ -2656,11 +2470,11 @@ Public Class MainForm
         Dim node As XPathNavigator
         Dim info As New StringBuilder
         Dim posn As Integer
-        Dim firstName As String
-        Dim lastName As String
+        Dim first_name As String
+        Dim last_name As String
         Dim upload_digital As Boolean
         Dim upload_prints As Boolean
-        Dim selectedMedium As String
+        Dim selected_medium As String
 
         Try
             ' Get the list of competition dates from the server
@@ -2675,14 +2489,14 @@ Public Class MainForm
             Cursor.Current = Cursors.Default
 
             ' Open the Upload Scores dialog
-            Upload_Dialog = New Upload_Scores_Dialog(last_admin_username, comp_dates)
-            Upload_Dialog.ShowDialog(Me)
-            If Upload_Dialog.DialogResult = DialogResult.OK Then
-                username = Trim(Upload_Dialog.Username.Text())
-                password = Trim(Upload_Dialog.Password.Text())
-                comp_date = Upload_Dialog.CompDate.Text()
-                upload_digital = Upload_Dialog.Upload_digital_scores.Checked
-                upload_prints = Upload_Dialog.Upload_print_scores.Checked
+            upload_dialog = New Upload_Scores_Dialog(last_admin_username, comp_dates)
+            upload_dialog.ShowDialog(Me)
+            If upload_dialog.DialogResult = DialogResult.OK Then
+                username = Trim(upload_dialog.Username.Text())
+                password = Trim(upload_dialog.Password.Text())
+                comp_date = upload_dialog.CompDate.Text()
+                upload_digital = upload_dialog.Upload_digital_scores.Checked
+                upload_prints = upload_dialog.Upload_print_scores.Checked
             Else
                 Exit Function
             End If
@@ -2695,25 +2509,25 @@ Public Class MainForm
             Application.DoEvents()
 
             ' Open a local text file to receive the XML
-            fileName = reports_output_folder + "\" + "Scores_" + comp_date + ".xml"
-            sw = f.CreateText(fileName)
+            file_name = reports_output_folder + "\" + "Scores_" + comp_date + ".xml"
+            sw = File.CreateText(file_name)
             sw.WriteLine("<?xml version=""1.0"" encoding=""utf-8"" ?>")
             sw.WriteLine("<Competitions>")
 
             ' Select the unique competitions for the given date
-            selectedMedium = ""
+            selected_medium = ""
             If upload_digital And Not upload_prints Then
-                selectedMedium = " AND Medium like '%Digital'"
+                selected_medium = " AND Medium like '%Digital'"
             End If
             If upload_prints And Not upload_digital Then
-                selectedMedium = " AND Medium like '%Prints'"
+                selected_medium = " AND Medium like '%Prints'"
             End If
             Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", CultureInfo.CurrentCulture)
-            sqlSelect = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
-            sqlWhere = "WHERE Competition_Date_1 = '" +
+            sql_select = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
+            sql_where = "WHERE Competition_Date_1 = '" +
                        Format(d, "M/dd/yyyy") + "'" +
-                       selectedMedium
-            _query = sqlSelect + sqlWhere
+                       selected_medium
+            _query = sql_select + sql_where
             recs = rps_context.Database.SqlQuery(Of UploadEntity_Classification_Medium)(_query).ToList
 
             For Each record As UploadEntity_Classification_Medium In recs
@@ -2722,14 +2536,14 @@ Public Class MainForm
             Next
 
             ' Iterate through all the competition for this date
-            For compNum = 0 To comp_class_list.Count - 1
+            For comp_num = 0 To comp_class_list.Count - 1
                 ' Query the database for the entries of this competition
-                classification = comp_class_list.Item(compNum)
-                medium = comp_medium_list.Item(compNum)
-                sqlSelect = "Select * FROM CompetitionEntries "
-                sqlWhere = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
+                classification = comp_class_list.Item(comp_num)
+                medium = comp_medium_list.Item(comp_num)
+                sql_select = "Select * FROM CompetitionEntries "
+                sql_where = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
                            classification + "' AND Medium = '" + medium + "'"
-                _query = sqlSelect + sqlWhere
+                _query = sql_select + sql_where
                 recs = rps_context.Database.SqlQuery(Of CompetitionEntry)(_query).ToList
                 ' Output the tags that describe this competition
                 sw.WriteLine("  <Competition>")
@@ -2743,8 +2557,8 @@ Public Class MainForm
                     maker = record.Maker
                     'fields = Split(maker, " ")
                     posn = InStr(1, maker, " ")
-                    firstName = Mid(maker, 1, posn - 1)
-                    lastName = Mid(maker, posn + 1)
+                    first_name = Mid(maker, 1, posn - 1)
+                    last_name = Mid(maker, posn + 1)
                     title = record.Title
                     If IsNothing(record.Score_1) Then
                         score = ""
@@ -2764,8 +2578,8 @@ Public Class MainForm
                     ' Write this entry to the xml file
                     sw.WriteLine("      <Entry>")
                     sw.WriteLine("        <ID>{0}</ID>", entry_id)
-                    sw.WriteLine("        <First_Name>{0}</First_Name>", HttpUtility.HtmlEncode(firstName))
-                    sw.WriteLine("        <Last_Name>{0}</Last_Name>", HttpUtility.HtmlEncode(lastName))
+                    sw.WriteLine("        <First_Name>{0}</First_Name>", HttpUtility.HtmlEncode(first_name))
+                    sw.WriteLine("        <Last_Name>{0}</Last_Name>", HttpUtility.HtmlEncode(last_name))
                     sw.WriteLine("        <Title>{0}</Title>", HttpUtility.HtmlEncode(title))
                     sw.WriteLine("        <Score>{0}</Score>", HttpUtility.HtmlEncode(score))
                     sw.WriteLine("        <Award>{0}</Award>", HttpUtility.HtmlEncode(award))
@@ -2785,7 +2599,7 @@ Public Class MainForm
             params.Add("date", comp_date)
             params.Add("username", username)
             params.Add("password", password)
-            params.Add("file", fileName)
+            params.Add("file", file_name)
             If Not doRest(_server_name, _server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) Then
                 ' If the web service returned an error, display it
                 navigator = response.CreateNavigator()
@@ -2810,8 +2624,8 @@ Public Class MainForm
             End If
 
             ' Finally, Delete the .xml file
-            If File.Exists(fileName) = True Then
-                File.Delete(fileName)
+            If File.Exists(file_name) = True Then
+                File.Delete(file_name)
             End If
 
         Catch exception As Exception
@@ -2825,13 +2639,13 @@ Public Class MainForm
     '
     Private Sub setThemeCombobox()
         Try
-            Dim compDate As String = Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy")
+            Dim comp_date As String = Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy")
             themes.Clear()
             SelectTheme.Items.Clear()
 
-            _query = From entries In rps_context.CompetitionEntries
-                     Where entries.Competition_Date_1.Equals(compDate)
-                     Select entries.Theme Distinct
+            _query = From entry In rps_context.CompetitionEntries
+                     Where entry.Competition_Date_1.Equals(comp_date)
+                     Select entry.Theme Distinct
 
             For Each _record In _query
                 SelectTheme.Items.Add(_record)
