@@ -93,8 +93,8 @@ Public Class Thumbnail
             thumb.Dispose()
             encoderParams.Dispose()
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in Thumbnail.Render()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 

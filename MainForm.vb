@@ -10,7 +10,7 @@ Public Class MainForm
     Private ReadOnly _data_folder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
     Private _database_file_name As String = _data_folder + "\rps.db"
 
-    ' Database 
+    ' Database
     Dim _connection_string As String
     Public rps_context As rpsEntities
     Private _query As Object
@@ -54,7 +54,7 @@ Public Class MainForm
     Friend WithEvents title As DataGridViewTextBoxColumn
     Private ReadOnly _center_cell_style As New DataGridViewCellStyle
 
-    Private Sub Initialize_status_bar()
+    Private Sub initializeStatusBar()
         Dim info As StatusBarPanel = New StatusBarPanel
         Dim progress As StatusBarPanel = New StatusBarPanel
 
@@ -76,7 +76,7 @@ Public Class MainForm
             .progressBar.Maximum = 100
         End With
 
-        Me.Controls.Add(status_bar)
+        Controls.Add(status_bar)
     End Sub
 
 #Region " Windows Form Designer generated code "
@@ -855,9 +855,9 @@ Public Class MainForm
         Dim dirinfo As DirectoryInfo
         Try
             ' Set up the connection string for the database connection
-            SetDatabaseName(_database_file_name)
+            Set_database_name(_database_file_name)
             ' Load the user preferences from the registry
-            LoadPreferences()
+            getPreferences()
 
             ' Setup Database Variables
             _connection_string = New EntityConnectionStringBuilder() With
@@ -889,16 +889,16 @@ Public Class MainForm
             ' Setup Datagrid Styles
             _center_cell_style.Alignment = DataGridViewContentAlignment.MiddleCenter
 
-            LoadClubRules()
+            getClubRules()
 
             ' Initialize the StatusBar and ProgressBar
-            Initialize_status_bar()
+            initializeStatusBar()
             status_bar.progressBar.Value = 0
             ' Load the unique competition dates into the Competition Date combobox
-            LoadCompDates()
+            setCompetitionDatesCombobox()
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In MainForm_Load()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -942,16 +942,14 @@ Public Class MainForm
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
         Try
             ' Recalculate the awards
-            CalculateAwards()
-        Catch eUpdate As Exception
-            'Add your error handling code here.
-            'Display error message, if any.
-            MsgBox(eUpdate.Message, , "Error In btnUpdate_Click()")
+            doCalculateAwards()
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
     Private Sub btnLoad_Click(sender As Object, e As EventArgs) Handles btnLoad.Click
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
 
@@ -962,28 +960,28 @@ Public Class MainForm
 
     Private Sub btnSlideShow_Click(sender As Object, e As EventArgs) _
         Handles btnSlideShow.Click
-        DoSlideShow()
+        doSlideShow()
     End Sub
 
     Private Sub btnThumbnails_Click(sender As Object, e As EventArgs) _
         Handles btnThumbnails.Click
-        PickAwards()
+        doPickAwards()
     End Sub
 
     Private Sub FileCatalogImagesDownload_Click(sender As Object, e As EventArgs) _
         Handles CompCatalogImagesDownload.Click
-        DownloadCompetitionImages()
-        LoadCompDates()
+        downloadCompetitionImages()
+        setCompetitionDatesCombobox()
     End Sub
 
     Private Sub FileUploadScores_Click(sender As Object, e As EventArgs) _
         Handles CompUploadScores.Click
-        UploadScores()
+        uploadScores()
     End Sub
 
     Private Sub FileExitMenu_Click(sender As Object, e As EventArgs) _
         Handles FileExitMenu.Click
-        Me.Close()
+        Close()
     End Sub
 
 
@@ -992,7 +990,7 @@ Public Class MainForm
         SelectScore.SelectedItem = "All"
         _all_scores_selected = True
         _eights_and_awards_selected = False
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub SelectClassification_SelectedIndexChanged(sender As Object, e As EventArgs) _
@@ -1000,7 +998,7 @@ Public Class MainForm
         SelectScore.SelectedItem = "All"
         _all_scores_selected = True
         _eights_and_awards_selected = False
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub SelectTheme_SelectedIndexChanged(sender As Object, e As EventArgs) _
@@ -1008,7 +1006,7 @@ Public Class MainForm
         SelectScore.SelectedItem = "All"
         _all_scores_selected = True
         _eights_and_awards_selected = False
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub SelectAward_SelectedIndexChanged(sender As Object, e As EventArgs) _
@@ -1016,7 +1014,7 @@ Public Class MainForm
         SelectScore.SelectedItem = "All"
         _all_scores_selected = True
         _eights_and_awards_selected = False
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub EnableMedium_CheckedChanged(sender As Object, e As EventArgs) _
@@ -1028,7 +1026,7 @@ Public Class MainForm
             SelectMedium.Enabled = False
             Label2.Enabled = False
         End If
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub EnableClassification_CheckedChanged(sender As Object, e As EventArgs) _
@@ -1040,7 +1038,7 @@ Public Class MainForm
             SelectClassification.Enabled = False
             Label3.Enabled = False
         End If
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub EnableTheme_CheckedChanged(sender As Object, e As EventArgs) _
@@ -1052,7 +1050,7 @@ Public Class MainForm
             SelectTheme.Enabled = False
             Label5.Enabled = False
         End If
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub EnableAward_CheckedChanged(sender As Object, e As EventArgs) _
@@ -1064,28 +1062,28 @@ Public Class MainForm
             SelectAward.Enabled = False
             Label4.Enabled = False
         End If
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub RecalcAwards_Click(sender As Object, e As EventArgs) _
         Handles RecalcAwards.Click
-        CalculateAwards()
+        doCalculateAwards()
     End Sub
 
     Private Sub HelpAboutMenu_Click(sender As Object, e As EventArgs) _
         Handles HelpAboutMenu.Click
-        Dim aboutForm As New About
-        aboutForm.Show()
+        Dim about_form As New About
+        about_form.Show()
     End Sub
 
     Private Sub ViewSlideShowMenu_Click(sender As Object, e As EventArgs) _
         Handles ViewSlideShowMenu.Click
-        DoSlideShow()
+        doSlideShow()
     End Sub
 
     Private Sub ViewThumbnailsMenu_Click(sender As Object, e As EventArgs) _
         Handles ViewThumbnailsMenu.Click
-        PickAwards()
+        doPickAwards()
     End Sub
 
     Private Sub MainForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -1095,24 +1093,24 @@ Public Class MainForm
 
     Private Sub FilePreferencesMenu_Click(sender As Object, e As EventArgs) _
         Handles FilePreferencesMenu.Click
-        GetUserPreferences()
+        getUserPreferences()
     End Sub
 
     Private Sub ReportsResultsReportMenu_Click(sender As Object, e As EventArgs) _
         Handles ReportsResultsReportMenu.Click
-        ResultsReport(True)
+        doResultReport(True)
     End Sub
 
     Private Sub ReportsScoreSheetMenu_Click(sender As Object, e As EventArgs) _
         Handles ReportsScoreSheetMenu.Click
         'ScoreSheet()
-        ResultsReport(False)
+        doResultReport(False)
     End Sub
 
-    Private Sub DoSlideShow()
-        Dim Viewer As ImageViewer
-        Dim showSplash As Boolean
-        Dim statusBarState As Integer
+    Private Sub doSlideShow()
+        Dim viewer As ImageViewer
+        Dim show_splash As Boolean
+        Dim status_bar_state As Integer
 
         ' Bail out if the dataset is empty
         If data_grid_entries_view.RowCount() <= 0 Then
@@ -1124,26 +1122,26 @@ Public Class MainForm
         ' from the beginning
         'If AllScoresRadioButton.Checked And grdCompetition_Entries.CurrentRowIndex <= 0 Then
         If _all_scores_selected And data_grid_entries_view.CurrentCell.RowIndex <= 0 Then
-            showSplash = True
+            show_splash = True
         Else
-            showSplash = False
+            show_splash = False
         End If
 
         ' Set the status bar to show the title and maker name if we're announcing the winners
         'If EightsAndAwardsRadioButton.Checked Then
         If _eights_and_awards_selected Then
-            statusBarState = 2
+            status_bar_state = 2
             ' Set the status bar to show the title only if we're assigning awards
             'ElseIf NineScoreRadioButton.Checked Or EightScoreRadioButton.Checked Or SevenScoreRadioButton.Checked Then
         ElseIf Not _all_scores_selected Then
-            statusBarState = 1
+            status_bar_state = 1
         Else
-            statusBarState = 0
+            status_bar_state = 0
         End If
 
-        Viewer = New ImageViewer(Me, entries, data_grid_entries_view.CurrentCell.RowIndex, showSplash, statusBarState)
+        viewer = New ImageViewer(Me, entries, data_grid_entries_view.CurrentCell.RowIndex, show_splash, status_bar_state)
         Cursor.Hide()
-        Viewer.ShowDialog()
+        viewer.ShowDialog()
         Cursor.Show()
         Try
             ' Attempt to update the datasource.
@@ -1160,13 +1158,11 @@ Public Class MainForm
             ' If we've just completed entering scores, calculate the eligible awards
             'If AllScoresRadioButton.Checked Then
             If _all_scores_selected Then
-                CalculateAwards()
+                doCalculateAwards()
                 'PickAwards()
             End If
-        Catch eUpdate As Exception
-            'Add your error handling code here.
-            'Display error message, if any.
-            MsgBox(eUpdate.Message, , "Error In DoSlideShow()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
     '
@@ -1177,15 +1173,15 @@ Public Class MainForm
         Try
             d = Date.ParseExact(s, "dd-MMM-yyyy", CultureInfo.CurrentCulture)
             Return d
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In ParseSelectedDate()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             Return d
         End Try
     End Function
 
-    Private Sub PickAwards()
-        Dim screenTitle As String = ""
-        Dim Viewer As ThumbnailViewer
+    Private Sub doPickAwards()
+        Dim screen_title As String = ""
+        Dim viewer As ThumbnailViewer
         Try
             ' Bail out if the dataset is empty
             If entries.Count <= 0 Then
@@ -1207,28 +1203,28 @@ Public Class MainForm
 
             ' Configure the title for the thumbnail screen
             If _all_scores_selected Then
-                screenTitle = SelectClassification.Text + " " + SelectMedium.Text
+                screen_title = SelectClassification.Text + " " + SelectMedium.Text
             ElseIf _eights_and_awards_selected Then
                 If num_judges > 1 Then
-                    screenTitle = "Award winners And images averaging 8 points Or more"
+                    screen_title = "Award winners And images averaging 8 points Or more"
                 Else
-                    screenTitle = "Award winners And images With 8 points Or more"
+                    screen_title = "Award winners And images With 8 points Or more"
                 End If
             ElseIf _selected_avg_score > 0 Then
                 If _selected_avg_score = 9 Then
-                    screenTitle = _nine_point_thumb_view_title
+                    screen_title = _nine_point_thumb_view_title
                 ElseIf _selected_avg_score = 8 Then
-                    screenTitle = _eight_point_thumb_view_title
+                    screen_title = _eight_point_thumb_view_title
                 ElseIf _selected_avg_score = 7 Then
-                    screenTitle = _seven_point_thumb_view_title
+                    screen_title = _seven_point_thumb_view_title
                 End If
             Else
-                screenTitle = "Images scoring " + CType(_selected_score, String) + " points"
+                screen_title = "Images scoring " + CType(_selected_score, String) + " points"
             End If
 
             ' Launch the thumbnail screen
-            Viewer = New ThumbnailViewer(Me, entries, screenTitle)
-            Viewer.ShowDialog()
+            viewer = New ThumbnailViewer(Me, entries, screen_title)
+            viewer.ShowDialog()
 
             ' Attempt to update the datasource.
             data_grid_entries_view.Refresh()
@@ -1242,107 +1238,11 @@ Public Class MainForm
                                                       )
             Next
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In PickAwards()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
-
-    Private Function CheckFileName(file As FileInfo) As Boolean
-        Dim fileName As String
-        Dim filePath As String
-        Dim newFileName As String
-        Dim fields
-        Dim validFileName As Boolean
-        Dim cancelled As Boolean
-
-        Try
-            Do
-                validFileName = True
-                cancelled = False
-                fileName = file.Name        ' Get the name without the path
-                ' Does the file name end in ".jpg"?
-                If InStr(1, LCase(fileName), ".jpg") = Len(fileName) - 3 Then
-                    ' Yes, strip off the extension
-                    fileName = Mid(fileName, 1, InStr(1, LCase(fileName), ".jpg") - 1)
-                    ' Does the file name contain a single plus sign?
-                    fields = Split(fileName, "+")
-                    If UBound(fields) <> 1 Then
-                        validFileName = False
-                    End If
-                Else
-                    validFileName = False
-                End If
-
-                ' Give the operator an opportunity to rename the file
-                If Not validFileName Then
-                    newFileName = InputBox("Rename the file?", "Invalid File Name", file.Name)
-                    If newFileName > "" Then
-                        ' Strip the old name from the path
-                        filePath = Mid(file.FullName, 1, InStrRev(file.FullName, "\") - 1)
-                        ' Rename it, but make sure you don't move it
-                        file.MoveTo(filePath + "\" + newFileName)
-                    Else
-                        cancelled = True
-                    End If
-                End If
-            Loop While Not validFileName And Not cancelled
-
-            If Not validFileName Then
-                CheckFileName = False
-            Else
-                CheckFileName = True
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In CheckFileName()")
-            CheckFileName = False
-        End Try
-    End Function
-
-
-    Private Sub CatalogOneImage(file As FileInfo,
-                                classification As String,
-                                medium As String,
-                                competitionDate As Date,
-                                competitionTheme As String)
-        'Dim relativePath As String
-        Dim fileName As String
-        Dim fields()
-        Dim title As String
-        Dim maker As String
-        Dim score As String
-        Dim award As String
-        'Dim dRow As DataRow
-
-        Try
-            ' Parse the title and maker out of the file name
-            fileName = file.Name        ' Get the name without the path
-            fileName = Mid(fileName, 1, Len(fileName) - 4) ' Strip off the extension
-            fields = Split(fileName, "+")
-            title = fields(0)
-            maker = fields(1)
-            title = title.Replace("_", " ")
-            maker = maker.Replace("_", " ")
-            score = ""
-            award = ""
-
-            ' Insert a new row in to the database table
-            InsertImageIntoDatabase(file,
-                                    maker,
-                                    title,
-                                    score,
-                                    award,
-                                    classification,
-                                    medium,
-                                    competitionDate,
-                                    competitionTheme,
-                                    "",
-                                    0)
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In CatalogOneImage()")
-        End Try
-    End Sub
-
-    Private Sub InsertImageIntoDatabase(
+    Private Sub addImageToDatabase(
                                         file As FileInfo,
                                         maker As String,
                                         title As String,
@@ -1399,25 +1299,25 @@ Public Class MainForm
             ' Add it to the database
             rps_context.CompetitionEntries.Add(entry)
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In InsertImageInDatabase()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
         rps_context.SaveChanges()
     End Sub
 
-    Private Function MaxAwards(numImages As Double) As Integer
+    Private Function setMaxAwards(numImages As Double) As Integer
         Try
             If numImages = 1 Then
-                MaxAwards = 1
+                setMaxAwards = 1
             Else
-                MaxAwards = Int((numImages / 4) + 0.5)
+                setMaxAwards = Int((numImages / 4) + 0.5)
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in MaxAwards()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
 
-    Private Sub SelectImages()
+    Private Sub getSelectedEntries()
         Dim numSelected As Double
         Dim select_stmt As String
         Dim where_clause As String
@@ -1428,7 +1328,7 @@ Public Class MainForm
                 ' Build the complete SQL statement to select the records specified
                 ' by the selection criteria on the main form.
                 ' Start with a basic SQL statement that selects records by date.
-                select_stmt = "SELECT * FROM CompetitionEntries"
+                select_stmt = "Select * FROM CompetitionEntries"
                 where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") +
                                "'"
                 order_clause = " ORDER BY Display_Sequence, Title"
@@ -1508,19 +1408,17 @@ Public Class MainForm
                 ' Recalculate the awards
                 'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
                 If _all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
-                    CalculateAwards()
+                    doCalculateAwards()
                 End If
 
-            Catch eLoad As Exception
-                'Add your error handling code here.
-                'Display error message, if any.
-                MsgBox(eLoad.Message, , "Error in SelectImages()")
+            Catch exception As Exception
+                MsgBox(exception.Message, , "Error In " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End If
     End Sub
 
 
-    Private Sub CalculateAwards()
+    Private Sub doCalculateAwards()
         Dim eligibleScores As New ArrayList
         Dim maximumAwards As Integer
         Dim dRow As CompetitionEntry
@@ -1535,7 +1433,7 @@ Public Class MainForm
 
         Try
             ' What is the maximum number of Awards possible
-            maximumAwards = MaxAwards(CType(entries.Count, Double))
+            maximumAwards = setMaxAwards(CType(entries.Count, Double))
 
             ' Iterate through the dataset and record all the scores which are eligible for an award
             For Each dRow In entries
@@ -1654,13 +1552,13 @@ Public Class MainForm
             tbEligibleEights.Text = numEligibleEights.ToString
             tbEligibleSevens.Text = numEligibleSevens.ToString
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In CalculateAwards()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
 
-    Private Sub ResultsReport(displayScores As Boolean)
+    Private Sub doResultReport(displayScores As Boolean)
         Dim tempFile As String
         Dim reportType As String
         Dim competitionDate As Date
@@ -1706,7 +1604,7 @@ Public Class MainForm
             If EnableAward.Checked Then
                 tempFile += "_" + SelectAward.Text
             End If
-            tempFile = StrMap(tempFile, " ?[]/\=+<>:;"",*|", "_---------------") + ".html"
+            tempFile = handleStrMap(tempFile, " ?[]/\=+<>:;"",*|", "_---------------") + ".html"
             sw = f.CreateText(tempFile)
             sw.WriteLine("<html><style type=""text/css"">")
             sw.WriteLine("<!--")
@@ -1811,7 +1709,7 @@ Public Class MainForm
             If Not displayScores Then
                 sw.WriteLine(
                     "<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">(" +
-                    MaxAwards(entries.Count).ToString + " Awards)</p></td></tr>")
+                    setMaxAwards(entries.Count).ToString + " Awards)</p></td></tr>")
             End If
             sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">&nbsp;</p></td></tr>")
             sw.WriteLine("<tr><th>Score</th><th>Award</th>")
@@ -1839,14 +1737,14 @@ Public Class MainForm
             sw.Close()
             '
             ' Launch a browser to display the worksheet
-            ShellExecute(tempFile)
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ResultsReport()")
+            doShellExecute(tempFile)
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
 
-    Private Function ShellExecute(File As String) As Boolean
+    Private Function doShellExecute(File As String) As Boolean
         Try
             Dim myProcess As New Process
             myProcess.StartInfo.FileName = File
@@ -1854,46 +1752,11 @@ Public Class MainForm
             myProcess.StartInfo.RedirectStandardOutput = False
             myProcess.Start()
             myProcess.Dispose()
-        Catch e As Exception
-            MsgBox(e.Message, , "Error in ShellExecute()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
-
-    Public Shared Function GetDBStringField(r As DataRow, name As String, nullStr As String) As String
-        Try
-            If r(name) Is DBNull.Value Then
-                GetDBStringField = nullStr
-            Else
-                GetDBStringField = CType(r(name), String)
-            End If
-        Catch e As Exception
-            MsgBox(e.Message, , "Error in GetDBStringField()")
-        End Try
-    End Function
-
-
-    Private Sub GridResizeColumns(DataGridView As DataGrid,
-                                  FixedTotalWidth As Double,
-                                  StartCol As Integer,
-                                  ByVal ParamArray ColumnWidthInPercent() As Double)
-
-        Dim TotalGridWidth As Long
-        Dim intIndex As Integer
-        Dim PercentColWidth As Integer
-        Dim i As Integer
-        Try
-            TotalGridWidth = DataGridView.Width - FixedTotalWidth
-
-            For i = 0 To ColumnWidthInPercent.Length - 1
-                DataGridView.TableStyles(0).GridColumnStyles(i).Width = ColumnWidthInPercent(i) * TotalGridWidth / 100
-            Next
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in GridResizeColumns()")
-        End Try
-    End Sub
-
-
-    Private Sub GetUserPreferences()
+    Private Sub getUserPreferences()
         Dim prefsDialog As New PreferencesDialog(Me)
         Dim s As String
 
@@ -1938,68 +1801,68 @@ Public Class MainForm
                     ' If necessary, strip off a trailing "\"
                     images_root_folder = Helper.TrimTrailingSlash(images_root_folder)
                     ' write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Images Root Folder", images_root_folder)
+                    writeRegistryString("Software\RPS Digital Viewer", "Images Root Folder", images_root_folder)
                 End If
                 If dbfn > "" Then
                     ' update the connection string
-                    SetDatabaseName(dbfn)
+                    Set_database_name(dbfn)
                     ' write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Database File Name", _database_file_name)
+                    writeRegistryString("Software\RPS Digital Viewer", "Database File Name", _database_file_name)
                 End If
                 If rof > "" Then
                     ' If necessary, strip off a trailing "\"
                     reports_output_folder = Helper.TrimTrailingSlash(reports_output_folder)
 
                     ' write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reports_output_folder)
+                    writeRegistryString("Software\RPS Digital Viewer", "Reports Output Folder", reports_output_folder)
                 End If
                 If sn > "" Then
                     ' Store the new server name in memory
                     _server_name = sn
                     ' Write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Server Name", sn)
+                    writeRegistryString("Software\RPS Digital Viewer", "Server Name", sn)
                 End If
                 If ssd > "" Then
                     ' Store the new server script directory in memory
                     _server_script_dir = ssd
                     ' Write it to the registry
-                    WriteRegistryString("Software\RPS Digital Viewer", "Server Script Directory", ssd)
+                    writeRegistryString("Software\RPS Digital Viewer", "Server Script Directory", ssd)
                 End If
                 If ccid > 0 Then
                     ' Set and store the club id
                     camera_club_id = ccid
-                    WriteRegistryString("Software\RPS Digital Viewer", "Camera Club ID", CType(ccid, String))
+                    writeRegistryString("Software\RPS Digital Viewer", "Camera Club ID", CType(ccid, String))
                 End If
                 If ccn > "" Then
                     ' Set and store the club name
                     camera_club_name = ccn
-                    WriteRegistryString("Software\RPS Digital Viewer", "Camera Club Name", ccn)
+                    writeRegistryString("Software\RPS Digital Viewer", "Camera Club Name", ccn)
                 End If
                 If nj > 0 Then
                     ' Set and store the number of judges
                     num_judges = nj
-                    WriteRegistryString("Software\RPS Digital Viewer", "Number of Judges", CType(nj, String))
+                    writeRegistryString("Software\RPS Digital Viewer", "Number of Judges", CType(nj, String))
                 End If
 
                 ' Fetch the list of classifications, mediums and awards from the database
                 ' for the selected club
-                LoadClubRules()
+                getClubRules()
 
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in GetUserPreferences()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub SetDatabaseName(fileName As String)
+    Private Sub Set_database_name(fileName As String)
         Try
             _database_file_name = fileName
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in SetDatabasename()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub WriteRegistryString(key As String, name As String, value As String)
+    Private Sub writeRegistryString(key As String, name As String, value As String)
         Dim regKey As RegistryKey
 
         Try
@@ -2008,8 +1871,8 @@ Public Class MainForm
                 regKey = Registry.CurrentUser.CreateSubKey(key)
             End If
             regKey.SetValue(name, value)
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in WriteRegistryString()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             If Not regKey Is Nothing Then
                 regKey.Close()
@@ -2017,18 +1880,18 @@ Public Class MainForm
         End Try
     End Sub
 
-    Private Function ReadRegistryString(key As String, name As String) As String
+    Private Function getRegistryString(key As String, name As String) As String
         Dim regKey As RegistryKey
 
         Try
             regKey = Registry.CurrentUser.OpenSubKey(key, False)
             If regKey Is Nothing Then
-                ReadRegistryString = ""
+                getRegistryString = ""
             Else
-                ReadRegistryString = regKey.GetValue(name, "")
+                getRegistryString = regKey.GetValue(name, "")
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ReadRegistryString()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             If Not regKey Is Nothing Then
                 regKey.Close()
@@ -2036,49 +1899,49 @@ Public Class MainForm
         End Try
     End Function
 
-    Private Sub LoadPreferences()
+    Private Sub getPreferences()
         Dim value As String
 
         Try
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Images Root Folder")
+            value = getRegistryString("Software\RPS Digital Viewer", "Images Root Folder")
             If value > "" Then
                 images_root_folder = value
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Database File Name")
+            value = getRegistryString("Software\RPS Digital Viewer", "Database File Name")
             If value > "" Then
-                SetDatabaseName(value)
+                Set_database_name(value)
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Reports Output Folder")
+            value = getRegistryString("Software\RPS Digital Viewer", "Reports Output Folder")
             If value > "" Then
                 reports_output_folder = value
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Server Name")
+            value = getRegistryString("Software\RPS Digital Viewer", "Server Name")
             If value > "" Then
                 _server_name = value
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Server Script Directory")
+            value = getRegistryString("Software\RPS Digital Viewer", "Server Script Directory")
             If value > "" Then
                 _server_script_dir = value
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Camera Club ID")
+            value = getRegistryString("Software\RPS Digital Viewer", "Camera Club ID")
             If value > "" Then
                 camera_club_id = CType(value, Integer)
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Camera Club Name")
+            value = getRegistryString("Software\RPS Digital Viewer", "Camera Club Name")
             If value > "" Then
                 camera_club_name = value
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Last Admin Username")
+            value = getRegistryString("Software\RPS Digital Viewer", "Last Admin Username")
             If value > "" Then
                 last_admin_username = value
             End If
-            value = ReadRegistryString("Software\RPS Digital Viewer", "Number of Judges")
+            value = getRegistryString("Software\RPS Digital Viewer", "Number of Judges")
             If value > "" Then
                 num_judges = value
             End If
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadPreferences()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -2086,9 +1949,7 @@ Public Class MainForm
     ' Query the database to retrieve the list of classifications, mediums and awards for the
     ' selected club.  Store these lists in memory.
     '
-    Private Sub LoadClubRules()
-        Dim rec As OleDbDataReader
-
+    Private Sub getClubRules()
         Try
             ' Fetch the list of club classifications from the database
             classifications.Clear()
@@ -2153,15 +2014,15 @@ Public Class MainForm
             SelectScore.SelectedIndex = 0
             _all_scores_selected = True
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadClubRules()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
     '
     ' Load the list of unique competition dates into the Competition Dates combobox
     '
-    Private Sub LoadCompDates()
+    Private Sub setCompetitionDatesCombobox()
 
         _query = From entries In rps_context.CompetitionEntries
                  Order By entries.Competition_Date_1
@@ -2183,13 +2044,13 @@ Public Class MainForm
             If SelectDate.Items.Count > 0 Then
                 SelectDate.SelectedIndex = 0
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error In LoadCompDates()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
     ' Call the REST service on the server to retrieve the list of available
     ' competition dates.
-    Private Function GetCompetitionDates(params As Hashtable) As ArrayList
+    Private Function getRestCompetitionDates(params As Hashtable) As ArrayList
         Dim navigator As XPathNavigator
         Dim response As XPathDocument
         Dim nodes As XPathNodeIterator
@@ -2199,7 +2060,7 @@ Public Class MainForm
         Try
             ' Retrieve the list of competition dates from the server
             params.Add("rpswinclient", "getcompdate")
-            If REST(_server_name, _server_script_dir, "GET", params, response) Then
+            If doRest(_server_name, _server_script_dir, "GET", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/Competition_Date")
                 While nodes.MoveNext()
@@ -2212,8 +2073,8 @@ Public Class MainForm
 
             Return dates
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in GetCompetitionDates()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
 
@@ -2238,7 +2099,7 @@ Public Class MainForm
         End Function
     End Structure
 
-    Private Sub DownloadCompetitionImages()
+    Private Sub downloadCompetitionImages()
 
         Dim Download_Dialog As Download_Competitions_Dialog
         Dim username As String
@@ -2288,7 +2149,7 @@ Public Class MainForm
             params.Clear()
             params.Add("closed", "Y")
             params.Add("scored", "N")
-            comp_dates = GetCompetitionDates(params)
+            comp_dates = getRestCompetitionDates(params)
             If comp_dates.Count = 0 Then
                 MsgBox("No competitions are available for download", , "Download Competition Images")
                 Exit Sub
@@ -2311,7 +2172,7 @@ Public Class MainForm
 
             ' Save the username in the registry as the default admin username
             last_admin_username = username
-            WriteRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
+            writeRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
 
             ' Delete any competitions in the local database that already have this date
             dateParts = Split(comp_date, "-")
@@ -2342,7 +2203,7 @@ Public Class MainForm
             If download_prints And Not download_digital Then
                 params.Add("medium", "prints")
             End If
-            If Not REST(_server_name, _server_script_dir, "POST", params, response) Then
+            If Not doRest(_server_name, _server_script_dir, "POST", params, response) Then
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
                 nodes.MoveNext()
@@ -2483,12 +2344,12 @@ Public Class MainForm
 
                     ' Fetch the image file from the server
                     localImageFileName = competitionFolder + "\" +
-                                         StrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
+                                         handleStrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
                                          "+" + entry.first_name + "_" + entry.last_name + ".jpg"
-                    DownloadImage(entry.url, localImageFileName)
+                    downloadImage(entry.url, localImageFileName)
 
                     ' Insert this image into the database
-                    InsertImageIntoDatabase(
+                    addImageToDatabase(
                         New FileInfo(localImageFileName),
                         entry.first_name + " " + entry.last_name,
                         entry.title,
@@ -2512,12 +2373,12 @@ Public Class MainForm
             End While
 
             ' Update the list of dates in the Competition Date combobox
-            LoadCompDates()
+            setCompetitionDatesCombobox()
 
             MsgBox("Competition Images Downloaded Successfully", , "Download Competition Images")
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in DownloadCompetitionImages()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             ' Clear the ProgressBar
             status_bar.progressBar.Value = 0
@@ -2526,7 +2387,7 @@ Public Class MainForm
     End Sub
 
 
-    Private Function REST(server As String,
+    Private Function doRest(server As String,
                           operation As String,
                           http_method As String,
                           params As Hashtable,
@@ -2612,10 +2473,10 @@ Public Class MainForm
                 byteData = ms.ToArray
                 'MsgBox(UTF8Encoding.UTF8.GetString(byteData))
 
-                ' Set the content length in the request headers  
+                ' Set the content length in the request headers
                 request.ContentLength = byteData.Length
 
-                ' Write data  
+                ' Write data
                 Try
                     postStream = request.GetRequestStream()
                     postStream.Write(byteData, 0, byteData.Length)
@@ -2624,7 +2485,7 @@ Public Class MainForm
                 End Try
             End If
 
-            ' Get response  
+            ' Get response
             response = request.GetResponse()
 
             ' Debug: Read the HTTP response into a string and display it
@@ -2638,44 +2499,44 @@ Public Class MainForm
             ' Parse the status out of the xml response
             Dim response_stream As Stream = response.GetResponseStream()
             XPathDoc = New XPathDocument(response_stream)
-            If responseOK(XPathDoc) Then
-                REST = True
+            If getRestStatResponse(XPathDoc) Then
+                doRest = True
             Else
-                REST = False
+                doRest = False
             End If
             results = XPathDoc
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in REST()")
-            REST = False
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            doRest = False
         Finally
             If Not response Is Nothing Then response.Close()
         End Try
     End Function
 
-    Private Function responseOK(response As XPathDocument) As Boolean
+    Private Function getRestStatResponse(response As XPathDocument) As Boolean
         Dim navigator As XPathNavigator
         Dim nodes As XPathNodeIterator
         Dim node As XPathNavigator
 
         Try
-            ' Get the response status node with XPath  
+            ' Get the response status node with XPath
             navigator = response.CreateNavigator()
             nodes = navigator.Select("/rsp[@stat]")
             nodes.MoveNext()
             node = nodes.Current
             If node.GetAttribute("stat", "") = "ok" Then
-                responseOK = True
+                getRestStatResponse = True
             Else
-                responseOK = False
+                getRestStatResponse = False
             End If
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in responseOK()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
 
-    Public Sub DownloadImage(URL As String, outputFileName As String)
+    Public Sub downloadImage(URL As String, outputFileName As String)
         Dim Req As HttpWebRequest
         Dim SourceStream As Stream
         Dim Response As HttpWebResponse
@@ -2699,8 +2560,8 @@ Public Class MainForm
                 If BlockSize > 0 Then outputFile.Write(Buffer, 0, BlockSize)
             Loop While BlockSize > 0
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in DownloadImage()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             SourceStream.Close()
             outputFile.Close()
@@ -2719,7 +2580,7 @@ Public Class MainForm
     '       MyString = StrMap(MyString, "àéùxyz", "aeu")
     ' will translate all occurrances of à, é, ù and will delete all occurrances of x,y,z.
 
-    Public Function StrMap(S As String,
+    Public Function handleStrMap(S As String,
                            MapWhat As String,
                            ToWhat As String,
                            Optional ByVal Compare As Long = 0) As String
@@ -2756,16 +2617,16 @@ Public Class MainForm
             ' been no deletions) return the original string length.  If there have been 
             ' deletions, return the shortened string.
             If output_ptr = Len(S) Then
-                StrMap = S
+                handleStrMap = S
             Else
-                StrMap = Microsoft.VisualBasic.Left(S, output_ptr)
+                handleStrMap = Microsoft.VisualBasic.Left(S, output_ptr)
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in StrMap()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Function
 
-    Function UploadScores() As Boolean
+    Function uploadScores() As Boolean
         Dim Upload_Dialog As Upload_Scores_Dialog
         Dim username As String
         Dim password As String
@@ -2806,7 +2667,7 @@ Public Class MainForm
             Cursor.Current = Cursors.WaitCursor
             params.Add("closed", "Y")
             params.Add("scored", "N")
-            comp_dates = GetCompetitionDates(params)
+            comp_dates = getRestCompetitionDates(params)
             If comp_dates.Count = 0 Then
                 MsgBox("No competitions available to receive scores", , "Upload Scores")
                 Return False
@@ -2828,7 +2689,7 @@ Public Class MainForm
 
             ' Save the username in the registry as the default admin username
             last_admin_username = username
-            WriteRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
+            writeRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
 
             Cursor.Current = Cursors.WaitCursor
             Application.DoEvents()
@@ -2925,7 +2786,7 @@ Public Class MainForm
             params.Add("username", username)
             params.Add("password", password)
             params.Add("file", fileName)
-            If Not REST(_server_name, _server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) Then
+            If Not doRest(_server_name, _server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) Then
                 ' If the web service returned an error, display it
                 navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/err")
@@ -2953,8 +2814,8 @@ Public Class MainForm
                 File.Delete(fileName)
             End If
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in UploadScores()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             Cursor.Current = Cursors.Default
         End Try
@@ -2962,7 +2823,7 @@ Public Class MainForm
     '
     ' Enter the unique list of competition themes for this date into the Theme combobox
     '
-    Private Sub LoadUniqueThemes()
+    Private Sub setThemeCombobox()
         Try
             Dim compDate As String = Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy")
             themes.Clear()
@@ -2980,8 +2841,8 @@ Public Class MainForm
             Else
                 SelectTheme.Text = ""
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in LoadUniqueThemes()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -2992,8 +2853,8 @@ Public Class MainForm
         _eights_and_awards_selected = False
         _selected_avg_score = 9
         _selected_score = 0
-        SelectImages()
-        PickAwards()
+        getSelectedEntries()
+        doPickAwards()
     End Sub
 
     Private Sub NumEightsHeadingButton_Click(sender As Object, e As EventArgs) _
@@ -3003,8 +2864,8 @@ Public Class MainForm
         _eights_and_awards_selected = False
         _selected_avg_score = 8
         _selected_score = 0
-        SelectImages()
-        PickAwards()
+        getSelectedEntries()
+        doPickAwards()
     End Sub
 
     Private Sub NumSevensHeadingButton_Click(sender As Object, e As EventArgs) _
@@ -3014,8 +2875,8 @@ Public Class MainForm
         _eights_and_awards_selected = False
         _selected_avg_score = 7
         _selected_score = 0
-        SelectImages()
-        PickAwards()
+        getSelectedEntries()
+        doPickAwards()
     End Sub
 
     Private Sub AwardsTableTitleBar_Click(sender As Object, e As EventArgs) _
@@ -3023,8 +2884,8 @@ Public Class MainForm
         'EightsAndAwardsRadioButton.Checked = True
         _eights_and_awards_selected = True
         _all_scores_selected = False
-        SelectImages()
-        DoSlideShow()
+        getSelectedEntries()
+        doSlideShow()
     End Sub
 
     Private Sub SelectScore_SelectedIndexChanged(sender As Object, e As EventArgs) _
@@ -3038,28 +2899,17 @@ Public Class MainForm
             _selected_score = CType(SelectScore.SelectedItem(), Integer)
         End If
         _selected_avg_score = 0
-        SelectImages()
+        getSelectedEntries()
     End Sub
 
     Private Sub SelectDate_SelectedIndexChanged(sender As Object, e As EventArgs) _
         Handles SelectDate.SelectedIndexChanged
-        LoadUniqueThemes()
+        setThemeCombobox()
         SelectScore.SelectedItem = "All"
         _all_scores_selected = True
         _eights_and_awards_selected = False
-        SelectImages()
+        getSelectedEntries()
     End Sub
-
-    Private Function CreateDataTable(sourceTable As DataTable, rows As DataRow()) As DataTable
-        Dim result As DataTable
-
-        result = sourceTable.Clone()
-        For Each row As DataRow In rows
-            result.Rows.Add(row.ItemArray)
-        Next
-        Return result
-    End Function
-
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub

@@ -295,8 +295,8 @@ Public Class PreferencesDialog
             folderBrowser.SelectedPath = theMainForm.images_root_folder
             folderBrowser.ShowDialog()
             tbImagesRootFolder.Text = folderBrowser.SelectedPath
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in btnBrowseRootFolder_Click()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -307,8 +307,8 @@ Public Class PreferencesDialog
             fileOpenDialog.Filter = "Access Databases (*.mdb)|*.mdb"
             fileOpenDialog.ShowDialog()
             tbDatabaseFileName.Text = fileOpenDialog.FileName
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in btnDatabaseFileName_Click()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -320,8 +320,8 @@ Public Class PreferencesDialog
             folderBrowser.SelectedPath = Application.StartupPath
             folderBrowser.ShowDialog()
             tbReportsOutputFolder.Text = folderBrowser.SelectedPath
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in btnReportsOutputFolder_Click()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
 
     End Sub

@@ -274,8 +274,8 @@ Public Class ThumbnailViewer
                     End If
                     e.Handled = True
             End Select
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ThumbnailListView_KeyDown()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -345,8 +345,8 @@ Public Class ThumbnailViewer
 
             Zoomed = False
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ThumbnailViewer_Load()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             thumb = Nothing
         End Try
@@ -359,8 +359,8 @@ Public Class ThumbnailViewer
             styles = SendMessage(ThumbnailListView.Handle, LVM.LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0)
             styles = styles Or LVS_EX.LVS_EX_BORDERSELECT
             SendMessage(ThumbnailListView.Handle, LVM.LVM_SETEXTENDEDLISTVIEWSTYLE, 0, styles)
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in SetListViewBorderStyle()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 

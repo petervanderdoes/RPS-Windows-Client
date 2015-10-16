@@ -403,8 +403,8 @@ Public Class ImageViewer
                     StatusBar.Visible = False
                     ScorePopUp.Visible = False
             End Select
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in fclsViewer_KeyDown()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -442,8 +442,8 @@ Public Class ImageViewer
                 HideSplashScreen()
                 MoveToImage(currentIndex)
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in ImageViewer_Load()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -459,21 +459,10 @@ Public Class ImageViewer
                 i = i + 1
                 Application.DoEvents()
             End While
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in Delay()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         Finally
             inDelayLoop = False
-        End Try
-    End Sub
-
-    Private Sub DoScorePopUp(ByVal s As String)
-        Try
-            ScorePopUp.Text = s
-            ScorePopUp.Visible = True
-            ''Delay(800)
-            ''ScorePopUp.Visible = False
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in DoScorePopUp()")
         End Try
     End Sub
     Private Sub DoScorePopUp_2(ByVal mode As Integer, ByVal value As String, ByRef currentRow As CompetitionEntry)
@@ -501,8 +490,8 @@ Public Class ImageViewer
                 ScorePopUp.Visible = True
             End If
 
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in DoScorePopUp()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
     Private Sub DoStatusBarPopUp()
@@ -510,8 +499,8 @@ Public Class ImageViewer
             StatusBar.Visible = True
             Delay(2000)
             StatusBar.Visible = False
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in DoStatusBarPopUp()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -557,8 +546,8 @@ Public Class ImageViewer
             Else
                 Beep()
             End If
-        Catch ex As Exception
-            MsgBox(ex.Message, , "Error in MoveToImage()")
+        Catch exception As Exception
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
 
     End Sub

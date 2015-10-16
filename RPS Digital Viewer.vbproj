@@ -255,11 +255,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SelectedPhotos.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SelectedPhotos.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Thumbnail.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -286,10 +281,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>RpsModel.edmx</DependentUpon>
       <LastGenOutput>RpsModel.vb</LastGenOutput>
-    </Content>
-    <Content Include="SelectedPhotos.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SelectedPhotos.Designer.vb</LastGenOutput>
     </Content>
     <None Include="My Project\Settings.settings">
       <CustomToolNamespace>My</CustomToolNamespace>
@@ -337,15 +328,6 @@
     </EmbeddedResource>
     <None Include="My Project\app.manifest" />
     <None Include="RPS Digital Viewer_TemporaryKey.pfx" />
-    <None Include="SelectedPhotos.xsc">
-      <DependentUpon>SelectedPhotos.xsd</DependentUpon>
-    </None>
-    <None Include="SelectedPhotos.xss">
-      <DependentUpon>SelectedPhotos.xsd</DependentUpon>
-    </None>
-    <None Include="SelectedPhotos.xsx">
-      <DependentUpon>SelectedPhotos.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
