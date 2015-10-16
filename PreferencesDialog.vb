@@ -288,38 +288,38 @@ Public Class PreferencesDialog
 #End Region
 
     Private Sub btnBrowseRootFolder_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBrowseRootFolder.Click
-        Dim folderBrowser As New FolderBrowserDialog
+        Dim folder_browser As New FolderBrowserDialog
 
         Try
-            folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
-            folderBrowser.SelectedPath = theMainForm.images_root_folder
-            folderBrowser.ShowDialog()
-            tbImagesRootFolder.Text = folderBrowser.SelectedPath
+            folder_browser.RootFolder = Environment.SpecialFolder.MyComputer
+            folder_browser.SelectedPath = theMainForm.images_root_folder
+            folder_browser.ShowDialog()
+            tbImagesRootFolder.Text = folder_browser.SelectedPath
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
     Private Sub btnDatabaseFileName_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDatabaseFileName.Click
-        Dim fileOpenDialog As New OpenFileDialog
+        Dim file_open_dialog As New OpenFileDialog
         Try
-            fileOpenDialog.InitialDirectory = Application.StartupPath
-            fileOpenDialog.Filter = "Access Databases (*.mdb)|*.mdb"
-            fileOpenDialog.ShowDialog()
-            tbDatabaseFileName.Text = fileOpenDialog.FileName
+            file_open_dialog.InitialDirectory = Application.StartupPath
+            file_open_dialog.Filter = "Access Databases (*.mdb)|*.mdb"
+            file_open_dialog.ShowDialog()
+            tbDatabaseFileName.Text = file_open_dialog.FileName
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
     Private Sub btnReportsOutputFolder_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnReportsOutputFolder.Click
-        Dim folderBrowser As New FolderBrowserDialog
+        Dim folder_browser As New FolderBrowserDialog
 
         Try
-            folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer
-            folderBrowser.SelectedPath = Application.StartupPath
-            folderBrowser.ShowDialog()
-            tbReportsOutputFolder.Text = folderBrowser.SelectedPath
+            folder_browser.RootFolder = Environment.SpecialFolder.MyComputer
+            folder_browser.SelectedPath = Application.StartupPath
+            folder_browser.ShowDialog()
+            tbReportsOutputFolder.Text = folder_browser.SelectedPath
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
