@@ -1,7 +1,9 @@
+Imports System.Reflection
+
 Public Class PreferencesDialog
     Inherits Form
 
-    Dim theMainForm As MainForm
+    Private ReadOnly _the_main_form As MainForm
 
 #Region " Windows Form Designer generated code "
 
@@ -12,8 +14,7 @@ Public Class PreferencesDialog
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
-        theMainForm = myMainForm
-
+        _the_main_form = myMainForm
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -53,8 +54,11 @@ Public Class PreferencesDialog
     Friend WithEvents tbServerScriptDir As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents cbNumJudges As System.Windows.Forms.ComboBox
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(PreferencesDialog))
+
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Dim resources As System.Resources.ResourceManager =
+                New System.Resources.ResourceManager(GetType(PreferencesDialog))
         Me.Label1 = New System.Windows.Forms.Label
         Me.tbImagesRootFolder = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
@@ -80,7 +84,11 @@ Public Class PreferencesDialog
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(10, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(201, 28)
@@ -90,7 +98,11 @@ Public Class PreferencesDialog
         '
         'tbImagesRootFolder
         '
-        Me.tbImagesRootFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbImagesRootFolder.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                             10.0!,
+                                                             System.Drawing.FontStyle.Regular,
+                                                             System.Drawing.GraphicsUnit.Point,
+                                                             CType(0, Byte))
         Me.tbImagesRootFolder.Location = New System.Drawing.Point(221, 9)
         Me.tbImagesRootFolder.Name = "tbImagesRootFolder"
         Me.tbImagesRootFolder.Size = New System.Drawing.Size(345, 26)
@@ -99,7 +111,11 @@ Public Class PreferencesDialog
         '
         'Label2
         '
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(10, 46)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(201, 28)
@@ -109,7 +125,11 @@ Public Class PreferencesDialog
         '
         'tbDatabaseFileName
         '
-        Me.tbDatabaseFileName.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbDatabaseFileName.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                             10.0!,
+                                                             System.Drawing.FontStyle.Regular,
+                                                             System.Drawing.GraphicsUnit.Point,
+                                                             CType(0, Byte))
         Me.tbDatabaseFileName.Location = New System.Drawing.Point(221, 46)
         Me.tbDatabaseFileName.Name = "tbDatabaseFileName"
         Me.tbDatabaseFileName.Size = New System.Drawing.Size(345, 26)
@@ -152,7 +172,11 @@ Public Class PreferencesDialog
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(10, 83)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(201, 28)
@@ -162,7 +186,11 @@ Public Class PreferencesDialog
         '
         'tbReportsOutputFolder
         '
-        Me.tbReportsOutputFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbReportsOutputFolder.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                                10.0!,
+                                                                System.Drawing.FontStyle.Regular,
+                                                                System.Drawing.GraphicsUnit.Point,
+                                                                CType(0, Byte))
         Me.tbReportsOutputFolder.Location = New System.Drawing.Point(221, 83)
         Me.tbReportsOutputFolder.Name = "tbReportsOutputFolder"
         Me.tbReportsOutputFolder.Size = New System.Drawing.Size(345, 26)
@@ -179,7 +207,11 @@ Public Class PreferencesDialog
         '
         'Label4
         '
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(10, 120)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(201, 28)
@@ -189,7 +221,11 @@ Public Class PreferencesDialog
         '
         'tbServerName
         '
-        Me.tbServerName.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbServerName.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                       10.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
         Me.tbServerName.Location = New System.Drawing.Point(221, 120)
         Me.tbServerName.Name = "tbServerName"
         Me.tbServerName.Size = New System.Drawing.Size(345, 26)
@@ -198,7 +234,11 @@ Public Class PreferencesDialog
         '
         'Label6
         '
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(10, 192)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(201, 28)
@@ -208,7 +248,11 @@ Public Class PreferencesDialog
         '
         'cbCameraClubName
         '
-        Me.cbCameraClubName.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbCameraClubName.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                           10.0!,
+                                                           System.Drawing.FontStyle.Regular,
+                                                           System.Drawing.GraphicsUnit.Point,
+                                                           CType(0, Byte))
         Me.cbCameraClubName.Location = New System.Drawing.Point(221, 192)
         Me.cbCameraClubName.Name = "cbCameraClubName"
         Me.cbCameraClubName.Size = New System.Drawing.Size(345, 28)
@@ -216,7 +260,11 @@ Public Class PreferencesDialog
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(10, 157)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(201, 28)
@@ -226,7 +274,11 @@ Public Class PreferencesDialog
         '
         'tbServerScriptDir
         '
-        Me.tbServerScriptDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbServerScriptDir.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                            10.0!,
+                                                            System.Drawing.FontStyle.Regular,
+                                                            System.Drawing.GraphicsUnit.Point,
+                                                            CType(0, Byte))
         Me.tbServerScriptDir.Location = New System.Drawing.Point(221, 157)
         Me.tbServerScriptDir.Name = "tbServerScriptDir"
         Me.tbServerScriptDir.Size = New System.Drawing.Size(345, 26)
@@ -235,7 +287,11 @@ Public Class PreferencesDialog
         '
         'Label7
         '
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label7.Location = New System.Drawing.Point(10, 227)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(201, 28)
@@ -245,7 +301,11 @@ Public Class PreferencesDialog
         '
         'cbNumJudges
         '
-        Me.cbNumJudges.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbNumJudges.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                      10.0!,
+                                                      System.Drawing.FontStyle.Regular,
+                                                      System.Drawing.GraphicsUnit.Point,
+                                                      CType(0, Byte))
         Me.cbNumJudges.Items.AddRange(New Object() {"1", "2", "3"})
         Me.cbNumJudges.Location = New System.Drawing.Point(221, 227)
         Me.cbNumJudges.Name = "cbNumJudges"
@@ -282,25 +342,24 @@ Public Class PreferencesDialog
         Me.Name = "PreferencesDialog"
         Me.Text = "Preferences"
         Me.ResumeLayout(False)
-
     End Sub
 
 #End Region
 
-    Private Sub btnBrowseRootFolder_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBrowseRootFolder.Click
+    Private Sub btnBrowseRootFolder_Click(sender As Object, e As EventArgs) Handles btnBrowseRootFolder.Click
         Dim folder_browser As New FolderBrowserDialog
 
         Try
             folder_browser.RootFolder = Environment.SpecialFolder.MyComputer
-            folder_browser.SelectedPath = theMainForm.images_root_folder
+            folder_browser.SelectedPath = _the_main_form.images_root_folder
             folder_browser.ShowDialog()
             tbImagesRootFolder.Text = folder_browser.SelectedPath
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub btnDatabaseFileName_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDatabaseFileName.Click
+    Private Sub btnDatabaseFileName_Click(sender As Object, e As EventArgs) Handles btnDatabaseFileName.Click
         Dim file_open_dialog As New OpenFileDialog
         Try
             file_open_dialog.InitialDirectory = Application.StartupPath
@@ -308,11 +367,11 @@ Public Class PreferencesDialog
             file_open_dialog.ShowDialog()
             tbDatabaseFileName.Text = file_open_dialog.FileName
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub btnReportsOutputFolder_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnReportsOutputFolder.Click
+    Private Sub btnReportsOutputFolder_Click(sender As Object, e As EventArgs) Handles btnReportsOutputFolder.Click
         Dim folder_browser As New FolderBrowserDialog
 
         Try
@@ -321,10 +380,7 @@ Public Class PreferencesDialog
             folder_browser.ShowDialog()
             tbReportsOutputFolder.Text = folder_browser.SelectedPath
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
-
     End Sub
-
-
 End Class

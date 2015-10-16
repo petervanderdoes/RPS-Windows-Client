@@ -3,17 +3,21 @@ Imports System.ComponentModel
 Public Class DownloadCompetitionsDialog
     Inherits Form
 
-    Dim theMainForm As MainForm
+    Private ReadOnly _the_main_form As MainForm
+
 #Region " Windows Form Designer generated code "
 
-    Public Sub New(ByVal myMainForm As MainForm, ByVal defaultUsername As String, ByVal comp_dates As ArrayList, ByVal rootFolder As String)
+    Public Sub New(ByVal myMainForm As MainForm,
+                   ByVal defaultUsername As String,
+                   ByVal comp_dates As ArrayList,
+                   ByVal rootFolder As String)
         MyBase.New()
 
         'This call is required by the Windows Form Designer.
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
-        theMainForm = myMainForm
+        _the_main_form = myMainForm
 
         Username.Text = defaultUsername
         Username.Select(0, 0)
@@ -58,8 +62,11 @@ Public Class DownloadCompetitionsDialog
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Download_digital As System.Windows.Forms.CheckBox
     Friend WithEvents Download_prints As System.Windows.Forms.CheckBox
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(DownloadCompetitionsDialog))
+
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Dim resources As System.Resources.ResourceManager =
+                New System.Resources.ResourceManager(GetType(DownloadCompetitionsDialog))
         Me.Label1 = New System.Windows.Forms.Label
         Me.Username = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
@@ -79,7 +86,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(16, 16)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(144, 24)
@@ -89,7 +100,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Username
         '
-        Me.Username.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Username.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.Username.Location = New System.Drawing.Point(176, 16)
         Me.Username.Name = "Username"
         Me.Username.Size = New System.Drawing.Size(208, 23)
@@ -98,7 +113,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Label2
         '
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(16, 48)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(144, 24)
@@ -108,7 +127,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Password
         '
-        Me.Password.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Password.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.Password.Location = New System.Drawing.Point(176, 48)
         Me.Password.Name = "Password"
         Me.Password.PasswordChar = ChrW(42)
@@ -118,7 +141,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(16, 80)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(144, 24)
@@ -128,7 +155,11 @@ Public Class DownloadCompetitionsDialog
         '
         'CompetitionDate
         '
-        Me.CompetitionDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CompetitionDate.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                          10.0!,
+                                                          System.Drawing.FontStyle.Regular,
+                                                          System.Drawing.GraphicsUnit.Point,
+                                                          CType(0, Byte))
         Me.CompetitionDate.Location = New System.Drawing.Point(176, 80)
         Me.CompetitionDate.Name = "CompetitionDate"
         Me.CompetitionDate.Size = New System.Drawing.Size(208, 24)
@@ -136,7 +167,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Label4
         '
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(16, 160)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(144, 24)
@@ -146,7 +181,11 @@ Public Class DownloadCompetitionsDialog
         '
         'OutputFolder
         '
-        Me.OutputFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.OutputFolder.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                       10.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
         Me.OutputFolder.Location = New System.Drawing.Point(176, 160)
         Me.OutputFolder.Name = "OutputFolder"
         Me.OutputFolder.Size = New System.Drawing.Size(336, 23)
@@ -155,7 +194,11 @@ Public Class DownloadCompetitionsDialog
         '
         'BrowseButton
         '
-        Me.BrowseButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BrowseButton.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                       10.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
         Me.BrowseButton.Location = New System.Drawing.Point(520, 160)
         Me.BrowseButton.Name = "BrowseButton"
         Me.BrowseButton.Size = New System.Drawing.Size(72, 24)
@@ -165,7 +208,11 @@ Public Class DownloadCompetitionsDialog
         'OkButton
         '
         Me.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.OkButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.OkButton.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.OkButton.Location = New System.Drawing.Point(216, 200)
         Me.OkButton.Name = "OkButton"
         Me.OkButton.Size = New System.Drawing.Size(80, 24)
@@ -175,7 +222,11 @@ Public Class DownloadCompetitionsDialog
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Cancel_Button.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                        10.0!,
+                                                        System.Drawing.FontStyle.Regular,
+                                                        System.Drawing.GraphicsUnit.Point,
+                                                        CType(0, Byte))
         Me.Cancel_Button.Location = New System.Drawing.Point(320, 200)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(72, 24)
@@ -184,7 +235,11 @@ Public Class DownloadCompetitionsDialog
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(16, 112)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(144, 24)
@@ -237,24 +292,22 @@ Public Class DownloadCompetitionsDialog
         Me.Name = "DownloadCompetitionsDialog"
         Me.Text = "Download Competitions"
         Me.ResumeLayout(False)
-
     End Sub
 
 #End Region
 
 
-    Private Sub BrowseButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BrowseButton.Click
+    Private Sub BrowseButton_Click(sender As Object, e As EventArgs) Handles BrowseButton.Click
         'Dim fileOpenDialog As New OpenFileDialog
 
         FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
-        FolderBrowserDialog1.SelectedPath = theMainForm.images_root_folder
+        FolderBrowserDialog1.SelectedPath = _the_main_form.images_root_folder
         If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
             OutputFolder.Text = FolderBrowserDialog1.SelectedPath
         End If
-
     End Sub
 
-    Private Sub Download_Competitions_Dialog_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles MyBase.Closing
+    Private Sub Download_Competitions_Dialog_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
         Dim invalid_input As Boolean = False
         Dim err_msg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 
@@ -282,6 +335,5 @@ Public Class DownloadCompetitionsDialog
                 e.Cancel = False
             End If
         End If
-
     End Sub
 End Class

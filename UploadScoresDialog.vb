@@ -20,7 +20,6 @@ Public Class UploadScoresDialog
             CompDate.Items.Add(comp_dates.Item(i))
             CompDate.SelectedIndex = 0
         Next
-
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -49,8 +48,11 @@ Public Class UploadScoresDialog
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents Upload_digital_scores As System.Windows.Forms.CheckBox
     Friend WithEvents Upload_print_scores As System.Windows.Forms.CheckBox
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(UploadScoresDialog))
+
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Dim resources As System.Resources.ResourceManager =
+                New System.Resources.ResourceManager(GetType(UploadScoresDialog))
         Me.Label1 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
@@ -65,7 +67,11 @@ Public Class UploadScoresDialog
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(19, 18)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(154, 28)
@@ -75,7 +81,11 @@ Public Class UploadScoresDialog
         '
         'Label2
         '
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(19, 55)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(154, 28)
@@ -85,7 +95,11 @@ Public Class UploadScoresDialog
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Bold,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(19, 92)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(154, 28)
@@ -95,7 +109,11 @@ Public Class UploadScoresDialog
         '
         'Username
         '
-        Me.Username.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Username.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.Username.Location = New System.Drawing.Point(182, 18)
         Me.Username.Name = "Username"
         Me.Username.Size = New System.Drawing.Size(173, 26)
@@ -104,7 +122,11 @@ Public Class UploadScoresDialog
         '
         'Password
         '
-        Me.Password.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Password.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.Password.Location = New System.Drawing.Point(182, 55)
         Me.Password.Name = "Password"
         Me.Password.PasswordChar = ChrW(42)
@@ -114,7 +136,11 @@ Public Class UploadScoresDialog
         '
         'CompDate
         '
-        Me.CompDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CompDate.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.CompDate.Location = New System.Drawing.Point(182, 92)
         Me.CompDate.Name = "CompDate"
         Me.CompDate.Size = New System.Drawing.Size(173, 28)
@@ -123,7 +149,11 @@ Public Class UploadScoresDialog
         'OKbutton
         '
         Me.OKbutton.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.OKbutton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.OKbutton.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                   10.0!,
+                                                   System.Drawing.FontStyle.Regular,
+                                                   System.Drawing.GraphicsUnit.Point,
+                                                   CType(0, Byte))
         Me.OKbutton.Location = New System.Drawing.Point(91, 190)
         Me.OKbutton.Name = "OKbutton"
         Me.OKbutton.Size = New System.Drawing.Size(87, 28)
@@ -181,12 +211,11 @@ Public Class UploadScoresDialog
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.Text = "Upload Scores"
         Me.ResumeLayout(False)
-
     End Sub
 
 #End Region
 
-    Private Sub Upload_Scores_Dialog_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles MyBase.Closing
+    Private Sub Upload_Scores_Dialog_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
         Dim is_invalid_input As Boolean = False
 
         Dim err_msg As String = "Please correct the following errors" + vbCrLf + vbCrLf
@@ -211,6 +240,5 @@ Public Class UploadScoresDialog
                 e.Cancel = False
             End If
         End If
-
     End Sub
 End Class

@@ -1,4 +1,5 @@
 Imports System.Drawing.Drawing2D
+Imports System.Reflection
 
 Public Class Thumbnail
     Private Const JPG_QUALITY As Long = 90
@@ -23,7 +24,6 @@ Public Class Thumbnail
         Set
             _image_file_name = Value
         End Set
-
     End Property
 
     Public Sub doRender()
@@ -60,7 +60,7 @@ Public Class Thumbnail
             _gr.InterpolationMode = InterpolationMode.HighQualityBicubic
 
             ' Compute the size of the thumbnail to paint on the canvas
-            If _img.Width > _img.Height Then  ' Landscape image
+            If _img.Width > _img.Height Then ' Landscape image
                 scale_factor = THUMBNAIL_WIDTH / _img.Width
                 thumb_width = THUMBNAIL_WIDTH
                 thumb_height = _img.Height * scale_factor
@@ -75,7 +75,10 @@ Public Class Thumbnail
             End If
 
             ' Paint the thumbnail on the canvas
-            _gr.DrawImage(_img, New Rectangle(thumb_x, thumb_y, thumb_width, thumb_height), New Rectangle(0, 0, _img.Width, _img.Height), GraphicsUnit.Pixel)
+            _gr.DrawImage(_img,
+                          New Rectangle(thumb_x, thumb_y, thumb_width, thumb_height),
+                          New Rectangle(0, 0, _img.Width, _img.Height),
+                          GraphicsUnit.Pixel)
             _gr.Dispose()
 
             ' Compute the name of the destination thumbnail file
@@ -94,7 +97,7 @@ Public Class Thumbnail
             encoder_params.Dispose()
 
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 

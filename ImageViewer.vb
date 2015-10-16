@@ -1,3 +1,5 @@
+Imports System.Reflection
+
 Public Class ImageViewer
     Inherits Form
 
@@ -19,7 +21,11 @@ Public Class ImageViewer
 
 #Region " Windows Form Designer generated code "
 
-    Public Sub New(ByVal myMainForm As MainForm, ByVal ds As IList, ByVal idx As Integer, ByVal splash As Boolean, ByVal statusBarState As Integer)
+    Public Sub New(ByVal myMainForm As MainForm,
+                   ByVal ds As IList,
+                   ByVal idx As Integer,
+                   ByVal splash As Boolean,
+                   ByVal statusBarState As Integer)
         MyBase.New()
 
         'This call is required by the Windows Form Designer.
@@ -32,7 +38,6 @@ Public Class ImageViewer
         _splash_screen_visible = splash
         _status_bar_visible = statusBarState
         setSizes()
-
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -62,7 +67,8 @@ Public Class ImageViewer
     Friend WithEvents splashTheme As System.Windows.Forms.Label
     Friend WithEvents splashClassification As System.Windows.Forms.Label
 
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Me.picShowPicture = New System.Windows.Forms.PictureBox()
         Me.ofdSelectPicture = New System.Windows.Forms.OpenFileDialog()
         Me.ScorePopUp = New System.Windows.Forms.Label()
@@ -98,10 +104,15 @@ Public Class ImageViewer
         '
         'ScorePopUp
         '
-        Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),
+                                     System.Windows.Forms.AnchorStyles)
         Me.ScorePopUp.BackColor = System.Drawing.Color.Black
         Me.ScorePopUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.ScorePopUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 56.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ScorePopUp.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                     56.0!,
+                                                     System.Drawing.FontStyle.Bold,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
         Me.ScorePopUp.ForeColor = System.Drawing.Color.White
         Me.ScorePopUp.Location = New System.Drawing.Point(803, 29)
         Me.ScorePopUp.Margin = New System.Windows.Forms.Padding(0)
@@ -128,7 +139,11 @@ Public Class ImageViewer
         'StatusBarAward
         '
         Me.StatusBarAward.BackColor = System.Drawing.Color.Black
-        Me.StatusBarAward.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusBarAward.Font = New System.Drawing.Font("Verdana",
+                                                         12.0!,
+                                                         System.Drawing.FontStyle.Bold,
+                                                         System.Drawing.GraphicsUnit.Point,
+                                                         CType(0, Byte))
         Me.StatusBarAward.ForeColor = System.Drawing.Color.White
         Me.StatusBarAward.Location = New System.Drawing.Point(0, 0)
         Me.StatusBarAward.Margin = New System.Windows.Forms.Padding(0)
@@ -140,7 +155,11 @@ Public Class ImageViewer
         'StatusBarScore
         '
         Me.StatusBarScore.BackColor = System.Drawing.Color.Black
-        Me.StatusBarScore.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusBarScore.Font = New System.Drawing.Font("Verdana",
+                                                         12.0!,
+                                                         System.Drawing.FontStyle.Bold,
+                                                         System.Drawing.GraphicsUnit.Point,
+                                                         CType(0, Byte))
         Me.StatusBarScore.ForeColor = System.Drawing.Color.White
         Me.StatusBarScore.Location = New System.Drawing.Point(889, 0)
         Me.StatusBarScore.Margin = New System.Windows.Forms.Padding(0)
@@ -152,7 +171,11 @@ Public Class ImageViewer
         'StatusBarTitle
         '
         Me.StatusBarTitle.BackColor = System.Drawing.Color.Black
-        Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana",
+                                                         12.0!,
+                                                         System.Drawing.FontStyle.Bold,
+                                                         System.Drawing.GraphicsUnit.Point,
+                                                         CType(0, Byte))
         Me.StatusBarTitle.ForeColor = System.Drawing.Color.White
         Me.StatusBarTitle.Location = New System.Drawing.Point(134, 0)
         Me.StatusBarTitle.Margin = New System.Windows.Forms.Padding(0)
@@ -165,7 +188,11 @@ Public Class ImageViewer
         'splashClub
         '
         Me.splashClub.BackColor = System.Drawing.Color.Black
-        Me.splashClub.Font = New System.Drawing.Font("Microsoft Sans Serif", 40.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.splashClub.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                     40.0!,
+                                                     System.Drawing.FontStyle.Bold,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
         Me.splashClub.ForeColor = System.Drawing.Color.Yellow
         Me.splashClub.Location = New System.Drawing.Point(0, 157)
         Me.splashClub.Margin = New System.Windows.Forms.Padding(0)
@@ -178,7 +205,11 @@ Public Class ImageViewer
         'splashTheme
         '
         Me.splashTheme.BackColor = System.Drawing.Color.Black
-        Me.splashTheme.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.splashTheme.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                      36.0!,
+                                                      System.Drawing.FontStyle.Bold,
+                                                      System.Drawing.GraphicsUnit.Point,
+                                                      CType(0, Byte))
         Me.splashTheme.ForeColor = System.Drawing.Color.White
         Me.splashTheme.Location = New System.Drawing.Point(0, 351)
         Me.splashTheme.Margin = New System.Windows.Forms.Padding(0)
@@ -192,7 +223,11 @@ Public Class ImageViewer
         'splashClassification
         '
         Me.splashClassification.BackColor = System.Drawing.Color.Black
-        Me.splashClassification.Font = New System.Drawing.Font("Microsoft Sans Serif", 48.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.splashClassification.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                               48.0!,
+                                                               System.Drawing.FontStyle.Bold,
+                                                               System.Drawing.GraphicsUnit.Point,
+                                                               CType(0, Byte))
         Me.splashClassification.ForeColor = System.Drawing.Color.Red
         Me.splashClassification.Location = New System.Drawing.Point(0, 535)
         Me.splashClassification.Margin = New System.Windows.Forms.Padding(0)
@@ -227,13 +262,12 @@ Public Class ImageViewer
         CType(Me.picShowPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusBar.ResumeLayout(False)
         Me.ResumeLayout(False)
-
     End Sub
 
 #End Region
 
 
-    Private Sub fclsViewer_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown
+    Private Sub fclsViewer_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
 
         Try
             ' Don't accept any more keystrokes until the rendering thread is complete
@@ -253,10 +287,10 @@ Public Class ImageViewer
 
             ' Examine which key was pressed and act accordingly
             Select Case e.KeyCode
-                Case Keys.Escape    ' Esc to exit
+                Case Keys.Escape ' Esc to exit
                     _thumb = Nothing
                     Close()
-                Case Keys.PageDown, Keys.Down, Keys.Right   ' PgDn, Down Arrow, Right Arrow = move to next image
+                Case Keys.PageDown, Keys.Down, Keys.Right ' PgDn, Down Arrow, Right Arrow = move to next image
                     If _splash_screen_visible Then
                         hideSplashScreen()
                         moveToImage(_current_index)
@@ -264,117 +298,118 @@ Public Class ImageViewer
                         ScorePopUp.Visible = False
                         moveToImage(_current_index + 1)
                     End If
-                Case Keys.PageUp, Keys.Up, Keys.Left   ' PgUp, Up Arrow, Left Arrow = move to previous image
+                Case Keys.PageUp, Keys.Up, Keys.Left ' PgUp, Up Arrow, Left Arrow = move to previous image
                     ScorePopUp.Visible = False
                     moveToImage(_current_index - 1)
-                Case Keys.Home                          ' Home = Move to first image
+                Case Keys.Home ' Home = Move to first image
                     ScorePopUp.Visible = False
                     moveToImage(0)
-                Case Keys.End                           ' End = Move to last image
+                Case Keys.End ' End = Move to last image
                     ScorePopUp.Visible = False
                     moveToImage(_num_images - 1)
-                Case Keys.Delete                        ' Del key = clear score and award
+                Case Keys.Delete ' Del key = clear score and award
                     _current_row.Score_1 = Nothing
                     _current_row.Award = Nothing
                     StatusBarScore.Text = ""
                     StatusBarAward.Text = ""
                     ScorePopUp.Visible = False
-                Case Keys.Back                          ' Backspace Key = Delete one character from score
+                Case Keys.Back ' Backspace Key = Delete one character from score
                     If Len(_current_score_str) > 0 Then
-                        _current_score_str = Mid(_current_score_str, 1, Len(_current_score_str) - 1) ' Remove rightmost character
+                        _current_score_str = Mid(_current_score_str, 1, Len(_current_score_str) - 1) _
+                        ' Remove rightmost character
                         doScorePopUp(SCORE, _current_score_str, _current_row)
                     End If
-                Case Keys.F1             ' F1 Key
+                Case Keys.F1 ' F1 Key
                     If _the_main_form.awards.Count >= 1 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(0), _current_row)
                     End If
-                Case Keys.F2             ' F2 Key
+                Case Keys.F2 ' F2 Key
                     If _the_main_form.awards.Count >= 2 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(1), _current_row)
                     End If
-                Case Keys.F3             ' F3 Key
+                Case Keys.F3 ' F3 Key
                     If _the_main_form.awards.Count >= 3 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(2), _current_row)
                     End If
-                Case Keys.F4             ' F4 Key
+                Case Keys.F4 ' F4 Key
                     If _the_main_form.awards.Count >= 4 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(3), _current_row)
                     End If
-                Case Keys.F5             ' F5 Key
+                Case Keys.F5 ' F5 Key
                     If _the_main_form.awards.Count >= 5 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(4), _current_row)
                     End If
-                Case Keys.F6             ' F6 Key
+                Case Keys.F6 ' F6 Key
                     If _the_main_form.awards.Count >= 6 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(5), _current_row)
                     End If
-                Case Keys.F7             ' F7 Key
+                Case Keys.F7 ' F7 Key
                     If _the_main_form.awards.Count >= 7 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(6), _current_row)
                     End If
-                Case Keys.F8             ' F8 Key
+                Case Keys.F8 ' F8 Key
                     If _the_main_form.awards.Count >= 8 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(7), _current_row)
                     End If
-                Case Keys.F9             ' F9 Key
+                Case Keys.F9 ' F9 Key
                     If _the_main_form.awards.Count >= 9 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(8), _current_row)
                     End If
-                Case Keys.F10           ' F10 Key
+                Case Keys.F10 ' F10 Key
                     If _the_main_form.awards.Count >= 10 Then
                         doScorePopUp(AWARD, _the_main_form.awards.Item(9), _current_row)
                     End If
-                Case 48             ' 0 Key
+                Case 48 ' 0 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "0"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 49             ' 1 Key
+                Case 49 ' 1 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "1"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 50             ' 2 Key
+                Case 50 ' 2 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "2"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 51             ' 3 Key
+                Case 51 ' 3 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "3"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 52             ' 4 Key
+                Case 52 ' 4 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "4"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 53             ' 5 Key
+                Case 53 ' 5 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "5"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 54             ' 6 Key
+                Case 54 ' 6 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "6"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 55             ' 7 Key
+                Case 55 ' 7 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "7"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 56             ' 8 Key
+                Case 56 ' 8 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "8"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case 57             ' 9 Key
+                Case 57 ' 9 Key
                     If Len(_current_score_str) < 2 Then
                         _current_score_str += "9"
                     End If
                     doScorePopUp(SCORE, _current_score_str, _current_row)
-                Case Keys.S         ' S key = toggle the status bar
+                Case Keys.S ' S key = toggle the status bar
                     If _status_bar_visible = 0 Then
                         StatusBar.Visible = True
                         _status_bar_visible = 1
@@ -386,17 +421,17 @@ Public Class ImageViewer
                         StatusBar.Visible = False
                         _status_bar_visible = 0
                     End If
-                Case Keys.C         ' C Key = hide the status bar and score
+                Case Keys.C ' C Key = hide the status bar and score
                     _status_bar_visible = 0
                     StatusBar.Visible = False
                     ScorePopUp.Visible = False
             End Select
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub ImageViewer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub ImageViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Dim row As CompetitionEntry
         Try
             ' Create an instance of the Thumbnail class to render thumbnail as necessary
@@ -431,11 +466,11 @@ Public Class ImageViewer
                 moveToImage(_current_index)
             End If
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub doDelay(ByVal ms As Long)
+    Private Sub doDelay(ms As Long)
         Try
             Dim i As Integer = 0
             Dim num_iterations As Integer
@@ -448,12 +483,13 @@ Public Class ImageViewer
                 Application.DoEvents()
             End While
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         Finally
             _in_delay_loop = False
         End Try
     End Sub
-    Private Sub doScorePopUp(ByVal mode As Integer, ByVal value As String, ByRef current_row As CompetitionEntry)
+
+    Private Sub doScorePopUp(mode As Integer, value As String, ByRef current_row As CompetitionEntry)
         Try
             ' When entering scores, allow the user to enter up to two digit
             If mode = SCORE Then
@@ -479,20 +515,21 @@ Public Class ImageViewer
             End If
 
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
+
     Private Sub doStatusBarPopUp()
         Try
             StatusBar.Visible = True
             doDelay(2000)
             StatusBar.Visible = False
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
-    Private Sub moveToImage(ByVal index As Integer)
+    Private Sub moveToImage(index As Integer)
         Try
             If index >= 0 And index <= _num_images - 1 Then
                 ' Get rid of the splash screen
@@ -535,9 +572,8 @@ Public Class ImageViewer
                 Beep()
             End If
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
-
     End Sub
 
     Private Sub hideSplashScreen()
@@ -554,7 +590,7 @@ Public Class ImageViewer
         _splash_screen_visible = True
     End Sub
 
-    Private Sub renderThumbnail(ByVal file_name As String)
+    Private Sub renderThumbnail(file_name As String)
         ' Set the name of the image from which to create a thumbnail
         _thumb.imageFile = file_name
 
@@ -585,7 +621,8 @@ Public Class ImageViewer
         StatusBarScore.Size = New Size(135, StatusBar.Size.Height)
 
         StatusBarTitle.Location = New Point(134, 0)
-        StatusBarTitle.Size = New Size(I.getFullWidth() - StatusBarAward.Size.Width - StatusBarScore.Size.Width, StatusBar.Size.Height)
+        StatusBarTitle.Size = New Size(I.getFullWidth() - StatusBarAward.Size.Width - StatusBarScore.Size.Width,
+                                       StatusBar.Size.Height)
 
         splash_location_y = (I.getFullHeight - (3 * 110)) / 3
         splashClub.Location = New Point(0, splash_location_y)
@@ -596,7 +633,6 @@ Public Class ImageViewer
 
         splashClassification.Location = New Point(0, splash_location_y * 3)
         splashClassification.Size = New Size(I.getFullWidth(), 100)
-
     End Sub
 End Class
 

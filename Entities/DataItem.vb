@@ -4,23 +4,23 @@
 Namespace Entities
     Public Class DataItem
 
-        Private m_id As Integer
-        Private m_value As String
+        Private _id As Integer
+        Private _value As String
 
         Public Sub New(ByVal id As String, ByVal value As String)
-            m_id = id
-            m_value = value
+            _id = id
+            _value = value
         End Sub
 
         Public ReadOnly Property ID() As String
             Get
-                Return m_id
+                Return _id
             End Get
         End Property
 
         Public ReadOnly Property Value() As String
             Get
-                Return m_value
+                Return _value
             End Get
         End Property
 

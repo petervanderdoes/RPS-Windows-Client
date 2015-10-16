@@ -10,7 +10,6 @@ Public Class About
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
-
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -31,14 +30,20 @@ Public Class About
     'Do not modify it using the code editor.
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
         Me.SuspendLayout()
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                 10.0!,
+                                                 System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point,
+                                                 CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(16, 16)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(264, 128)
@@ -63,23 +68,21 @@ Public Class About
         Me.Name = "About"
         Me.Text = "About"
         Me.ResumeLayout(False)
-
     End Sub
 
 #End Region
 
-    Private Sub About_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub About_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         ' fields = Split(Application.ProductVersion, ".")
 
         Label1.Text = "RPS Digital Competition Viewer" + vbCrLf +
-            "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
-            "� Jake Chapple, Peter van der Does" + vbCrLf +
-            "Raritan Photographic Society"
-
+                      "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
+                      "� Jake Chapple, Peter van der Does" + vbCrLf +
+                      "Raritan Photographic Society"
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Close()
     End Sub
 End Class

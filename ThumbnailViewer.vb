@@ -1,3 +1,5 @@
+Imports System.Reflection
+
 Public Class ThumbnailViewer
     Inherits Form
 
@@ -45,7 +47,10 @@ Public Class ThumbnailViewer
     End Enum 'LVM
 
     ' Windows API for setting border select style on the listview
-    Public Overloads Declare Auto Function SendMessage Lib "User32.dll" (hwnd As IntPtr, msg As Integer, wParam As Integer, lParam As Integer) As Integer
+    Public Overloads Declare Auto Function SendMessage Lib "User32.dll" (hwnd As IntPtr,
+                                                                        msg As Integer,
+                                                                        wParam As Integer,
+                                                                        lParam As Integer) As Integer
 
 #Region " Windows Form Designer generated code "
 
@@ -60,7 +65,6 @@ Public Class ThumbnailViewer
         _image_list = ds
         _thumbnail_view_title = screenTitle
         setSizes()
-
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -84,9 +88,12 @@ Public Class ThumbnailViewer
     Friend WithEvents ZoomedImage As System.Windows.Forms.PictureBox
     Friend WithEvents ThumbnailViewTitleBar As System.Windows.Forms.Label
     Friend WithEvents Divider As System.Windows.Forms.Label
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ThumbnailViewer))
+        Dim resources As System.ComponentModel.ComponentResourceManager =
+                New System.ComponentModel.ComponentResourceManager(GetType(ThumbnailViewer))
         Me.ThumbnailListView = New System.Windows.Forms.ListView()
         Me.ThumbnailImageList = New System.Windows.Forms.ImageList(Me.components)
         Me.ZoomedImage = New System.Windows.Forms.PictureBox()
@@ -99,7 +106,11 @@ Public Class ThumbnailViewer
         '
         Me.ThumbnailListView.BackColor = System.Drawing.Color.Black
         Me.ThumbnailListView.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.ThumbnailListView.Font = New System.Drawing.Font("Microsoft Sans Serif", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ThumbnailListView.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                            24.0!,
+                                                            System.Drawing.FontStyle.Bold,
+                                                            System.Drawing.GraphicsUnit.Point,
+                                                            CType(0, Byte))
         Me.ThumbnailListView.ForeColor = System.Drawing.Color.White
         Me.ThumbnailListView.LargeImageList = Me.ThumbnailImageList
         Me.ThumbnailListView.Location = New System.Drawing.Point(0, 43)
@@ -131,7 +142,11 @@ Public Class ThumbnailViewer
         'ThumbnailViewTitleBar
         '
         Me.ThumbnailViewTitleBar.BackColor = System.Drawing.Color.Black
-        Me.ThumbnailViewTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ThumbnailViewTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif",
+                                                                18.0!,
+                                                                System.Drawing.FontStyle.Bold,
+                                                                System.Drawing.GraphicsUnit.Point,
+                                                                CType(0, Byte))
         Me.ThumbnailViewTitleBar.ForeColor = System.Drawing.Color.Yellow
         Me.ThumbnailViewTitleBar.Location = New System.Drawing.Point(0, 0)
         Me.ThumbnailViewTitleBar.Margin = New System.Windows.Forms.Padding(0)
@@ -172,7 +187,6 @@ Public Class ThumbnailViewer
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.ZoomedImage, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-
     End Sub
 
 #End Region
@@ -273,7 +287,7 @@ Public Class ThumbnailViewer
                     e.Handled = True
             End Select
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -344,7 +358,7 @@ Public Class ThumbnailViewer
             _is_zoomed = False
 
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         Finally
         End Try
     End Sub
@@ -357,7 +371,7 @@ Public Class ThumbnailViewer
             styles = styles Or LVS_EX.LVS_EX_BORDERSELECT
             SendMessage(ThumbnailListView.Handle, LVM.LVM_SETEXTENDEDLISTVIEWSTYLE, 0, styles)
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
@@ -380,8 +394,5 @@ Public Class ThumbnailViewer
 
         Divider.Location = New Point(0, 37)
         Divider.Size = New Size(I.getFullWidth(), 2)
-
-
     End Sub
-
 End Class
