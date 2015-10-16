@@ -151,11 +151,16 @@ Public Class MainForm
     Friend WithEvents MenuItem5 As System.Windows.Forms.MenuItem
     Friend WithEvents CompCatalogImagesDownload As System.Windows.Forms.MenuItem
     Friend WithEvents CompUploadScores As System.Windows.Forms.MenuItem
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle =
+                New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle =
+                New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager =
+                New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.btnLoad = New System.Windows.Forms.Button()
         Me.btnUpdate = New System.Windows.Forms.Button()
         Me.btnCancelAll = New System.Windows.Forms.Button()
@@ -216,7 +221,8 @@ Public Class MainForm
         '
         'btnLoad
         '
-        Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),
+                                  System.Windows.Forms.AnchorStyles)
         Me.btnLoad.Location = New System.Drawing.Point(701, 471)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(75, 24)
@@ -225,7 +231,9 @@ Public Class MainForm
         '
         'btnUpdate
         '
-        Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnUpdate.Anchor =
+            CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),
+                  System.Windows.Forms.AnchorStyles)
         Me.btnUpdate.Location = New System.Drawing.Point(783, 471)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(75, 24)
@@ -234,7 +242,9 @@ Public Class MainForm
         '
         'btnCancelAll
         '
-        Me.btnCancelAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnCancelAll.Anchor =
+            CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),
+                  System.Windows.Forms.AnchorStyles)
         Me.btnCancelAll.Location = New System.Drawing.Point(865, 471)
         Me.btnCancelAll.Name = "btnCancelAll"
         Me.btnCancelAll.Size = New System.Drawing.Size(75, 24)
@@ -243,12 +253,16 @@ Public Class MainForm
         '
         'MainMenu1
         '
-        Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
+        Me.MainMenu1.MenuItems.AddRange(
+            New System.Windows.Forms.MenuItem() _
+                                           {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
         '
         'FileMenu
         '
         Me.FileMenu.Index = 0
-        Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
+        Me.FileMenu.MenuItems.AddRange(
+            New System.Windows.Forms.MenuItem() _
+                                          {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
         Me.FileMenu.Text = "&File"
         '
         'FilePreferencesMenu
@@ -269,7 +283,10 @@ Public Class MainForm
         'MenuItem5
         '
         Me.MenuItem5.Index = 1
-        Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores, Me.MenuItem6})
+        Me.MenuItem5.MenuItems.AddRange(
+            New System.Windows.Forms.MenuItem() _
+                                           {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores,
+                                            Me.MenuItem6})
         Me.MenuItem5.Text = "Competitions"
         '
         'MenuItem1
@@ -295,7 +312,9 @@ Public Class MainForm
         'MenuItem2
         '
         Me.MenuItem2.Index = 2
-        Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
+        Me.MenuItem2.MenuItems.AddRange(
+            New System.Windows.Forms.MenuItem() _
+                                           {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
         Me.MenuItem2.Text = "&View"
         '
         'ViewSlideShowMenu
@@ -311,7 +330,9 @@ Public Class MainForm
         'ReportsMenu
         '
         Me.ReportsMenu.Index = 3
-        Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
+        Me.ReportsMenu.MenuItems.AddRange(
+            New System.Windows.Forms.MenuItem() _
+                                             {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
         Me.ReportsMenu.Text = "&Reports"
         '
         'ReportsScoreSheetMenu
@@ -337,7 +358,9 @@ Public Class MainForm
         '
         'SelectClassification
         '
-        Me.SelectClassification.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectClassification.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!,
+                                                               System.Drawing.FontStyle.Regular,
+                                                               System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectClassification.Location = New System.Drawing.Point(28, 136)
         Me.SelectClassification.Name = "SelectClassification"
         Me.SelectClassification.Size = New System.Drawing.Size(174, 24)
@@ -345,7 +368,8 @@ Public Class MainForm
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(28, 114)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(168, 16)
@@ -354,7 +378,8 @@ Public Class MainForm
         '
         'SelectMedium
         '
-        Me.SelectMedium.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectMedium.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectMedium.Location = New System.Drawing.Point(28, 188)
         Me.SelectMedium.Name = "SelectMedium"
         Me.SelectMedium.Size = New System.Drawing.Size(174, 24)
@@ -362,7 +387,8 @@ Public Class MainForm
         '
         'Label2
         '
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(28, 166)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(175, 16)
@@ -371,7 +397,8 @@ Public Class MainForm
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(28, 10)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(175, 16)
@@ -389,7 +416,9 @@ Public Class MainForm
         'AwardsTableTitleBar
         '
         Me.AwardsTableTitleBar.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!,
+                                                              System.Drawing.FontStyle.Bold,
+                                                              System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.AwardsTableTitleBar.ForeColor = System.Drawing.Color.White
         Me.AwardsTableTitleBar.Location = New System.Drawing.Point(28, 336)
         Me.AwardsTableTitleBar.Margin = New System.Windows.Forms.Padding(0)
@@ -401,7 +430,9 @@ Public Class MainForm
         'NumNinesHeadingButton
         '
         Me.NumNinesHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!,
+                                                                System.Drawing.FontStyle.Regular,
+                                                                System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NumNinesHeadingButton.Location = New System.Drawing.Point(28, 360)
         Me.NumNinesHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
@@ -412,7 +443,9 @@ Public Class MainForm
         'NumEightsHeadingButton
         '
         Me.NumEightsHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!,
+                                                                 System.Drawing.FontStyle.Regular,
+                                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NumEightsHeadingButton.Location = New System.Drawing.Point(86, 360)
         Me.NumEightsHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
@@ -423,7 +456,9 @@ Public Class MainForm
         'NumSevensHeadingButton
         '
         Me.NumSevensHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!,
+                                                                 System.Drawing.FontStyle.Regular,
+                                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NumSevensHeadingButton.Location = New System.Drawing.Point(144, 360)
         Me.NumSevensHeadingButton.Margin = New System.Windows.Forms.Padding(0)
         Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
@@ -434,7 +469,8 @@ Public Class MainForm
         'tbEligibleNines
         '
         Me.tbEligibleNines.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbEligibleNines.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbEligibleNines.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold,
+                                                          System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEligibleNines.Location = New System.Drawing.Point(28, 383)
         Me.tbEligibleNines.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleNines.Name = "tbEligibleNines"
@@ -445,7 +481,8 @@ Public Class MainForm
         'tbEligibleEights
         '
         Me.tbEligibleEights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbEligibleEights.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbEligibleEights.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold,
+                                                           System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEligibleEights.Location = New System.Drawing.Point(86, 383)
         Me.tbEligibleEights.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleEights.Name = "tbEligibleEights"
@@ -456,7 +493,8 @@ Public Class MainForm
         'tbEligibleSevens
         '
         Me.tbEligibleSevens.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbEligibleSevens.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbEligibleSevens.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold,
+                                                           System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEligibleSevens.Location = New System.Drawing.Point(144, 383)
         Me.tbEligibleSevens.Margin = New System.Windows.Forms.Padding(0)
         Me.tbEligibleSevens.Name = "tbEligibleSevens"
@@ -467,7 +505,8 @@ Public Class MainForm
         'SelectAward
         '
         Me.SelectAward.Enabled = False
-        Me.SelectAward.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectAward.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                      System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectAward.Location = New System.Drawing.Point(28, 292)
         Me.SelectAward.Name = "SelectAward"
         Me.SelectAward.Size = New System.Drawing.Size(175, 24)
@@ -476,7 +515,8 @@ Public Class MainForm
         'Label4
         '
         Me.Label4.Enabled = False
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(28, 270)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(176, 16)
@@ -485,7 +525,8 @@ Public Class MainForm
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(28, 62)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(175, 16)
@@ -494,7 +535,8 @@ Public Class MainForm
         '
         'SelectTheme
         '
-        Me.SelectTheme.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectTheme.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                      System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectTheme.Location = New System.Drawing.Point(28, 84)
         Me.SelectTheme.Name = "SelectTheme"
         Me.SelectTheme.Size = New System.Drawing.Size(174, 24)
@@ -536,7 +578,8 @@ Public Class MainForm
         '
         'SelectScore
         '
-        Me.SelectScore.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectScore.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                      System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectScore.Location = New System.Drawing.Point(28, 240)
         Me.SelectScore.Name = "SelectScore"
         Me.SelectScore.Size = New System.Drawing.Size(73, 24)
@@ -544,7 +587,8 @@ Public Class MainForm
         '
         'Label6
         '
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                 System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(28, 218)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(80, 16)
@@ -553,7 +597,8 @@ Public Class MainForm
         '
         'SelectDate
         '
-        Me.SelectDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SelectDate.Location = New System.Drawing.Point(28, 32)
         Me.SelectDate.Name = "SelectDate"
         Me.SelectDate.Size = New System.Drawing.Size(174, 24)
@@ -615,25 +660,32 @@ Public Class MainForm
         Me.DataGridView1.AllowUserToDeleteRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView1.Anchor =
+            CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                   Or System.Windows.Forms.AnchorStyles.Right),
+                  System.Windows.Forms.AnchorStyles)
         Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.DataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!,
+                                                              System.Drawing.FontStyle.Bold,
+                                                              System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.ColumnHeadersHeightSizeMode =
+            System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Score, Me.Award, Me.Title})
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!,
+                                                              System.Drawing.FontStyle.Regular,
+                                                              System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
@@ -644,7 +696,8 @@ Public Class MainForm
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.ReadOnly = True
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        Me.DataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.DataGridView1.RowHeadersWidthSizeMode =
+            System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.DataGridView1.Size = New System.Drawing.Size(729, 433)
         Me.DataGridView1.TabIndex = 53
         '
@@ -678,10 +731,12 @@ Public Class MainForm
         'GridCaption
         '
         Me.GridCaption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                                       Or System.Windows.Forms.AnchorStyles.Right),
+                                      System.Windows.Forms.AnchorStyles)
         Me.GridCaption.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.GridCaption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.GridCaption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCaption.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold,
+                                                      System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridCaption.ForeColor = System.Drawing.Color.Black
         Me.GridCaption.Location = New System.Drawing.Point(209, 9)
         Me.GridCaption.Margin = New System.Windows.Forms.Padding(0)
@@ -733,7 +788,6 @@ Public Class MainForm
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
-
     End Sub
 
 #End Region
@@ -749,13 +803,13 @@ Public Class MainForm
             ' Setup Database Variables
             connectionString = New EntityConnectionStringBuilder() With
                 {
-                    .Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
-                    .Provider = "System.Data.SQLite.EF6",
-                    .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() With
-                        {
-                            .DataSource = databaseFileName,
-                            .ForeignKeys = True
-                        }.ConnectionString
+                .Metadata = "res://*/RpsModel.csdl|res://*/RpsModel.ssdl|res://*/RpsModel.msl",
+                .Provider = "System.Data.SQLite.EF6",
+                .ProviderConnectionString = New SQLite.SQLiteConnectionStringBuilder() With
+                    {
+                    .DataSource = databaseFileName,
+                    .ForeignKeys = True
+                    }.ConnectionString
                 }.ConnectionString
 
             rpsContext = New rpsEntities(connectionString)
@@ -765,12 +819,12 @@ Public Class MainForm
             End If
 
             dirinfo = New DirectoryInfo(imagesRootFolder)
-            If Not dirInfo.Exists Then
-                dirInfo.Create()
+            If Not dirinfo.Exists Then
+                dirinfo.Create()
             End If
             dirinfo = New DirectoryInfo(reportsOutputFolder)
-            If Not dirInfo.Exists Then
-                dirInfo.Create()
+            If Not dirinfo.Exists Then
+                dirinfo.Create()
             End If
 
             ' Setup Datagrid Styles
@@ -790,93 +844,39 @@ Public Class MainForm
     End Sub
 
     Private Sub InitializaDatabase()
-        query = "CREATE TABLE `medium` (
-	`name`	TEXT,
-	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
-);
-CREATE TABLE 'club_medium' (
-	`club_id`	INTEGER Not NULL,
-	`medium_id`	INTEGER Not NULL,
-	`sort_key`	INTEGER DEFAULT 0,
-	PRIMARY KEY(club_id, medium_id),
-    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
-	FOREIGN KEY(`medium_id`) REFERENCES medium ( id )
-);
-CREATE TABLE 'club_classification' (
-	`club_id`	INTEGER Not NULL,
-	`classification_id`	INTEGER Not NULL,
-	`sort_key`	INTEGER DEFAULT 0,
-	PRIMARY KEY(club_id, classification_id),
-    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
-	FOREIGN KEY(`classification_id`) REFERENCES classification ( id )
-);
-CREATE TABLE 'club_award' (
-	`club_id`	INTEGER Not NULL,
-	`award_id`	INTEGER Not NULL,
-	`points`	INTEGER,
-	`sort_key`	INTEGER,
-	PRIMARY KEY(club_id, award_id),
-    FOREIGN KEY(`club_id`) REFERENCES club ( id ),
-	FOREIGN KEY(`award_id`) REFERENCES award ( id )
-);
-CREATE TABLE 'club' (
-	`short_name`	TEXT,
-	`name`	TEXT,
-	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`min_score`	INTEGER DEFAULT 0,
-	`max_score`	INTEGER DEFAULT 0,
-	`min_score_for_award`	INTEGER DEFAULT 0
-);
-
-CREATE TABLE 'classification' (
-	`name`	TEXT,
-	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
-);
-CREATE TABLE 'award' (
-	`name`	TEXT,
-	`id`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE
-);
-CREATE TABLE 'CompetitionEntries' (
-	`Photo_ID`	INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,
-	`Title`	TEXT,
-	`Maker`	TEXT,
-	`Classification`	TEXT,
-	`Medium`	TEXT,
-	`Theme`	TEXT,
-	`Competition_Date_1`	TEXT,
-	`Score_1`	INTEGER DEFAULT 0,
-	`Award`	TEXT,
-	`Image_File_Name`	TEXT,
-	`Display_Sequence`	INTEGER DEFAULT 0,
-	`Server_Entry_ID`	INTEGER DEFAULT 0
-);
-"
+        query = "CREATE TABLE `medium` (`name` TEXT, `id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
+                "CREATE TABLE 'club_medium' (`club_id` INTEGER Not NULL,`medium_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0, PRIMARY KEY(club_id, medium_id), FOREIGN KEY(`club_id`) REFERENCES club ( id ), FOREIGN KEY(`medium_id`) REFERENCES medium ( id ));" &
+                "CREATE TABLE 'club_classification' (`club_id` INTEGER Not NULL,`classification_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0,PRIMARY KEY(club_id, classification_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`classification_id`) REFERENCES classification ( id ));" &
+                "CREATE TABLE 'club_award' (`club_id` INTEGER Not NULL,`award_id` INTEGER Not NULL,`points` INTEGER,`sort_key` INTEGER,PRIMARY KEY(club_id, award_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`award_id`) REFERENCES award ( id ));" &
+                "CREATE TABLE 'club' (`short_name` TEXT,`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`min_score` INTEGER DEFAULT 0,`max_score` INTEGER DEFAULT 0,`min_score_for_award` INTEGER DEFAULT 0);" &
+                "CREATE TABLE 'classification' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
+                "CREATE TABLE 'award' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
+                "CREATE TABLE 'CompetitionEntries' (`Photo_ID` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,`Title` TEXT,`Maker` TEXT,`Classification` TEXT,`Medium` TEXT,`Theme` TEXT,`Competition_Date_1` TEXT,`Score_1` INTEGER DEFAULT 0,`Award` TEXT,`Image_File_Name` TEXT,`Display_Sequence` INTEGER DEFAULT 0,`Server_Entry_ID` INTEGER DEFAULT 0);"
         rpsContext.Database.ExecuteSqlCommand(query)
 
-        query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);
-INSERT INTO `medium` (name,id) VALUES ('Color Prints',2);
-INSERT INTO `medium` (name,id) VALUES ('B&W Digital',3);
-INSERT INTO `medium` (name,id) VALUES ('B&W Prints',4);
-INSERT INTO `club` (short_name,name,id,min_score,max_score,min_score_for_award) VALUES ('RPS','Raritan Photographic Society',1,5,9,7);
-INSERT INTO `classification` (name,id) VALUES ('Beginner',1);
-INSERT INTO `classification` (name,id) VALUES ('Advanced',2);
-INSERT INTO `classification` (name,id) VALUES ('Salon',3);
-INSERT INTO `award` (name,id) VALUES ('1st',1);
-INSERT INTO `award` (name,id) VALUES ('2nd',2);
-INSERT INTO `award` (name,id) VALUES ('3rd',3);
-INSERT INTO `award` (name,id) VALUES ('HM',4);
-INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,1,1);
-INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,2,3);
-INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,3,0);
-INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,4,2);
-INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,1,0);
-INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,2,1);
-INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,3,2);
-INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,1,NULL,1);
-INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,2,NULL,2);
-INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,3,NULL,3);
-INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
-"
+        query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);" &
+                "INSERT INTO `medium` (name,id) VALUES ('Color Prints',2);" &
+                "INSERT INTO `medium` (name,id) VALUES ('B&W Digital',3);" &
+                "INSERT INTO `medium` (name,id) VALUES ('B&W Prints',4);" &
+                "INSERT INTO `club` (short_name,name,id,min_score,max_score,min_score_for_award) VALUES ('RPS','Raritan Photographic Society',1,5,9,7);" &
+                "INSERT INTO `classification` (name,id) VALUES ('Beginner',1);" &
+                "INSERT INTO `classification` (name,id) VALUES ('Advanced',2);" &
+                "INSERT INTO `classification` (name,id) VALUES ('Salon',3);" &
+                "INSERT INTO `award` (name,id) VALUES ('1st',1);" &
+                "INSERT INTO `award` (name,id) VALUES ('2nd',2);" &
+                "INSERT INTO `award` (name,id) VALUES ('3rd',3);" &
+                "INSERT INTO `award` (name,id) VALUES ('HM',4);" &
+                "INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,1,1);" &
+                "INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,2,3);" &
+                "INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,3,0);" &
+                "INSERT INTO `club_medium` (club_id,medium_id,sort_key) VALUES (1,4,2);" &
+                "INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,1,0);" &
+                "INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,2,1);" &
+                "INSERT INTO `club_classification` (club_id,classification_id,sort_key) VALUES (1,3,2);" &
+                "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,1,NULL,1);" &
+                "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,2,NULL,2);" &
+                "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,3,NULL,3);" &
+                "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);"
         rpsContext.Database.ExecuteSqlCommand(query)
     End Sub
 
@@ -889,7 +889,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             'Display error message, if any.
             MsgBox(eUpdate.Message, , "Error In btnUpdate_Click()")
         End Try
-
     End Sub
 
     Private Sub btnLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoad.Click
@@ -897,60 +896,72 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
     End Sub
 
 
-    Private Sub btnCancelAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelAll.Click
+    Private Sub btnCancelAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnCancelAll.Click
         'Me.objSelectedPhotos.RejectChanges()
-
     End Sub
-    Private Sub btnSlideShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSlideShow.Click
+
+    Private Sub btnSlideShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnSlideShow.Click
         DoSlideShow()
     End Sub
 
-    Private Sub btnThumbnails_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnThumbnails.Click
+    Private Sub btnThumbnails_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnThumbnails.Click
         PickAwards()
     End Sub
 
-    Private Sub FileCatalogImagesDownload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompCatalogImagesDownload.Click
+    Private Sub FileCatalogImagesDownload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles CompCatalogImagesDownload.Click
         DownloadCompetitionImages()
         LoadCompDates()
     End Sub
-    Private Sub FileUploadScores_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CompUploadScores.Click
+
+    Private Sub FileUploadScores_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles CompUploadScores.Click
         UploadScores()
     End Sub
 
-    Private Sub FileExitMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileExitMenu.Click
+    Private Sub FileExitMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles FileExitMenu.Click
         Me.Close()
     End Sub
 
 
-    Private Sub SelectMedium_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectMedium.SelectedIndexChanged
+    Private Sub SelectMedium_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SelectMedium.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
         AllScoresSelected = True
         EightsAndAwardsSelected = False
         SelectImages()
     End Sub
 
-    Private Sub SelectClassification_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectClassification.SelectedIndexChanged
+    Private Sub SelectClassification_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SelectClassification.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
         AllScoresSelected = True
         EightsAndAwardsSelected = False
         SelectImages()
     End Sub
 
-    Private Sub SelectTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectTheme.SelectedIndexChanged
+    Private Sub SelectTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SelectTheme.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
         AllScoresSelected = True
         EightsAndAwardsSelected = False
         SelectImages()
     End Sub
 
-    Private Sub SelectAward_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAward.SelectedIndexChanged
+    Private Sub SelectAward_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SelectAward.SelectedIndexChanged
         SelectScore.SelectedItem = "All"
         AllScoresSelected = True
         EightsAndAwardsSelected = False
         SelectImages()
     End Sub
 
-    Private Sub EnableMedium_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnableMedium.CheckedChanged
+    Private Sub EnableMedium_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles EnableMedium.CheckedChanged
         If EnableMedium.CheckState = CheckState.Checked Then
             SelectMedium.Enabled = True
             Label2.Enabled = True
@@ -961,7 +972,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         SelectImages()
     End Sub
 
-    Private Sub EnableClassification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnableClassification.CheckedChanged
+    Private Sub EnableClassification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles EnableClassification.CheckedChanged
         If EnableClassification.CheckState = CheckState.Checked Then
             SelectClassification.Enabled = True
             Label3.Enabled = True
@@ -972,7 +984,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         SelectImages()
     End Sub
 
-    Private Sub EnableTheme_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnableTheme.CheckedChanged
+    Private Sub EnableTheme_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles EnableTheme.CheckedChanged
         If EnableTheme.CheckState = CheckState.Checked Then
             SelectTheme.Enabled = True
             Label5.Enabled = True
@@ -983,7 +996,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         SelectImages()
     End Sub
 
-    Private Sub EnableAward_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnableAward.CheckedChanged
+    Private Sub EnableAward_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles EnableAward.CheckedChanged
         If EnableAward.CheckState = CheckState.Checked Then
             SelectAward.Enabled = True
             Label4.Enabled = True
@@ -994,20 +1008,24 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         SelectImages()
     End Sub
 
-    Private Sub RecalcAwards_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RecalcAwards.Click
+    Private Sub RecalcAwards_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles RecalcAwards.Click
         CalculateAwards()
     End Sub
 
-    Private Sub HelpAboutMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HelpAboutMenu.Click
+    Private Sub HelpAboutMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles HelpAboutMenu.Click
         Dim aboutForm As New About
         aboutForm.Show()
     End Sub
 
-    Private Sub ViewSlideShowMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewSlideShowMenu.Click
+    Private Sub ViewSlideShowMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ViewSlideShowMenu.Click
         DoSlideShow()
     End Sub
 
-    Private Sub ViewThumbnailsMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewThumbnailsMenu.Click
+    Private Sub ViewThumbnailsMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ViewThumbnailsMenu.Click
         PickAwards()
     End Sub
 
@@ -1016,14 +1034,18 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         'GridResizeColumns(grdCompetition_Entries, 60, 0, 15, 15, 70)
     End Sub
 
-    Private Sub FilePreferencesMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FilePreferencesMenu.Click
+    Private Sub FilePreferencesMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles FilePreferencesMenu.Click
         GetUserPreferences()
     End Sub
-    Private Sub ReportsResultsReportMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReportsResultsReportMenu.Click
+
+    Private Sub ReportsResultsReportMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ReportsResultsReportMenu.Click
         ResultsReport(True)
     End Sub
 
-    Private Sub ReportsScoreSheetMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReportsScoreSheetMenu.Click
+    Private Sub ReportsScoreSheetMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ReportsScoreSheetMenu.Click
         'ScoreSheet()
         ResultsReport(False)
     End Sub
@@ -1219,8 +1241,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
 
 
     Private Sub CatalogOneImage(ByVal file As FileInfo, ByVal classification As String,
-            ByVal medium As String, ByVal competitionDate As Date,
-            ByVal competitionTheme As String)
+                                ByVal medium As String, ByVal competitionDate As Date,
+                                ByVal competitionTheme As String)
         'Dim relativePath As String
         Dim fileName As String
         Dim fields()
@@ -1243,24 +1265,25 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             award = ""
 
             ' Insert a new row in to the database table
-            InsertImageIntoDatabase(file, maker, title, score, award, classification, medium, competitionDate, competitionTheme, "", 0)
+            InsertImageIntoDatabase(file, maker, title, score, award, classification, medium, competitionDate,
+                                    competitionTheme, "", 0)
         Catch ex As Exception
             MsgBox(ex.Message, , "Error In CatalogOneImage()")
         End Try
     End Sub
 
     Private Sub InsertImageIntoDatabase(
-            ByVal file As FileInfo,
-            ByVal maker As String,
-            ByVal title As String,
-            ByVal score As String,
-            ByVal award As String,
-            ByVal classification As String,
-            ByVal medium As String,
-            ByVal competitionDate As Date,
-            ByVal competitionTheme As String,
-            ByVal entry_id As String,
-            ByVal sequence As Integer)
+                                        ByVal file As FileInfo,
+                                        ByVal maker As String,
+                                        ByVal title As String,
+                                        ByVal score As String,
+                                        ByVal award As String,
+                                        ByVal classification As String,
+                                        ByVal medium As String,
+                                        ByVal competitionDate As Date,
+                                        ByVal competitionTheme As String,
+                                        ByVal entry_id As String,
+                                        ByVal sequence As Integer)
 
         Dim relativePath As String
         Dim entry As CompetitionEntry = New CompetitionEntry
@@ -1336,7 +1359,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 ' by the selection criteria on the main form.
                 ' Start with a basic SQL statement that selects records by date.
                 select_stmt = "SELECT * FROM CompetitionEntries"
-                where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") + "'"
+                where_clause = " WHERE Competition_Date_1='" + Format(ParseSelectedDate(SelectDate.Text), "M/dd/yyyy") +
+                               "'"
                 order_clause = " ORDER BY Display_Sequence, Title"
                 GridCaption.Text = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
 
@@ -1365,12 +1389,14 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
 
                 If Not AllScoresSelected Then
                     If EightsAndAwardsSelected Then
-                        where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(numJudges, String) + ", 0) >= 8 AND Award Is Null))"
+                        where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(numJudges, String) +
+                                        ", 0) >= 8 AND Award Is Null))"
                         ' "CASE WHEN Award is NULL THEN 0 ELSE 1 END" Ensure the NULL values are shown first.
                         order_clause = " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
                         GridCaption.Text += " (8s and Awards)"
                     ElseIf SelectedAvgScore > 0 Then
-                        where_clause += " AND round(Score_1/" + CType(numJudges, String) + ", 0) = " + CType(SelectedAvgScore, String)
+                        where_clause += " AND round(Score_1/" + CType(numJudges, String) + ", 0) = " +
+                                        CType(SelectedAvgScore, String)
                         GridCaption.Text += " (Avg of " + CType(SelectedAvgScore, String) + " points)"
                     Else
                         where_clause += " AND Score_1=" + CType(SelectedScore, String)
@@ -1422,7 +1448,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             End Try
         End If
     End Sub
-
 
 
     Private Sub CalculateAwards()
@@ -1576,7 +1601,7 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             ' Bail out if the dataset is empty
             If entries.Count <= 0 Then
                 MsgBox("No images selected." + vbCrLf + "Select one Or more images before running the report",
-                    MsgBoxStyle.Exclamation, "Error In ResultsReport()")
+                       MsgBoxStyle.Exclamation, "Error In ResultsReport()")
                 Exit Sub
             End If
 
@@ -1592,9 +1617,9 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 reportType = "Scoresheet"
             End If
             tempFile = reportsOutputFolder + "\" +
-                reportType + "_" + CType(competitionDate.Year, String) + "-" +
-                CType(competitionDate.Month, String) + "-" +
-                CType(competitionDate.Day, String)
+                       reportType + "_" + CType(competitionDate.Year, String) + "-" +
+                       CType(competitionDate.Month, String) + "-" +
+                       CType(competitionDate.Day, String)
             If EnableTheme.Checked Then
                 tempFile += "_" + SelectTheme.Text
             End If
@@ -1683,8 +1708,12 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
 
             sw.WriteLine("<body>")
             sw.WriteLine("<table class=""worksheet"">")
-            sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""title"">" + cameraClubName + " Competition Results</p></td></tr>")
-            If EnableClassification.Checked Or EnableMedium.Checked Or EnableTheme.Checked Or SelectScore.Text <> "All" Or EnableAward.Checked Then
+            sw.WriteLine(
+                "<tr><td colspan=""4"" class=""header_center""><p class=""title"">" + cameraClubName +
+                " Competition Results</p></td></tr>")
+            If _
+                EnableClassification.Checked Or EnableMedium.Checked Or EnableTheme.Checked Or SelectScore.Text <> "All" Or
+                EnableAward.Checked Then
                 sw.Write("<tr><td colspan=""4"" class=""header_center""><p class=""title"">")
                 If EnableClassification.Checked Then
                     sw.Write(SelectClassification.Text + "&nbsp;")
@@ -1700,13 +1729,18 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 End If
                 sw.WriteLine("&nbsp;</p></td></tr>")
             End If
-            sw.Write("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">" + competitionDate.ToString("MMMM", System.Globalization.CultureInfo.CurrentCulture) + " " + competitionDate.Year.ToString)
+            sw.Write(
+                "<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">" +
+                competitionDate.ToString("MMMM", System.Globalization.CultureInfo.CurrentCulture) + " " +
+                competitionDate.Year.ToString)
             If EnableTheme.Checked Then
                 sw.Write(" - " + SelectTheme.Text)
             End If
             sw.WriteLine("</p></td></tr>")
             If Not displayScores Then
-                sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">(" + MaxAwards(entries.Count).ToString + " Awards)</p></td></tr>")
+                sw.WriteLine(
+                    "<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">(" +
+                    MaxAwards(entries.Count).ToString + " Awards)</p></td></tr>")
             End If
             sw.WriteLine("<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">&nbsp;</p></td></tr>")
             sw.WriteLine("<tr><th>Score</th><th>Award</th>")
@@ -1768,9 +1802,9 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
 
 
     Private Sub GridResizeColumns(ByVal DataGridView As DataGrid,
-                                ByVal FixedTotalWidth As Double,
-                                ByVal StartCol As Integer,
-                             ByVal ParamArray ColumnWidthInPercent() As Double)
+                                  ByVal FixedTotalWidth As Double,
+                                  ByVal StartCol As Integer,
+                                  ByVal ParamArray ColumnWidthInPercent() As Double)
 
         Dim TotalGridWidth As Long
         Dim intIndex As Integer
@@ -1884,7 +1918,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in GetUserPreferences()")
         End Try
-
     End Sub
 
     Private Sub SetDatabaseName(ByVal fileName As String)
@@ -1911,7 +1944,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 regKey.Close()
             End If
         End Try
-
     End Sub
 
     Private Function ReadRegistryString(ByVal key As String, ByVal name As String) As String
@@ -1977,7 +2009,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in LoadPreferences()")
         End Try
-
     End Sub
 
     '
@@ -2084,7 +2115,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Catch ex As Exception
             MsgBox(ex.Message, , "Error In LoadCompDates()")
         End Try
-
     End Sub
     ' Call the REST service on the server to retrieve the list of available
     ' competition dates.
@@ -2114,7 +2144,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in GetCompetitionDates()")
         End Try
-
     End Function
 
     Structure comp_entry
@@ -2128,6 +2157,7 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Public award As String
         Public url As String
         Public bucket As Integer
+
         Public Function CompareTo(ByVal obj As Object) As Integer Implements IComparable.CompareTo
             If Me.bucket.CompareTo(CType(obj, comp_entry).bucket) = 0 Then
                 Return Me.first_name.CompareTo(CType(obj, comp_entry).first_name)
@@ -2217,7 +2247,7 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             Dim d As Date
             d = Date.ParseExact(comp_date, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture)
             sql = "DELETE FROM CompetitionEntries WHERE Competition_Date_1 = '" +
-                Format(d, "M/dd/yyyy") + "'"
+                  Format(d, "M/dd/yyyy") + "'"
             If download_digital And Not download_prints Then
                 sql += " AND Medium like '%Digital'"
             End If
@@ -2382,8 +2412,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
 
                     ' Fetch the image file from the server
                     localImageFileName = competitionFolder + "\" +
-                        StrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
-                        "+" + entry.first_name + "_" + entry.last_name + ".jpg"
+                                         StrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
+                                         "+" + entry.first_name + "_" + entry.last_name + ".jpg"
                     DownloadImage(entry.url, localImageFileName)
 
                     ' Insert this image into the database
@@ -2425,7 +2455,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
     End Sub
 
 
-    Private Function REST(ByVal server As String, ByVal operation As String, ByVal http_method As String, ByVal params As Hashtable, ByRef results As XPathDocument) As Boolean
+    Private Function REST(ByVal server As String, ByVal operation As String, ByVal http_method As String,
+                          ByVal params As Hashtable, ByRef results As XPathDocument) As Boolean
         Dim request As HttpWebRequest
         Dim response As HttpWebResponse = Nothing
         Dim URL As String
@@ -2480,7 +2511,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 For Each param As String In params.Keys
                     If param = "file" Then
                         ' Build the MIME header
-                        data.Append("Content-Disposition: form-data; name=""file""; filename=""" + params(param) + """" + vbCrLf)
+                        data.Append(
+                            "Content-Disposition: form-data; name=""file""; filename=""" + params(param) + """" + vbCrLf)
                         data.Append("Content-Transfer-Encoding: binary" + vbCrLf)
                         data.Append("Content-Type: Image/jpeg" + vbCrLf)
                         data.Append(vbCrLf)
@@ -2545,7 +2577,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Finally
             If Not response Is Nothing Then response.Close()
         End Try
-
     End Function
 
     Private Function responseOK(ByVal response As XPathDocument) As Boolean
@@ -2568,7 +2599,6 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in responseOK()")
         End Try
-
     End Function
 
     Public Sub DownloadImage(ByVal URL As String, ByVal outputFileName As String)
@@ -2616,7 +2646,7 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
     ' will translate all occurrances of à, é, ù and will delete all occurrances of x,y,z.
 
     Public Function StrMap(ByVal S As String, ByVal MapWhat As String,
-      ByVal ToWhat As String, Optional ByVal Compare As Long = 0) As String
+                           ByVal ToWhat As String, Optional ByVal Compare As Long = 0) As String
 
         Dim output_ptr As Long
         Dim input_ptr As Long
@@ -2741,12 +2771,11 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
             If upload_prints And Not upload_digital Then
                 selectedMedium = " AND Medium like '%Prints'"
             End If
-            '@TODO Fix
             Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture)
             sqlSelect = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
             sqlWhere = "WHERE Competition_Date_1 = '" +
-                Format(d, "M/dd/yyyy") + "'" +
-                selectedMedium
+                       Format(d, "M/dd/yyyy") + "'" +
+                       selectedMedium
             query = sqlSelect + sqlWhere
             recs = rpsContext.Database.SqlQuery(Of UploadEntity_Classification_Medium)(query).ToList
 
@@ -2761,7 +2790,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
                 classification = comp_class_list.Item(compNum)
                 medium = comp_medium_list.Item(compNum)
                 sqlSelect = "Select * FROM CompetitionEntries "
-                sqlWhere = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" + classification + "' AND Medium = '" + medium + "'"
+                sqlWhere = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
+                           classification + "' AND Medium = '" + medium + "'"
                 query = sqlSelect + sqlWhere
                 recs = rpsContext.Database.SqlQuery(Of CompetitionEntry)(query).ToList
                 ' Output the tags that describe this competition
@@ -2877,10 +2907,10 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         Catch ex As Exception
             MsgBox(ex.Message, , "Error in LoadUniqueThemes()")
         End Try
-
     End Sub
 
-    Private Sub NumNinesHeadingButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumNinesHeadingButton.Click
+    Private Sub NumNinesHeadingButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles NumNinesHeadingButton.Click
         'NineScoreRadioButton.Checked = True
         AllScoresSelected = False
         EightsAndAwardsSelected = False
@@ -2890,7 +2920,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         PickAwards()
     End Sub
 
-    Private Sub NumEightsHeadingButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumEightsHeadingButton.Click
+    Private Sub NumEightsHeadingButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles NumEightsHeadingButton.Click
         'EightScoreRadioButton.Checked = True
         AllScoresSelected = False
         EightsAndAwardsSelected = False
@@ -2900,7 +2931,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         PickAwards()
     End Sub
 
-    Private Sub NumSevensHeadingButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumSevensHeadingButton.Click
+    Private Sub NumSevensHeadingButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles NumSevensHeadingButton.Click
         'SevenScoreRadioButton.Checked = True
         AllScoresSelected = False
         EightsAndAwardsSelected = False
@@ -2910,7 +2942,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         PickAwards()
     End Sub
 
-    Private Sub AwardsTableTitleBar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AwardsTableTitleBar.Click
+    Private Sub AwardsTableTitleBar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles AwardsTableTitleBar.Click
         'EightsAndAwardsRadioButton.Checked = True
         EightsAndAwardsSelected = True
         AllScoresSelected = False
@@ -2918,7 +2951,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         DoSlideShow()
     End Sub
 
-    Private Sub SelectScore_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectScore.SelectedIndexChanged
+    Private Sub SelectScore_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SelectScore.SelectedIndexChanged
         If SelectScore.SelectedIndex = 0 Then
             AllScoresSelected = True
             EightsAndAwardsSelected = False
@@ -2931,7 +2965,8 @@ INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);
         SelectImages()
     End Sub
 
-    Private Sub SelectDate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectDate.SelectedIndexChanged
+    Private Sub SelectDate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SelectDate.SelectedIndexChanged
         LoadUniqueThemes()
         SelectScore.SelectedItem = "All"
         AllScoresSelected = True
