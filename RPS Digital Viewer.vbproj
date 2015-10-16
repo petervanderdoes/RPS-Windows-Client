@@ -184,12 +184,6 @@
     <Compile Include="award.vb">
       <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="BestOfDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Catalog Images Dialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="classification.vb">
       <DependentUpon>RpsModel.tt</DependentUpon>
     </Compile>
@@ -314,12 +308,6 @@
     <None Include="Single_Photo.ico" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BestOfDialog.resx">
-      <DependentUpon>BestOfDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Catalog Images Dialog.resx">
-      <DependentUpon>Catalog Images Dialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Download Competitions Dialog.resx">
       <DependentUpon>Download Competitions Dialog.vb</DependentUpon>
