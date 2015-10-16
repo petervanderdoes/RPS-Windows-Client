@@ -54,7 +54,7 @@ Public Class MainForm
     Friend WithEvents title As DataGridViewTextBoxColumn
     Private ReadOnly _center_cell_style As New DataGridViewCellStyle
 
-    Private Sub InitializeStatusBar()
+    Private Sub initializeStatusBar()
         Dim info As StatusBarPanel = New StatusBarPanel
         Dim progress As StatusBarPanel = New StatusBarPanel
 
@@ -874,7 +874,7 @@ Public Class MainForm
             rps_context = New rpsEntities(_connection_string)
             If Not File.Exists(_database_file_name) Then
                 SQLiteConnection.CreateFile(_database_file_name)
-                InitializaDatabase()
+                initializeDatabase()
             End If
 
             dirinfo = New DirectoryInfo(images_root_folder)
@@ -892,7 +892,7 @@ Public Class MainForm
             LoadClubRules()
 
             ' Initialize the StatusBar and ProgressBar
-            InitializeStatusBar()
+            initializeStatusBar()
             status_bar.progressBar.Value = 0
             ' Load the unique competition dates into the Competition Date combobox
             LoadCompDates()
@@ -902,7 +902,7 @@ Public Class MainForm
         End Try
     End Sub
 
-    Private Sub InitializaDatabase()
+    Private Sub initializeDatabase()
         _query = "CREATE TABLE `medium` (`name` TEXT, `id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                 "CREATE TABLE 'club_medium' (`club_id` INTEGER Not NULL,`medium_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0, PRIMARY KEY(club_id, medium_id), FOREIGN KEY(`club_id`) REFERENCES club ( id ), FOREIGN KEY(`medium_id`) REFERENCES medium ( id ));" &
                 "CREATE TABLE 'club_classification' (`club_id` INTEGER Not NULL,`classification_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0,PRIMARY KEY(club_id, classification_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`classification_id`) REFERENCES classification ( id ));" &
