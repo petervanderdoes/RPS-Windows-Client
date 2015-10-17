@@ -54,7 +54,7 @@ Public Class ImageViewer
     Private components As System.ComponentModel.IContainer
 
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     Friend WithEvents picShowPicture As System.Windows.Forms.PictureBox
     Friend WithEvents ofdSelectPicture As System.Windows.Forms.OpenFileDialog
@@ -104,15 +104,10 @@ Public Class ImageViewer
         '
         'ScorePopUp
         '
-        Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),
-                                     System.Windows.Forms.AnchorStyles)
+        Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ScorePopUp.BackColor = System.Drawing.Color.Black
         Me.ScorePopUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.ScorePopUp.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                     56.0!,
-                                                     System.Drawing.FontStyle.Bold,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+        Me.ScorePopUp.Font = New System.Drawing.Font("Segoe UI", 56.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ScorePopUp.ForeColor = System.Drawing.Color.White
         Me.ScorePopUp.Location = New System.Drawing.Point(803, 29)
         Me.ScorePopUp.Margin = New System.Windows.Forms.Padding(0)
@@ -139,11 +134,7 @@ Public Class ImageViewer
         'StatusBarAward
         '
         Me.StatusBarAward.BackColor = System.Drawing.Color.Black
-        Me.StatusBarAward.Font = New System.Drawing.Font("Verdana",
-                                                         12.0!,
-                                                         System.Drawing.FontStyle.Bold,
-                                                         System.Drawing.GraphicsUnit.Point,
-                                                         CType(0, Byte))
+        Me.StatusBarAward.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusBarAward.ForeColor = System.Drawing.Color.White
         Me.StatusBarAward.Location = New System.Drawing.Point(0, 0)
         Me.StatusBarAward.Margin = New System.Windows.Forms.Padding(0)
@@ -155,11 +146,7 @@ Public Class ImageViewer
         'StatusBarScore
         '
         Me.StatusBarScore.BackColor = System.Drawing.Color.Black
-        Me.StatusBarScore.Font = New System.Drawing.Font("Verdana",
-                                                         12.0!,
-                                                         System.Drawing.FontStyle.Bold,
-                                                         System.Drawing.GraphicsUnit.Point,
-                                                         CType(0, Byte))
+        Me.StatusBarScore.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusBarScore.ForeColor = System.Drawing.Color.White
         Me.StatusBarScore.Location = New System.Drawing.Point(889, 0)
         Me.StatusBarScore.Margin = New System.Windows.Forms.Padding(0)
@@ -171,11 +158,7 @@ Public Class ImageViewer
         'StatusBarTitle
         '
         Me.StatusBarTitle.BackColor = System.Drawing.Color.Black
-        Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana",
-                                                         12.0!,
-                                                         System.Drawing.FontStyle.Bold,
-                                                         System.Drawing.GraphicsUnit.Point,
-                                                         CType(0, Byte))
+        Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusBarTitle.ForeColor = System.Drawing.Color.White
         Me.StatusBarTitle.Location = New System.Drawing.Point(134, 0)
         Me.StatusBarTitle.Margin = New System.Windows.Forms.Padding(0)
@@ -188,53 +171,42 @@ Public Class ImageViewer
         'splashClub
         '
         Me.splashClub.BackColor = System.Drawing.Color.Black
-        Me.splashClub.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                     40.0!,
-                                                     System.Drawing.FontStyle.Bold,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+        Me.splashClub.Font = New System.Drawing.Font("Segoe UI", 39.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.splashClub.ForeColor = System.Drawing.Color.Yellow
-        Me.splashClub.Location = New System.Drawing.Point(0, 157)
+        Me.splashClub.Location = New System.Drawing.Point(0, 200)
         Me.splashClub.Margin = New System.Windows.Forms.Padding(0)
         Me.splashClub.Name = "splashClub"
         Me.splashClub.Size = New System.Drawing.Size(1024, 101)
         Me.splashClub.TabIndex = 5
+        Me.splashClub.Text = "Club Name"
         Me.splashClub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.splashClub.UseMnemonic = False
         '
         'splashTheme
         '
         Me.splashTheme.BackColor = System.Drawing.Color.Black
-        Me.splashTheme.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                      36.0!,
-                                                      System.Drawing.FontStyle.Bold,
-                                                      System.Drawing.GraphicsUnit.Point,
-                                                      CType(0, Byte))
+        Me.splashTheme.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.splashTheme.ForeColor = System.Drawing.Color.White
-        Me.splashTheme.Location = New System.Drawing.Point(0, 351)
+        Me.splashTheme.Location = New System.Drawing.Point(0, 334)
         Me.splashTheme.Margin = New System.Windows.Forms.Padding(0)
         Me.splashTheme.Name = "splashTheme"
         Me.splashTheme.Size = New System.Drawing.Size(1024, 101)
         Me.splashTheme.TabIndex = 6
-        Me.splashTheme.Text = "Open and Oldies"
+        Me.splashTheme.Text = "Theme Name"
         Me.splashTheme.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.splashTheme.UseMnemonic = False
         '
         'splashClassification
         '
         Me.splashClassification.BackColor = System.Drawing.Color.Black
-        Me.splashClassification.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                               48.0!,
-                                                               System.Drawing.FontStyle.Bold,
-                                                               System.Drawing.GraphicsUnit.Point,
-                                                               CType(0, Byte))
+        Me.splashClassification.Font = New System.Drawing.Font("Segoe UI", 48.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.splashClassification.ForeColor = System.Drawing.Color.Red
-        Me.splashClassification.Location = New System.Drawing.Point(0, 535)
+        Me.splashClassification.Location = New System.Drawing.Point(0, 468)
         Me.splashClassification.Margin = New System.Windows.Forms.Padding(0)
         Me.splashClassification.Name = "splashClassification"
-        Me.splashClassification.Size = New System.Drawing.Size(1024, 102)
+        Me.splashClassification.Size = New System.Drawing.Size(1024, 101)
         Me.splashClassification.TabIndex = 7
-        Me.splashClassification.Text = "Beginner"
+        Me.splashClassification.Text = "Classification"
         Me.splashClassification.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.splashClassification.UseMnemonic = False
         '
@@ -262,6 +234,7 @@ Public Class ImageViewer
         CType(Me.picShowPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusBar.ResumeLayout(False)
         Me.ResumeLayout(False)
+
     End Sub
 
 #End Region

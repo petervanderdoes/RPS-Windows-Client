@@ -33,41 +33,45 @@ Public Class About
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Button1 = New System.Windows.Forms.Button
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label1
         '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif",
-                                                 10.0!,
-                                                 System.Drawing.FontStyle.Regular,
-                                                 System.Drawing.GraphicsUnit.Point,
-                                                 CType(0, Byte))
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(16, 16)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(264, 128)
+        Me.Label1.Size = New System.Drawing.Size(0, 21)
         Me.Label1.TabIndex = 0
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(120, 152)
+        Me.Button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Button1.Location = New System.Drawing.Point(109, 145)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(64, 24)
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 1
         Me.Button1.Text = "OK"
         '
         'About
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
+        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 16)
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(292, 182)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label1)
+        Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "About"
+        Me.Padding = New System.Windows.Forms.Padding(11)
         Me.Text = "About"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
+
     End Sub
 
 #End Region
@@ -78,7 +82,7 @@ Public Class About
 
         Label1.Text = "RPS Digital Competition Viewer" + vbCrLf +
                       "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
-                      "� Jake Chapple, Peter van der Does" + vbCrLf +
+                      "(c) Jake Chapple, Peter van der Does" + vbCrLf +
                       "Raritan Photographic Society"
     End Sub
 
