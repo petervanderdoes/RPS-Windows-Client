@@ -710,6 +710,7 @@ Public Class MainForm
         Me.Name = "MainForm"
         Me.Padding = New System.Windows.Forms.Padding(11)
         Me.Text = "RPS Digital Competition Viewer"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
