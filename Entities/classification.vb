@@ -4,10 +4,10 @@ Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity.Spatial
 
-<Table("medium")>
-Partial Public Class medium
+<Table("classification")>
+Partial Public Class classification
     Public Sub New()
-        club_medium = New HashSet(Of club_medium)()
+        club_classification = New HashSet(Of club_classification)()
     End Sub
 
     <StringLength(2147483647)>
@@ -15,5 +15,5 @@ Partial Public Class medium
 
     Public Property id As Long
 
-    Public Overridable Property club_medium As ICollection(Of club_medium)
+    Public Overridable Property club_classification As ICollection(Of club_classification)
 End Class
