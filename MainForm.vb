@@ -627,7 +627,7 @@ Public Class MainForm
         Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-        Me.data_grid_entries_view.Size = New System.Drawing.Size(741, 387)
+        Me.data_grid_entries_view.Size = New System.Drawing.Size(758, 387)
         Me.data_grid_entries_view.TabIndex = 53
         '
         'grid_entries_score
@@ -663,12 +663,12 @@ Public Class MainForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.grid_caption.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.grid_caption.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.grid_caption.ForeColor = System.Drawing.Color.Black
         Me.grid_caption.Location = New System.Drawing.Point(225, 20)
         Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
         Me.grid_caption.Name = "grid_caption"
-        Me.grid_caption.Size = New System.Drawing.Size(741, 24)
+        Me.grid_caption.Size = New System.Drawing.Size(758, 24)
         Me.grid_caption.TabIndex = 54
         Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -676,7 +676,7 @@ Public Class MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-        Me.ClientSize = New System.Drawing.Size(984, 491)
+        Me.ClientSize = New System.Drawing.Size(1001, 491)
         Me.Controls.Add(Me.grid_caption)
         Me.Controls.Add(Me.data_grid_entries_view)
         Me.Controls.Add(Me.SelectDate)
