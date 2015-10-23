@@ -225,6 +225,7 @@
     </Compile>
     <Compile Include="Entities\rpsEntities.vb" />
     <Compile Include="RpsImageSize.vb" />
+    <Compile Include="SqLiteConfiguration.vb" />
     <Compile Include="Thumbnail.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -234,9 +235,6 @@
     <Compile Include="UploadScoresDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
