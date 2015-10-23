@@ -1274,7 +1274,7 @@ Public Class MainForm
         Dim num_eligible_eights As Integer
         Dim num_eligible_sevens As Integer
         Dim total_num_scores As Integer
-        Dim award_names() As String = {"1St", "2nd", "3Rd", "HM"}
+        Dim award_names() As String = {"1st", "2nd", "3rd", "HM"}
         Dim delim_9, delim_8, delim_7 As String
         Dim num_nine_hm, num_eight_hm, num_seven_hm As Integer
 
