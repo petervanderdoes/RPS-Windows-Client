@@ -105,7 +105,7 @@ Public Class ThumbnailViewer
         '
         Me.ThumbnailListView.BackColor = System.Drawing.Color.Black
         Me.ThumbnailListView.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.ThumbnailListView.Font = New System.Drawing.Font("Segoe UI", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ThumbnailListView.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ThumbnailListView.ForeColor = System.Drawing.Color.White
         Me.ThumbnailListView.LargeImageList = Me.ThumbnailImageList
         Me.ThumbnailListView.Location = New System.Drawing.Point(0, 43)
