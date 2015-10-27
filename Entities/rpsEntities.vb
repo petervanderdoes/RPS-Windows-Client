@@ -4,8 +4,10 @@ Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Common
 Imports System.Data.SQLite
 Imports System.Linq
+Imports System.Runtime.InteropServices
 
 
+<ComVisible(False)>
 Partial Public Class rpsEntities
     Inherits DbContext
 

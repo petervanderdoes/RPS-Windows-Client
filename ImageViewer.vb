@@ -40,16 +40,6 @@ Public Class ImageViewer
         setSizes()
     End Sub
 
-    'Form overrides dispose to clean up the component list.
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
-        If disposing Then
-            If Not (components Is Nothing) Then
-                components.Dispose()
-            End If
-        End If
-        MyBase.Dispose(disposing)
-    End Sub
-
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 

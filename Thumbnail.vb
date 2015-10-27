@@ -1,7 +1,8 @@
 Imports System.Drawing.Drawing2D
 Imports System.Reflection
+Imports System.Runtime.InteropServices
 
-Public Class Thumbnail
+Public Class Thumbnail : Implements IDisposable
     Private Const JPG_QUALITY As Long = 90
     Private Const THUMBNAIL_HEIGHT As Integer = 256
     Private Const THUMBNAIL_WIDTH As Integer = 256
@@ -11,6 +12,7 @@ Public Class Thumbnail
     Private _img As Bitmap
     Private _thumb As Bitmap
     Private _thumb_file_name As String
+    Private disposed As Boolean = False
 
     Public Sub New(my_main_form As MainForm)
         MyBase.New()
@@ -113,4 +115,23 @@ Public Class Thumbnail
         Next j
         Return Nothing
     End Function
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If disposed Then Exit Sub
+
+        ' Dispose of managed resources here.
+        If disposing Then
+            _img.Dispose()
+            _thumb.Dispose()
+        End If
+
+        ' Dispose of any unmanaged resources not wrapped in safe handles.
+
+        disposed = True
+    End Sub
 End Class

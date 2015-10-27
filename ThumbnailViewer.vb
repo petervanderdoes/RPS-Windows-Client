@@ -46,12 +46,6 @@ Public Class ThumbnailViewer
         LVM_GETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 55
     End Enum 'LVM
 
-    ' Windows API for setting border select style on the listview
-    Public Overloads Declare Auto Function SendMessage Lib "User32.dll" (hwnd As IntPtr,
-                                                                        msg As Integer,
-                                                                        wParam As Integer,
-                                                                        lParam As Integer) As Integer
-
 #Region " Windows Form Designer generated code "
 
     Public Sub New(ByVal myMainForm As MainForm, ByVal ds As IList, ByVal screenTitle As String)
@@ -359,9 +353,9 @@ Public Class ThumbnailViewer
         Dim styles As Integer
 
         Try
-            styles = SendMessage(ThumbnailListView.Handle, LVM.LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0)
+            styles = NativeMethods.SendMessage(ThumbnailListView.Handle, LVM.LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0)
             styles = styles Or LVS_EX.LVS_EX_BORDERSELECT
-            SendMessage(ThumbnailListView.Handle, LVM.LVM_SETEXTENDEDLISTVIEWSTYLE, 0, styles)
+            NativeMethods.SendMessage(ThumbnailListView.Handle, LVM.LVM_SETEXTENDEDLISTVIEWSTYLE, 0, styles)
         Catch exception As Exception
             MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
         End Try

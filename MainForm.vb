@@ -14,7 +14,7 @@ Public Class MainForm
 
     ' Database
     Dim _connection_string As String
-    Public ef_setup = New SqLiteConfiguration
+    Public ef_setup As SqLiteConfiguration = New SqLiteConfiguration
     Public rps_context As rpsEntities
     Private _query As Object
     Private _record As Object
@@ -89,16 +89,6 @@ Public Class MainForm
         Application.EnableVisualStyles()
         'This call is required by the Windows Form Designer.
         InitializeComponent()
-    End Sub
-
-    'Form overrides dispose to clean up the component list.
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
-        If disposing Then
-            If Not (components Is Nothing) Then
-                components.Dispose()
-            End If
-        End If
-        MyBase.Dispose(disposing)
     End Sub
 
     'Required by the Windows Form Designer
@@ -627,7 +617,7 @@ Public Class MainForm
         Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-        Me.data_grid_entries_view.Size = New System.Drawing.Size(758, 387)
+        Me.data_grid_entries_view.Size = New System.Drawing.Size(775, 387)
         Me.data_grid_entries_view.TabIndex = 53
         '
         'grid_entries_score
@@ -668,7 +658,7 @@ Public Class MainForm
         Me.grid_caption.Location = New System.Drawing.Point(225, 20)
         Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
         Me.grid_caption.Name = "grid_caption"
-        Me.grid_caption.Size = New System.Drawing.Size(758, 24)
+        Me.grid_caption.Size = New System.Drawing.Size(775, 24)
         Me.grid_caption.TabIndex = 54
         Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -676,7 +666,7 @@ Public Class MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-        Me.ClientSize = New System.Drawing.Size(1001, 491)
+        Me.ClientSize = New System.Drawing.Size(1018, 491)
         Me.Controls.Add(Me.grid_caption)
         Me.Controls.Add(Me.data_grid_entries_view)
         Me.Controls.Add(Me.SelectDate)
@@ -1275,8 +1265,11 @@ Public Class MainForm
         Dim num_eligible_sevens As Integer
         Dim total_num_scores As Integer
         Dim award_names() As String = {"1st", "2nd", "3rd", "HM"}
-        Dim delim_9, delim_8, delim_7 As String
+        Dim delim_9 As String = ""
+        Dim delim_8 As String = ""
+        Dim delim_7 As String = ""
         Dim num_nine_hm, num_eight_hm, num_seven_hm As Integer
+        Dim eligible_score As Double
 
         Try
             ' What is the maximum number of Awards possible
@@ -1300,7 +1293,8 @@ Public Class MainForm
             _seven_point_thumb_view_title = ""
             For i = 0 To Math.Min(maximum_awards, eligible_scores.Count) - 1
                 ' Count up the number of eligible 9s, 8s and 7s
-                Select Case Math.Round(eligible_scores(i) / num_judges, 0)
+                eligible_score = Math.Round(eligible_scores(i) / num_judges, 0)
+                Select Case eligible_score
                     Case 9
                         ' Count the number of 9 point awards for the distribution on the main screen
                         num_eligible_nines = num_eligible_nines + 1
@@ -1948,16 +1942,9 @@ Public Class MainForm
         Dim username As String
         Dim password As String
         Dim comp_date As String
-        Dim comp_classification As String
-        Dim comp_theme As String
-        Dim comp_medium As String
-        'Dim first_name As String
-        'Dim last_name As String
-        'Dim title As String
-        'Dim score As String
-        'Dim award As String
-        'Dim url As String
-        'Dim entry_id As String
+        Dim comp_classification As String = Nothing
+        Dim comp_theme As String = Nothing
+        Dim comp_medium As String = Nothing
         Dim local_image_file_name As String
         Dim output_folder As String
         Dim competition_folder As String
@@ -1976,7 +1963,7 @@ Public Class MainForm
         Dim entry_property As XPathNavigator
         Dim sql As String
         Dim entries_array_list As New ArrayList
-        Dim this_entry As CompEntry
+        Dim this_entry As CompEntry = Nothing
         Dim member As String
         Dim prev_member As String
         Dim bucket As Integer
@@ -2260,30 +2247,33 @@ Public Class MainForm
                 data.Remove(0, data.Length)
 
                 ' Attach any files in the param list
-                For Each param As String In params.Keys
-                    If param = "file" Then
-                        ' Build the MIME header
-                        data.Append(
-                            "Content-Disposition: form-data; name=""file""; filename=""" + params(param) + """" + vbCrLf)
-                        data.Append("Content-Transfer-Encoding: binary" + vbCrLf)
-                        data.Append("Content-Type: Image/jpeg" + vbCrLf)
-                        data.Append(vbCrLf)
-                        ' Write the MIME header to a binary stream
-                        byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                        ms.Write(byte_data, 0, byte_data.Length)
-                        ' Open the file and write it to a binary stream
+                For Each param As String In From param1 As String In params.Keys Where param1 = "file"
+                    data.Append(
+                        "Content-Disposition: form-data; name=""file""; filename=""" + params(param) + """" + vbCrLf)
+                    data.Append("Content-Transfer-Encoding: binary" + vbCrLf)
+                    data.Append("Content-Type: Image/jpeg" + vbCrLf)
+                    data.Append(vbCrLf)
+                    ' Write the MIME header to a binary stream
+                    byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
+                    ms.Write(byte_data, 0, byte_data.Length)
+                    ' Open the file and write it to a binary stream
+                    fs = Nothing
+                    Try
                         fs = New FileStream(params(param), FileMode.Open, FileAccess.Read)
                         br = New BinaryReader(fs)
                         byte_data = br.ReadBytes(fs.Length)
                         ms.Write(byte_data, 0, fs.Length)
                         br.Close()
-                        fs.Close()
                         ' Write the terminating boundry marker
                         data.Remove(0, data.Length)
                         data.Append("--" + "AaB03x" + vbCrLf)
                         byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
                         ms.Write(byte_data, 0, byte_data.Length)
-                    End If
+                    Finally
+                        If fs IsNot Nothing Then
+                            fs.Close()
+                        End If
+                    End Try
                 Next
 
                 ' Read the entire contents of the memory stream back into a byte array
@@ -2692,9 +2682,5 @@ Public Class MainForm
         _all_scores_selected = True
         _eights_and_awards_selected = False
         getSelectedEntries()
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
     End Sub
 End Class

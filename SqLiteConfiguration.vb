@@ -2,7 +2,9 @@ Imports System.Data.Entity
 Imports System.Data.Entity.Core.Common
 Imports System.Data.SQLite
 Imports System.Data.SQLite.EF6
+Imports System.Runtime.InteropServices
 
+<ComVisible(False)>
 Public Class SqLiteConfiguration
     Inherits DbConfiguration
 

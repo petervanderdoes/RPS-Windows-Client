@@ -217,6 +217,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.vb" />
     <Compile Include="PreferencesDialog.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -246,8 +247,8 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="thumbs.ico" />
-    <None Include="Single_Photo.ico" />
+    <None Include="Resources\thumbs.ico" />
+    <None Include="Resources\Single_Photo.ico" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.vb</DependentUpon>
     </EmbeddedResource>
