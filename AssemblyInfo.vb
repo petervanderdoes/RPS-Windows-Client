@@ -11,9 +11,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("")>
 <Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("RPS Digital Competition Viewer")>
-<Assembly: AssemblyCopyright("")>
+<Assembly: AssemblyCompany("Raritan Photographic Society")>
+<Assembly: AssemblyProduct("RPS Competition Client")>
+<Assembly: AssemblyCopyright("Raritan Photographic Society")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: CLSCompliant(True)>
 

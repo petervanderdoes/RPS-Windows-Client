@@ -4,16 +4,19 @@ Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity.Spatial
 
-<Table("medium")>
-Partial Public Class medium
-    Public Sub New()
-        club_medium = New HashSet(Of club_medium)()
-    End Sub
+Namespace Entities
 
-    <StringLength(2147483647)>
-    Public Property name As String
+    <Table("medium")>
+    Partial Public Class medium
+        Public Sub New()
+            club_medium = New HashSet(Of club_medium)()
+        End Sub
 
-    Public Property id As Long
+        <StringLength(2147483647)>
+        Public Property name As String
 
-    Public Overridable Property club_medium As ICollection(Of club_medium)
-End Class
+        Public Property id As Long
+
+        Public Overridable Property club_medium As ICollection(Of club_medium)
+    End Class
+End Namespace

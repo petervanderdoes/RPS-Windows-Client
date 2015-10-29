@@ -11,21 +11,16 @@
 Option Strict On
 Option Explicit On
 
-Imports System.CodeDom.Compiler
-Imports System.ComponentModel
-Imports System.ComponentModel.Design
-Imports System.Configuration
-Imports System.Runtime.CompilerServices
 
 Namespace My
     
-    <CompilerGenerated(),  _
-     GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),  _
-     EditorBrowsable(EditorBrowsableState.Advanced)>  _
+    <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),  _
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
-        Inherits ApplicationSettingsBase
+        Inherits Global.System.Configuration.ApplicationSettingsBase
         
-        Private Shared defaultInstance As MySettings = CType(Synchronized(New MySettings()),MySettings)
+        Private Shared defaultInstance As MySettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New MySettings()),MySettings)
         
 #Region "My.Settings Auto-Save Functionality"
 #If _MyType = "WindowsForms" Then
@@ -59,10 +54,10 @@ Namespace My
             End Get
         End Property
         
-        <ApplicationScopedSetting(),  _
-         DebuggerNonUserCode(),  _
-         SpecialSetting(SpecialSetting.ConnectionString),  _
-         DefaultSettingValue("data source=""E:\Peter\RPS\development\Rps Digital Viewer\rps.db""")>  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("data source=""E:\Peter\RPS\development\RPS Competition Client\rps.db""")>  _
         Public ReadOnly Property rpsConnectionString() As String
             Get
                 Return CType(Me("rpsConnectionString"),String)
@@ -73,15 +68,15 @@ End Namespace
 
 Namespace My
     
-    <HideModuleName(),  _
-     DebuggerNonUserCode(),  _
-     CompilerGenerated()>  _
+    <Global.Microsoft.VisualBasic.HideModuleNameAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Module MySettingsProperty
         
-        <HelpKeyword("My.Settings")>  _
-        Friend ReadOnly Property Settings() As MySettings
+        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
+        Friend ReadOnly Property Settings() As Global.RPS_Competition_Client.My.MySettings
             Get
-                Return MySettings.Default
+                Return Global.RPS_Competition_Client.My.MySettings.Default
             End Get
         End Property
     End Module

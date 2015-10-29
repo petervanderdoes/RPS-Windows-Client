@@ -4,16 +4,19 @@ Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Data.Entity.Spatial
 
-Partial Public Class club_classification
-    Public Property club_id As Long?
+Namespace Entities
 
-    Public Property classification_id As Long?
+    Partial Public Class club_classification
+        Public Property club_id As Long?
 
-    <Key>
-    <DatabaseGenerated(DatabaseGeneratedOption.None)>
-    Public Property sort_key As Long
+        Public Property classification_id As Long?
 
-    Public Overridable Property classification As classification
+        <Key>
+        <DatabaseGenerated(DatabaseGeneratedOption.None)>
+        Public Property sort_key As Long
 
-    Public Overridable Property club As club
-End Class
+        Public Overridable Property classification As classification
+
+        Public Overridable Property club As club
+    End Class
+End Namespace

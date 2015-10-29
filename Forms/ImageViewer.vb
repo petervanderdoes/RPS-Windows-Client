@@ -10,7 +10,7 @@ Namespace Forms
         Private _num_images As Integer
         Private _current_index As Integer
         Private _current_file_name As String
-        Private _current_row As CompetitionEntry
+        Private _current_row As Entities.CompetitionEntry
         Private _current_score_str As String
         Private _status_bar_visible As Integer = 0
         Private _splash_screen_visible As Boolean = True
@@ -454,7 +454,7 @@ Namespace Forms
             End Try
         End Sub
 
-        Private Sub doScorePopUp(mode As Integer, value As String, ByRef current_row As CompetitionEntry)
+        Private Sub doScorePopUp(mode As Integer, value As String, ByRef current_row As Entities.CompetitionEntry)
             Try
                 ' When entering scores, allow the user to enter up to two digit
                 If mode = SCORE Then

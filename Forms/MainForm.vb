@@ -1,10 +1,8 @@
 Imports System.Collections.Generic
-Imports System.Data.Entity.Core.EntityClient
 Imports System.Data.SQLite
 Imports System.Globalization
 Imports System.Linq
 Imports System.Reflection
-Imports RPS_Digital_Viewer.Entities
 
 Namespace Forms
 
@@ -16,10 +14,10 @@ Namespace Forms
 
         ' Database
         Public ef_setup As SqLiteConfiguration = New SqLiteConfiguration
-        Public rps_context As rpsEntities
+        Public rps_context As Entities.rpsEntities
         Private _query As Object
         Private _record As Object
-        Public entries As IList(Of CompetitionEntry)
+        Public entries As IList(Of Entities.CompetitionEntry)
 
         ' User Preferences (defaults)
         Public reports_output_folder As String = _data_folder + "\Reports"
@@ -534,7 +532,7 @@ Namespace Forms
             '
             Me.btnThumbnails.FlatAppearance.BorderSize = 0
             Me.btnThumbnails.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.btnThumbnails.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.pictures_32x32
+            Me.btnThumbnails.Image = Global.RPS_Competition_Client.My.Resources.Resources.pictures_32x32
             Me.btnThumbnails.Location = New System.Drawing.Point(180, 236)
             Me.btnThumbnails.Margin = New System.Windows.Forms.Padding(0)
             Me.btnThumbnails.Name = "btnThumbnails"
@@ -546,7 +544,7 @@ Namespace Forms
             Me.btnSlideShow.BackColor = System.Drawing.SystemColors.Control
             Me.btnSlideShow.FlatAppearance.BorderSize = 0
             Me.btnSlideShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.btnSlideShow.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.single_32x32
+            Me.btnSlideShow.Image = Global.RPS_Competition_Client.My.Resources.Resources.single_32x32
             Me.btnSlideShow.Location = New System.Drawing.Point(145, 236)
             Me.btnSlideShow.Name = "btnSlideShow"
             Me.btnSlideShow.Size = New System.Drawing.Size(32, 32)
@@ -589,8 +587,8 @@ Namespace Forms
             Me.data_grid_entries_view.AllowUserToResizeColumns = False
             Me.data_grid_entries_view.AllowUserToResizeRows = False
             Me.data_grid_entries_view.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                                                       Or System.Windows.Forms.AnchorStyles.Left) _
-                                                      Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.data_grid_entries_view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
             Me.data_grid_entries_view.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
             Me.data_grid_entries_view.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
@@ -620,7 +618,7 @@ Namespace Forms
             Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
             DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-            Me.data_grid_entries_view.Size = New System.Drawing.Size(945, 387)
+            Me.data_grid_entries_view.Size = New System.Drawing.Size(1030, 387)
             Me.data_grid_entries_view.TabIndex = 53
             '
             'grid_entries_score
@@ -653,7 +651,7 @@ Namespace Forms
             'grid_caption
             '
             Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                                            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
             Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.grid_caption.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -661,7 +659,7 @@ Namespace Forms
             Me.grid_caption.Location = New System.Drawing.Point(225, 20)
             Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
             Me.grid_caption.Name = "grid_caption"
-            Me.grid_caption.Size = New System.Drawing.Size(945, 24)
+            Me.grid_caption.Size = New System.Drawing.Size(1030, 24)
             Me.grid_caption.TabIndex = 54
             Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
@@ -669,7 +667,7 @@ Namespace Forms
             '
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-            Me.ClientSize = New System.Drawing.Size(1188, 491)
+            Me.ClientSize = New System.Drawing.Size(1273, 491)
             Me.Controls.Add(Me.grid_caption)
             Me.Controls.Add(Me.data_grid_entries_view)
             Me.Controls.Add(Me.SelectDate)
@@ -722,7 +720,7 @@ Namespace Forms
                 ' Load the user preferences from the registry
                 getPreferences()
 
-                rps_context = New rpsEntities(New SQLiteConnectionStringBuilder() With {
+                rps_context = New Entities.rpsEntities(New SQLiteConnectionStringBuilder() With {
                                                  .DataSource = _database_file_name,
                                                  .ForeignKeys = True
                                                  }.ConnectionString)
@@ -987,7 +985,7 @@ Namespace Forms
                 ' Attempt to update the datasource.
                 data_grid_entries_view.Refresh()
 
-                For Each entry As CompetitionEntry In entries
+                For Each entry As Entities.CompetitionEntry In entries
                     _query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
                     rps_context.Database.ExecuteSqlCommand(_query,
                                                            New SQLiteParameter("@score", entry.Score_1),
@@ -1069,7 +1067,7 @@ Namespace Forms
                 ' Attempt to update the datasource.
                 data_grid_entries_view.Refresh()
 
-                For Each entry As CompetitionEntry In entries
+                For Each entry As Entities.CompetitionEntry In entries
                     _query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
                     rps_context.Database.ExecuteSqlCommand(_query,
                                                            New SQLiteParameter("@score", entry.Score_1),
@@ -1097,7 +1095,7 @@ Namespace Forms
                                        sequence As Integer)
 
             Dim relative_path As String
-            Dim entry As CompetitionEntry = New CompetitionEntry
+            Dim entry As Entities.CompetitionEntry = New Entities.CompetitionEntry
 
             Try
                 ' Calculate the relative path to the file.  The path is relative to the
@@ -1232,7 +1230,7 @@ Namespace Forms
 
                     ' Install the updated SQL SELECT statement
                     _query = select_stmt + where_clause + order_clause
-                    entries = rps_context.Database.SqlQuery(Of CompetitionEntry)(_query).ToList
+                    entries = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(_query).ToList
 
                     With data_grid_entries_view
                         .Columns("grid_entries_score").DefaultCellStyle = _center_cell_style
@@ -1279,7 +1277,7 @@ Namespace Forms
                 maximum_awards = setMaxAwards(CType(entries.Count, Double))
 
                 ' Iterate through the dataset and record all the scores which are eligible for an award
-                For Each entry As CompetitionEntry In From entry1 In entries Where IsNumeric(entry1.Score_1)
+                For Each entry As Entities.CompetitionEntry In From entry1 In entries Where IsNumeric(entry1.Score_1)
                     total_num_scores = total_num_scores + 1
                     If entry.Score_1 >= (min_score_for_award * num_judges) And entry.Score_1 <= (max_score * num_judges) Then
                         eligible_scores.Add(entry.Score_1)
@@ -1404,7 +1402,7 @@ Namespace Forms
             Dim temp_file As String
             Dim report_type As String
             Dim competition_date As Date
-            Dim entry As CompetitionEntry
+            Dim entry As Entities.CompetitionEntry
             Dim sw As StreamWriter
             Try
                 ' Bail out if the dataset is empty
@@ -1616,7 +1614,7 @@ Namespace Forms
                          Select club.id, club.name
 
                 For Each _record In _query
-                    prefs_dialog.cbCameraClubName.Items.Add(New DataItem(_record.id, _record.name))
+                    prefs_dialog.cbCameraClubName.Items.Add(New Entities.DataItem(_record.id, _record.name))
                 Next
                 prefs_dialog.cbCameraClubName.Text = camera_club_name
                 prefs_dialog.cbNumJudges.Text = CType(num_judges, String)
@@ -1630,8 +1628,8 @@ Namespace Forms
                 Dim rof As String = Trim(prefs_dialog.tbReportsOutputFolder.Text)
                 Dim sn As String = Trim(prefs_dialog.tbServerName.Text)
                 Dim ssd As String = Trim(prefs_dialog.tbServerScriptDir.Text)
-                Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).Value)
-                Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).ID
+                Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, Entities.DataItem).Value)
+                Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, Entities.DataItem).ID
                 Dim nj As Integer = CType(prefs_dialog.cbNumJudges.Text, Integer)
                 If prefs_dialog.DialogResult = DialogResult.OK Then
                     If irf > "" Then
@@ -2489,9 +2487,9 @@ Namespace Forms
                             Format(d, "M/dd/yyyy") + "'" +
                             selected_medium
                 _query = sql_select + sql_where
-                recs = rps_context.Database.SqlQuery(Of ClassificationMedium)(_query).ToList
+                recs = rps_context.Database.SqlQuery(Of Entities.ClassificationMedium)(_query).ToList
 
-                For Each record As ClassificationMedium In recs
+                For Each record As Entities.ClassificationMedium In recs
                     comp_class_list.Add(record.Classification)
                     comp_medium_list.Add(record.Medium)
                 Next
@@ -2505,7 +2503,7 @@ Namespace Forms
                     sql_where = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
                                 classification + "' AND Medium = '" + medium + "'"
                     _query = sql_select + sql_where
-                    recs = rps_context.Database.SqlQuery(Of CompetitionEntry)(_query).ToList
+                    recs = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(_query).ToList
                     ' Output the tags that describe this competition
                     sw.WriteLine("  <Competition>")
                     sw.WriteLine("    <Date>{0}</Date>", HttpUtility.HtmlEncode(comp_date))
@@ -2513,7 +2511,7 @@ Namespace Forms
                     sw.WriteLine("    <Medium>{0}</Medium>", HttpUtility.HtmlEncode(medium))
                     sw.WriteLine("    <Entries>")
                     ' Iterate through all the entries of this competition
-                    For Each record As CompetitionEntry In recs
+                    For Each record As Entities.CompetitionEntry In recs
                         ' Read the entry data from the database
                         maker = record.Maker
                         'fields = Split(maker, " ")

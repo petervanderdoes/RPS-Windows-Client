@@ -8,7 +8,7 @@ Namespace Forms
         Private ReadOnly _the_main_form As Forms.MainForm
         Private ReadOnly _image_list As IList
         Private _current_index As Integer
-        Private _current_row As CompetitionEntry
+        Private _current_row As Entities.CompetitionEntry
         Private _full_size_file_name As String
         Private _is_zoomed As Boolean
         Private ReadOnly _thumbnail_view_title As String
@@ -305,7 +305,7 @@ Namespace Forms
 
                 ' Iterate through the dataset to load the thumbnails into the imagelist
                 Dim i As Int16 = 0
-                For Each entry As CompetitionEntry In _image_list
+                For Each entry As Entities.CompetitionEntry In _image_list
 
                     ' Compute the file name of the thumbnail image
                     image_file_name = entry.Image_File_Name
