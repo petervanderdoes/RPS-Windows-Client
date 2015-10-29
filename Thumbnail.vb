@@ -6,7 +6,7 @@ Public Class Thumbnail : Implements IDisposable
     Private Const JPG_QUALITY As Long = 90
     Private Const THUMBNAIL_HEIGHT As Integer = 256
     Private Const THUMBNAIL_WIDTH As Integer = 256
-    Private ReadOnly _the_main_form As MainForm
+    Private ReadOnly _the_main_form As Forms.MainForm
     Private _gr As Graphics
     Private _image_file_name As String
     Private _img As Bitmap
@@ -14,7 +14,7 @@ Public Class Thumbnail : Implements IDisposable
     Private _thumb_file_name As String
     Private disposed As Boolean = False
 
-    Public Sub New(my_main_form As MainForm)
+    Public Sub New(my_main_form As Forms.MainForm)
         MyBase.New()
         _the_main_form = my_main_form
     End Sub

@@ -7,7 +7,7 @@
     <ProjectGuid>{134D8C6B-FAD5-40E1-9A85-A9DDDF4D5D9F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>RPS Digital Viewer.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\RPS Digital Viewer.ico</ApplicationIcon>
     <AssemblyKeyContainerName />
     <AssemblyName>RPS Digital Viewer</AssemblyName>
     <AssemblyOriginatorKeyFile />
@@ -21,7 +21,7 @@
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>Off</OptionStrict>
     <RootNamespace>RPS_Digital_Viewer</RootNamespace>
-    <StartupObject>RPS_Digital_Viewer.MainForm</StartupObject>
+    <StartupObject>RPS_Digital_Viewer.Forms.MainForm</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
@@ -174,7 +174,7 @@
     <Import Include="System.Xml.XPath" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.vb">
+    <Compile Include="Forms\About.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ApplicationEvents.vb" />
@@ -191,21 +191,26 @@
     <Compile Include="Entities\DataItem.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DownloadCompetitionsDialog.vb">
+    <Compile Include="Forms\DownloadCompetitionsDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Entities\UploadEntities.vb" />
     <Compile Include="Helper.vb" />
-    <Compile Include="ImageViewer.vb">
+    <Compile Include="Forms\ImageViewer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.vb">
+    <Compile Include="Forms\MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="medium.vb" />
+    <Compile Include="Entities\medium.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -213,7 +218,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="NativeMethods.vb" />
-    <Compile Include="PreferencesDialog.vb">
+    <Compile Include="Forms\PreferencesDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ProgressStatus.vb">
@@ -225,61 +230,57 @@
     <Compile Include="Thumbnail.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ThumbnailViewer.vb">
+    <Compile Include="Forms\ThumbnailViewer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UploadScoresDialog.vb">
+    <Compile Include="Forms\UploadScoresDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Resources\pictures.png" />
-    <None Include="Resources\single.png" />
     <None Include="Resources\single_48x48.png" />
     <None Include="Resources\pictures_48x48.png" />
     <None Include="Resources\pictures_32x32.png" />
     <None Include="Resources\single_32x32.png" />
-    <Content Include="RPS Digital Viewer.ico" />
+    <Content Include="Resources\RPS Digital Viewer.ico" />
     <None Include="My Project\Settings.settings">
       <CustomToolNamespace>My</CustomToolNamespace>
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="Resources\thumbs.ico" />
-    <None Include="Resources\Single_Photo.ico" />
-    <EmbeddedResource Include="About.resx">
+    <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DownloadCompetitionsDialog.resx">
+    <EmbeddedResource Include="Forms\DownloadCompetitionsDialog.resx">
       <DependentUpon>DownloadCompetitionsDialog.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImageViewer.resx">
+    <EmbeddedResource Include="Forms\ImageViewer.resx">
       <DependentUpon>ImageViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesDialog.resx">
+    <EmbeddedResource Include="Forms\PreferencesDialog.resx">
       <DependentUpon>PreferencesDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressStatus.resx">
       <DependentUpon>ProgressStatus.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ThumbnailViewer.resx">
+    <EmbeddedResource Include="Forms\ThumbnailViewer.resx">
       <DependentUpon>ThumbnailViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UploadScoresDialog.resx">
+    <EmbeddedResource Include="Forms\UploadScoresDialog.resx">
       <DependentUpon>UploadScoresDialog.vb</DependentUpon>
     </EmbeddedResource>
     <None Include="My Project\app.manifest" />
-    <None Include="RPS Digital Viewer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
