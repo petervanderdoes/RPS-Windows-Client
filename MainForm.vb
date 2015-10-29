@@ -507,7 +507,7 @@ Public Class MainForm
         Me.SelectScore.Location = New System.Drawing.Point(38, 245)
         Me.SelectScore.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
         Me.SelectScore.Name = "SelectScore"
-        Me.SelectScore.Size = New System.Drawing.Size(73, 23)
+        Me.SelectScore.Size = New System.Drawing.Size(101, 23)
         Me.SelectScore.TabIndex = 50
         '
         'Label6
@@ -531,22 +531,24 @@ Public Class MainForm
         '
         'btnThumbnails
         '
-        Me.btnThumbnails.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.thumbs
-        Me.btnThumbnails.Location = New System.Drawing.Point(172, 227)
+        Me.btnThumbnails.FlatAppearance.BorderSize = 0
+        Me.btnThumbnails.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnThumbnails.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.pictures_32x32
+        Me.btnThumbnails.Location = New System.Drawing.Point(180, 236)
         Me.btnThumbnails.Margin = New System.Windows.Forms.Padding(0)
         Me.btnThumbnails.Name = "btnThumbnails"
-        Me.btnThumbnails.Size = New System.Drawing.Size(40, 41)
+        Me.btnThumbnails.Size = New System.Drawing.Size(32, 32)
         Me.btnThumbnails.TabIndex = 49
         '
         'btnSlideShow
         '
         Me.btnSlideShow.BackColor = System.Drawing.SystemColors.Control
         Me.btnSlideShow.FlatAppearance.BorderSize = 0
-        Me.btnSlideShow.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.Single_Photo
-        Me.btnSlideShow.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.btnSlideShow.Location = New System.Drawing.Point(124, 227)
+        Me.btnSlideShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSlideShow.Image = Global.RPS_Digital_Viewer.My.Resources.Resources.single_32x32
+        Me.btnSlideShow.Location = New System.Drawing.Point(145, 236)
         Me.btnSlideShow.Name = "btnSlideShow"
-        Me.btnSlideShow.Size = New System.Drawing.Size(40, 41)
+        Me.btnSlideShow.Size = New System.Drawing.Size(32, 32)
         Me.btnSlideShow.TabIndex = 22
         Me.btnSlideShow.UseVisualStyleBackColor = False
         '
@@ -617,7 +619,7 @@ Public Class MainForm
         Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-        Me.data_grid_entries_view.Size = New System.Drawing.Size(775, 387)
+        Me.data_grid_entries_view.Size = New System.Drawing.Size(928, 387)
         Me.data_grid_entries_view.TabIndex = 53
         '
         'grid_entries_score
@@ -658,7 +660,7 @@ Public Class MainForm
         Me.grid_caption.Location = New System.Drawing.Point(225, 20)
         Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
         Me.grid_caption.Name = "grid_caption"
-        Me.grid_caption.Size = New System.Drawing.Size(775, 24)
+        Me.grid_caption.Size = New System.Drawing.Size(928, 24)
         Me.grid_caption.TabIndex = 54
         Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -666,7 +668,7 @@ Public Class MainForm
         '
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-        Me.ClientSize = New System.Drawing.Size(1018, 491)
+        Me.ClientSize = New System.Drawing.Size(1171, 491)
         Me.Controls.Add(Me.grid_caption)
         Me.Controls.Add(Me.data_grid_entries_view)
         Me.Controls.Add(Me.SelectDate)
