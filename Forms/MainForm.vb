@@ -1768,7 +1768,7 @@ Namespace Forms
                 If prefs_dialog.DialogResult = DialogResult.OK Then
                     If irf > "" Then
                         ' If necessary, strip off a trailing "\"
-                        images_root_folder = Helper.trimTrailingSlash(images_root_folder)
+                        images_root_folder = General.Helper.trimTrailingSlash(images_root_folder)
                         ' write it to the registry
                         writeRegistryString("Software\RPS Digital Viewer", "Images Root Folder", images_root_folder)
                     End If
@@ -1780,7 +1780,7 @@ Namespace Forms
                     End If
                     If rof > "" Then
                         ' If necessary, strip off a trailing "\"
-                        reports_output_folder = Helper.trimTrailingSlash(reports_output_folder)
+                        reports_output_folder = General.Helper.trimTrailingSlash(reports_output_folder)
 
                         ' write it to the registry
                         writeRegistryString("Software\RPS Digital Viewer",
@@ -1832,25 +1832,6 @@ Namespace Forms
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
-
-        Private Sub writeRegistryString(key As String, registry_name As String, registry_value As String)
-            Dim reg_key As RegistryKey = Nothing
-
-            Try
-                reg_key = Registry.CurrentUser.OpenSubKey(key, True)
-                If reg_key Is Nothing Then
-                    reg_key = Registry.CurrentUser.CreateSubKey(key)
-                End If
-                reg_key.SetValue(registry_name, registry_value)
-            Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-            Finally
-                If Not reg_key Is Nothing Then
-                    reg_key.Close()
-                End If
-            End Try
-        End Sub
-
         Private Function getRegistryString(registry_key As String, registry_name As String) As String
             Dim reg_key As RegistryKey = Nothing
 
