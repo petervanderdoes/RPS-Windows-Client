@@ -1,11 +1,10 @@
-Imports System.Reflection
+
 
 Namespace Forms
-
     Public Class ThumbnailViewer
         Inherits Form
 
-        Private ReadOnly the_main_form As Forms.MainForm
+        Private ReadOnly the_main_form As MainForm
         Private ReadOnly image_list As IList
         Private current_index As Integer
         Private current_row As Entities.CompetitionEntry
@@ -88,7 +87,8 @@ Namespace Forms
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ThumbnailViewer))
+            Dim resources As System.ComponentModel.ComponentResourceManager =
+                    New System.ComponentModel.ComponentResourceManager(GetType(ThumbnailViewer))
             Me.ThumbnailListView = New System.Windows.Forms.ListView()
             Me.ThumbnailImageList = New System.Windows.Forms.ImageList(Me.components)
             Me.ZoomedImage = New System.Windows.Forms.PictureBox()
@@ -101,7 +101,11 @@ Namespace Forms
             '
             Me.ThumbnailListView.BackColor = System.Drawing.Color.Black
             Me.ThumbnailListView.BorderStyle = System.Windows.Forms.BorderStyle.None
-            Me.ThumbnailListView.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.ThumbnailListView.Font = New System.Drawing.Font("Segoe UI",
+                                                                18.0!,
+                                                                System.Drawing.FontStyle.Bold,
+                                                                System.Drawing.GraphicsUnit.Point,
+                                                                CType(0, Byte))
             Me.ThumbnailListView.ForeColor = System.Drawing.Color.White
             Me.ThumbnailListView.LargeImageList = Me.ThumbnailImageList
             Me.ThumbnailListView.Location = New System.Drawing.Point(0, 43)
@@ -133,7 +137,11 @@ Namespace Forms
             'ThumbnailViewTitleBar
             '
             Me.ThumbnailViewTitleBar.BackColor = System.Drawing.Color.Black
-            Me.ThumbnailViewTitleBar.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.ThumbnailViewTitleBar.Font = New System.Drawing.Font("Segoe UI",
+                                                                    18.0!,
+                                                                    System.Drawing.FontStyle.Bold,
+                                                                    System.Drawing.GraphicsUnit.Point,
+                                                                    CType(0, Byte))
             Me.ThumbnailViewTitleBar.ForeColor = System.Drawing.Color.Yellow
             Me.ThumbnailViewTitleBar.Location = New System.Drawing.Point(0, 0)
             Me.ThumbnailViewTitleBar.Margin = New System.Windows.Forms.Padding(0)
@@ -174,7 +182,6 @@ Namespace Forms
             Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
             CType(Me.ZoomedImage, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
-
         End Sub
 
 #End Region
@@ -275,7 +282,7 @@ Namespace Forms
                         e.Handled = True
                 End Select
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -346,7 +353,7 @@ Namespace Forms
                 is_zoomed = False
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             Finally
             End Try
         End Sub
@@ -359,7 +366,7 @@ Namespace Forms
                 styles = styles Or LVS_EX.LVS_EX_BORDERSELECT
                 NativeMethods.SendMessage(ThumbnailListView.Handle, LVM.LVM_SETEXTENDEDLISTVIEWSTYLE, 0, styles)
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 

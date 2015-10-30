@@ -1,7 +1,6 @@
-Imports System.ComponentModel
+
 
 Namespace Forms
-
     Public Class UploadScoresDialog
         Inherits Form
 
@@ -53,7 +52,8 @@ Namespace Forms
 
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UploadScoresDialog))
+            Dim resources As System.ComponentModel.ComponentResourceManager =
+                    New System.ComponentModel.ComponentResourceManager(GetType(UploadScoresDialog))
             Me.Label1 = New System.Windows.Forms.Label()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.Label3 = New System.Windows.Forms.Label()
@@ -68,7 +68,11 @@ Namespace Forms
             '
             'Label1
             '
-            Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label1.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label1.Location = New System.Drawing.Point(11, 14)
             Me.Label1.Margin = New System.Windows.Forms.Padding(0)
             Me.Label1.Name = "Label1"
@@ -79,7 +83,11 @@ Namespace Forms
             '
             'Label2
             '
-            Me.Label2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label2.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label2.Location = New System.Drawing.Point(11, 46)
             Me.Label2.Margin = New System.Windows.Forms.Padding(0)
             Me.Label2.Name = "Label2"
@@ -90,7 +98,11 @@ Namespace Forms
             '
             'Label3
             '
-            Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label3.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label3.Location = New System.Drawing.Point(11, 74)
             Me.Label3.Margin = New System.Windows.Forms.Padding(0)
             Me.Label3.Name = "Label3"
@@ -101,7 +113,11 @@ Namespace Forms
             '
             'Username
             '
-            Me.Username.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Username.Font = New System.Drawing.Font("Segoe UI",
+                                                       9.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
             Me.Username.Location = New System.Drawing.Point(119, 14)
             Me.Username.Margin = New System.Windows.Forms.Padding(5, 3, 11, 3)
             Me.Username.Name = "Username"
@@ -110,17 +126,25 @@ Namespace Forms
             '
             'Password
             '
-            Me.Password.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Password.Font = New System.Drawing.Font("Segoe UI",
+                                                       9.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
             Me.Password.Location = New System.Drawing.Point(119, 47)
             Me.Password.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.Password.Name = "Password"
-            Me.Password.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
+            Me.Password.PasswordChar = ChrW(42)
             Me.Password.Size = New System.Drawing.Size(170, 23)
             Me.Password.TabIndex = 4
             '
             'CompDate
             '
-            Me.CompDate.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.CompDate.Font = New System.Drawing.Font("Segoe UI",
+                                                       9.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
             Me.CompDate.ItemHeight = 15
             Me.CompDate.Location = New System.Drawing.Point(119, 80)
             Me.CompDate.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
@@ -131,7 +155,11 @@ Namespace Forms
             'OKbutton
             '
             Me.OKbutton.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.OKbutton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.OKbutton.Font = New System.Drawing.Font("Segoe UI",
+                                                       9.0!,
+                                                       System.Drawing.FontStyle.Regular,
+                                                       System.Drawing.GraphicsUnit.Point,
+                                                       CType(0, Byte))
             Me.OKbutton.Location = New System.Drawing.Point(77, 171)
             Me.OKbutton.Name = "OKbutton"
             Me.OKbutton.Size = New System.Drawing.Size(75, 23)
@@ -141,7 +169,11 @@ Namespace Forms
             'Cancel_Button
             '
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI",
+                                                            9.0!,
+                                                            System.Drawing.FontStyle.Regular,
+                                                            System.Drawing.GraphicsUnit.Point,
+                                                            CType(0, Byte))
             Me.Cancel_Button.Location = New System.Drawing.Point(158, 171)
             Me.Cancel_Button.Margin = New System.Windows.Forms.Padding(3, 11, 3, 11)
             Me.Cancel_Button.Name = "Cancel_Button"
@@ -153,7 +185,11 @@ Namespace Forms
             '
             Me.Upload_digital_scores.Checked = True
             Me.Upload_digital_scores.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.Upload_digital_scores.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Upload_digital_scores.Font = New System.Drawing.Font("Segoe UI",
+                                                                    8.25!,
+                                                                    System.Drawing.FontStyle.Regular,
+                                                                    System.Drawing.GraphicsUnit.Point,
+                                                                    CType(0, Byte))
             Me.Upload_digital_scores.Location = New System.Drawing.Point(119, 117)
             Me.Upload_digital_scores.Margin = New System.Windows.Forms.Padding(3, 11, 3, 3)
             Me.Upload_digital_scores.Name = "Upload_digital_scores"
@@ -165,7 +201,11 @@ Namespace Forms
             '
             Me.Upload_print_scores.Checked = True
             Me.Upload_print_scores.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.Upload_print_scores.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Upload_print_scores.Font = New System.Drawing.Font("Segoe UI",
+                                                                  8.25!,
+                                                                  System.Drawing.FontStyle.Regular,
+                                                                  System.Drawing.GraphicsUnit.Point,
+                                                                  CType(0, Byte))
             Me.Upload_print_scores.Location = New System.Drawing.Point(119, 140)
             Me.Upload_print_scores.Name = "Upload_print_scores"
             Me.Upload_print_scores.Size = New System.Drawing.Size(144, 17)
@@ -188,7 +228,11 @@ Namespace Forms
             Me.Controls.Add(Me.Label3)
             Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.Label1)
-            Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Font = New System.Drawing.Font("Segoe UI",
+                                              9.0!,
+                                              System.Drawing.FontStyle.Regular,
+                                              System.Drawing.GraphicsUnit.Point,
+                                              CType(0, Byte))
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Name = "UploadScoresDialog"
@@ -197,12 +241,12 @@ Namespace Forms
             Me.Text = "Upload Scores"
             Me.ResumeLayout(False)
             Me.PerformLayout()
-
         End Sub
 
 #End Region
 
-        Private Sub Upload_Scores_Dialog_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
+        Private Sub Upload_Scores_Dialog_Closing(sender As Object, e As System.ComponentModel.CancelEventArgs) _
+            Handles MyBase.Closing
             Dim is_invalid_input As Boolean = False
 
             Dim err_msg As String = "Please correct the following errors" + vbCrLf + vbCrLf

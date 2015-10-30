@@ -1,18 +1,16 @@
-Imports System.Data.Entity
-Imports System.Data.Entity.Core.Common
-Imports System.Data.SQLite
-Imports System.Data.SQLite.EF6
-Imports System.Runtime.InteropServices
 
-<ComVisible(False)>
+
+<System.Runtime.InteropServices.ComVisible(False)>
 Public Class SqLiteConfiguration
-    Inherits DbConfiguration
+    Inherits Entity.DbConfiguration
 
     Public Sub New()
-        SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance)
-        SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance)
+        SetProviderFactory("System.Data.SQLite", SQLite.SQLiteFactory.Instance)
+        SetProviderFactory("System.Data.SQLite.EF6", System.Data.SQLite.EF6.SQLiteProviderFactory.Instance)
         SetProviderServices("System.Data.SQLite",
-                            DirectCast(SQLiteProviderFactory.Instance.GetService(GetType(DbProviderServices)),
-                                       DbProviderServices))
+                            DirectCast(
+                                System.Data.SQLite.EF6.SQLiteProviderFactory.Instance.GetService(
+                                    GetType(System.Data.Entity.Core.Common.DbProviderServices)),
+                                System.Data.Entity.Core.Common.DbProviderServices))
     End Sub
 End Class

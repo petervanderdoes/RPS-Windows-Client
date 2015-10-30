@@ -1,7 +1,6 @@
-Imports System.Reflection
+
 
 Namespace Forms
-
     Public Class ImageViewer
         Inherits Form
 
@@ -96,10 +95,16 @@ Namespace Forms
             '
             'ScorePopUp
             '
-            Me.ScorePopUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.ScorePopUp.Anchor =
+                CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),
+                      System.Windows.Forms.AnchorStyles)
             Me.ScorePopUp.BackColor = System.Drawing.Color.Black
             Me.ScorePopUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.ScorePopUp.Font = New System.Drawing.Font("Segoe UI", 56.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.ScorePopUp.Font = New System.Drawing.Font("Segoe UI",
+                                                         56.25!,
+                                                         System.Drawing.FontStyle.Bold,
+                                                         System.Drawing.GraphicsUnit.Point,
+                                                         CType(0, Byte))
             Me.ScorePopUp.ForeColor = System.Drawing.Color.White
             Me.ScorePopUp.Location = New System.Drawing.Point(803, 29)
             Me.ScorePopUp.Margin = New System.Windows.Forms.Padding(0)
@@ -126,7 +131,11 @@ Namespace Forms
             'StatusBarAward
             '
             Me.StatusBarAward.BackColor = System.Drawing.Color.Black
-            Me.StatusBarAward.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.StatusBarAward.Font = New System.Drawing.Font("Verdana",
+                                                             12.0!,
+                                                             System.Drawing.FontStyle.Bold,
+                                                             System.Drawing.GraphicsUnit.Point,
+                                                             CType(0, Byte))
             Me.StatusBarAward.ForeColor = System.Drawing.Color.White
             Me.StatusBarAward.Location = New System.Drawing.Point(0, 0)
             Me.StatusBarAward.Margin = New System.Windows.Forms.Padding(0)
@@ -138,7 +147,11 @@ Namespace Forms
             'StatusBarScore
             '
             Me.StatusBarScore.BackColor = System.Drawing.Color.Black
-            Me.StatusBarScore.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.StatusBarScore.Font = New System.Drawing.Font("Verdana",
+                                                             12.0!,
+                                                             System.Drawing.FontStyle.Bold,
+                                                             System.Drawing.GraphicsUnit.Point,
+                                                             CType(0, Byte))
             Me.StatusBarScore.ForeColor = System.Drawing.Color.White
             Me.StatusBarScore.Location = New System.Drawing.Point(889, 0)
             Me.StatusBarScore.Margin = New System.Windows.Forms.Padding(0)
@@ -150,7 +163,11 @@ Namespace Forms
             'StatusBarTitle
             '
             Me.StatusBarTitle.BackColor = System.Drawing.Color.Black
-            Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana",
+                                                             12.0!,
+                                                             System.Drawing.FontStyle.Bold,
+                                                             System.Drawing.GraphicsUnit.Point,
+                                                             CType(0, Byte))
             Me.StatusBarTitle.ForeColor = System.Drawing.Color.White
             Me.StatusBarTitle.Location = New System.Drawing.Point(134, 0)
             Me.StatusBarTitle.Margin = New System.Windows.Forms.Padding(0)
@@ -163,7 +180,11 @@ Namespace Forms
             'splashClub
             '
             Me.splashClub.BackColor = System.Drawing.Color.Black
-            Me.splashClub.Font = New System.Drawing.Font("Segoe UI", 39.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.splashClub.Font = New System.Drawing.Font("Segoe UI",
+                                                         39.75!,
+                                                         System.Drawing.FontStyle.Bold,
+                                                         System.Drawing.GraphicsUnit.Point,
+                                                         CType(0, Byte))
             Me.splashClub.ForeColor = System.Drawing.Color.Yellow
             Me.splashClub.Location = New System.Drawing.Point(0, 200)
             Me.splashClub.Margin = New System.Windows.Forms.Padding(0)
@@ -177,7 +198,11 @@ Namespace Forms
             'splashTheme
             '
             Me.splashTheme.BackColor = System.Drawing.Color.Black
-            Me.splashTheme.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.splashTheme.Font = New System.Drawing.Font("Segoe UI",
+                                                          36.0!,
+                                                          System.Drawing.FontStyle.Bold,
+                                                          System.Drawing.GraphicsUnit.Point,
+                                                          CType(0, Byte))
             Me.splashTheme.ForeColor = System.Drawing.Color.White
             Me.splashTheme.Location = New System.Drawing.Point(0, 334)
             Me.splashTheme.Margin = New System.Windows.Forms.Padding(0)
@@ -191,7 +216,11 @@ Namespace Forms
             'splashClassification
             '
             Me.splashClassification.BackColor = System.Drawing.Color.Black
-            Me.splashClassification.Font = New System.Drawing.Font("Segoe UI", 48.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.splashClassification.Font = New System.Drawing.Font("Segoe UI",
+                                                                   48.0!,
+                                                                   System.Drawing.FontStyle.Bold,
+                                                                   System.Drawing.GraphicsUnit.Point,
+                                                                   CType(0, Byte))
             Me.splashClassification.ForeColor = System.Drawing.Color.Red
             Me.splashClassification.Location = New System.Drawing.Point(0, 468)
             Me.splashClassification.Margin = New System.Windows.Forms.Padding(0)
@@ -226,7 +255,6 @@ Namespace Forms
             CType(Me.picShowPicture, System.ComponentModel.ISupportInitialize).EndInit()
             Me.StatusBar.ResumeLayout(False)
             Me.ResumeLayout(False)
-
         End Sub
 
 #End Region
@@ -392,7 +420,7 @@ Namespace Forms
                         ScorePopUp.Visible = False
                 End Select
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -431,7 +459,7 @@ Namespace Forms
                     moveToImage(current_index)
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -448,7 +476,7 @@ Namespace Forms
                     Application.DoEvents()
                 End While
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             Finally
                 in_delay_loop = False
             End Try
@@ -480,7 +508,7 @@ Namespace Forms
                 End If
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -490,7 +518,7 @@ Namespace Forms
                 doDelay(2000)
                 StatusBar.Visible = False
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -537,7 +565,7 @@ Namespace Forms
                     Beep()
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 

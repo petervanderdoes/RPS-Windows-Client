@@ -1,7 +1,6 @@
-Imports System.Reflection
+
 
 Namespace Forms
-
     Public Class PreferencesDialog
         Inherits Form
 
@@ -59,7 +58,8 @@ Namespace Forms
 
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PreferencesDialog))
+            Dim resources As System.ComponentModel.ComponentResourceManager =
+                    New System.ComponentModel.ComponentResourceManager(GetType(PreferencesDialog))
             Me.Label1 = New System.Windows.Forms.Label()
             Me.tbImagesRootFolder = New System.Windows.Forms.TextBox()
             Me.Label2 = New System.Windows.Forms.Label()
@@ -85,7 +85,11 @@ Namespace Forms
             '
             'Label1
             '
-            Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label1.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label1.Location = New System.Drawing.Point(11, 11)
             Me.Label1.Margin = New System.Windows.Forms.Padding(0)
             Me.Label1.Name = "Label1"
@@ -96,7 +100,11 @@ Namespace Forms
             '
             'tbImagesRootFolder
             '
-            Me.tbImagesRootFolder.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.tbImagesRootFolder.Font = New System.Drawing.Font("Segoe UI",
+                                                                 9.0!,
+                                                                 System.Drawing.FontStyle.Regular,
+                                                                 System.Drawing.GraphicsUnit.Point,
+                                                                 CType(0, Byte))
             Me.tbImagesRootFolder.Location = New System.Drawing.Point(148, 11)
             Me.tbImagesRootFolder.Margin = New System.Windows.Forms.Padding(0)
             Me.tbImagesRootFolder.Name = "tbImagesRootFolder"
@@ -105,7 +113,11 @@ Namespace Forms
             '
             'Label2
             '
-            Me.Label2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label2.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label2.Location = New System.Drawing.Point(11, 40)
             Me.Label2.Name = "Label2"
             Me.Label2.Size = New System.Drawing.Size(130, 23)
@@ -115,7 +127,11 @@ Namespace Forms
             '
             'tbDatabaseFileName
             '
-            Me.tbDatabaseFileName.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.tbDatabaseFileName.Font = New System.Drawing.Font("Segoe UI",
+                                                                 9.0!,
+                                                                 System.Drawing.FontStyle.Regular,
+                                                                 System.Drawing.GraphicsUnit.Point,
+                                                                 CType(0, Byte))
             Me.tbDatabaseFileName.Location = New System.Drawing.Point(148, 42)
             Me.tbDatabaseFileName.Name = "tbDatabaseFileName"
             Me.tbDatabaseFileName.Size = New System.Drawing.Size(269, 23)
@@ -157,7 +173,11 @@ Namespace Forms
             '
             'Label3
             '
-            Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label3.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label3.Location = New System.Drawing.Point(11, 69)
             Me.Label3.Name = "Label3"
             Me.Label3.Size = New System.Drawing.Size(130, 23)
@@ -167,7 +187,11 @@ Namespace Forms
             '
             'tbReportsOutputFolder
             '
-            Me.tbReportsOutputFolder.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.tbReportsOutputFolder.Font = New System.Drawing.Font("Segoe UI",
+                                                                    9.0!,
+                                                                    System.Drawing.FontStyle.Regular,
+                                                                    System.Drawing.GraphicsUnit.Point,
+                                                                    CType(0, Byte))
             Me.tbReportsOutputFolder.Location = New System.Drawing.Point(148, 69)
             Me.tbReportsOutputFolder.Name = "tbReportsOutputFolder"
             Me.tbReportsOutputFolder.Size = New System.Drawing.Size(269, 23)
@@ -183,7 +207,11 @@ Namespace Forms
             '
             'Label4
             '
-            Me.Label4.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label4.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label4.Location = New System.Drawing.Point(11, 98)
             Me.Label4.Name = "Label4"
             Me.Label4.Size = New System.Drawing.Size(130, 23)
@@ -193,7 +221,11 @@ Namespace Forms
             '
             'tbServerName
             '
-            Me.tbServerName.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.tbServerName.Font = New System.Drawing.Font("Segoe UI",
+                                                           9.0!,
+                                                           System.Drawing.FontStyle.Regular,
+                                                           System.Drawing.GraphicsUnit.Point,
+                                                           CType(0, Byte))
             Me.tbServerName.Location = New System.Drawing.Point(148, 98)
             Me.tbServerName.Name = "tbServerName"
             Me.tbServerName.Size = New System.Drawing.Size(269, 23)
@@ -201,7 +233,11 @@ Namespace Forms
             '
             'Label6
             '
-            Me.Label6.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label6.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label6.Location = New System.Drawing.Point(11, 156)
             Me.Label6.Name = "Label6"
             Me.Label6.Size = New System.Drawing.Size(130, 23)
@@ -211,7 +247,11 @@ Namespace Forms
             '
             'cbCameraClubName
             '
-            Me.cbCameraClubName.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.cbCameraClubName.Font = New System.Drawing.Font("Segoe UI",
+                                                               9.0!,
+                                                               System.Drawing.FontStyle.Regular,
+                                                               System.Drawing.GraphicsUnit.Point,
+                                                               CType(0, Byte))
             Me.cbCameraClubName.Location = New System.Drawing.Point(148, 156)
             Me.cbCameraClubName.Name = "cbCameraClubName"
             Me.cbCameraClubName.Size = New System.Drawing.Size(269, 23)
@@ -219,7 +259,11 @@ Namespace Forms
             '
             'Label5
             '
-            Me.Label5.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label5.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label5.Location = New System.Drawing.Point(11, 127)
             Me.Label5.Name = "Label5"
             Me.Label5.Size = New System.Drawing.Size(130, 23)
@@ -229,7 +273,11 @@ Namespace Forms
             '
             'tbServerScriptDir
             '
-            Me.tbServerScriptDir.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.tbServerScriptDir.Font = New System.Drawing.Font("Segoe UI",
+                                                                9.0!,
+                                                                System.Drawing.FontStyle.Regular,
+                                                                System.Drawing.GraphicsUnit.Point,
+                                                                CType(0, Byte))
             Me.tbServerScriptDir.Location = New System.Drawing.Point(148, 127)
             Me.tbServerScriptDir.Name = "tbServerScriptDir"
             Me.tbServerScriptDir.Size = New System.Drawing.Size(269, 23)
@@ -237,7 +285,11 @@ Namespace Forms
             '
             'Label7
             '
-            Me.Label7.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label7.Font = New System.Drawing.Font("Segoe UI",
+                                                     9.0!,
+                                                     System.Drawing.FontStyle.Regular,
+                                                     System.Drawing.GraphicsUnit.Point,
+                                                     CType(0, Byte))
             Me.Label7.Location = New System.Drawing.Point(11, 185)
             Me.Label7.Name = "Label7"
             Me.Label7.Size = New System.Drawing.Size(130, 23)
@@ -247,7 +299,11 @@ Namespace Forms
             '
             'cbNumJudges
             '
-            Me.cbNumJudges.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.cbNumJudges.Font = New System.Drawing.Font("Segoe UI",
+                                                          9.0!,
+                                                          System.Drawing.FontStyle.Regular,
+                                                          System.Drawing.GraphicsUnit.Point,
+                                                          CType(0, Byte))
             Me.cbNumJudges.Items.AddRange(New Object() {"1", "2", "3"})
             Me.cbNumJudges.Location = New System.Drawing.Point(148, 185)
             Me.cbNumJudges.Name = "cbNumJudges"
@@ -280,7 +336,11 @@ Namespace Forms
             Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.tbImagesRootFolder)
             Me.Controls.Add(Me.Label1)
-            Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Font = New System.Drawing.Font("Segoe UI",
+                                              9.0!,
+                                              System.Drawing.FontStyle.Regular,
+                                              System.Drawing.GraphicsUnit.Point,
+                                              CType(0, Byte))
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Name = "PreferencesDialog"
@@ -288,7 +348,6 @@ Namespace Forms
             Me.Text = "Preferences"
             Me.ResumeLayout(False)
             Me.PerformLayout()
-
         End Sub
 
 #End Region
@@ -302,7 +361,7 @@ Namespace Forms
                 folder_browser.ShowDialog()
                 tbImagesRootFolder.Text = folder_browser.SelectedPath
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -314,7 +373,7 @@ Namespace Forms
                 file_open_dialog.ShowDialog()
                 tbDatabaseFileName.Text = file_open_dialog.FileName
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -327,7 +386,7 @@ Namespace Forms
                 folder_browser.ShowDialog()
                 tbReportsOutputFolder.Text = folder_browser.SelectedPath
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
     End Class

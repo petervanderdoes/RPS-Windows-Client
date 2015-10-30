@@ -1,8 +1,7 @@
-Imports System.Drawing.Drawing2D
-Imports System.Reflection
-Imports System.Runtime.InteropServices
 
-Public Class Thumbnail : Implements IDisposable
+
+Public Class Thumbnail
+    Implements IDisposable
     Private Const JPG_QUALITY As Long = 90
     Private Const THUMBNAIL_HEIGHT As Integer = 256
     Private Const THUMBNAIL_WIDTH As Integer = 256
@@ -33,7 +32,7 @@ Public Class Thumbnail : Implements IDisposable
         Dim path As String
         Dim file_name As String
         Dim thumbnail_path As String
-        Dim jpg_encoder As ImageCodecInfo = GetEncoderInfo("image/jpeg")
+        Dim jpg_encoder As ImageCodecInfo = getEncoderInfo("image/jpeg")
         Dim encoder_params As EncoderParameters = New EncoderParameters(1)
         Dim scale_factor As Double
         Dim thumb_width As Integer
@@ -59,7 +58,7 @@ Public Class Thumbnail : Implements IDisposable
             img = New Bitmap(path + "\" + file_name)
             thumb = New Bitmap(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
             gr = Graphics.FromImage(thumb)
-            gr.InterpolationMode = InterpolationMode.HighQualityBicubic
+            gr.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
 
             ' Compute the size of the thumbnail to paint on the canvas
             If img.Width > img.Height Then ' Landscape image
@@ -78,9 +77,9 @@ Public Class Thumbnail : Implements IDisposable
 
             ' Paint the thumbnail on the canvas
             gr.DrawImage(img,
-                          New Rectangle(thumb_x, thumb_y, thumb_width, thumb_height),
-                          New Rectangle(0, 0, img.Width, img.Height),
-                          GraphicsUnit.Pixel)
+                         New Rectangle(thumb_x, thumb_y, thumb_width, thumb_height),
+                         New Rectangle(0, 0, img.Width, img.Height),
+                         GraphicsUnit.Pixel)
             gr.Dispose()
 
             ' Compute the name of the destination thumbnail file
@@ -99,7 +98,7 @@ Public Class Thumbnail : Implements IDisposable
             encoder_params.Dispose()
 
         Catch exception As Exception
-            MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
+            MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
         End Try
     End Sub
 
