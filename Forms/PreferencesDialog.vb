@@ -5,18 +5,18 @@ Namespace Forms
     Public Class PreferencesDialog
         Inherits Form
 
-        Private ReadOnly _the_main_form As Forms.MainForm
+        Private ReadOnly the_main_form As MainForm
 
 #Region " Windows Form Designer generated code "
 
-        Public Sub New(ByVal myMainForm As Forms.MainForm)
+        Public Sub New(ByVal myMainForm As MainForm)
             MyBase.New()
 
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
-            _the_main_form = myMainForm
+            the_main_form = myMainForm
         End Sub
 
         'Form overrides dispose to clean up the component list.
@@ -298,7 +298,7 @@ Namespace Forms
 
             Try
                 folder_browser.RootFolder = Environment.SpecialFolder.MyComputer
-                folder_browser.SelectedPath = _the_main_form.images_root_folder
+                folder_browser.SelectedPath = the_main_form.images_root_folder
                 folder_browser.ShowDialog()
                 tbImagesRootFolder.Text = folder_browser.SelectedPath
             Catch exception As Exception

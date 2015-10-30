@@ -4,11 +4,11 @@ Namespace Forms
     Public Class DownloadCompetitionsDialog
         Inherits Form
 
-        Private ReadOnly _the_main_form As Forms.MainForm
+        Private ReadOnly the_main_form As MainForm
 
 #Region " Windows Form Designer generated code "
 
-        Public Sub New(ByVal myMainForm As Forms.MainForm,
+        Public Sub New(ByVal myMainForm As MainForm,
                        ByVal defaultUsername As String,
                        ByVal comp_dates As ArrayList,
                        ByVal rootFolder As String)
@@ -18,7 +18,7 @@ Namespace Forms
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
-            _the_main_form = myMainForm
+            the_main_form = myMainForm
 
             Username.Text = defaultUsername
             Username.Select(0, 0)
@@ -324,7 +324,7 @@ Namespace Forms
             'Dim fileOpenDialog As New OpenFileDialog
 
             FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
-            FolderBrowserDialog1.SelectedPath = _the_main_form.images_root_folder
+            FolderBrowserDialog1.SelectedPath = the_main_form.images_root_folder
             If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
                 OutputFolder.Text = FolderBrowserDialog1.SelectedPath
             End If

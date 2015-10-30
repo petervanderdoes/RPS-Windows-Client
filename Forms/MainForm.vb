@@ -9,21 +9,21 @@ Namespace Forms
     Public Class MainForm
         Inherits Form
 
-        Private ReadOnly _data_folder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
-        Private _database_file_name As String = _data_folder + "\rps.db"
+        Private ReadOnly data_folder As String = My.Computer.FileSystem.GetParentPath(Application.LocalUserAppDataPath)
+        Private database_file_name As String = data_folder + "\rps.db"
 
         ' Database
         Public ef_setup As SqLiteConfiguration = New SqLiteConfiguration
         Public rps_context As Entities.rpsEntities
-        Private _query As Object
-        Private _record As Object
+        Private query As Object
+        Private record As Object
         Public entries As IList(Of Entities.CompetitionEntry)
 
         ' User Preferences (defaults)
-        Public reports_output_folder As String = _data_folder + "\Reports"
-        Public images_root_folder As String = _data_folder + "\Photos"
-        Private _server_name As String = "localhost"
-        Private _server_script_dir As String = "/"
+        Public reports_output_folder As String = data_folder + "\Reports"
+        Public images_root_folder As String = data_folder + "\Photos"
+        Private server_name As String = "localhost"
+        Private server_script_dir As String = "/"
         Public camera_club_name As String = "Raritan Photographic Society"
         Public camera_club_id As Integer = 1
         Public classifications As New ArrayList
@@ -34,27 +34,27 @@ Namespace Forms
         Public max_score As Integer
         Public min_score_for_award As Integer
         Public num_judges As Integer = 1
-        Private _all_scores_selected As Boolean
-        Private _eights_and_awards_selected As Boolean
-        Private _selected_score As Integer
-        Private _selected_avg_score As Integer
+        Private all_scores_selected As Boolean
+        Private eights_and_awards_selected As Boolean
+        Private selected_score As Integer
+        Private selected_avg_score As Integer
         Public last_admin_username As String
 
         Public status_bar As New ProgressStatus
 
         ' For the thumbnail view
-        Private _nine_point_thumb_view_title As String
-        Private _eight_point_thumb_view_title As String
+        Private nine_point_thumb_view_title As String
+        Private eight_point_thumb_view_title As String
         Friend WithEvents data_grid_text_box_column3 As DataGridTextBoxColumn
         Friend WithEvents data_grid_text_box_column2 As DataGridTextBoxColumn
         Friend WithEvents data_grid_text_box_column1 As DataGridTextBoxColumn
         Friend WithEvents data_grid_entries_view As DataGridView
         Friend WithEvents grid_caption As Label
-        Private _seven_point_thumb_view_title As String
+        Private seven_point_thumb_view_title As String
         Friend WithEvents grid_entries_score As DataGridViewTextBoxColumn
         Friend WithEvents grid_entries_award As DataGridViewTextBoxColumn
         Friend WithEvents grid_entries_title As DataGridViewTextBoxColumn
-        Private ReadOnly _center_cell_style As New DataGridViewCellStyle
+        Private ReadOnly center_cell_style As New DataGridViewCellStyle
 
         Private Sub initializeStatusBar()
             Dim info As StatusBarPanel = New StatusBarPanel
@@ -716,16 +716,16 @@ Namespace Forms
             status_bar.progress_bar.Hide()
             Try
                 ' Set up the connection string for the database connection
-                Set_database_name(_database_file_name)
+                Set_database_name(database_file_name)
                 ' Load the user preferences from the registry
                 getPreferences()
 
                 rps_context = New Entities.rpsEntities(New SQLiteConnectionStringBuilder() With {
-                                                 .DataSource = _database_file_name,
+                                                 .DataSource = database_file_name,
                                                  .ForeignKeys = True
                                                  }.ConnectionString)
-                If Not File.Exists(_database_file_name) Then
-                    SQLiteConnection.CreateFile(_database_file_name)
+                If Not File.Exists(database_file_name) Then
+                    SQLiteConnection.CreateFile(database_file_name)
                     initializeDatabase()
                 End If
 
@@ -739,7 +739,7 @@ Namespace Forms
                 End If
 
                 ' Setup Datagrid Styles
-                _center_cell_style.Alignment = DataGridViewContentAlignment.MiddleCenter
+                center_cell_style.Alignment = DataGridViewContentAlignment.MiddleCenter
 
                 getClubRules()
 
@@ -755,7 +755,7 @@ Namespace Forms
         End Sub
 
         Private Sub initializeDatabase()
-            _query = "CREATE TABLE `medium` (`name` TEXT, `id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
+            query = "CREATE TABLE `medium` (`name` TEXT, `id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                      "CREATE TABLE 'club_medium' (`club_id` INTEGER Not NULL,`medium_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0, PRIMARY KEY(club_id, medium_id), FOREIGN KEY(`club_id`) REFERENCES club ( id ), FOREIGN KEY(`medium_id`) REFERENCES medium ( id ));" &
                      "CREATE TABLE 'club_classification' (`club_id` INTEGER Not NULL,`classification_id` INTEGER Not NULL,`sort_key` INTEGER DEFAULT 0,PRIMARY KEY(club_id, classification_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`classification_id`) REFERENCES classification ( id ));" &
                      "CREATE TABLE 'club_award' (`club_id` INTEGER Not NULL,`award_id` INTEGER Not NULL,`points` INTEGER,`sort_key` INTEGER,PRIMARY KEY(club_id, award_id),FOREIGN KEY(`club_id`) REFERENCES club ( id ),FOREIGN KEY(`award_id`) REFERENCES award ( id ));" &
@@ -763,9 +763,9 @@ Namespace Forms
                      "CREATE TABLE 'classification' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                      "CREATE TABLE 'award' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                      "CREATE TABLE 'CompetitionEntries' (`Photo_ID` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,`Title` TEXT,`Maker` TEXT,`Classification` TEXT,`Medium` TEXT,`Theme` TEXT,`Competition_Date_1` TEXT,`Score_1` INTEGER DEFAULT 0,`Award` TEXT,`Image_File_Name` TEXT,`Display_Sequence` INTEGER DEFAULT 0,`Server_Entry_ID` INTEGER DEFAULT 0);"
-            rps_context.Database.ExecuteSqlCommand(_query)
+            rps_context.Database.ExecuteSqlCommand(query)
 
-            _query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);" &
+            query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);" &
                      "INSERT INTO `medium` (name,id) VALUES ('Color Prints',2);" &
                      "INSERT INTO `medium` (name,id) VALUES ('B&W Digital',3);" &
                      "INSERT INTO `medium` (name,id) VALUES ('B&W Prints',4);" &
@@ -788,7 +788,7 @@ Namespace Forms
                      "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,2,NULL,2);" &
                      "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,3,NULL,3);" &
                      "INSERT INTO `club_award` (club_id,award_id,points,sort_key) VALUES (1,4,NULL,4);"
-            rps_context.Database.ExecuteSqlCommand(_query)
+            rps_context.Database.ExecuteSqlCommand(query)
         End Sub
 
 
@@ -822,32 +822,32 @@ Namespace Forms
         Private Sub SelectMedium_SelectedIndexChanged(sender As Object, e As EventArgs) _
             Handles SelectMedium.SelectedIndexChanged
             SelectScore.SelectedItem = "All"
-            _all_scores_selected = True
-            _eights_and_awards_selected = False
+            all_scores_selected = True
+            eights_and_awards_selected = False
             getSelectedEntries()
         End Sub
 
         Private Sub SelectClassification_SelectedIndexChanged(sender As Object, e As EventArgs) _
             Handles SelectClassification.SelectedIndexChanged
             SelectScore.SelectedItem = "All"
-            _all_scores_selected = True
-            _eights_and_awards_selected = False
+            all_scores_selected = True
+            eights_and_awards_selected = False
             getSelectedEntries()
         End Sub
 
         Private Sub SelectTheme_SelectedIndexChanged(sender As Object, e As EventArgs) _
             Handles SelectTheme.SelectedIndexChanged
             SelectScore.SelectedItem = "All"
-            _all_scores_selected = True
-            _eights_and_awards_selected = False
+            all_scores_selected = True
+            eights_and_awards_selected = False
             getSelectedEntries()
         End Sub
 
         Private Sub SelectAward_SelectedIndexChanged(sender As Object, e As EventArgs) _
             Handles SelectAward.SelectedIndexChanged
             SelectScore.SelectedItem = "All"
-            _all_scores_selected = True
-            _eights_and_awards_selected = False
+            all_scores_selected = True
+            eights_and_awards_selected = False
             getSelectedEntries()
         End Sub
 
@@ -955,7 +955,7 @@ Namespace Forms
             ' Display the splash screen if about to view all images in a competition starting
             ' from the beginning
             'If AllScoresRadioButton.Checked And grdCompetition_Entries.CurrentRowIndex <= 0 Then
-            If _all_scores_selected And data_grid_entries_view.CurrentCell.RowIndex <= 0 Then
+            If all_scores_selected And data_grid_entries_view.CurrentCell.RowIndex <= 0 Then
                 show_splash = True
             Else
                 show_splash = False
@@ -963,11 +963,11 @@ Namespace Forms
 
             ' Set the status bar to show the title and maker name if we're announcing the winners
             'If EightsAndAwardsRadioButton.Checked Then
-            If _eights_and_awards_selected Then
+            If eights_and_awards_selected Then
                 status_bar_state = 2
                 ' Set the status bar to show the title only if we're assigning awards
                 'ElseIf NineScoreRadioButton.Checked Or EightScoreRadioButton.Checked Or SevenScoreRadioButton.Checked Then
-            ElseIf Not _all_scores_selected Then
+            ElseIf Not all_scores_selected Then
                 status_bar_state = 1
             Else
                 status_bar_state = 0
@@ -986,8 +986,8 @@ Namespace Forms
                 data_grid_entries_view.Refresh()
 
                 For Each entry As Entities.CompetitionEntry In entries
-                    _query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
-                    rps_context.Database.ExecuteSqlCommand(_query,
+                    query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                    rps_context.Database.ExecuteSqlCommand(query,
                                                            New SQLiteParameter("@score", entry.Score_1),
                                                            New SQLiteParameter("@award", entry.Award),
                                                            New SQLiteParameter("@key", entry.Server_Entry_ID)
@@ -995,7 +995,7 @@ Namespace Forms
                 Next
                 ' If we've just completed entering scores, calculate the eligible awards
                 'If AllScoresRadioButton.Checked Then
-                If _all_scores_selected Then
+                If all_scores_selected Then
                     doCalculateAwards()
                     'PickAwards()
                 End If
@@ -1040,24 +1040,24 @@ Namespace Forms
 
 
                 ' Configure the title for the thumbnail screen
-                If _all_scores_selected Then
+                If all_scores_selected Then
                     screen_title = SelectClassification.Text + " " + SelectMedium.Text
-                ElseIf _eights_and_awards_selected Then
+                ElseIf eights_and_awards_selected Then
                     If num_judges > 1 Then
                         screen_title = "Award winners And images averaging 8 points Or more"
                     Else
                         screen_title = "Award winners And images With 8 points Or more"
                     End If
-                ElseIf _selected_avg_score > 0 Then
-                    If _selected_avg_score = 9 Then
-                        screen_title = _nine_point_thumb_view_title
-                    ElseIf _selected_avg_score = 8 Then
-                        screen_title = _eight_point_thumb_view_title
-                    ElseIf _selected_avg_score = 7 Then
-                        screen_title = _seven_point_thumb_view_title
+                ElseIf selected_avg_score > 0 Then
+                    If selected_avg_score = 9 Then
+                        screen_title = nine_point_thumb_view_title
+                    ElseIf selected_avg_score = 8 Then
+                        screen_title = eight_point_thumb_view_title
+                    ElseIf selected_avg_score = 7 Then
+                        screen_title = seven_point_thumb_view_title
                     End If
                 Else
-                    screen_title = "Images scoring " + CType(_selected_score, String) + " points"
+                    screen_title = "Images scoring " + CType(selected_score, String) + " points"
                 End If
 
                 ' Launch the thumbnail screen
@@ -1068,8 +1068,8 @@ Namespace Forms
                 data_grid_entries_view.Refresh()
 
                 For Each entry As Entities.CompetitionEntry In entries
-                    _query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
-                    rps_context.Database.ExecuteSqlCommand(_query,
+                    query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
+                    rps_context.Database.ExecuteSqlCommand(query,
                                                            New SQLiteParameter("@score", entry.Score_1),
                                                            New SQLiteParameter("@award", entry.Award),
                                                            New SQLiteParameter("@key", entry.Server_Entry_ID)
@@ -1196,20 +1196,20 @@ Namespace Forms
                         grid_caption.Text += SelectMedium.Text
                     End If
 
-                    If Not _all_scores_selected Then
-                        If _eights_and_awards_selected Then
+                    If Not all_scores_selected Then
+                        If eights_and_awards_selected Then
                             where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(num_judges, String) +
                                             ", 0) >= 8 AND Award Is Null))"
                             ' "CASE WHEN Award is NULL THEN 0 ELSE 1 END" Ensure the NULL values are shown first.
                             order_clause = " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
                             grid_caption.Text += " (8s and Awards)"
-                        ElseIf _selected_avg_score > 0 Then
+                        ElseIf selected_avg_score > 0 Then
                             where_clause += " AND round(Score_1/" + CType(num_judges, String) + ", 0) = " +
-                                            CType(_selected_avg_score, String)
-                            grid_caption.Text += " (Avg of " + CType(_selected_avg_score, String) + " points)"
+                                            CType(selected_avg_score, String)
+                            grid_caption.Text += " (Avg of " + CType(selected_avg_score, String) + " points)"
                         Else
-                            where_clause += " AND Score_1=" + CType(_selected_score, String)
-                            grid_caption.Text += " (" + CType(_selected_score, String) + " points only)"
+                            where_clause += " AND Score_1=" + CType(selected_score, String)
+                            grid_caption.Text += " (" + CType(selected_score, String) + " points only)"
                         End If
                     End If
 
@@ -1229,12 +1229,12 @@ Namespace Forms
                     End If
 
                     ' Install the updated SQL SELECT statement
-                    _query = select_stmt + where_clause + order_clause
-                    entries = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(_query).ToList
+                    query = select_stmt + where_clause + order_clause
+                    entries = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
 
                     With data_grid_entries_view
-                        .Columns("grid_entries_score").DefaultCellStyle = _center_cell_style
-                        .Columns("grid_entries_award").DefaultCellStyle = _center_cell_style
+                        .Columns("grid_entries_score").DefaultCellStyle = center_cell_style
+                        .Columns("grid_entries_award").DefaultCellStyle = center_cell_style
                         .AutoGenerateColumns = False
                         .DataSource = entries
                     End With
@@ -1246,7 +1246,7 @@ Namespace Forms
 
                     ' Recalculate the awards
                     'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
-                    If _all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
+                    If all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
                         doCalculateAwards()
                     End If
 
@@ -1289,9 +1289,9 @@ Namespace Forms
 
                 ' Step through the eligible scores until all possible awards have been allocated
                 ' or until the number of eligible scores exhausted.
-                _nine_point_thumb_view_title = ""
-                _eight_point_thumb_view_title = ""
-                _seven_point_thumb_view_title = ""
+                nine_point_thumb_view_title = ""
+                eight_point_thumb_view_title = ""
+                seven_point_thumb_view_title = ""
                 For i = 0 To Math.Min(maximum_awards, eligible_scores.Count) - 1
                     ' Count up the number of eligible 9s, 8s and 7s
                     eligible_score = Math.Round(eligible_scores(i) / num_judges, 0)
@@ -1301,7 +1301,7 @@ Namespace Forms
                             num_eligible_nines = num_eligible_nines + 1
                             ' Build the title for the thumbnail screen
                             If i < 3 Then
-                                _nine_point_thumb_view_title += delim_9 + award_names(i)
+                                nine_point_thumb_view_title += delim_9 + award_names(i)
                             Else
                                 num_nine_hm += 1
                             End If
@@ -1311,7 +1311,7 @@ Namespace Forms
                             num_eligible_eights = num_eligible_eights + 1
                             ' Build the title for the thumbnail screen
                             If i < 3 Then
-                                _eight_point_thumb_view_title += delim_8 + award_names(i)
+                                eight_point_thumb_view_title += delim_8 + award_names(i)
                             Else
                                 num_eight_hm += 1
                             End If
@@ -1321,7 +1321,7 @@ Namespace Forms
                             num_eligible_sevens = num_eligible_sevens + 1
                             ' Build the title for the thumbnail screen
                             If i < 3 Then
-                                _seven_point_thumb_view_title += delim_7 + award_names(i)
+                                seven_point_thumb_view_title += delim_7 + award_names(i)
                             Else
                                 num_seven_hm += 1
                             End If
@@ -1331,55 +1331,55 @@ Namespace Forms
 
                 ' Update the 9 point thumbnail screen title to include the HMs
                 If num_nine_hm > 0 Then
-                    If _nine_point_thumb_view_title > "" Then
-                        _nine_point_thumb_view_title += " And "
+                    If nine_point_thumb_view_title > "" Then
+                        nine_point_thumb_view_title += " And "
                     End If
                     If num_nine_hm = 1 Then
-                        _nine_point_thumb_view_title += "1 HM"
+                        nine_point_thumb_view_title += "1 HM"
                     Else
-                        _nine_point_thumb_view_title += CStr(num_nine_hm) + " HMs"
+                        nine_point_thumb_view_title += CStr(num_nine_hm) + " HMs"
                     End If
                 End If
 
                 ' Update the 8 point thumbnail screen title to include the HMs
                 If num_eight_hm > 0 Then
-                    If _eight_point_thumb_view_title > "" Then
-                        _eight_point_thumb_view_title += " And "
+                    If eight_point_thumb_view_title > "" Then
+                        eight_point_thumb_view_title += " And "
                     End If
                     If num_eight_hm = 1 Then
-                        _eight_point_thumb_view_title += "1 HM"
+                        eight_point_thumb_view_title += "1 HM"
                     Else
-                        _eight_point_thumb_view_title += CStr(num_eight_hm) + " HMs"
+                        eight_point_thumb_view_title += CStr(num_eight_hm) + " HMs"
                     End If
                 End If
 
                 ' Update the 7 point thumbnail screen title to include the HMs
                 If num_seven_hm > 0 Then
-                    If _seven_point_thumb_view_title > "" Then
-                        _seven_point_thumb_view_title += " And "
+                    If seven_point_thumb_view_title > "" Then
+                        seven_point_thumb_view_title += " And "
                     End If
                     If num_seven_hm = 1 Then
-                        _seven_point_thumb_view_title += "1 HM"
+                        seven_point_thumb_view_title += "1 HM"
                     Else
-                        _seven_point_thumb_view_title += CStr(num_seven_hm) + " HMs"
+                        seven_point_thumb_view_title += CStr(num_seven_hm) + " HMs"
                     End If
                 End If
 
                 ' Add a prefix to the thumbnail screen title
-                If _nine_point_thumb_view_title > "" Then
-                    _nine_point_thumb_view_title = "Choose " + _nine_point_thumb_view_title
+                If nine_point_thumb_view_title > "" Then
+                    nine_point_thumb_view_title = "Choose " + nine_point_thumb_view_title
                 Else
-                    _nine_point_thumb_view_title = "Choose (none)"
+                    nine_point_thumb_view_title = "Choose (none)"
                 End If
-                If _eight_point_thumb_view_title > "" Then
-                    _eight_point_thumb_view_title = "Choose " + _eight_point_thumb_view_title
+                If eight_point_thumb_view_title > "" Then
+                    eight_point_thumb_view_title = "Choose " + eight_point_thumb_view_title
                 Else
-                    _eight_point_thumb_view_title = "Choose (none)"
+                    eight_point_thumb_view_title = "Choose (none)"
                 End If
-                If _seven_point_thumb_view_title > "" Then
-                    _seven_point_thumb_view_title = "Choose " + _seven_point_thumb_view_title
+                If seven_point_thumb_view_title > "" Then
+                    seven_point_thumb_view_title = "Choose " + seven_point_thumb_view_title
                 Else
-                    _seven_point_thumb_view_title = "Choose (none)"
+                    seven_point_thumb_view_title = "Choose (none)"
                 End If
 
                 ' Enter the total awards to be chosen into the "caption"
@@ -1597,7 +1597,7 @@ Namespace Forms
             Dim prefs_dialog As New PreferencesDialog(Me)
             Try
                 ' Load the current perferences into the dialog
-                prefs_dialog.tbDatabaseFileName.Text = _database_file_name
+                prefs_dialog.tbDatabaseFileName.Text = database_file_name
                 If Len(images_root_folder) = 2 And Mid(images_root_folder, 2, 1) = ":" Then
                     prefs_dialog.tbImagesRootFolder.Text = images_root_folder + "\"
                 Else
@@ -1608,13 +1608,13 @@ Namespace Forms
                 Else
                     prefs_dialog.tbReportsOutputFolder.Text = reports_output_folder
                 End If
-                prefs_dialog.tbServerName.Text = _server_name
-                prefs_dialog.tbServerScriptDir.Text = _server_script_dir
-                _query = From club In rps_context.clubs
-                         Select club.id, club.name
+                prefs_dialog.tbServerName.Text = server_name
+                prefs_dialog.tbServerScriptDir.Text = server_script_dir
+                query = From club In rps_context.clubs
+                        Select club.id, club.name
 
-                For Each _record In _query
-                    prefs_dialog.cbCameraClubName.Items.Add(New Entities.DataItem(_record.id, _record.name))
+                For Each record In query
+                    prefs_dialog.cbCameraClubName.Items.Add(New Entities.DataItem(record.id, record.name))
                 Next
                 prefs_dialog.cbCameraClubName.Text = camera_club_name
                 prefs_dialog.cbNumJudges.Text = CType(num_judges, String)
@@ -1642,7 +1642,7 @@ Namespace Forms
                         ' update the connection string
                         Set_database_name(dbfn)
                         ' write it to the registry
-                        writeRegistryString("Software\RPS Digital Viewer", "Database File Name", _database_file_name)
+                        writeRegistryString("Software\RPS Digital Viewer", "Database File Name", database_file_name)
                     End If
                     If rof > "" Then
                         ' If necessary, strip off a trailing "\"
@@ -1653,13 +1653,13 @@ Namespace Forms
                     End If
                     If sn > "" Then
                         ' Store the new server name in memory
-                        _server_name = sn
+                        server_name = sn
                         ' Write it to the registry
                         writeRegistryString("Software\RPS Digital Viewer", "Server Name", sn)
                     End If
                     If ssd > "" Then
                         ' Store the new server script directory in memory
-                        _server_script_dir = ssd
+                        server_script_dir = ssd
                         ' Write it to the registry
                         writeRegistryString("Software\RPS Digital Viewer", "Server Script Directory", ssd)
                     End If
@@ -1691,7 +1691,7 @@ Namespace Forms
 
         Private Sub Set_database_name(file_name As String)
             Try
-                _database_file_name = file_name
+                database_file_name = file_name
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
@@ -1753,11 +1753,11 @@ Namespace Forms
                 End If
                 value = getRegistryString("Software\RPS Digital Viewer", "Server Name")
                 If value > "" Then
-                    _server_name = value
+                    server_name = value
                 End If
                 value = getRegistryString("Software\RPS Digital Viewer", "Server Script Directory")
                 If value > "" Then
-                    _server_script_dir = value
+                    server_script_dir = value
                 End If
                 value = getRegistryString("Software\RPS Digital Viewer", "Camera Club ID")
                 If value > "" Then
@@ -1790,57 +1790,57 @@ Namespace Forms
                 ' Fetch the list of club classifications from the database
                 classifications.Clear()
                 SelectClassification.Items.Clear()     ' remove any items in the classifications combobox
-                _query = From c In rps_context.classifications
-                         From b In rps_context.club_classification
-                         From a In rps_context.clubs
-                         Where a.id = camera_club_id AndAlso b.classification_id = c.id
-                         Select c.name
+                query = From c In rps_context.classifications
+                        From b In rps_context.club_classification
+                        From a In rps_context.clubs
+                        Where a.id = camera_club_id AndAlso b.classification_id = c.id
+                        Select c.name
 
-                For Each _record In _query
-                    classifications.Add(_record)
-                    SelectClassification.Items.Add(_record)
+                For Each record In query
+                    classifications.Add(record)
+                    SelectClassification.Items.Add(record)
                 Next
                 SelectClassification.SelectedIndex = 0 ' Select the first element in the combobox
 
                 ' Fetch the list of club mediums from the database
                 mediums.Clear()
                 SelectMedium.Items.Clear()     ' remove any items in the mediums combobox
-                _query = From c In rps_context.media
-                         From b In rps_context.club_medium
-                         From a In rps_context.clubs
-                         Where a.id = camera_club_id AndAlso b.medium_id = c.id
-                         Order By b.sort_key
-                         Select c.name
+                query = From c In rps_context.media
+                        From b In rps_context.club_medium
+                        From a In rps_context.clubs
+                        Where a.id = camera_club_id AndAlso b.medium_id = c.id
+                        Order By b.sort_key
+                        Select c.name
 
-                For Each _record In _query
-                    mediums.Add(_record)
-                    SelectMedium.Items.Add(_record)
+                For Each record In query
+                    mediums.Add(record)
+                    SelectMedium.Items.Add(record)
                 Next
                 SelectMedium.SelectedIndex = 0 ' Select the first element in the combobox
 
                 ' Fetch the list of club awards from the database
                 awards.Clear()
                 SelectAward.Items.Clear()
-                _query = From c In rps_context.awards
-                         From b In rps_context.club_award
-                         From a In rps_context.clubs
-                         Where a.id = camera_club_id AndAlso b.award_id = c.id
-                         Select c.name Distinct
+                query = From c In rps_context.awards
+                        From b In rps_context.club_award
+                        From a In rps_context.clubs
+                        Where a.id = camera_club_id AndAlso b.award_id = c.id
+                        Select c.name Distinct
 
-                For Each _record In _query
-                    awards.Add(_record)
-                    SelectAward.Items.Add(_record)
+                For Each record In query
+                    awards.Add(record)
+                    SelectAward.Items.Add(record)
                 Next
                 SelectAward.SelectedIndex = 0 ' Select the first element in the combobox
 
                 ' Fetch the club's min and max scores from the database
-                _record = (From club In rps_context.clubs
-                           Where club.id = camera_club_id
-                           Select club.max_score, club.min_score, club.min_score_for_award).SingleOrDefault
+                record = (From club In rps_context.clubs
+                          Where club.id = camera_club_id
+                          Select club.max_score, club.min_score, club.min_score_for_award).SingleOrDefault
 
-                min_score = _record.min_score
-                max_score = _record.max_score
-                min_score_for_award = _record.min_score_for_award
+                min_score = record.min_score
+                max_score = record.max_score
+                min_score_for_award = record.min_score_for_award
                 ' Fill the SelectScore combobox
                 SelectScore.Items.Clear()
                 SelectScore.Items.Add("All")
@@ -1848,7 +1848,7 @@ Namespace Forms
                     SelectScore.Items.Add(CType(i, String))
                 Next
                 SelectScore.SelectedIndex = 0
-                _all_scores_selected = True
+                all_scores_selected = True
 
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
@@ -1860,9 +1860,9 @@ Namespace Forms
         '
         Private Sub setCompetitionDatesCombobox()
 
-            _query = From entry In rps_context.CompetitionEntries
-                     Order By entry.Competition_Date_1
-                     Select entry.Competition_Date_1 Distinct
+            query = From entry In rps_context.CompetitionEntries
+                    Order By entry.Competition_Date_1
+                    Select entry.Competition_Date_1 Distinct
 
             Try
                 ' Empty the list if it's not already empty
@@ -1870,9 +1870,9 @@ Namespace Forms
                     SelectDate.Items.Clear()
                 End If
 
-                For Each _record In _query
+                For Each record In query
                     Dim item As DateTime
-                    item = Convert.ToDateTime(_record)
+                    item = Convert.ToDateTime(record)
 
                     SelectDate.Items.Add(item.ToString("dd-MMM-yyyy"))
                 Next
@@ -1896,7 +1896,7 @@ Namespace Forms
             Try
                 ' Retrieve the list of competition dates from the server
                 params.Add("rpswinclient", "getcompdate")
-                If doRest(_server_name, _server_script_dir, "GET", params, response) Then
+                If doRest(server_name, server_script_dir, "GET", params, response) Then
                     navigator = response.CreateNavigator()
                     nodes = navigator.Select("/rsp/Competition_Date")
                     While nodes.MoveNext()
@@ -2015,7 +2015,7 @@ Namespace Forms
                     sql += " AND Medium like '%Prints'"
                 End If
 
-                _query = rps_context.Database.ExecuteSqlCommand(sql)
+                query = rps_context.Database.ExecuteSqlCommand(sql)
                 Application.DoEvents()
 
                 ' Retrieve the competition Manifest from the server
@@ -2031,7 +2031,7 @@ Namespace Forms
                 If download_prints And Not download_digital Then
                     params.Add("medium", "prints")
                 End If
-                If Not doRest(_server_name, _server_script_dir, "POST", params, response) Then
+                If Not doRest(server_name, server_script_dir, "POST", params, response) Then
                     navigator = response.CreateNavigator()
                     nodes = navigator.Select("/rsp/err")
                     nodes.MoveNext()
@@ -2486,12 +2486,12 @@ Namespace Forms
                 sql_where = "WHERE Competition_Date_1 = '" +
                             Format(d, "M/dd/yyyy") + "'" +
                             selected_medium
-                _query = sql_select + sql_where
-                recs = rps_context.Database.SqlQuery(Of Entities.ClassificationMedium)(_query).ToList
+                query = sql_select + sql_where
+                recs = rps_context.Database.SqlQuery(Of Entities.ClassificationMedium)(query).ToList
 
-                For Each record As Entities.ClassificationMedium In recs
-                    comp_class_list.Add(record.Classification)
-                    comp_medium_list.Add(record.Medium)
+                For Each classification_medium As Entities.ClassificationMedium In recs
+                    comp_class_list.Add(classification_medium.Classification)
+                    comp_medium_list.Add(classification_medium.Medium)
                 Next
 
                 ' Iterate through all the competition for this date
@@ -2502,8 +2502,8 @@ Namespace Forms
                     sql_select = "Select * FROM CompetitionEntries "
                     sql_where = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
                                 classification + "' AND Medium = '" + medium + "'"
-                    _query = sql_select + sql_where
-                    recs = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(_query).ToList
+                    query = sql_select + sql_where
+                    recs = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
                     ' Output the tags that describe this competition
                     sw.WriteLine("  <Competition>")
                     sw.WriteLine("    <Date>{0}</Date>", HttpUtility.HtmlEncode(comp_date))
@@ -2511,28 +2511,28 @@ Namespace Forms
                     sw.WriteLine("    <Medium>{0}</Medium>", HttpUtility.HtmlEncode(medium))
                     sw.WriteLine("    <Entries>")
                     ' Iterate through all the entries of this competition
-                    For Each record As Entities.CompetitionEntry In recs
+                    For Each competition_entry As Entities.CompetitionEntry In recs
                         ' Read the entry data from the database
-                        maker = record.Maker
+                        maker = competition_entry.Maker
                         'fields = Split(maker, " ")
                         posn = InStr(1, maker, " ")
                         first_name = Mid(maker, 1, posn - 1)
                         last_name = Mid(maker, posn + 1)
-                        title = record.Title
-                        If IsNothing(record.Score_1) Then
+                        title = competition_entry.Title
+                        If IsNothing(competition_entry.Score_1) Then
                             score = ""
                         Else
-                            score = record.Score_1.ToString()
+                            score = competition_entry.Score_1.ToString()
                         End If
-                        If IsNothing(record.Award) Then
+                        If IsNothing(competition_entry.Award) Then
                             award = ""
                         Else
-                            award = record.Award
+                            award = competition_entry.Award
                         End If
-                        If IsNothing(record.Server_Entry_ID) Then
+                        If IsNothing(competition_entry.Server_Entry_ID) Then
                             entry_id = ""
                         Else
-                            entry_id = record.Server_Entry_ID
+                            entry_id = competition_entry.Server_Entry_ID
                         End If
                         ' Write this entry to the xml file
                         sw.WriteLine("      <Entry>")
@@ -2559,7 +2559,7 @@ Namespace Forms
                 params.Add("username", username)
                 params.Add("password", password)
                 params.Add("file", file_name)
-                If Not doRest(_server_name, _server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) _
+                If Not doRest(server_name, server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) _
                     Then
                     ' If the web service returned an error, display it
                     navigator = response.CreateNavigator()
@@ -2603,12 +2603,12 @@ Namespace Forms
                 themes.Clear()
                 SelectTheme.Items.Clear()
 
-                _query = From entry In rps_context.CompetitionEntries
-                         Where entry.Competition_Date_1.Equals(comp_date)
-                         Select entry.Theme Distinct
+                query = From entry In rps_context.CompetitionEntries
+                        Where entry.Competition_Date_1.Equals(comp_date)
+                        Select entry.Theme Distinct
 
-                For Each _record In _query
-                    SelectTheme.Items.Add(_record)
+                For Each record In query
+                    SelectTheme.Items.Add(record)
                 Next
                 If SelectTheme.Items.Count > 0 Then
                     SelectTheme.SelectedIndex = 0
@@ -2623,10 +2623,10 @@ Namespace Forms
         Private Sub NumNinesHeadingButton_Click(sender As Object, e As EventArgs) _
             Handles NumNinesHeadingButton.Click
             'NineScoreRadioButton.Checked = True
-            _all_scores_selected = False
-            _eights_and_awards_selected = False
-            _selected_avg_score = 9
-            _selected_score = 0
+            all_scores_selected = False
+            eights_and_awards_selected = False
+            selected_avg_score = 9
+            selected_score = 0
             getSelectedEntries()
             doPickAwards()
         End Sub
@@ -2634,10 +2634,10 @@ Namespace Forms
         Private Sub NumEightsHeadingButton_Click(sender As Object, e As EventArgs) _
             Handles NumEightsHeadingButton.Click
             'EightScoreRadioButton.Checked = True
-            _all_scores_selected = False
-            _eights_and_awards_selected = False
-            _selected_avg_score = 8
-            _selected_score = 0
+            all_scores_selected = False
+            eights_and_awards_selected = False
+            selected_avg_score = 8
+            selected_score = 0
             getSelectedEntries()
             doPickAwards()
         End Sub
@@ -2645,10 +2645,10 @@ Namespace Forms
         Private Sub NumSevensHeadingButton_Click(sender As Object, e As EventArgs) _
             Handles NumSevensHeadingButton.Click
             'SevenScoreRadioButton.Checked = True
-            _all_scores_selected = False
-            _eights_and_awards_selected = False
-            _selected_avg_score = 7
-            _selected_score = 0
+            all_scores_selected = False
+            eights_and_awards_selected = False
+            selected_avg_score = 7
+            selected_score = 0
             getSelectedEntries()
             doPickAwards()
         End Sub
@@ -2656,8 +2656,8 @@ Namespace Forms
         Private Sub AwardsTableTitleBar_Click(sender As Object, e As EventArgs) _
             Handles AwardsTableTitleBar.Click
             'EightsAndAwardsRadioButton.Checked = True
-            _eights_and_awards_selected = True
-            _all_scores_selected = False
+            eights_and_awards_selected = True
+            all_scores_selected = False
             getSelectedEntries()
             doSlideShow()
         End Sub
@@ -2665,14 +2665,14 @@ Namespace Forms
         Private Sub SelectScore_SelectedIndexChanged(sender As Object, e As EventArgs) _
             Handles SelectScore.SelectedIndexChanged
             If SelectScore.SelectedIndex = 0 Then
-                _all_scores_selected = True
-                _eights_and_awards_selected = False
+                all_scores_selected = True
+                eights_and_awards_selected = False
             Else
-                _all_scores_selected = False
-                _eights_and_awards_selected = False
-                _selected_score = CType(SelectScore.SelectedItem(), Integer)
+                all_scores_selected = False
+                eights_and_awards_selected = False
+                selected_score = CType(SelectScore.SelectedItem(), Integer)
             End If
-            _selected_avg_score = 0
+            selected_avg_score = 0
             getSelectedEntries()
         End Sub
 
@@ -2680,8 +2680,8 @@ Namespace Forms
             Handles SelectDate.SelectedIndexChanged
             setThemeCombobox()
             SelectScore.SelectedItem = "All"
-            _all_scores_selected = True
-            _eights_and_awards_selected = False
+            all_scores_selected = True
+            eights_and_awards_selected = False
             getSelectedEntries()
         End Sub
     End Class
