@@ -262,7 +262,7 @@ Namespace Forms
                                     full_size_file_name = the_main_form.images_root_folder + "\" + full_size_file_name
                                 End If
                                 ' Load it into the PictureBox
-                                ZoomedImage.Image = Image.FromFile(full_size_file_name)
+                                ZoomedImage.Image = Drawing.Image.FromFile(full_size_file_name)
                                 ' Hide the ListView and reveal the PictureBox
                                 ThumbnailListView.Visible = False
                                 ThumbnailViewTitleBar.Visible = False
@@ -290,7 +290,7 @@ Namespace Forms
             Dim path As String
             Dim file_name As String
             Dim thumb_file_name As String
-            Dim thumb_image As Image
+            Dim thumb_image As Drawing.Image
             Dim num_images As Integer
             Dim thumb As Image.Thumbnail
             Dim this_item As ListViewItem
@@ -334,7 +334,7 @@ Namespace Forms
                     End If
 
                     ' Store the thumbnail image in the ImageList
-                    thumb_image = Image.FromFile(thumb_file_name)
+                    thumb_image = Drawing.Image.FromFile(thumb_file_name)
                     ThumbnailImageList.Images.Add(thumb_image)
 
                     ' Add the image to the ListView

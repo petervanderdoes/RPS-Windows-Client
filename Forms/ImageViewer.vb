@@ -551,7 +551,7 @@ Namespace Forms
                     StatusBarAward.Text = current_row.Award
 
                     ' Show the image
-                    picShowPicture.Image = Image.FromFile(current_file_name)
+                    picShowPicture.Image = Drawing.Image.FromFile(current_file_name)
 
                     ' Show the Status Bar if necessary
                     If status_bar_visible = 0 Then
