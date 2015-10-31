@@ -88,7 +88,7 @@ Namespace Forms
 
             ' fields = Split(Application.ProductVersion, ".")
 
-            Label1.Text = "RPS Digital Competition Viewer" + vbCrLf +
+            Label1.Text = "RPS Competition Client" + vbCrLf +
                           "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
                           "(c) Jake Chapple, Peter van der Does" + vbCrLf +
                           "Raritan Photographic Society"
