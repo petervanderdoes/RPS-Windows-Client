@@ -68,7 +68,7 @@ Namespace Forms
                 .Panels.Add(progress)
                 .ShowPanels = True
                 .SizingGrip = False
-                .setProgressBar = 1
+                .progressBarPanel = 1
                 .progress_bar.Minimum = 0
                 .progress_bar.Maximum = 100
             End With
