@@ -195,7 +195,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Entities\UploadEntities.vb" />
-    <Compile Include="Helper.vb" />
+    <Compile Include="Helpers\Strings.vb" />
     <Compile Include="Forms\ImageViewer.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +203,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Entities\medium.vb" />
+    <Compile Include="Helpers\Registry.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
@@ -222,9 +223,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Entities\rpsEntities.vb" />
-    <Compile Include="RpsImageSize.vb" />
+    <Compile Include="Components\ProgressStatus.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Image\RpsImageSize.vb" />
     <Compile Include="SqLiteConfiguration.vb" />
-    <Compile Include="Thumbnail.vb">
+    <Compile Include="Image\Thumbnail.vb">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Forms\ThumbnailViewer.vb">
@@ -233,6 +237,9 @@
     <Compile Include="Forms\UploadScoresDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Components\ProgressStatus.resx">
+      <DependentUpon>ProgressStatus.vb</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -300,6 +307,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent />

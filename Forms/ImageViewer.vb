@@ -1,5 +1,3 @@
-
-
 Namespace Forms
     Public Class ImageViewer
         Inherits Form
@@ -14,7 +12,7 @@ Namespace Forms
         Private status_bar_visible As Integer = 0
         Private splash_screen_visible As Boolean = True
         Private in_delay_loop As Boolean = False
-        Private thumb As Thumbnail
+        Private thumb As Image.Thumbnail
         Private thumbnail_thread As Thread
 
         Private Const SCORE As Integer = 0
@@ -428,7 +426,7 @@ Namespace Forms
             'Dim row As CompetitionEntry
             Try
                 ' Create an instance of the Thumbnail class to render thumbnail as necessary
-                thumb = New Thumbnail(the_main_form)
+                thumb = New Image.Thumbnail(the_main_form)
 
                 ' How many images are there in this slideshow?
                 num_images = image_list.Count
@@ -593,7 +591,7 @@ Namespace Forms
         End Sub
 
         Friend Sub setSizes()
-            Dim I As RpsImageSize = New RpsImageSize
+            Dim I As Image.RpsImageSize = New Image.RpsImageSize
             Dim splash_location_y As Integer
             ClientSize = New Size(I.getFullWidth(), I.getFullHeight())
             MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())

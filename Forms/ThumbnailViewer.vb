@@ -1,5 +1,3 @@
-
-
 Namespace Forms
     Public Class ThumbnailViewer
         Inherits Form
@@ -294,7 +292,7 @@ Namespace Forms
             Dim thumb_file_name As String
             Dim thumb_image As Image
             Dim num_images As Integer
-            Dim thumb As Thumbnail
+            Dim thumb As Image.Thumbnail
             Dim this_item As ListViewItem
 
             Try
@@ -330,7 +328,7 @@ Namespace Forms
                     End If
                     ' If the thumbnail file doesn't exist, render it now
                     If Not File.Exists(thumb_file_name) Then
-                        thumb = New Thumbnail(the_main_form)
+                        thumb = New Image.Thumbnail(the_main_form)
                         thumb.imageFile = image_file_name
                         thumb.doRender()
                     End If
@@ -371,7 +369,7 @@ Namespace Forms
         End Sub
 
         Friend Sub setSizes()
-            Dim I As RpsImageSize = New RpsImageSize
+            Dim I As Image.RpsImageSize = New Image.RpsImageSize
             ClientSize = New Size(I.getFullWidth(), I.getFullHeight())
             MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
             MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
