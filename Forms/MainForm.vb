@@ -613,7 +613,7 @@ Namespace Forms
             Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
             DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-            Me.data_grid_entries_view.Size = New System.Drawing.Size(1064, 387)
+            Me.data_grid_entries_view.Size = New System.Drawing.Size(1081, 387)
             Me.data_grid_entries_view.TabIndex = 53
             '
             'grid_entries_score
@@ -654,7 +654,7 @@ Namespace Forms
             Me.grid_caption.Location = New System.Drawing.Point(225, 20)
             Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
             Me.grid_caption.Name = "grid_caption"
-            Me.grid_caption.Size = New System.Drawing.Size(1064, 24)
+            Me.grid_caption.Size = New System.Drawing.Size(1081, 24)
             Me.grid_caption.TabIndex = 54
             Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
@@ -662,7 +662,7 @@ Namespace Forms
             '
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-            Me.ClientSize = New System.Drawing.Size(1307, 491)
+            Me.ClientSize = New System.Drawing.Size(1324, 491)
             Me.Controls.Add(Me.grid_caption)
             Me.Controls.Add(Me.data_grid_entries_view)
             Me.Controls.Add(Me.SelectDate)
@@ -696,7 +696,7 @@ Namespace Forms
             Me.Menu = Me.MainMenu1
             Me.Name = "MainForm"
             Me.Padding = New System.Windows.Forms.Padding(11)
-            Me.Text = "RPS Digital Competition Viewer"
+            Me.Text = "RPS Competiton Client"
             Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
             CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -709,6 +709,7 @@ Namespace Forms
         Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             Dim dirinfo As DirectoryInfo
             status_bar.progress_bar.Hide()
+            Helpers.Registry.key = "Software\Raritan Photographic Society\RPS Competition Client"
             Try
                 ' Set up the connection string for the database connection
                 Set_database_name(database_file_name)
@@ -1635,49 +1636,47 @@ Namespace Forms
                         ' If necessary, strip off a trailing "\"
                         images_root_folder = Helpers.Strings.trimTrailingSlash(images_root_folder)
                         ' write it to the registry
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Images Root Folder", images_root_folder)
+                        Helpers.Registry.writeRegistryString("Images Root Folder", images_root_folder)
                     End If
                     If dbfn > "" Then
                         ' update the connection string
                         Set_database_name(dbfn)
                         ' write it to the registry
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Database File Name", database_file_name)
+                        Helpers.Registry.writeRegistryString("Database File Name", database_file_name)
                     End If
                     If rof > "" Then
                         ' If necessary, strip off a trailing "\"
                         reports_output_folder = Helpers.Strings.trimTrailingSlash(reports_output_folder)
 
                         ' write it to the registry
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer",
-                                            "Reports Output Folder",
-                                            reports_output_folder)
+                        Helpers.Registry.writeRegistryString("Reports Output Folder", reports_output_folder)
                     End If
                     If sn > "" Then
                         ' Store the new server name in memory
                         server_name = sn
                         ' Write it to the registry
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Server Name", sn)
+                        Helpers.Registry.writeRegistryString("Server Name", sn)
                     End If
                     If ssd > "" Then
                         ' Store the new server script directory in memory
                         server_script_dir = ssd
                         ' Write it to the registry
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Server Script Directory", ssd)
+                        Helpers.Registry.writeRegistryString("Server Script Directory", ssd)
                     End If
                     If ccid > 0 Then
                         ' Set and store the club id
                         camera_club_id = ccid
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Camera Club ID", CType(ccid, String))
+                        Helpers.Registry.writeRegistryString("Camera Club ID", CType(ccid, String))
                     End If
                     If ccn > "" Then
                         ' Set and store the club name
                         camera_club_name = ccn
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Camera Club Name", ccn)
+                        Helpers.Registry.writeRegistryString("Camera Club Name", ccn)
                     End If
                     If nj > 0 Then
                         ' Set and store the number of judges
                         num_judges = nj
-                        Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Number of Judges", CType(nj, String))
+                        Helpers.Registry.writeRegistryString("Number of Judges", CType(nj, String))
                     End If
 
                     ' Fetch the list of classifications, mediums and awards from the database
@@ -1986,7 +1985,7 @@ Namespace Forms
 
                 ' Save the username in the registry as the default admin username
                 last_admin_username = username
-                Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
+                Helpers.Registry.writeRegistryString("Last Admin Username", last_admin_username)
 
                 ' Delete any competitions in the local database that already have this date
                 Dim d As Date
@@ -2450,7 +2449,7 @@ Namespace Forms
 
                 ' Save the username in the registry as the default admin username
                 last_admin_username = username
-                Helpers.Registry.writeRegistryString("Software\RPS Digital Viewer", "Last Admin Username", last_admin_username)
+                Helpers.Registry.writeRegistryString("Last Admin Username", last_admin_username)
 
                 Cursor.Current = Cursors.WaitCursor
                 Application.DoEvents()

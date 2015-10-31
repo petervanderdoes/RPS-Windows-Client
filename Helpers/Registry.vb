@@ -1,6 +1,8 @@
 Namespace Helpers
     Public Class Registry
-        Public Shared Sub writeRegistryString(key As String, registry_name As String, registry_value As String)
+        Public Shared Property key As String
+
+        Public Shared Sub writeRegistryString(registry_name As String, registry_value As String)
             Dim reg_key As RegistryKey = Nothing
 
             Try
