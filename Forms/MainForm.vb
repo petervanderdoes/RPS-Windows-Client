@@ -1696,63 +1696,43 @@ Namespace Forms
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
-        Private Function getRegistryString(registry_key As String, registry_name As String) As String
-            Dim reg_key As RegistryKey = Nothing
-
-            Try
-                reg_key = Registry.CurrentUser.OpenSubKey(registry_key, False)
-                If reg_key Is Nothing Then
-                    getRegistryString = ""
-                Else
-                    getRegistryString = reg_key.GetValue(registry_name, "")
-                End If
-            Catch exception As Exception
-                getRegistryString = ""
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-            Finally
-                If Not reg_key Is Nothing Then
-                    reg_key.Close()
-                End If
-            End Try
-        End Function
-
         Private Sub getPreferences()
             Dim value As String
 
             Try
-                value = getRegistryString("Software\RPS Digital Viewer", "Images Root Folder")
+                value = Helpers.Registry.getRegistryString("Images Root Folder")
                 If value > "" Then
                     images_root_folder = value
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Database File Name")
+                value = Helpers.Registry.getRegistryString("Database File Name")
                 If value > "" Then
                     Set_database_name(value)
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Reports Output Folder")
+                value = Helpers.Registry.getRegistryString("Reports Output Folder")
                 If value > "" Then
                     reports_output_folder = value
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Server Name")
+                value = Helpers.Registry.getRegistryString("Server Name")
                 If value > "" Then
                     server_name = value
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Server Script Directory")
+                value = Helpers.Registry.getRegistryString("Server Script Directory")
                 If value > "" Then
                     server_script_dir = value
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Camera Club ID")
+                value = Helpers.Registry.getRegistryString("Camera Club ID")
                 If value > "" Then
                     camera_club_id = CType(value, Integer)
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Camera Club Name")
+                value = Helpers.Registry.getRegistryString("Camera Club Name")
                 If value > "" Then
                     camera_club_name = value
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Last Admin Username")
+                value = Helpers.Registry.getRegistryString("Last Admin Username")
                 If value > "" Then
                     last_admin_username = value
                 End If
-                value = getRegistryString("Software\RPS Digital Viewer", "Number of Judges")
+                value = Helpers.Registry.getRegistryString("Number of Judges")
                 If value > "" Then
                     num_judges = value
                 End If
