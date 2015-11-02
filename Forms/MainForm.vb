@@ -709,7 +709,7 @@ Namespace Forms
         Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             Dim dirinfo As DirectoryInfo
             status_bar.progress_bar.Hide()
-            Helpers.Registry.key = "Software\Raritan Photographic Society\RPS Competition Client"
+            Helpers.Registry.programRegistryKey = "Software\Raritan Photographic Society\RPS Competition Client"
             Try
                 ' Set up the connection string for the database connection
                 Set_database_name(database_file_name)
