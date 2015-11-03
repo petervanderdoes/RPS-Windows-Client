@@ -39,9 +39,9 @@ Namespace Forms
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        Friend WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents Label3 As System.Windows.Forms.Label
+        Friend WithEvents Label1 As Label
+        Friend WithEvents Label2 As Label
+        Friend WithEvents Label3 As Label
         Friend WithEvents Username As System.Windows.Forms.TextBox
         Friend WithEvents Password As System.Windows.Forms.TextBox
         Friend WithEvents CompDate As System.Windows.Forms.ComboBox
@@ -54,9 +54,9 @@ Namespace Forms
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager =
                     New System.ComponentModel.ComponentResourceManager(GetType(UploadScoresDialog))
-            Me.Label1 = New System.Windows.Forms.Label()
-            Me.Label2 = New System.Windows.Forms.Label()
-            Me.Label3 = New System.Windows.Forms.Label()
+            Me.Label1 = New Label()
+            Me.Label2 = New Label()
+            Me.Label3 = New Label()
             Me.Username = New System.Windows.Forms.TextBox()
             Me.Password = New System.Windows.Forms.TextBox()
             Me.CompDate = New System.Windows.Forms.ComboBox()
@@ -73,10 +73,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label1.Location = New System.Drawing.Point(11, 14)
+            Me.Label1.Location = New Point(11, 14)
             Me.Label1.Margin = New System.Windows.Forms.Padding(0)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(105, 23)
+            Me.Label1.Size = New Size(105, 23)
             Me.Label1.TabIndex = 0
             Me.Label1.Text = "Username:"
             Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -88,10 +88,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label2.Location = New System.Drawing.Point(11, 46)
+            Me.Label2.Location = New Point(11, 46)
             Me.Label2.Margin = New System.Windows.Forms.Padding(0)
             Me.Label2.Name = "Label2"
-            Me.Label2.Size = New System.Drawing.Size(105, 23)
+            Me.Label2.Size = New Size(105, 23)
             Me.Label2.TabIndex = 1
             Me.Label2.Text = "Password:"
             Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -103,10 +103,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label3.Location = New System.Drawing.Point(11, 74)
+            Me.Label3.Location = New Point(11, 74)
             Me.Label3.Margin = New System.Windows.Forms.Padding(0)
             Me.Label3.Name = "Label3"
-            Me.Label3.Size = New System.Drawing.Size(105, 23)
+            Me.Label3.Size = New Size(105, 23)
             Me.Label3.TabIndex = 2
             Me.Label3.Text = "Competition Date:"
             Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -118,10 +118,10 @@ Namespace Forms
                                                        System.Drawing.FontStyle.Regular,
                                                        System.Drawing.GraphicsUnit.Point,
                                                        CType(0, Byte))
-            Me.Username.Location = New System.Drawing.Point(119, 14)
+            Me.Username.Location = New Point(119, 14)
             Me.Username.Margin = New System.Windows.Forms.Padding(5, 3, 11, 3)
             Me.Username.Name = "Username"
-            Me.Username.Size = New System.Drawing.Size(170, 23)
+            Me.Username.Size = New Size(170, 23)
             Me.Username.TabIndex = 3
             '
             'Password
@@ -131,11 +131,11 @@ Namespace Forms
                                                        System.Drawing.FontStyle.Regular,
                                                        System.Drawing.GraphicsUnit.Point,
                                                        CType(0, Byte))
-            Me.Password.Location = New System.Drawing.Point(119, 47)
+            Me.Password.Location = New Point(119, 47)
             Me.Password.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.Password.Name = "Password"
             Me.Password.PasswordChar = ChrW(42)
-            Me.Password.Size = New System.Drawing.Size(170, 23)
+            Me.Password.Size = New Size(170, 23)
             Me.Password.TabIndex = 4
             '
             'CompDate
@@ -146,10 +146,10 @@ Namespace Forms
                                                        System.Drawing.GraphicsUnit.Point,
                                                        CType(0, Byte))
             Me.CompDate.ItemHeight = 15
-            Me.CompDate.Location = New System.Drawing.Point(119, 80)
+            Me.CompDate.Location = New Point(119, 80)
             Me.CompDate.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.CompDate.Name = "CompDate"
-            Me.CompDate.Size = New System.Drawing.Size(170, 23)
+            Me.CompDate.Size = New Size(170, 23)
             Me.CompDate.TabIndex = 5
             '
             'OKbutton
@@ -160,9 +160,9 @@ Namespace Forms
                                                        System.Drawing.FontStyle.Regular,
                                                        System.Drawing.GraphicsUnit.Point,
                                                        CType(0, Byte))
-            Me.OKbutton.Location = New System.Drawing.Point(77, 171)
+            Me.OKbutton.Location = New Point(77, 171)
             Me.OKbutton.Name = "OKbutton"
-            Me.OKbutton.Size = New System.Drawing.Size(75, 23)
+            Me.OKbutton.Size = New Size(75, 23)
             Me.OKbutton.TabIndex = 6
             Me.OKbutton.Text = "OK"
             '
@@ -174,10 +174,10 @@ Namespace Forms
                                                             System.Drawing.FontStyle.Regular,
                                                             System.Drawing.GraphicsUnit.Point,
                                                             CType(0, Byte))
-            Me.Cancel_Button.Location = New System.Drawing.Point(158, 171)
+            Me.Cancel_Button.Location = New Point(158, 171)
             Me.Cancel_Button.Margin = New System.Windows.Forms.Padding(3, 11, 3, 11)
             Me.Cancel_Button.Name = "Cancel_Button"
-            Me.Cancel_Button.Size = New System.Drawing.Size(75, 23)
+            Me.Cancel_Button.Size = New Size(75, 23)
             Me.Cancel_Button.TabIndex = 7
             Me.Cancel_Button.Text = "Cancel"
             '
@@ -190,10 +190,10 @@ Namespace Forms
                                                                     System.Drawing.FontStyle.Regular,
                                                                     System.Drawing.GraphicsUnit.Point,
                                                                     CType(0, Byte))
-            Me.Upload_digital_scores.Location = New System.Drawing.Point(119, 117)
+            Me.Upload_digital_scores.Location = New Point(119, 117)
             Me.Upload_digital_scores.Margin = New System.Windows.Forms.Padding(3, 11, 3, 3)
             Me.Upload_digital_scores.Name = "Upload_digital_scores"
-            Me.Upload_digital_scores.Size = New System.Drawing.Size(144, 17)
+            Me.Upload_digital_scores.Size = New Size(144, 17)
             Me.Upload_digital_scores.TabIndex = 8
             Me.Upload_digital_scores.Text = "Upload Digital Scores"
             '
@@ -206,18 +206,18 @@ Namespace Forms
                                                                   System.Drawing.FontStyle.Regular,
                                                                   System.Drawing.GraphicsUnit.Point,
                                                                   CType(0, Byte))
-            Me.Upload_print_scores.Location = New System.Drawing.Point(119, 140)
+            Me.Upload_print_scores.Location = New Point(119, 140)
             Me.Upload_print_scores.Name = "Upload_print_scores"
-            Me.Upload_print_scores.Size = New System.Drawing.Size(144, 17)
+            Me.Upload_print_scores.Size = New Size(144, 17)
             Me.Upload_print_scores.TabIndex = 9
             Me.Upload_print_scores.Text = "Upload Print Scores"
             '
             'UploadScoresDialog
             '
             Me.AcceptButton = Me.OKbutton
-            Me.AutoScaleBaseSize = New System.Drawing.Size(6, 16)
+            Me.AutoScaleBaseSize = New Size(6, 16)
             Me.CancelButton = Me.Cancel_Button
-            Me.ClientSize = New System.Drawing.Size(313, 209)
+            Me.ClientSize = New Size(313, 209)
             Me.Controls.Add(Me.Upload_print_scores)
             Me.Controls.Add(Me.Upload_digital_scores)
             Me.Controls.Add(Me.Cancel_Button)

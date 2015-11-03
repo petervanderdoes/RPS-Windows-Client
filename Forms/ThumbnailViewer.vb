@@ -11,11 +11,11 @@ Namespace Forms
         Private ReadOnly thumbnail_view_title As String
 
         ' API parameters for setting border select style for the listview
-        Public Const LVM_FIRST As Integer = &H1000
+        Private Const LVM_FIRST As Integer = &H1000
         Public Const LVM_GETCOUNTPERPAGE As Integer = LVM_FIRST + 40
         Public Const WM_SETREDRAW As Integer = &HB
 
-        Public Enum LVS_EX
+        Private Enum LVS_EX
             LVS_EX_GRIDLINES = &H1
             LVS_EX_SUBITEMIMAGES = &H2
             LVS_EX_CHECKBOXES = &H4
@@ -39,7 +39,7 @@ Namespace Forms
             LVS_EX_SIMPLESELECT = &H100000
         End Enum 'LVS_EX
 
-        Public Enum LVM
+        Private Enum LVM
             LVM_FIRST = &H1000
             LVM_SETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 54
             LVM_GETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 55
@@ -78,9 +78,9 @@ Namespace Forms
         'Do not modify it using the code editor.
         Friend WithEvents ThumbnailListView As System.Windows.Forms.ListView
         Friend WithEvents ThumbnailImageList As System.Windows.Forms.ImageList
-        Friend WithEvents ZoomedImage As System.Windows.Forms.PictureBox
-        Friend WithEvents ThumbnailViewTitleBar As System.Windows.Forms.Label
-        Friend WithEvents Divider As System.Windows.Forms.Label
+        Friend WithEvents ZoomedImage As PictureBox
+        Friend WithEvents ThumbnailViewTitleBar As Label
+        Friend WithEvents Divider As Label
 
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
@@ -89,78 +89,78 @@ Namespace Forms
                     New System.ComponentModel.ComponentResourceManager(GetType(ThumbnailViewer))
             Me.ThumbnailListView = New System.Windows.Forms.ListView()
             Me.ThumbnailImageList = New System.Windows.Forms.ImageList(Me.components)
-            Me.ZoomedImage = New System.Windows.Forms.PictureBox()
-            Me.ThumbnailViewTitleBar = New System.Windows.Forms.Label()
-            Me.Divider = New System.Windows.Forms.Label()
+            Me.ZoomedImage = New PictureBox()
+            Me.ThumbnailViewTitleBar = New Label()
+            Me.Divider = New Label()
             CType(Me.ZoomedImage, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'ThumbnailListView
             '
-            Me.ThumbnailListView.BackColor = System.Drawing.Color.Black
+            Me.ThumbnailListView.BackColor = Color.Black
             Me.ThumbnailListView.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.ThumbnailListView.Font = New System.Drawing.Font("Segoe UI",
                                                                 18.0!,
                                                                 System.Drawing.FontStyle.Bold,
                                                                 System.Drawing.GraphicsUnit.Point,
                                                                 CType(0, Byte))
-            Me.ThumbnailListView.ForeColor = System.Drawing.Color.White
+            Me.ThumbnailListView.ForeColor = Color.White
             Me.ThumbnailListView.LargeImageList = Me.ThumbnailImageList
-            Me.ThumbnailListView.Location = New System.Drawing.Point(0, 43)
+            Me.ThumbnailListView.Location = New Point(0, 43)
             Me.ThumbnailListView.Margin = New System.Windows.Forms.Padding(0)
             Me.ThumbnailListView.MultiSelect = False
             Me.ThumbnailListView.Name = "ThumbnailListView"
-            Me.ThumbnailListView.Size = New System.Drawing.Size(1024, 725)
+            Me.ThumbnailListView.Size = New Size(1024, 725)
             Me.ThumbnailListView.TabIndex = 0
             Me.ThumbnailListView.UseCompatibleStateImageBehavior = False
             '
             'ThumbnailImageList
             '
             Me.ThumbnailImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit
-            Me.ThumbnailImageList.ImageSize = New System.Drawing.Size(256, 256)
-            Me.ThumbnailImageList.TransparentColor = System.Drawing.Color.Transparent
+            Me.ThumbnailImageList.ImageSize = New Size(256, 256)
+            Me.ThumbnailImageList.TransparentColor = Color.Transparent
             '
             'ZoomedImage
             '
-            Me.ZoomedImage.BackColor = System.Drawing.Color.Black
-            Me.ZoomedImage.Location = New System.Drawing.Point(0, 0)
+            Me.ZoomedImage.BackColor = Color.Black
+            Me.ZoomedImage.Location = New Point(0, 0)
             Me.ZoomedImage.Margin = New System.Windows.Forms.Padding(0)
             Me.ZoomedImage.Name = "ZoomedImage"
-            Me.ZoomedImage.Size = New System.Drawing.Size(1024, 768)
-            Me.ZoomedImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+            Me.ZoomedImage.Size = New Size(1024, 768)
+            Me.ZoomedImage.SizeMode = PictureBoxSizeMode.CenterImage
             Me.ZoomedImage.TabIndex = 1
             Me.ZoomedImage.TabStop = False
             Me.ZoomedImage.Visible = False
             '
             'ThumbnailViewTitleBar
             '
-            Me.ThumbnailViewTitleBar.BackColor = System.Drawing.Color.Black
+            Me.ThumbnailViewTitleBar.BackColor = Color.Black
             Me.ThumbnailViewTitleBar.Font = New System.Drawing.Font("Segoe UI",
                                                                     18.0!,
                                                                     System.Drawing.FontStyle.Bold,
                                                                     System.Drawing.GraphicsUnit.Point,
                                                                     CType(0, Byte))
-            Me.ThumbnailViewTitleBar.ForeColor = System.Drawing.Color.Yellow
-            Me.ThumbnailViewTitleBar.Location = New System.Drawing.Point(0, 0)
+            Me.ThumbnailViewTitleBar.ForeColor = Color.Yellow
+            Me.ThumbnailViewTitleBar.Location = New Point(0, 0)
             Me.ThumbnailViewTitleBar.Margin = New System.Windows.Forms.Padding(0)
             Me.ThumbnailViewTitleBar.Name = "ThumbnailViewTitleBar"
-            Me.ThumbnailViewTitleBar.Size = New System.Drawing.Size(1024, 37)
+            Me.ThumbnailViewTitleBar.Size = New Size(1024, 37)
             Me.ThumbnailViewTitleBar.TabIndex = 2
             Me.ThumbnailViewTitleBar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
             '
             'Divider
             '
-            Me.Divider.BackColor = System.Drawing.Color.White
-            Me.Divider.Location = New System.Drawing.Point(0, 37)
+            Me.Divider.BackColor = Color.White
+            Me.Divider.Location = New Point(0, 37)
             Me.Divider.Margin = New System.Windows.Forms.Padding(0)
             Me.Divider.Name = "Divider"
-            Me.Divider.Size = New System.Drawing.Size(1024, 2)
+            Me.Divider.Size = New Size(1024, 2)
             Me.Divider.TabIndex = 3
             '
             'ThumbnailViewer
             '
-            Me.BackColor = System.Drawing.Color.Black
-            Me.ClientSize = New System.Drawing.Size(1024, 768)
+            Me.BackColor = Color.Black
+            Me.ClientSize = New Size(1024, 768)
             Me.ControlBox = False
             Me.Controls.Add(Me.Divider)
             Me.Controls.Add(Me.ThumbnailViewTitleBar)
@@ -169,9 +169,9 @@ Namespace Forms
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.MaximizeBox = False
-            Me.MaximumSize = New System.Drawing.Size(1024, 768)
+            Me.MaximumSize = New Size(1024, 768)
             Me.MinimizeBox = False
-            Me.MinimumSize = New System.Drawing.Size(1024, 768)
+            Me.MinimumSize = New Size(1024, 768)
             Me.Name = "ThumbnailViewer"
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
             Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual

@@ -45,42 +45,42 @@ Namespace Forms
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.
         'Do not modify it using the code editor.
-        Friend WithEvents picShowPicture As System.Windows.Forms.PictureBox
-        Friend WithEvents ofdSelectPicture As System.Windows.Forms.OpenFileDialog
-        Friend WithEvents ScorePopUp As System.Windows.Forms.Label
-        Friend WithEvents StatusBar As System.Windows.Forms.Panel
-        Friend WithEvents StatusBarTitle As System.Windows.Forms.Label
-        Friend WithEvents StatusBarScore As System.Windows.Forms.Label
-        Friend WithEvents StatusBarAward As System.Windows.Forms.Label
-        Friend WithEvents splashClub As System.Windows.Forms.Label
-        Friend WithEvents splashTheme As System.Windows.Forms.Label
-        Friend WithEvents splashClassification As System.Windows.Forms.Label
+        Friend WithEvents picShowPicture As PictureBox
+        Friend WithEvents ofdSelectPicture As OpenFileDialog
+        Friend WithEvents ScorePopUp As Label
+        Friend WithEvents StatusBar As Panel
+        Friend WithEvents StatusBarTitle As Label
+        Friend WithEvents StatusBarScore As Label
+        Friend WithEvents StatusBarAward As Label
+        Friend WithEvents splashClub As Label
+        Friend WithEvents splashTheme As Label
+        Friend WithEvents splashClassification As Label
 
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
-            Me.picShowPicture = New System.Windows.Forms.PictureBox()
-            Me.ofdSelectPicture = New System.Windows.Forms.OpenFileDialog()
-            Me.ScorePopUp = New System.Windows.Forms.Label()
-            Me.StatusBar = New System.Windows.Forms.Panel()
-            Me.StatusBarAward = New System.Windows.Forms.Label()
-            Me.StatusBarScore = New System.Windows.Forms.Label()
-            Me.StatusBarTitle = New System.Windows.Forms.Label()
-            Me.splashClub = New System.Windows.Forms.Label()
-            Me.splashTheme = New System.Windows.Forms.Label()
-            Me.splashClassification = New System.Windows.Forms.Label()
+            Me.picShowPicture = New PictureBox()
+            Me.ofdSelectPicture = New OpenFileDialog()
+            Me.ScorePopUp = New Label()
+            Me.StatusBar = New Panel()
+            Me.StatusBarAward = New Label()
+            Me.StatusBarScore = New Label()
+            Me.StatusBarTitle = New Label()
+            Me.splashClub = New Label()
+            Me.splashTheme = New Label()
+            Me.splashClassification = New Label()
             CType(Me.picShowPicture, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.StatusBar.SuspendLayout()
             Me.SuspendLayout()
             '
             'picShowPicture
             '
-            Me.picShowPicture.BackColor = System.Drawing.Color.Black
-            Me.picShowPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-            Me.picShowPicture.Location = New System.Drawing.Point(0, 0)
-            Me.picShowPicture.Margin = New System.Windows.Forms.Padding(0)
+            Me.picShowPicture.BackColor = Color.Black
+            Me.picShowPicture.BackgroundImageLayout = ImageLayout.None
+            Me.picShowPicture.Location = New Point(0, 0)
+            Me.picShowPicture.Margin = New Padding(0)
             Me.picShowPicture.Name = "picShowPicture"
-            Me.picShowPicture.Size = New System.Drawing.Size(1024, 768)
-            Me.picShowPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+            Me.picShowPicture.Size = New Size(1024, 768)
+            Me.picShowPicture.SizeMode = PictureBoxSizeMode.CenterImage
             Me.picShowPicture.TabIndex = 2
             Me.picShowPicture.TabStop = False
             '
@@ -94,20 +94,20 @@ Namespace Forms
             'ScorePopUp
             '
             Me.ScorePopUp.Anchor =
-                CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),
+                CType((AnchorStyles.Top Or AnchorStyles.Right),
                       System.Windows.Forms.AnchorStyles)
-            Me.ScorePopUp.BackColor = System.Drawing.Color.Black
+            Me.ScorePopUp.BackColor = Color.Black
             Me.ScorePopUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.ScorePopUp.Font = New System.Drawing.Font("Segoe UI",
                                                          56.25!,
                                                          System.Drawing.FontStyle.Bold,
                                                          System.Drawing.GraphicsUnit.Point,
                                                          CType(0, Byte))
-            Me.ScorePopUp.ForeColor = System.Drawing.Color.White
-            Me.ScorePopUp.Location = New System.Drawing.Point(803, 29)
+            Me.ScorePopUp.ForeColor = Color.White
+            Me.ScorePopUp.Location = New Point(803, 29)
             Me.ScorePopUp.Margin = New System.Windows.Forms.Padding(0)
             Me.ScorePopUp.Name = "ScorePopUp"
-            Me.ScorePopUp.Size = New System.Drawing.Size(192, 115)
+            Me.ScorePopUp.Size = New Size(192, 115)
             Me.ScorePopUp.TabIndex = 3
             Me.ScorePopUp.Text = "3rd"
             Me.ScorePopUp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -115,79 +115,79 @@ Namespace Forms
             '
             'StatusBar
             '
-            Me.StatusBar.BackColor = System.Drawing.Color.Black
+            Me.StatusBar.BackColor = Color.Black
             Me.StatusBar.Controls.Add(Me.StatusBarAward)
             Me.StatusBar.Controls.Add(Me.StatusBarScore)
             Me.StatusBar.Controls.Add(Me.StatusBarTitle)
-            Me.StatusBar.Location = New System.Drawing.Point(0, 750)
+            Me.StatusBar.Location = New Point(0, 750)
             Me.StatusBar.Margin = New System.Windows.Forms.Padding(0)
             Me.StatusBar.Name = "StatusBar"
-            Me.StatusBar.Size = New System.Drawing.Size(1024, 28)
+            Me.StatusBar.Size = New Size(1024, 28)
             Me.StatusBar.TabIndex = 4
             Me.StatusBar.Visible = False
             '
             'StatusBarAward
             '
-            Me.StatusBarAward.BackColor = System.Drawing.Color.Black
+            Me.StatusBarAward.BackColor = Color.Black
             Me.StatusBarAward.Font = New System.Drawing.Font("Verdana",
                                                              12.0!,
                                                              System.Drawing.FontStyle.Bold,
                                                              System.Drawing.GraphicsUnit.Point,
                                                              CType(0, Byte))
-            Me.StatusBarAward.ForeColor = System.Drawing.Color.White
-            Me.StatusBarAward.Location = New System.Drawing.Point(0, 0)
+            Me.StatusBarAward.ForeColor = Color.White
+            Me.StatusBarAward.Location = New Point(0, 0)
             Me.StatusBarAward.Margin = New System.Windows.Forms.Padding(0)
             Me.StatusBarAward.Name = "StatusBarAward"
-            Me.StatusBarAward.Size = New System.Drawing.Size(134, 28)
+            Me.StatusBarAward.Size = New Size(134, 28)
             Me.StatusBarAward.TabIndex = 2
             Me.StatusBarAward.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
             'StatusBarScore
             '
-            Me.StatusBarScore.BackColor = System.Drawing.Color.Black
+            Me.StatusBarScore.BackColor = Color.Black
             Me.StatusBarScore.Font = New System.Drawing.Font("Verdana",
                                                              12.0!,
                                                              System.Drawing.FontStyle.Bold,
                                                              System.Drawing.GraphicsUnit.Point,
                                                              CType(0, Byte))
-            Me.StatusBarScore.ForeColor = System.Drawing.Color.White
-            Me.StatusBarScore.Location = New System.Drawing.Point(889, 0)
+            Me.StatusBarScore.ForeColor = Color.White
+            Me.StatusBarScore.Location = New Point(889, 0)
             Me.StatusBarScore.Margin = New System.Windows.Forms.Padding(0)
             Me.StatusBarScore.Name = "StatusBarScore"
-            Me.StatusBarScore.Size = New System.Drawing.Size(135, 28)
+            Me.StatusBarScore.Size = New Size(135, 28)
             Me.StatusBarScore.TabIndex = 1
             Me.StatusBarScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
             'StatusBarTitle
             '
-            Me.StatusBarTitle.BackColor = System.Drawing.Color.Black
+            Me.StatusBarTitle.BackColor = Color.Black
             Me.StatusBarTitle.Font = New System.Drawing.Font("Verdana",
                                                              12.0!,
                                                              System.Drawing.FontStyle.Bold,
                                                              System.Drawing.GraphicsUnit.Point,
                                                              CType(0, Byte))
-            Me.StatusBarTitle.ForeColor = System.Drawing.Color.White
-            Me.StatusBarTitle.Location = New System.Drawing.Point(134, 0)
+            Me.StatusBarTitle.ForeColor = Color.White
+            Me.StatusBarTitle.Location = New Point(134, 0)
             Me.StatusBarTitle.Margin = New System.Windows.Forms.Padding(0)
             Me.StatusBarTitle.Name = "StatusBarTitle"
-            Me.StatusBarTitle.Size = New System.Drawing.Size(755, 28)
+            Me.StatusBarTitle.Size = New Size(755, 28)
             Me.StatusBarTitle.TabIndex = 0
             Me.StatusBarTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             Me.StatusBarTitle.UseMnemonic = False
             '
             'splashClub
             '
-            Me.splashClub.BackColor = System.Drawing.Color.Black
+            Me.splashClub.BackColor = Color.Black
             Me.splashClub.Font = New System.Drawing.Font("Segoe UI",
                                                          39.75!,
                                                          System.Drawing.FontStyle.Bold,
                                                          System.Drawing.GraphicsUnit.Point,
                                                          CType(0, Byte))
-            Me.splashClub.ForeColor = System.Drawing.Color.Yellow
-            Me.splashClub.Location = New System.Drawing.Point(0, 200)
+            Me.splashClub.ForeColor = Color.Yellow
+            Me.splashClub.Location = New Point(0, 200)
             Me.splashClub.Margin = New System.Windows.Forms.Padding(0)
             Me.splashClub.Name = "splashClub"
-            Me.splashClub.Size = New System.Drawing.Size(1024, 101)
+            Me.splashClub.Size = New Size(1024, 101)
             Me.splashClub.TabIndex = 5
             Me.splashClub.Text = "Club Name"
             Me.splashClub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -195,17 +195,17 @@ Namespace Forms
             '
             'splashTheme
             '
-            Me.splashTheme.BackColor = System.Drawing.Color.Black
+            Me.splashTheme.BackColor = Color.Black
             Me.splashTheme.Font = New System.Drawing.Font("Segoe UI",
                                                           36.0!,
                                                           System.Drawing.FontStyle.Bold,
                                                           System.Drawing.GraphicsUnit.Point,
                                                           CType(0, Byte))
-            Me.splashTheme.ForeColor = System.Drawing.Color.White
-            Me.splashTheme.Location = New System.Drawing.Point(0, 334)
+            Me.splashTheme.ForeColor = Color.White
+            Me.splashTheme.Location = New Point(0, 334)
             Me.splashTheme.Margin = New System.Windows.Forms.Padding(0)
             Me.splashTheme.Name = "splashTheme"
-            Me.splashTheme.Size = New System.Drawing.Size(1024, 101)
+            Me.splashTheme.Size = New Size(1024, 101)
             Me.splashTheme.TabIndex = 6
             Me.splashTheme.Text = "Theme Name"
             Me.splashTheme.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -213,17 +213,17 @@ Namespace Forms
             '
             'splashClassification
             '
-            Me.splashClassification.BackColor = System.Drawing.Color.Black
+            Me.splashClassification.BackColor = Color.Black
             Me.splashClassification.Font = New System.Drawing.Font("Segoe UI",
                                                                    48.0!,
                                                                    System.Drawing.FontStyle.Bold,
                                                                    System.Drawing.GraphicsUnit.Point,
                                                                    CType(0, Byte))
-            Me.splashClassification.ForeColor = System.Drawing.Color.Red
-            Me.splashClassification.Location = New System.Drawing.Point(0, 468)
+            Me.splashClassification.ForeColor = Color.Red
+            Me.splashClassification.Location = New Point(0, 468)
             Me.splashClassification.Margin = New System.Windows.Forms.Padding(0)
             Me.splashClassification.Name = "splashClassification"
-            Me.splashClassification.Size = New System.Drawing.Size(1024, 101)
+            Me.splashClassification.Size = New Size(1024, 101)
             Me.splashClassification.TabIndex = 7
             Me.splashClassification.Text = "Classification"
             Me.splashClassification.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -231,8 +231,8 @@ Namespace Forms
             '
             'ImageViewer
             '
-            Me.BackColor = System.Drawing.Color.Maroon
-            Me.ClientSize = New System.Drawing.Size(1024, 768)
+            Me.BackColor = Color.Maroon
+            Me.ClientSize = New Size(1024, 768)
             Me.ControlBox = False
             Me.Controls.Add(Me.ScorePopUp)
             Me.Controls.Add(Me.splashClassification)
@@ -242,9 +242,9 @@ Namespace Forms
             Me.Controls.Add(Me.picShowPicture)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.MaximizeBox = False
-            Me.MaximumSize = New System.Drawing.Size(1024, 768)
+            Me.MaximumSize = New Size(1024, 768)
             Me.MinimizeBox = False
-            Me.MinimumSize = New System.Drawing.Size(1024, 768)
+            Me.MinimumSize = New Size(1024, 768)
             Me.Name = "ImageViewer"
             Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
             Me.Text = "Picture Viewer"
