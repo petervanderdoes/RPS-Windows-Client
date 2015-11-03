@@ -2158,13 +2158,11 @@ Namespace Forms
 
                     'delim = ""
                     data.Append("--" + "AaB03x" + vbCrLf)
-                    For Each param As String In params.Keys
-                        If param <> "file" Then
-                            data.Append("Content-Disposition: form-data; name=""" + param + """" + vbCrLf)
-                            data.Append(vbCrLf)
-                            data.Append(HttpUtility.UrlEncode(params(param)) + vbCrLf)
-                            data.Append("--" + "AaB03x" + vbCrLf)
-                        End If
+                    For Each param As String In From param1 As String In params.Keys Where param1 <> "file"
+                        data.Append("Content-Disposition: form-data; name=""" + param + """" + vbCrLf)
+                        data.Append(vbCrLf)
+                        data.Append(HttpUtility.UrlEncode(params(param)) + vbCrLf)
+                        data.Append("--" + "AaB03x" + vbCrLf)
                     Next
 
                     ' Write the POST header, thus far, to a binary stream
