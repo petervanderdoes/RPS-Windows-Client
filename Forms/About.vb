@@ -85,9 +85,6 @@ Namespace Forms
 #End Region
 
         Private Sub About_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-            ' fields = Split(Application.ProductVersion, ".")
-
             Label1.Text = "RPS Competition Client" + vbCrLf +
                           "Version " + Application.ProductVersion + vbCrLf + vbCrLf +
                           "(c) Jake Chapple, Peter van der Does" + vbCrLf +

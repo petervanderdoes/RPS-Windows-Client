@@ -423,16 +423,12 @@ Namespace Forms
         End Sub
 
         Private Sub ImageViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            'Dim row As CompetitionEntry
             Try
                 ' Create an instance of the Thumbnail class to render thumbnail as necessary
                 thumb = New Image.Thumbnail(the_main_form)
 
                 ' How many images are there in this slideshow?
                 num_images = image_list.Count
-
-                ' Grab the first row of the table to get some values
-                'row = ImageList.First
 
                 ' Configure the splash screen
                 splashClub.Text = the_main_form.camera_club_name

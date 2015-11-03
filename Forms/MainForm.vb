@@ -916,11 +916,6 @@ Namespace Forms
             doPickAwards()
         End Sub
 
-        Private Sub MainForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-            'GridResizeColumns(grdCompetition_Entries, 60, 0, 10, 10, 50, 30)
-            'GridResizeColumns(grdCompetition_Entries, 60, 0, 15, 15, 70)
-        End Sub
-
         Private Sub FilePreferencesMenu_Click(sender As Object, e As EventArgs) _
             Handles FilePreferencesMenu.Click
             getUserPreferences()
@@ -933,7 +928,6 @@ Namespace Forms
 
         Private Sub ReportsScoreSheetMenu_Click(sender As Object, e As EventArgs) _
             Handles ReportsScoreSheetMenu.Click
-            'ScoreSheet()
             doResultReport(False)
         End Sub
 
@@ -950,7 +944,6 @@ Namespace Forms
 
             ' Display the splash screen if about to view all images in a competition starting
             ' from the beginning
-            'If AllScoresRadioButton.Checked And grdCompetition_Entries.CurrentRowIndex <= 0 Then
             If all_scores_selected And data_grid_entries_view.CurrentCell.RowIndex <= 0 Then
                 show_splash = True
             Else
@@ -958,11 +951,9 @@ Namespace Forms
             End If
 
             ' Set the status bar to show the title and maker name if we're announcing the winners
-            'If EightsAndAwardsRadioButton.Checked Then
             If eights_and_awards_selected Then
                 status_bar_state = 2
                 ' Set the status bar to show the title only if we're assigning awards
-                'ElseIf NineScoreRadioButton.Checked Or EightScoreRadioButton.Checked Or SevenScoreRadioButton.Checked Then
             ElseIf Not all_scores_selected Then
                 status_bar_state = 1
             Else
@@ -990,10 +981,8 @@ Namespace Forms
                                                            )
                 Next
                 ' If we've just completed entering scores, calculate the eligible awards
-                'If AllScoresRadioButton.Checked Then
                 If all_scores_selected Then
                     doCalculateAwards()
-                    'PickAwards()
                 End If
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
@@ -1022,18 +1011,6 @@ Namespace Forms
                     MsgBox("No images loaded.", MsgBoxStyle.Exclamation, "Error In PickAwards()")
                     Exit Sub
                 End If
-
-                ' Configure the title for the thumbnail screen
-                'If AllScoresRadioButton.Checked Then
-                '    screenTitle = SelectClassification.Text + " " + SelectMedium.Text
-                'ElseIf NineScoreRadioButton.Checked Then
-                '    screenTitle = ninePointThumbViewTitle
-                'ElseIf EightScoreRadioButton.Checked Then
-                '    screenTitle = eightPointThumbViewTitle
-                'ElseIf SevenScoreRadioButton.Checked Then
-                '    screenTitle = sevenPointThumbViewTitle
-                'End If
-
 
                 ' Configure the title for the thumbnail screen
                 If all_scores_selected Then
@@ -1170,11 +1147,6 @@ Namespace Forms
                     order_clause = " ORDER BY Display_Sequence, Title"
                     grid_caption.Text = Format(parseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
 
-                    'Dim q As System.Linq.IQueryable(Of CompetitionEntry)
-                    'q = From entry In rpsContext.CompetitionEntries
-                    'Select Case entry.Award, entry.Classification, entry.Competition_Date_1, entry.Display_Sequence, entry.Image_File_Name, entry.Maker, entry.Medium, entry.Photo_ID, entry.Score_1, entry.Server_Entry_ID, entry.Theme, entry.Title
-
-                    'q = q.Where(Function(entry) entry.Competition_Date_1 = Format(ParseSelectedDate(SelectDate.Text), "MM/dd/yyyy"))
                     ' If enabled, add the value of the Classification field to the selection criteria
                     If EnableClassification.CheckState = CheckState.Checked Then
                         where_clause += " AND Classification='" + SelectClassification.Text + "'"
@@ -1197,7 +1169,7 @@ Namespace Forms
                         If eights_and_awards_selected Then
                             where_clause += " AND ((Award Is Not Null) OR (round(Score_1/" + CType(num_judges, String) +
                                             ", 0) >= 8 AND Award Is Null))"
-                            ' "CASE WHEN Award is NULL THEN 0 ELSE 1 END" Ensure the NULL values are shown first.
+                            ' Ensure the NULL values are shown first.
                             order_clause =
                                 " ORDER BY CASE WHEN Award is NULL THEN 0 ELSE 1 END, Award DESC, Score_1 ASC"
                             grid_caption.Text += " (8s and Awards)"
@@ -1243,7 +1215,6 @@ Namespace Forms
                     grid_caption.Text += "  -  " + num_selected.ToString + " Images"
 
                     ' Recalculate the awards
-                    'If AllScoresRadioButton.Checked And EnableAward.CheckState = CheckState.Unchecked Then
                     If all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
                         doCalculateAwards()
                     End If
@@ -1413,7 +1384,6 @@ Namespace Forms
                 End If
 
                 ' Open the output file and write the HTML preamble
-                'competitionDate = CType(SelectDate.Text, Date)
                 competition_date = parseSelectedDate(SelectDate.Text)
                 If display_scores Then
                     report_type = "Results"
@@ -1498,7 +1468,6 @@ Namespace Forms
                 sw.WriteLine("}")
                 sw.WriteLine("p {")
                 sw.WriteLine("	margin: 0px;")
-                'sw.WriteLine("	Text-align: center;")
                 sw.WriteLine("}")
                 sw.WriteLine("p.title {")
                 sw.WriteLine("	font-weight: bold;")
@@ -2014,7 +1983,6 @@ Namespace Forms
                 status_bar.progress_bar.Maximum = nodes.Count
 
                 ' Select the list of Competitions from the manifest
-                'navigator = response.CreateNavigator()
                 nodes = navigator.Select("/rsp/Competitions/Competition")
 
                 ' Iterate through the list of competitions
@@ -2054,25 +2022,18 @@ Namespace Forms
                             entry_property = entry_properties.Current
                             Select Case entry_property.Name
                                 Case "ID"
-                                    'entry_id = entry_property.Value
                                     this_entry.entry_id = entry_property.Value
                                 Case "First_Name"
-                                    'first_name = entry_property.Value
                                     this_entry.first_name = entry_property.Value
                                 Case "Last_Name"
-                                    'last_name = entry_property.Value
                                     this_entry.last_name = entry_property.Value
                                 Case "Title"
-                                    'title = entry_property.Value
                                     this_entry.title = entry_property.Value
                                 Case "Score"
-                                    'score = entry_property.Value
                                     this_entry.score = entry_property.Value
                                 Case "Award"
-                                    'award = entry_property.Value
                                     this_entry.award = entry_property.Value
                                 Case "Image_URL"
-                                    'url = entry_property.Value
                                     this_entry.url = entry_property.Value
                             End Select
                         End While
@@ -2192,7 +2153,6 @@ Namespace Forms
                 If http_method = "POST" Then
                     ' Set type to POST  
                     request.Method = "POST"
-                    'request.ContentType = "application/x-www-form-urlencoded"
                     request.ContentType = "multipart/form-data, boundary=AaB03x"
                     ' Build the body of the POST transaction
 
@@ -2200,8 +2160,6 @@ Namespace Forms
                     data.Append("--" + "AaB03x" + vbCrLf)
                     For Each param As String In params.Keys
                         If param <> "file" Then
-                            'data.Append(delim + param + "=" + HttpUtility.UrlEncode(params(param)))
-                            'delim = "&"
                             data.Append("Content-Disposition: form-data; name=""" + param + """" + vbCrLf)
                             data.Append(vbCrLf)
                             data.Append(HttpUtility.UrlEncode(params(param)) + vbCrLf)
@@ -2246,7 +2204,6 @@ Namespace Forms
 
                     ' Read the entire contents of the memory stream back into a byte array
                     byte_data = ms.ToArray
-                    'MsgBox(UTF8Encoding.UTF8.GetString(byteData))
 
                     ' Set the content length in the request headers
                     request.ContentLength = byte_data.Length
@@ -2262,14 +2219,6 @@ Namespace Forms
 
                 ' Get response
                 response = request.GetResponse()
-
-                ' Debug: Read the HTTP response into a string and display it
-                'If http_method = "POST" Then
-                'reader = New StreamReader(response.GetResponseStream())
-                'Dim dummy As String
-                'dummy = reader.ReadToEnd
-                'MsgBox(dummy)
-                'End If
 
                 ' Parse the status out of the xml response
                 Dim response_stream As Stream = response.GetResponseStream()
@@ -2481,7 +2430,6 @@ Namespace Forms
                     For Each competition_entry As Entities.CompetitionEntry In recs
                         ' Read the entry data from the database
                         maker = competition_entry.Maker
-                        'fields = Split(maker, " ")
                         posn = InStr(1, maker, " ")
                         first_name = Mid(maker, 1, posn - 1)
                         last_name = Mid(maker, posn + 1)
@@ -2589,7 +2537,6 @@ Namespace Forms
 
         Private Sub NumNinesHeadingButton_Click(sender As Object, e As EventArgs) _
             Handles NumNinesHeadingButton.Click
-            'NineScoreRadioButton.Checked = True
             all_scores_selected = False
             eights_and_awards_selected = False
             selected_avg_score = 9
@@ -2600,7 +2547,6 @@ Namespace Forms
 
         Private Sub NumEightsHeadingButton_Click(sender As Object, e As EventArgs) _
             Handles NumEightsHeadingButton.Click
-            'EightScoreRadioButton.Checked = True
             all_scores_selected = False
             eights_and_awards_selected = False
             selected_avg_score = 8
@@ -2611,7 +2557,6 @@ Namespace Forms
 
         Private Sub NumSevensHeadingButton_Click(sender As Object, e As EventArgs) _
             Handles NumSevensHeadingButton.Click
-            'SevenScoreRadioButton.Checked = True
             all_scores_selected = False
             eights_and_awards_selected = False
             selected_avg_score = 7
@@ -2622,7 +2567,6 @@ Namespace Forms
 
         Private Sub AwardsTableTitleBar_Click(sender As Object, e As EventArgs) _
             Handles AwardsTableTitleBar.Click
-            'EightsAndAwardsRadioButton.Checked = True
             eights_and_awards_selected = True
             all_scores_selected = False
             getSelectedEntries()

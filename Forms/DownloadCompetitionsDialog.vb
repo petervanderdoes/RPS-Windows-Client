@@ -321,8 +321,6 @@ Namespace Forms
 
 
         Private Sub BrowseButton_Click(sender As Object, e As EventArgs) Handles BrowseButton.Click
-            'Dim fileOpenDialog As New OpenFileDialog
-
             FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
             FolderBrowserDialog1.SelectedPath = the_main_form.images_root_folder
             If FolderBrowserDialog1.ShowDialog() = DialogResult.OK Then
