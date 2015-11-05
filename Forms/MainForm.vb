@@ -218,13 +218,15 @@ Namespace Forms
             '
             'MainMenu1
             '
-            Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.MainMenu1.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
             '
             'FileMenu
             '
             Me.FileMenu.Index = 0
-            Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.FileMenu.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                               {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
             Me.FileMenu.Text = "&File"
             '
@@ -246,7 +248,8 @@ Namespace Forms
             'MenuItem5
             '
             Me.MenuItem5.Index = 1
-            Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.MenuItem5.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores})
             Me.MenuItem5.Text = "Competitions"
             '
@@ -268,7 +271,8 @@ Namespace Forms
             'MenuItem2
             '
             Me.MenuItem2.Index = 2
-            Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.MenuItem2.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
             Me.MenuItem2.Text = "&View"
             '
@@ -285,7 +289,8 @@ Namespace Forms
             'ReportsMenu
             '
             Me.ReportsMenu.Index = 3
-            Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.ReportsMenu.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                  {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
             Me.ReportsMenu.Text = "&Reports"
             '
@@ -729,7 +734,8 @@ Namespace Forms
             Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
             Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
                 System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() _
+            Me.data_grid_entries_view.Columns.AddRange(
+                New System.Windows.Forms.DataGridViewColumn() _
                                                           {Me.grid_entries_score, Me.grid_entries_award,
                                                            Me.grid_entries_title})
             DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -1972,7 +1978,7 @@ Namespace Forms
             Try
                 ' Retrieve the list of competition dates from the server
                 params.Add("rpswinclient", "getcompdate")
-                If DoRestGetJson(server_name, server_script_dir, params, response) Then
+                If DoRestGet(server_name, server_script_dir, params, response) Then
                     Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
                     For Each competition_date As String In json("CompetitionDates")
                         dates.Add(competition_date)
@@ -2078,7 +2084,7 @@ Namespace Forms
                 If download_prints And Not download_digital Then
                     params.Add("medium", "prints")
                 End If
-                If Not DoRestGetJson(server_name, server_script_dir, params, response) Then
+                If Not DoRestGet(server_name, server_script_dir, params, response) Then
                     Exit Sub
                 End If
                 Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
@@ -2298,7 +2304,7 @@ Namespace Forms
             End Try
         End Function
 
-        Private Function DoRestGetJson(server As String,
+        Private Function DoRestGet(server As String,
                                        operation As String,
                                        params As Hashtable,
                                        ByRef results As String) As Boolean
@@ -2308,7 +2314,7 @@ Namespace Forms
             Dim delim As String
             Dim reader As StreamReader
             Dim string_builder As StringBuilder
-            DoRestGetJson = False
+            DoRestGet = False
 
             Try
                 ' Build the URL
@@ -2332,7 +2338,7 @@ Namespace Forms
 
                     ' Console application output  
                     results = string_builder.ToString()
-                    DoRestGetJson = True
+                    DoRestGet = True
                 End If
             Catch web_exception As WebException
                 ' This exception will be raised if the server didn't return 200 - OK  
@@ -2502,12 +2508,6 @@ Namespace Forms
                 Cursor.Current = Cursors.WaitCursor
                 Application.DoEvents()
 
-                ' Open a local text file to receive the XML
-                file_name = reports_output_folder + "\" + "Scores_" + comp_date + ".xml"
-                sw = File.CreateText(file_name)
-                sw.WriteLine("<?xml version=""1.0"" encoding=""utf-8"" ?>")
-                sw.WriteLine("<Competitions>")
-
                 ' Select the unique competitions for the given date
                 selected_medium = ""
                 If upload_digital And Not upload_prints Then
@@ -2529,8 +2529,14 @@ Namespace Forms
                     comp_medium_list.Add(classification_medium.Medium)
                 Next
 
+                Dim json_final As Entities.JSON.Competitions
+                Dim json_entry As Entities.JSON.Entry
+                Dim json_competition As Entities.JSON.Competition
+
                 ' Iterate through all the competition for this date
+                Dim json_competitions As New Generic.List(Of Entities.JSON.Competition)
                 For comp_num = 0 To comp_class_list.Count - 1
+                    json_competition = New Entities.JSON.Competition()
                     ' Query the database for the entries of this competition
                     classification = comp_class_list.Item(comp_num)
                     medium = comp_medium_list.Item(comp_num)
@@ -2540,13 +2546,11 @@ Namespace Forms
                     query = sql_select + sql_where
                     recs = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
                     ' Output the tags that describe this competition
-                    sw.WriteLine("  <Competition>")
-                    sw.WriteLine("    <Date>{0}</Date>", HttpUtility.HtmlEncode(comp_date))
-                    sw.WriteLine("    <Classification>{0}</Classification>", HttpUtility.HtmlEncode(classification))
-                    sw.WriteLine("    <Medium>{0}</Medium>", HttpUtility.HtmlEncode(medium))
-                    sw.WriteLine("    <Entries>")
+
                     ' Iterate through all the entries of this competition
+                    Dim json_entries As New Generic.List(Of Entities.JSON.Entry)
                     For Each competition_entry As Entities.CompetitionEntry In recs
+                        json_entry = New Entities.JSON.Entry()
                         ' Read the entry data from the database
                         maker = competition_entry.Maker
                         posn = InStr(1, maker, " ")
@@ -2569,32 +2573,35 @@ Namespace Forms
                             entry_id = competition_entry.Server_Entry_ID
                         End If
                         ' Write this entry to the xml file
-                        sw.WriteLine("      <Entry>")
-                        sw.WriteLine("        <ID>{0}</ID>", entry_id)
-                        sw.WriteLine("        <First_Name>{0}</First_Name>", HttpUtility.HtmlEncode(first_name))
-                        sw.WriteLine("        <Last_Name>{0}</Last_Name>", HttpUtility.HtmlEncode(last_name))
-                        sw.WriteLine("        <Title>{0}</Title>", HttpUtility.HtmlEncode(title))
-                        sw.WriteLine("        <Score>{0}</Score>", HttpUtility.HtmlEncode(score))
-                        sw.WriteLine("        <Award>{0}</Award>", HttpUtility.HtmlEncode(award))
-                        sw.WriteLine("      </Entry>")
+                        json_entry.ID = entry_id
+                        json_entry.First_Name = first_name
+                        json_entry.Last_Name = last_name
+                        json_entry.Title = title
+                        json_entry.Score = score
+                        json_entry.Award = award
+                        json_entries.Add(json_entry)
                     Next
-                    ' Close out this competition
-                    sw.WriteLine("    </Entries>")
-                    sw.WriteLine("  </Competition>")
+                    json_competition.CompDate = comp_date
+                    json_competition.Classification = classification
+                    json_competition.Medium = medium
+                    json_competition.Entries = json_entries
+                    json_competitions.Add(json_competition)
                 Next
-                ' Close out the xml file
-                sw.WriteLine("</Competitions>")
-                sw.Close()
+                json_final = New Entities.JSON.Competitions()
+                json_final.Competitions = json_competitions
 
+                ' Save info to JSON File
+                file_name = reports_output_folder + "\" + "Scores_" + comp_date + ".json"
+                File.WriteAllText(file_name, Newtonsoft.Json.JsonConvert.SerializeObject(json_final))
                 ' Call the web service to upload the xml file to the server
                 Application.DoEvents()
+
                 params.Clear()
                 params.Add("date", comp_date)
                 params.Add("username", username)
                 params.Add("password", password)
                 params.Add("file", file_name)
-                If Not doRest(server_name, server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) _
-                    Then
+                If Not doRest(server_name, server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) Then
                     ' If the web service returned an error, display it
                     navigator = response.CreateNavigator()
                     nodes = navigator.Select("/rsp/err")

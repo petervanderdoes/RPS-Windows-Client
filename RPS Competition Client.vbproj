@@ -178,6 +178,9 @@
     <Import Include="System.Xml.XPath" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\JSON\Competition.vb" />
+    <Compile Include="Entities\JSON\Competitions.vb" />
+    <Compile Include="Entities\JSON\Entry.vb" />
     <Compile Include="Forms\About.vb">
       <SubType>Form</SubType>
     </Compile>
