@@ -1966,22 +1966,17 @@ Namespace Forms
         ' Call the REST service on the server to retrieve the list of available
         ' competition dates.
         Private Function getRestCompetitionDates(params As Hashtable) As ArrayList
-            Dim navigator As XPathNavigator
-            Dim response As XPathDocument
-            Dim nodes As XPathNodeIterator
-            Dim node As XPathNavigator
+            Dim response As String
             Dim dates As New ArrayList
 
             Try
                 ' Retrieve the list of competition dates from the server
                 params.Add("rpswinclient", "getcompdate")
-                If doRest(server_name, server_script_dir, "GET", params, response) Then
-                    navigator = response.CreateNavigator()
-                    nodes = navigator.Select("/rsp/Competition_Date")
-                    While nodes.MoveNext()
-                        node = nodes.Current
-                        dates.Add(node.Value)
-                    End While
+                If DoRestGetJson(server_name, server_script_dir, params, response) Then
+                    Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
+                    For Each competition_date As String In json("CompetitionDates")
+                        dates.Add(competition_date)
+                    Next
                 Else
                     getRestCompetitionDates = dates
                     Exit Function
