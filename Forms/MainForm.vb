@@ -2471,21 +2471,21 @@ Namespace Forms
             Dim score As String
             Dim award As String
             Dim entry_id As String
-            Dim sw As StreamWriter
-            Dim file_name As String
             Dim params As New Hashtable
             Dim params_post As New Generic.List(Of Generic.KeyValuePair(Of String, String))
-            Dim response As XPathDocument
-            Dim navigator As XPathNavigator
-            Dim nodes As XPathNodeIterator
-            Dim node As XPathNavigator
-            Dim info As New StringBuilder
             Dim posn As Integer
             Dim first_name As String
             Dim last_name As String
             Dim upload_digital As Boolean
             Dim upload_prints As Boolean
             Dim selected_medium As String
+            Dim competitions_result As String
+            Dim result_competitions As Entities.JSON.Competitions
+            Dim result_competition As Entities.JSON.Competition
+            Dim result_entry As Entities.JSON.Entry
+            Dim result_entries_list As Generic.List(Of Entities.JSON.Entry)
+            Dim result_competitions_list As Generic.List(Of Entities.JSON.Competition)
+
 
             Try
                 ' Get the list of competition dates from the server
@@ -2540,14 +2540,12 @@ Namespace Forms
                     comp_medium_list.Add(classification_medium.Medium)
                 Next
 
-                Dim json_final As Entities.JSON.Competitions
-                Dim json_entry As Entities.JSON.Entry
-                Dim json_competition As Entities.JSON.Competition
+
 
                 ' Iterate through all the competition for this date
-                Dim json_competitions As New Generic.List(Of Entities.JSON.Competition)
+                result_competitions_list = New Generic.List(Of Entities.JSON.Competition)
                 For comp_num = 0 To comp_class_list.Count - 1
-                    json_competition = New Entities.JSON.Competition()
+                    result_competition = New Entities.JSON.Competition()
                     ' Query the database for the entries of this competition
                     classification = comp_class_list.Item(comp_num)
                     medium = comp_medium_list.Item(comp_num)
@@ -2559,9 +2557,9 @@ Namespace Forms
                     ' Output the tags that describe this competition
 
                     ' Iterate through all the entries of this competition
-                    Dim json_entries As New Generic.List(Of Entities.JSON.Entry)
+                    result_entries_list = New Generic.List(Of Entities.JSON.Entry)
                     For Each competition_entry As Entities.CompetitionEntry In recs
-                        json_entry = New Entities.JSON.Entry()
+                        result_entry = New Entities.JSON.Entry()
                         ' Read the entry data from the database
                         maker = competition_entry.Maker
                         posn = InStr(1, maker, " ")
@@ -2583,35 +2581,30 @@ Namespace Forms
                         Else
                             entry_id = competition_entry.Server_Entry_ID
                         End If
-                        ' Write this entry to the xml file
-                        json_entry.ID = entry_id
-                        json_entry.First_Name = first_name
-                        json_entry.Last_Name = last_name
-                        json_entry.Title = title
-                        json_entry.Score = score
-                        json_entry.Award = award
-                        json_entries.Add(json_entry)
+                        ' Add entry to list
+                        result_entry.ID = entry_id
+                        result_entry.First_Name = first_name
+                        result_entry.Last_Name = last_name
+                        result_entry.Title = title
+                        result_entry.Score = score
+                        result_entry.Award = award
+                        result_entries_list.Add(result_entry)
                     Next
-                    json_competition.CompDate = comp_date
-                    json_competition.Classification = classification
-                    json_competition.Medium = medium
-                    json_competition.Entries = json_entries
-                    json_competitions.Add(json_competition)
+                    result_competition.CompDate = comp_date
+                    result_competition.Classification = classification
+                    result_competition.Medium = medium
+                    result_competition.Entries = result_entries_list
+                    result_competitions_list.Add(result_competition)
                 Next
-                json_final = New Entities.JSON.Competitions()
-                json_final.Competitions = json_competitions
+                result_competitions = New Entities.JSON.Competitions()
+                result_competitions.Competitions = result_competitions_list
 
-                ' Save info to JSON File
-                file_name = reports_output_folder + "\" + "Scores_" + comp_date + ".json"
-                Dim json As String = Newtonsoft.Json.JsonConvert.SerializeObject(json_final)
-                ' Call the web service to upload the xml file to the server
-                Application.DoEvents()
-
+                competitions_result = Newtonsoft.Json.JsonConvert.SerializeObject(result_competitions)
                 params_post.Clear()
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("rpswinclient", "uploadscore"))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
-                params_post.Add(New Generic.KeyValuePair(Of String, String)("json", json))
+                params_post.Add(New Generic.KeyValuePair(Of String, String)("json", competitions_result))
                 Dim r = DoRestPost(server_name, server_script_dir, params_post)
 
             Catch exception As Exception
