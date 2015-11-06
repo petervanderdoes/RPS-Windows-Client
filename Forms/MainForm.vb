@@ -2363,6 +2363,16 @@ Namespace Forms
             End Try
         End Function
 
+        Private Async Function DoRestPost(server As String,
+                                       operation As String,
+                                       post_data As Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) As Tasks.Task(Of Boolean)
+            Dim client As New Http.HttpClient()
+            client.BaseAddress = New Uri("http://" + server)
+            Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
+            Dim response As Http.HttpResponseMessage = Await client.PostAsync(client.BaseAddress, content)
+            response.EnsureSuccessStatusCode()
+        End Function
+
         Private Function getRestStatResponse(response As XPathDocument) As Boolean
             Dim navigator As XPathNavigator
             Dim nodes As XPathNodeIterator
@@ -2464,6 +2474,7 @@ Namespace Forms
             Dim sw As StreamWriter
             Dim file_name As String
             Dim params As New Hashtable
+            Dim params_post As New Generic.List(Of Generic.KeyValuePair(Of String, String))
             Dim response As XPathDocument
             Dim navigator As XPathNavigator
             Dim nodes As XPathNodeIterator
@@ -2592,42 +2603,16 @@ Namespace Forms
 
                 ' Save info to JSON File
                 file_name = reports_output_folder + "\" + "Scores_" + comp_date + ".json"
-                File.WriteAllText(file_name, Newtonsoft.Json.JsonConvert.SerializeObject(json_final))
+                Dim json As String = Newtonsoft.Json.JsonConvert.SerializeObject(json_final)
                 ' Call the web service to upload the xml file to the server
                 Application.DoEvents()
 
-                params.Clear()
-                params.Add("date", comp_date)
-                params.Add("username", username)
-                params.Add("password", password)
-                params.Add("file", file_name)
-                If Not doRest(server_name, server_script_dir + "/?rpswinclient=uploadscore", "POST", params, response) Then
-                    ' If the web service returned an error, display it
-                    navigator = response.CreateNavigator()
-                    nodes = navigator.Select("/rsp/err")
-                    nodes.MoveNext()
-                    node = nodes.Current
-                    Cursor.Current = Cursors.Default
-                    MsgBox("Upload Failure - " + node.GetAttribute("msg", ""), , "Error in UploadScores()")
-                    Exit Function
-                Else
-                    ' Display the results of the web service (may include warnings)
-                    navigator = response.CreateNavigator()
-                    nodes = navigator.Select("/rsp/info")
-                    While nodes.MoveNext()
-                        node = nodes.Current
-                        info.Append(node.Value + vbCrLf)
-                    End While
-                    If info.Length > 0 Then
-                        Cursor.Current = Cursors.Default
-                        MsgBox(info.ToString, , "Upload Scores")
-                    End If
-                End If
-
-                ' Finally, Delete the .xml file
-                If File.Exists(file_name) = True Then
-                    File.Delete(file_name)
-                End If
+                params_post.Clear()
+                params_post.Add(New Generic.KeyValuePair(Of String, String)("rpswinclient", "uploadscore"))
+                params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
+                params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
+                params_post.Add(New Generic.KeyValuePair(Of String, String)("json", json))
+                Dim r = DoRestPost(server_name, server_script_dir, params_post)
 
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
