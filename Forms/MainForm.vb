@@ -56,6 +56,7 @@ Namespace Forms
         Private last_admin_username As String
 
         Private ReadOnly status_bar As New Components.ProgressStatus
+        Dim rest As Helpers.Rest
 
         ' For the thumbnail view
         Private nine_point_thumb_view_title As String
@@ -874,6 +875,7 @@ Namespace Forms
                 Set_database_name(database_file_name)
                 ' Load the user preferences from the registry
                 getPreferences()
+                rest = New Helpers.Rest(server_name)
 
                 rps_context = New Entities.rpsEntities(New SQLite.SQLiteConnectionStringBuilder() With {
                                                           .DataSource = database_file_name,
@@ -1775,13 +1777,14 @@ Namespace Forms
                         Helpers.Registry.writeRegistryString("Reports Output Folder", reports_output_folder)
                     End If
                     If sn > "" Then
-                        ' Store the new server name in memory
+                        ' Store the new Server name in memory
                         server_name = sn
                         ' Write it to the registry
                         Helpers.Registry.writeRegistryString("Server Name", sn)
+                        rest.Server = server_name
                     End If
                     If ssd > "" Then
-                        ' Store the new server script directory in memory
+                        ' Store the new Server script directory in memory
                         server_script_dir = ssd
                         ' Write it to the registry
                         Helpers.Registry.writeRegistryString("Server Script Directory", ssd)
@@ -1969,16 +1972,16 @@ Namespace Forms
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
-        ' Call the REST service on the server to retrieve the list of available
+        ' Call the REST service on the Server to retrieve the list of available
         ' competition dates.
         Private Function getRestCompetitionDates(params As Hashtable) As ArrayList
             Dim response As String
             Dim dates As New ArrayList
 
             Try
-                ' Retrieve the list of competition dates from the server
+                ' Retrieve the list of competition dates from the Server
                 params.Add("rpswinclient", "getcompdate")
-                If DoRestGet(server_name, server_script_dir, params, response) Then
+                If rest.DoRestGet(server_name, server_script_dir, params, response) Then
                     Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
                     For Each competition_date As String In json("CompetitionDates")
                         dates.Add(competition_date)
@@ -2023,7 +2026,7 @@ Namespace Forms
             Dim download_prints As Boolean
 
             Try
-                ' Retrieve the list of competition dates from the server
+                ' Retrieve the list of competition dates from the Server
                 Cursor.Current = Cursors.WaitCursor
                 params.Clear()
                 params.Add("closed", "Y")
@@ -2071,7 +2074,7 @@ Namespace Forms
                 query = rps_context.Database.ExecuteSqlCommand(sql)
                 Application.DoEvents()
 
-                ' Retrieve the competition Manifest from the server
+                ' Retrieve the competition Manifest from the Server
                 Cursor.Current = Cursors.WaitCursor
                 params.Clear()
                 params.Add("rpswinclient", "download")
@@ -2084,7 +2087,7 @@ Namespace Forms
                 If download_prints And Not download_digital Then
                     params.Add("medium", "prints")
                 End If
-                If Not DoRestGet(server_name, server_script_dir, params, response) Then
+                If Not rest.DoRestGet(server_name, server_script_dir, params, response) Then
                     Exit Sub
                 End If
                 Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
@@ -2139,7 +2142,7 @@ Namespace Forms
                             dir_info.Create()
                         End If
 
-                        ' Fetch the image file from the server
+                        ' Fetch the image file from the Server
                         local_image_file_name = competition_folder + "\" +
                                                 handleStrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
                                                 "+" + entry.first_name + "_" + entry.last_name + ".jpg"
@@ -2188,190 +2191,6 @@ Namespace Forms
             End Try
         End Sub
 
-        Private Function doRest(server As String,
-                                operation As String,
-                                http_method As String,
-                                params As Hashtable,
-                                ByRef results As XPathDocument) As Boolean
-            Dim request As HttpWebRequest
-            Dim response As HttpWebResponse = Nothing
-            Dim url As String
-            Dim delim As String
-            Dim x_path_doc As XPathDocument
-            Dim data As New StringBuilder
-            Dim byte_data() As Byte
-            Dim post_stream As Stream = Nothing
-            Dim fs As FileStream
-            Dim br As BinaryReader
-            Dim ms As New MemoryStream
-
-            Try
-                ' Build the URL
-                url = "http://" + server + operation
-                If http_method = "GET" Then
-                    delim = "?"
-                    For Each key As String In params.Keys
-                        url = url + delim + key + "=" + params.Item(key)
-                        delim = "&"
-                    Next
-                End If
-
-                ' Create the web request  
-                request = HttpWebRequest.Create(url)
-                If http_method = "POST" Then
-                    ' Set type to POST  
-                    request.Method = "POST"
-                    request.ContentType = "multipart/form-data, boundary=AaB03x"
-                    ' Build the body of the POST transaction
-
-                    'delim = ""
-                    data.Append("--" + "AaB03x" + vbCrLf)
-                    For Each param As String In From param1 As String In params.Keys Where param1 <> "file"
-                        data.Append("Content-Disposition: form-data; name=""" + param + """" + vbCrLf)
-                        data.Append(vbCrLf)
-                        data.Append(HttpUtility.UrlEncode(params(param)) + vbCrLf)
-                        data.Append("--" + "AaB03x" + vbCrLf)
-                    Next
-
-                    ' Write the POST header, thus far, to a binary stream
-                    byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                    ms.Write(byte_data, 0, byte_data.Length)
-                    data.Remove(0, data.Length)
-
-                    ' Attach any files in the param list
-                    For Each param As String In From param1 As String In params.Keys Where param1 = "file"
-                        data.Append(
-                            "Content-Disposition: form-data; name=""file""; filename=""" + params(param) + """" + vbCrLf)
-                        data.Append("Content-Transfer-Encoding: binary" + vbCrLf)
-                        data.Append("Content-Type: Image/jpeg" + vbCrLf)
-                        data.Append(vbCrLf)
-                        ' Write the MIME header to a binary stream
-                        byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                        ms.Write(byte_data, 0, byte_data.Length)
-                        ' Open the file and write it to a binary stream
-                        fs = Nothing
-                        Try
-                            fs = New FileStream(params(param), FileMode.Open, FileAccess.Read)
-                            br = New BinaryReader(fs)
-                            byte_data = br.ReadBytes(fs.Length)
-                            ms.Write(byte_data, 0, fs.Length)
-                            br.Close()
-                            ' Write the terminating boundry marker
-                            data.Remove(0, data.Length)
-                            data.Append("--" + "AaB03x" + vbCrLf)
-                            byte_data = UTF8Encoding.UTF8.GetBytes(data.ToString())
-                            ms.Write(byte_data, 0, byte_data.Length)
-                        Finally
-                            If fs IsNot Nothing Then
-                                fs.Close()
-                            End If
-                        End Try
-                    Next
-
-                    ' Read the entire contents of the memory stream back into a byte array
-                    byte_data = ms.ToArray
-
-                    ' Set the content length in the request headers
-                    request.ContentLength = byte_data.Length
-
-                    ' Write data
-                    Try
-                        post_stream = request.GetRequestStream()
-                        post_stream.Write(byte_data, 0, byte_data.Length)
-                    Finally
-                        If Not post_stream Is Nothing Then post_stream.Close()
-                    End Try
-                End If
-
-                ' Get response
-                response = request.GetResponse()
-
-                ' Parse the status out of the xml response
-                Dim response_stream As Stream = response.GetResponseStream()
-                x_path_doc = New XPathDocument(response_stream)
-                If getRestStatResponse(x_path_doc) Then
-                    doRest = True
-                Else
-                    doRest = False
-                End If
-                results = x_path_doc
-
-            Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-                doRest = False
-            Finally
-                If Not response Is Nothing Then response.Close()
-            End Try
-        End Function
-
-        Private Function DoRestGet(server As String,
-                                       operation As String,
-                                       params As Hashtable,
-                                       ByRef results As String) As Boolean
-            Dim request As HttpWebRequest
-            Dim response As HttpWebResponse = Nothing
-            Dim url As String
-            Dim delim As String
-            Dim reader As StreamReader
-            Dim string_builder As StringBuilder
-            DoRestGet = False
-
-            Try
-                ' Build the URL
-                url = "http://" + server + operation
-                delim = "?"
-                For Each key As String In params.Keys
-                    url = url + delim + key + "=" + params.Item(key)
-                    delim = "&"
-                Next
-
-                ' Create the web request  
-                request = DirectCast(WebRequest.Create(url), HttpWebRequest)
-                response = DirectCast(request.GetResponse(), HttpWebResponse)
-                If request.HaveResponse = True AndAlso Not (response Is Nothing) Then
-
-                    ' Get the response stream  
-                    reader = New StreamReader(response.GetResponseStream())
-
-                    ' Read it into a StringBuilder  
-                    string_builder = New StringBuilder(reader.ReadToEnd())
-
-                    ' Console application output  
-                    results = string_builder.ToString()
-                    DoRestGet = True
-                End If
-            Catch web_exception As WebException
-                ' This exception will be raised if the server didn't return 200 - OK  
-                ' Try to retrieve more information about the network error  
-                If Not web_exception.Response Is Nothing Then
-                    Dim error_response As HttpWebResponse = Nothing
-                    Try
-                        error_response = DirectCast(web_exception.Response, HttpWebResponse)
-                        Dim message As String
-                        message = String.Format("The server returned '{0}' with the status code {1} ({2:d}).",
-                                                error_response.StatusDescription,
-                                                error_response.StatusCode,
-                                                error_response.StatusCode)
-                        MsgBox(message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-
-                    Finally
-                        If Not error_response Is Nothing Then error_response.Close()
-                    End Try
-                End If
-            Finally
-                If Not response Is Nothing Then response.Close()
-            End Try
-        End Function
-
-        Private Async Function DoRestPost(server As String,
-                                       operation As String,
-                                       post_data As Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) As Tasks.Task(Of Boolean)
-            Dim client As New Http.HttpClient()
-            client.BaseAddress = New Uri("http://" + server)
-            Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
-            Dim response As Http.HttpResponseMessage = Await client.PostAsync(client.BaseAddress, content)
-            response.EnsureSuccessStatusCode()
-        End Function
 
         Private Function getRestStatResponse(response As XPathDocument) As Boolean
             Dim navigator As XPathNavigator
@@ -2486,9 +2305,8 @@ Namespace Forms
             Dim result_entries_list As Generic.List(Of Entities.JSON.Entry)
             Dim result_competitions_list As Generic.List(Of Entities.JSON.Competition)
 
-
             Try
-                ' Get the list of competition dates from the server
+                ' Get the list of competition dates from the Server
                 Cursor.Current = Cursors.WaitCursor
                 params.Add("closed", "Y")
                 params.Add("scored", "N")
@@ -2605,7 +2423,7 @@ Namespace Forms
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("json", competitions_result))
-                Dim r = DoRestPost(server_name, server_script_dir, params_post)
+                Dim r = rest.DoRestPost(params_post)
 
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
