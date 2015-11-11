@@ -2422,7 +2422,7 @@ Namespace Forms
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("json", competitions_result))
-                Dim r = rest.DoRestPost(params_post)
+                Dim r = rest.DoPost(params_post)
 
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)

@@ -8,18 +8,18 @@ Namespace Helpers
         Public Property ErrorMessage As String
         Public Property result As String
 
-        Public Function DoRestPost(post_data As _
+        Public Function DoPost(post_data As _
                                       Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) _
             As Boolean
             Dim client As New Http.HttpClient()
-            DoRestPost = True
+            DoPost = True
             Try
                 client.BaseAddress = New Uri("http://" + Me.Server)
                 Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
                 Dim response As Http.HttpResponseMessage = client.PostAsync(client.BaseAddress, content).Result
                 response.EnsureSuccessStatusCode()
             Catch exception As HttpException
-                DoRestPost = False
+                DoPost = False
                 Me.ErrorMessage = exception.Message
             Finally
                 client.Dispose()
@@ -27,7 +27,7 @@ Namespace Helpers
         End Function
 
         Public Function DoGet(operation As String,
-                              arguments As Hashtable)
+                              arguments As Hashtable) As Object
             Dim client As New Http.HttpClient()
             Dim delim As String
             Dim uri_string As String
@@ -36,7 +36,7 @@ Namespace Helpers
                 uri_string = operation
                 delim = "?"
                 For Each argument As DictionaryEntry In arguments
-                    uri_string = [String].Format("{0}{1}{2}={3}", uri_string, delim, argument.Key, argument.Value)
+                    uri_string = String.Format("{0}{1}{2}={3}", uri_string, delim, argument.Key, argument.Value)
                     delim = "&"
                 Next
                 client.BaseAddress = New Uri("http://" + Me.Server + uri_string)
