@@ -65,21 +65,21 @@ Namespace Helpers
             End Try
         End Function
 
-        Public Async Sub DoRestPost(post_data As _
-                                       Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String)))
+        Public Function DoRestPost(post_data As _
+                                       Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) As Boolean
             Dim client As New Http.HttpClient()
-            Me.HasError = False
+            DoRestPost = True
             Try
                 client.BaseAddress = New Uri("http://" + Me.Server)
                 Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
-                Dim response As Http.HttpResponseMessage = Await client.PostAsync(client.BaseAddress, content)
+                Dim response As Http.HttpResponseMessage = client.PostAsync(client.BaseAddress, content).Result
                 response.EnsureSuccessStatusCode()
             Catch exception As HttpException
-                Me.HasError = True
+                DoRestPost = False
                 Me.ErrorMessage = exception.Message
             Finally
                 client.Dispose()
             End Try
-        End Sub
+        End Function
     End Class
 End Namespace
