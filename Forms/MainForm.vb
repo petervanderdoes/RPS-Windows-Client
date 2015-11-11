@@ -1981,14 +1981,12 @@ Namespace Forms
             Try
                 ' Retrieve the list of competition dates from the Server
                 params.Add("rpswinclient", "getcompdate")
-                If rest.DoRestGet(server_name, server_script_dir, params, response) Then
+                response = rest.DoGet(server_script_dir, params)
+                If Not IsNothing(response) Then
                     Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
                     For Each competition_date As String In json("CompetitionDates")
                         dates.Add(competition_date)
                     Next
-                Else
-                    getRestCompetitionDates = dates
-                    Exit Function
                 End If
 
                 getRestCompetitionDates = dates
@@ -2087,7 +2085,8 @@ Namespace Forms
                 If download_prints And Not download_digital Then
                     params.Add("medium", "prints")
                 End If
-                If Not rest.DoRestGet(server_name, server_script_dir, params, response) Then
+                response = rest.DoGet(server_script_dir, params)
+                If IsNothing(response) Then
                     Exit Sub
                 End If
                 Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)

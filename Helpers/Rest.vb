@@ -6,67 +6,11 @@ Namespace Helpers
 
         Public Property Server As String
         Public Property ErrorMessage As String
-        Public Property HasError As Boolean
-
-        Public Function DoRestGet(server As String, operation As String, params As Hashtable, ByRef results As String) _
-            As Boolean
-            Dim request As HttpWebRequest
-            Dim response As HttpWebResponse = Nothing
-            Dim url As String
-            Dim delim As String
-            Dim reader As StreamReader
-            Dim string_builder As StringBuilder
-            DoRestGet = False
-
-            Try
-                ' Build the URL
-                url = "http://" + server + operation
-                delim = "?"
-                For Each key As String In params.Keys
-                    url = url + delim + key + "=" + params.Item(key)
-                    delim = "&"
-                Next
-
-                ' Create the web request  
-                request = DirectCast(WebRequest.Create(url), HttpWebRequest)
-                response = DirectCast(request.GetResponse(), HttpWebResponse)
-                If request.HaveResponse = True AndAlso Not (response Is Nothing) Then
-
-                    ' Get the response stream  
-                    reader = New StreamReader(response.GetResponseStream())
-
-                    ' Read it into a StringBuilder  
-                    string_builder = New StringBuilder(reader.ReadToEnd())
-
-                    ' Console application output  
-                    results = string_builder.ToString()
-                    DoRestGet = True
-                End If
-            Catch web_exception As WebException
-                ' This exception will be raised if the Server didn't return 200 - OK  
-                ' Try to retrieve more information about the network error  
-                If Not web_exception.Response Is Nothing Then
-                    Dim error_response As HttpWebResponse = Nothing
-                    Try
-                        error_response = DirectCast(web_exception.Response, HttpWebResponse)
-                        Dim message As String
-                        message = String.Format("The Server returned '{0}' with the status code {1} ({2:d}).",
-                                                error_response.StatusDescription,
-                                                error_response.StatusCode,
-                                                error_response.StatusCode)
-                        MsgBox(message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-
-                    Finally
-                        If Not error_response Is Nothing Then error_response.Close()
-                    End Try
-                End If
-            Finally
-                If Not response Is Nothing Then response.Close()
-            End Try
-        End Function
+        Public Property result As String
 
         Public Function DoRestPost(post_data As _
-                                       Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) As Boolean
+                                      Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) _
+            As Boolean
             Dim client As New Http.HttpClient()
             DoRestPost = True
             Try
@@ -76,6 +20,30 @@ Namespace Helpers
                 response.EnsureSuccessStatusCode()
             Catch exception As HttpException
                 DoRestPost = False
+                Me.ErrorMessage = exception.Message
+            Finally
+                client.Dispose()
+            End Try
+        End Function
+
+        Public Function DoGet(operation As String,
+                              arguments As Hashtable)
+            Dim client As New Http.HttpClient()
+            Dim delim As String
+            Dim uri_string As String
+
+            Try
+                uri_string = operation
+                delim = "?"
+                For Each argument As DictionaryEntry In arguments
+                    uri_string = [String].Format("{0}{1}{2}={3}", uri_string, delim, argument.Key, argument.Value)
+                    delim = "&"
+                Next
+                client.BaseAddress = New Uri("http://" + Me.Server + uri_string)
+                Dim response As Http.HttpResponseMessage = client.GetAsync(client.BaseAddress).Result
+                DoGet = response.Content.ReadAsStringAsync().Result
+            Catch exception As HttpException
+                DoGet = Nothing
                 Me.ErrorMessage = exception.Message
             Finally
                 client.Dispose()

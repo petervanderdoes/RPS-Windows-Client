@@ -203,6 +203,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Entities\UploadEntities.vb" />
+    <Compile Include="Helpers\Rest.vb" />
     <Compile Include="Helpers\Strings.vb" />
     <Compile Include="Forms\ImageViewer.vb">
       <SubType>Form</SubType>
