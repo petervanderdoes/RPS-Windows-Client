@@ -5,6 +5,8 @@ Namespace Helpers
         End Sub
 
         Public Property Server As String
+        Public Property ErrorMessage As String
+        Public Property HasError As Boolean
 
         Public Function DoRestGet(server As String, operation As String, params As Hashtable, ByRef results As String) _
             As Boolean
@@ -63,16 +65,21 @@ Namespace Helpers
             End Try
         End Function
 
-        Public Async Function DoRestPost(
-                                         post_data As _
-                                            Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) _
-            As Tasks.Task(Of Boolean)
-
+        Public Async Sub DoRestPost(post_data As _
+                                       Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String)))
             Dim client As New Http.HttpClient()
-            client.BaseAddress = New Uri("http://" + Me.Server)
-            Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
-            Dim response As Http.HttpResponseMessage = Await client.PostAsync(client.BaseAddress, content)
-            response.EnsureSuccessStatusCode()
-        End Function
+            Me.HasError = False
+            Try
+                client.BaseAddress = New Uri("http://" + Me.Server)
+                Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
+                Dim response As Http.HttpResponseMessage = Await client.PostAsync(client.BaseAddress, content)
+                response.EnsureSuccessStatusCode()
+            Catch exception As HttpException
+                Me.HasError = True
+                Me.ErrorMessage = exception.Message
+            Finally
+                client.Dispose()
+            End Try
+        End Sub
     End Class
 End Namespace
