@@ -1982,11 +1982,13 @@ Namespace Forms
                 ' Retrieve the list of competition dates from the Server
                 params.Add("rpswinclient", "getcompdate")
                 response = rest.DoGet(server_script_dir, params)
-                If Not IsNothing(response) Then
+                If response IsNot Nothing Then
                     Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
                     For Each competition_date As String In json("CompetitionDates")
                         dates.Add(competition_date)
                     Next
+                Else
+                    MsgBox(rest.ErrorMessage, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
                 End If
 
                 getRestCompetitionDates = dates

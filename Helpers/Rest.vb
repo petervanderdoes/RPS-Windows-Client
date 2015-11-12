@@ -41,8 +41,12 @@ Namespace Helpers
                 Next
                 client.BaseAddress = New Uri("http://" + Me.Server + uri_string)
                 Dim response As Http.HttpResponseMessage = client.GetAsync(client.BaseAddress).Result
-                DoGet = response.Content.ReadAsStringAsync().Result
-            Catch exception As HttpException
+                If response.IsSuccessStatusCode Then
+                    DoGet = response.Content.ReadAsStringAsync().Result
+                Else
+                    DoGet = Nothing
+                End If
+            Catch exception As Exception
                 DoGet = Nothing
                 Me.ErrorMessage = exception.Message
             Finally
