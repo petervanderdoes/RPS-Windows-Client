@@ -1977,6 +1977,7 @@ Namespace Forms
         Private Function getRestCompetitionDates(params As Hashtable) As ArrayList
             Dim response As String
             Dim dates As New ArrayList
+            Dim msg_box_layout = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
 
             Try
                 ' Retrieve the list of competition dates from the Server
@@ -1984,9 +1985,18 @@ Namespace Forms
                 response = rest.DoGet(server_script_dir, params)
                 If response IsNot Nothing Then
                     Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
-                    For Each competition_date As String In json("CompetitionDates")
-                        dates.Add(competition_date)
-                    Next
+                    If Not Helpers.Json.IsError(json) Then
+                        msg_box_layout = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
+                        For Each competition_date As String In json("data")("CompetitionDates")
+                            dates.Add(competition_date)
+                        Next
+                    Else
+                        msg_box_layout = MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical
+                    End If
+                    If Helpers.Json.HasErrors(json) Then
+                        Dim error_message As String = Helpers.Json.GetErrorMessage(json)
+                        MsgBox(error_message, msg_box_layout, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    End If
                 Else
                     MsgBox(rest.ErrorMessage, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
                 End If
@@ -1998,6 +2008,8 @@ Namespace Forms
                 getRestCompetitionDates = dates
             End Try
         End Function
+
+
 
         Private Sub downloadCompetitionImages()
 
@@ -2093,61 +2105,72 @@ Namespace Forms
                 End If
                 Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
 
+                If Helpers.Json.IsError(json) Then
+                    Dim error_message As String = "Server Error" + Environment.NewLine + "Unknown error"
+                    If Helpers.Json.HasErrors(json) Then
+                        error_message = Helpers.Json.GetErrorMessage(json)
+                    End If
+                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    Exit Sub
+                End If
+
+                Dim json_data As Newtonsoft.Json.Linq.JObject = json("data")
                 ' Initialize the progress bar
                 status_bar.progress_bar.Minimum = 0
                 status_bar.progress_bar.Value = 0
-                status_bar.progress_bar.Maximum = json("Configuration")("TotalEntries")
+                status_bar.progress_bar.Maximum = json_data("Configuration")("TotalEntries")
 
-                For Each json_rec As Object In json("Competitions")
-                    comp_date = json_rec("Date")
-                    comp_theme = json_rec("Theme")
-                    comp_medium = json_rec("Medium")
-                    comp_classification = json_rec("Classification")
+                For Each json_rec As Newtonsoft.Json.Linq.JObject In json_data("Competitions")
+                    If json_rec("Entries").HasValues Then
+                        comp_date = json_rec("Date")
+                        comp_theme = json_rec("Theme")
+                        comp_medium = json_rec("Medium")
+                        comp_classification = json_rec("Classification")
 
-                    prev_member = ""
-                    bucket = 0
-                    entries_array_list.Clear()
-                    For Each json_entry As Object In json_rec("Entries")
-                        this_entry.entry_id = json_entry("ID")
-                        this_entry.first_name = json_entry("First_Name")
-                        this_entry.last_name = json_entry("Last_Name")
-                        this_entry.title = json_entry("Title")
-                        this_entry.score = json_entry("Score")
-                        this_entry.award = json_entry("Award")
-                        this_entry.url = json_entry("Image_URL")
-                        member = this_entry.first_name + " " + this_entry.last_name
-                        If member <> prev_member Then
-                            bucket = 0
-                        Else
-                            bucket += 1
-                        End If
-                        this_entry.bucket = bucket  ' store the bucket number in the record
-                        entries_array_list.Add(this_entry)     ' Store the record in a list
-                        prev_member = member
-                    Next
+                        prev_member = ""
+                        bucket = 0
+                        entries_array_list.Clear()
+                        For Each json_entry As Newtonsoft.Json.Linq.JObject In json_rec("Entries")
+                            this_entry.entry_id = json_entry("ID")
+                            this_entry.first_name = json_entry("First_Name")
+                            this_entry.last_name = json_entry("Last_Name")
+                            this_entry.title = json_entry("Title")
+                            this_entry.score = json_entry("Score")
+                            this_entry.award = json_entry("Award")
+                            this_entry.url = json_entry("Image_URL")
+                            member = this_entry.first_name + " " + this_entry.last_name
+                            If member <> prev_member Then
+                                bucket = 0
+                            Else
+                                bucket += 1
+                            End If
+                            this_entry.bucket = bucket  ' store the bucket number in the record
+                            entries_array_list.Add(this_entry)     ' Store the record in a list
+                            prev_member = member
+                        Next
 
-                    ' Sort the list of entries by bucket
-                    ' TODO Randomize the order
-                    entries_array_list.Sort()
-                    '
-                    ' Iterate through all the entries and download the images
-                    ' and update the database
-                    sequence_num = 1
-                    status_bar.progress_bar.Show()
-                    For Each entry As CompEntry In entries_array_list
-                        ' If necessary, create the folder for this entry
-                        competition_folder = output_folder + "\" + comp_date + " " + comp_classification + " " +
+                        ' Sort the list of entries by bucket
+                        ' TODO Randomize the order
+                        entries_array_list.Sort()
+                        '
+                        ' Iterate through all the entries and download the images
+                        ' and update the database
+                        sequence_num = 1
+                        status_bar.progress_bar.Show()
+                        For Each entry As CompEntry In entries_array_list
+                            ' If necessary, create the folder for this entry
+                            competition_folder = output_folder + "\" + comp_date + " " + comp_classification + " " +
                                              comp_medium
-                        dir_info = New DirectoryInfo(competition_folder)
-                        If Not dir_info.Exists Then
-                            dir_info.Create()
-                        End If
+                            dir_info = New DirectoryInfo(competition_folder)
+                            If Not dir_info.Exists Then
+                                dir_info.Create()
+                            End If
 
-                        ' Fetch the image file from the Server
-                        local_image_file_name = competition_folder + "\" +
+                            ' Fetch the image file from the Server
+                            local_image_file_name = competition_folder + "\" +
                                                 handleStrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
                                                 "+" + entry.first_name + "_" + entry.last_name + ".jpg"
-                        My.Computer.Network.DownloadFile(address:=entry.url,
+                            My.Computer.Network.DownloadFile(address:=entry.url,
                                                          destinationFileName:=local_image_file_name,
                                                          userName:=String.Empty,
                                                          password:=String.Empty,
@@ -2155,8 +2178,8 @@ Namespace Forms
                                                          connectionTimeout:=100000,
                                                          overwrite:=True)
 
-                        ' Insert this image into the database
-                        addImageToDatabase(
+                            ' Insert this image into the database
+                            addImageToDatabase(
                             New FileInfo(local_image_file_name),
                             entry.first_name + " " + entry.last_name,
                             entry.title,
@@ -2169,18 +2192,19 @@ Namespace Forms
                             entry.entry_id,
                             sequence_num)
 
-                        ' Update the Progressbar
-                        status_bar.progress_bar.Value = status_bar.progress_bar.Value + 1
-                        Application.DoEvents()
+                            ' Update the Progressbar
+                            status_bar.progress_bar.Value = status_bar.progress_bar.Value + 1
+                            Application.DoEvents()
 
-                        sequence_num += 1
-                    Next
+                            sequence_num += 1
+                        Next
+                    End If
                 Next
 
                 ' Update the list of dates in the Competition Date combobox
                 setCompetitionDatesCombobox()
 
-                MsgBox("Competition Images Downloaded Successfully", , "Download Competition Images")
+                MsgBox("Competition Images Downloaded", , "Download Competition Images")
 
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
@@ -2341,7 +2365,7 @@ Namespace Forms
                 ' Select the unique competitions for the given date
                 selected_medium = ""
                 If upload_digital And Not upload_prints Then
-                    selected_medium = " AND Medium like '%Digital'"
+                    selected_medium = " And Medium Like '%Digital'"
                 End If
                 If upload_prints And Not upload_digital Then
                     selected_medium = " AND Medium like '%Prints'"
