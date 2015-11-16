@@ -1977,7 +1977,7 @@ Namespace Forms
         Private Function getRestCompetitionDates(params As Hashtable) As ArrayList
             Dim response As String
             Dim dates As New ArrayList
-            Dim msg_box_layout = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
+            Dim msg_box_layout As MsgBoxStyle = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
 
             Try
                 ' Retrieve the list of competition dates from the Server
@@ -1987,7 +1987,7 @@ Namespace Forms
                     Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
                     If Not Helpers.Json.IsError(json) Then
                         msg_box_layout = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
-                        For Each competition_date As String In json("data")("CompetitionDates")
+                        For Each competition_date As String In json("data")("competition_dates")
                             dates.Add(competition_date)
                         Next
                     Else
@@ -2118,26 +2118,26 @@ Namespace Forms
                 ' Initialize the progress bar
                 status_bar.progress_bar.Minimum = 0
                 status_bar.progress_bar.Value = 0
-                status_bar.progress_bar.Maximum = json_data("Configuration")("TotalEntries")
+                status_bar.progress_bar.Maximum = json_data("information")("total_entries")
 
-                For Each json_rec As Newtonsoft.Json.Linq.JObject In json_data("Competitions")
+                For Each json_rec As Newtonsoft.Json.Linq.JObject In json_data("competitions")
                     If json_rec("Entries").HasValues Then
-                        comp_date = json_rec("Date")
-                        comp_theme = json_rec("Theme")
-                        comp_medium = json_rec("Medium")
-                        comp_classification = json_rec("Classification")
+                        comp_date = json_rec("date")
+                        comp_theme = json_rec("theme")
+                        comp_medium = json_rec("medium")
+                        comp_classification = json_rec("classification")
 
                         prev_member = ""
                         bucket = 0
                         entries_array_list.Clear()
-                        For Each json_entry As Newtonsoft.Json.Linq.JObject In json_rec("Entries")
-                            this_entry.entry_id = json_entry("ID")
-                            this_entry.first_name = json_entry("First_Name")
-                            this_entry.last_name = json_entry("Last_Name")
-                            this_entry.title = json_entry("Title")
-                            this_entry.score = json_entry("Score")
-                            this_entry.award = json_entry("Award")
-                            this_entry.url = json_entry("Image_URL")
+                        For Each json_entry As Newtonsoft.Json.Linq.JObject In json_rec("entries")
+                            this_entry.entry_id = json_entry("id")
+                            this_entry.first_name = json_entry("first_name")
+                            this_entry.last_name = json_entry("last_name")
+                            this_entry.title = json_entry("title")
+                            this_entry.score = json_entry("score")
+                            this_entry.award = json_entry("award")
+                            this_entry.url = json_entry("image_url")
                             member = this_entry.first_name + " " + this_entry.last_name
                             If member <> prev_member Then
                                 bucket = 0
@@ -2150,7 +2150,6 @@ Namespace Forms
                         Next
 
                         ' Sort the list of entries by bucket
-                        ' TODO Randomize the order
                         entries_array_list.Sort()
                         '
                         ' Iterate through all the entries and download the images
@@ -2448,7 +2447,7 @@ Namespace Forms
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("json", competitions_result))
-                Dim r = rest.DoPost(params_post)
+                Dim r As Object = rest.DoPost(params_post)
 
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
