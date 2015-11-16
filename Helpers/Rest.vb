@@ -16,7 +16,12 @@ Namespace Helpers
                 Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
                 HttpResponseMessage = client.PostAsync(client.BaseAddress, content).Result
                 HttpResponseMessage.EnsureSuccessStatusCode()
-                DoPost = HttpResponseMessage.Content.ReadAsStringAsync().Result
+                If HttpResponseMessage.IsSuccessStatusCode Then
+                    Return HttpResponseMessage.Content.ReadAsStringAsync().Result
+                Else
+                    ErrorMessage = HttpResponseMessage.ReasonPhrase
+                    Return Nothing
+                End If
             Catch exception As HttpException
                 DoPost = False
                 ErrorMessage = exception.Message
