@@ -2328,6 +2328,7 @@ Namespace Forms
             Dim result_entry As Entities.JSON.Entry
             Dim result_entries_list As Generic.List(Of Entities.JSON.Entry)
             Dim result_competitions_list As Generic.List(Of Entities.JSON.Competition)
+            Dim response As String = Nothing
 
             Try
                 ' Get the list of competition dates from the Server
@@ -2408,21 +2409,9 @@ Namespace Forms
                         first_name = Mid(maker, 1, posn - 1)
                         last_name = Mid(maker, posn + 1)
                         title = competition_entry.Title
-                        If IsNothing(competition_entry.Score_1) Then
-                            score = ""
-                        Else
-                            score = competition_entry.Score_1.ToString()
-                        End If
-                        If IsNothing(competition_entry.Award) Then
-                            award = ""
-                        Else
-                            award = competition_entry.Award
-                        End If
-                        If IsNothing(competition_entry.Server_Entry_ID) Then
-                            entry_id = ""
-                        Else
-                            entry_id = competition_entry.Server_Entry_ID
-                        End If
+                        score = competition_entry.Score_1.ToString()
+                        award = competition_entry.Award
+                        entry_id = competition_entry.Server_Entry_ID
                         ' Add entry to list
                         result_entry.ID = entry_id
                         result_entry.First_Name = first_name
@@ -2447,8 +2436,33 @@ Namespace Forms
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
                 params_post.Add(New Generic.KeyValuePair(Of String, String)("json", competitions_result))
-                Dim r As Object = rest.DoPost(params_post)
-
+                response = rest.DoPost(params_post)
+                If IsNothing(response) Then
+                    Dim error_message As String = "Server Error" + Environment.NewLine + "Empty response from server"
+                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    Exit Function
+                End If
+                Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
+                If Helpers.Json.IsError(json) Then
+                    Dim error_message As String = "Server Error" + Environment.NewLine + "Unknown error"
+                    If Helpers.Json.HasErrors(json) Then
+                        error_message = Helpers.Json.GetErrorMessage(json)
+                    End If
+                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    Exit Function
+                End If
+                If Helpers.Json.IsFailed(json) Then
+                    Dim error_message As String = "Server Warning" + Environment.NewLine + "Unknown failure"
+                    If Helpers.Json.HasErrors(json) Then
+                        error_message = Helpers.Json.GetFailureMessage(json)
+                    End If
+                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation, "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    Exit Function
+                End If
+                If Helpers.Json.IsSuccess(json) Then
+                    MsgBox("Scores uploaded and processed", MsgBoxStyle.OkOnly, "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    Exit Function
+                End If
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
             Finally
