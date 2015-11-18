@@ -1372,9 +1372,9 @@ Namespace Forms
                                    "'"
                     query = select_stmt + where_clause
                     Try
-                        Dim record As Entities.photosize = rps_context.Database.SqlQuery(Of Entities.photosize)(query).First()
-                        image_size_width = record.width
-                        image_size_height = record.height
+                        Dim photosize As Entities.photosize = rps_context.Database.SqlQuery(Of Entities.photosize)(query).First()
+                        image_size_width = photosize.width
+                        image_size_height = photosize.height
                     Catch exception As Exception
                         image_size_width = 1024
                         image_size_height = 768
