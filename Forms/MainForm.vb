@@ -33,6 +33,8 @@ Namespace Forms
         Private query As Object
         Private record As Object
         Private entries As Generic.IList(Of Entities.CompetitionEntry)
+        Private image_size_height As Integer
+        Private image_size_width As Integer
 
         ' User Preferences (defaults)
         Private reports_output_folder As String = data_folder + "\Reports"
@@ -1123,7 +1125,9 @@ Namespace Forms
                                      entries,
                                      data_grid_entries_view.CurrentCell.RowIndex,
                                      show_splash,
-                                     status_bar_state)
+                                     status_bar_state,
+                                     image_size_width,
+                                     image_size_height)
             Cursor.Hide()
             viewer.ShowDialog()
             Cursor.Show()
@@ -1193,7 +1197,7 @@ Namespace Forms
                 End If
 
                 ' Launch the thumbnail screen
-                viewer = New ThumbnailViewer(Me, entries, screen_title)
+                viewer = New ThumbnailViewer(Me, entries, screen_title, image_size_width, image_size_height)
                 viewer.ShowDialog()
 
                 ' Attempt to update the datasource.
@@ -1357,29 +1361,43 @@ Namespace Forms
                         End If
                     End If
 
+
                     ' Install the updated SQL SELECT statement
                     query = select_stmt + where_clause + order_clause
                     entries = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
 
+                    select_stmt = "Select * FROM photosize"
+                    where_clause = " WHERE Competition_Date_1='" +
+                                   Format(parseSelectedDate(SelectDate.Text), "M/dd/yyyy") +
+                                   "'"
+                    query = select_stmt + where_clause
+                    Try
+                        Dim record As Entities.photosize = rps_context.Database.SqlQuery(Of Entities.photosize)(query).First()
+                        image_size_width = record.width
+                        image_size_height = record.height
+                    Catch exception As Exception
+                        image_size_width = 1024
+                        image_size_height = 768
+                    End Try
                     With data_grid_entries_view
-                        .Columns("grid_entries_score").DefaultCellStyle = center_cell_style
-                        .Columns("grid_entries_award").DefaultCellStyle = center_cell_style
-                        .AutoGenerateColumns = False
-                        .DataSource = entries
-                    End With
+                            .Columns("grid_entries_score").DefaultCellStyle = center_cell_style
+                            .Columns("grid_entries_award").DefaultCellStyle = center_cell_style
+                            .AutoGenerateColumns = False
+                            .DataSource = entries
+                        End With
 
-                    ' Count the number of rows selected and add it to the caption of the DataGrid
-                    num_selected = data_grid_entries_view.RowCount()
+                        ' Count the number of rows selected and add it to the caption of the DataGrid
+                        num_selected = data_grid_entries_view.RowCount()
 
-                    grid_caption.Text += "  -  " + num_selected.ToString + " Images"
+                        grid_caption.Text += "  -  " + num_selected.ToString + " Images"
 
-                    ' Recalculate the awards
-                    If all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
-                        doCalculateAwards()
-                    End If
+                        ' Recalculate the awards
+                        If all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
+                            doCalculateAwards()
+                        End If
 
-                Catch exception As Exception
-                    MsgBox(exception.Message, , "Error In " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                    Catch exception As Exception
+                        MsgBox(exception.Message, , "Error In " + Reflection.MethodBase.GetCurrentMethod().ToString)
                 End Try
             End If
         End Sub

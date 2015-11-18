@@ -24,6 +24,7 @@ Namespace Entities
         Public Overridable Property club_classification As DbSet(Of club_classification)
         Public Overridable Property club_medium As DbSet(Of club_medium)
         Public Overridable Property CompetitionEntries As DbSet(Of CompetitionEntry)
+        Public Overridable Property Photosizes As DbSet(Of photosize)
         Public Overridable Property media As DbSet(Of medium)
 
         Protected Overrides Sub OnModelCreating(ByVal modelBuilder As DbModelBuilder)

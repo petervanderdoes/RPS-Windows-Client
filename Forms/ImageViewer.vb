@@ -24,7 +24,9 @@ Namespace Forms
                        ByVal ds As IList,
                        ByVal idx As Integer,
                        ByVal splash As Boolean,
-                       ByVal statusBarState As Integer)
+                       ByVal statusBarState As Integer,
+                       ByVal image_width As Integer,
+                       ByVal image_height As Integer)
             MyBase.New()
 
             'This call is required by the Windows Form Designer.
@@ -36,7 +38,7 @@ Namespace Forms
             current_index = idx
             splash_screen_visible = splash
             status_bar_visible = statusBarState
-            setSizes()
+            setSizes(image_width, image_height)
         End Sub
 
         'Required by the Windows Form Designer
@@ -586,40 +588,42 @@ Namespace Forms
             thumbnail_thread.Start()
         End Sub
 
-        Friend Sub setSizes()
+        Private Sub SetSizes(ByVal image_width As Integer, ByVal image_height As Integer)
             Dim I As Image.RpsImageSize = New Image.RpsImageSize
             Dim splash_location_y As Integer
-            ClientSize = New Size(I.getFullWidth(), I.getFullHeight())
-            MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
-            MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
+            I.ImageWidth = image_width
+            I.ImageHeight = image_height
+            ClientSize = New Size(I.ImageWidth(), I.ImageHeight())
+            MaximumSize = New Size(I.ImageWidth(), I.ImageHeight())
+            MinimumSize = New Size(I.ImageWidth(), I.ImageHeight())
 
-            picShowPicture.Size = New Size(I.getFullWidth(), I.getFullHeight())
+            picShowPicture.Size = New Size(I.ImageWidth(), I.ImageHeight())
 
-            ScorePopUp.Location = New Point(I.getFullWidth() - 221, 29)
+            ScorePopUp.Location = New Point(I.ImageWidth() - 221, 29)
             ScorePopUp.Size = New Size(192, 115)
 
-            StatusBar.Location = New Point(0, I.getFullHeight() - 28)
-            StatusBar.Size = New Size(I.getFullWidth(), 28)
+            StatusBar.Location = New Point(0, I.ImageHeight() - 28)
+            StatusBar.Size = New Size(I.ImageWidth(), 28)
 
             StatusBarAward.Location = New Point(0, 0)
             StatusBarAward.Size = New Size(134, StatusBar.Size.Height)
 
-            StatusBarScore.Location = New Point(I.getFullWidth() - 135, 0)
+            StatusBarScore.Location = New Point(I.ImageWidth() - 135, 0)
             StatusBarScore.Size = New Size(135, StatusBar.Size.Height)
 
             StatusBarTitle.Location = New Point(134, 0)
-            StatusBarTitle.Size = New Size(I.getFullWidth() - StatusBarAward.Size.Width - StatusBarScore.Size.Width,
+            StatusBarTitle.Size = New Size(I.ImageWidth() - StatusBarAward.Size.Width - StatusBarScore.Size.Width,
                                            StatusBar.Size.Height)
 
-            splash_location_y = (I.getFullHeight - (3 * 110)) / 3
+            splash_location_y = (I.ImageHeight - (3 * 110)) / 3
             splashClub.Location = New Point(0, splash_location_y)
-            splashClub.Size = New Size(I.getFullWidth(), 100)
+            splashClub.Size = New Size(I.ImageWidth(), 100)
 
             splashTheme.Location = New Point(0, splash_location_y * 2)
-            splashTheme.Size = New Size(I.getFullWidth(), 100)
+            splashTheme.Size = New Size(I.ImageWidth(), 100)
 
             splashClassification.Location = New Point(0, splash_location_y * 3)
-            splashClassification.Size = New Size(I.getFullWidth(), 100)
+            splashClassification.Size = New Size(I.ImageWidth(), 100)
         End Sub
     End Class
 End Namespace

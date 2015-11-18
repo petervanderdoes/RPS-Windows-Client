@@ -1,18 +1,24 @@
 Namespace Image
     Class RpsImageSize
-        Private ReadOnly full_width As Int64 = 1440
-        Private ReadOnly full_height As Int64 = 900
+        Private get_full_width As Integer = 0
+        Private get_full_height As Integer = 0
 
-        Public ReadOnly Property getFullWidth As Integer
+        Public Property ImageWidth As Integer
             Get
-                Return full_width
+                Return get_full_width
             End Get
+            Set
+                get_full_width = Value
+            End Set
         End Property
 
-        Public ReadOnly Property getFullHeight As Integer
+        Public Property ImageHeight As Integer
             Get
-                Return full_height
+                Return get_full_height
             End Get
+            Set
+                get_full_height = Value
+            End Set
         End Property
     End Class
 End Namespace

@@ -47,7 +47,11 @@ Namespace Forms
 
 #Region " Windows Form Designer generated code "
 
-        Public Sub New(ByVal myMainForm As MainForm, ByVal ds As IList, ByVal screenTitle As String)
+        Public Sub New(ByVal myMainForm As MainForm,
+                       ByVal ds As IList,
+                       ByVal screenTitle As String,
+                       ByVal image_width As Integer,
+                       ByVal image_height As Integer)
             MyBase.New()
 
             'This call is required by the Windows Form Designer.
@@ -57,7 +61,7 @@ Namespace Forms
             the_main_form = myMainForm
             image_list = ds
             thumbnail_view_title = screenTitle
-            setSizes()
+            SetSizes(image_width, image_height)
         End Sub
 
         'Form overrides dispose to clean up the component list.
@@ -368,25 +372,27 @@ Namespace Forms
             End Try
         End Sub
 
-        Friend Sub setSizes()
+        Private Sub SetSizes(ByVal image_width As Integer, ByVal image_height As Integer)
             Dim I As Image.RpsImageSize = New Image.RpsImageSize
-            ClientSize = New Size(I.getFullWidth(), I.getFullHeight())
-            MaximumSize = New Size(I.getFullWidth(), I.getFullHeight())
-            MinimumSize = New Size(I.getFullWidth(), I.getFullHeight())
+            I.ImageWidth = image_width
+            I.ImageHeight = image_height
+            ClientSize = New Size(I.ImageWidth(), I.ImageHeight())
+            MaximumSize = New Size(I.ImageWidth(), I.ImageHeight())
+            MinimumSize = New Size(I.ImageWidth(), I.ImageHeight())
 
             ThumbnailListView.Location = New Point(0, 43)
-            ThumbnailListView.Size = New Size(I.getFullWidth(), I.getFullHeight() - 37 - 2)
+            ThumbnailListView.Size = New Size(I.ImageWidth(), I.ImageHeight() - 37 - 2)
 
             ThumbnailImageList.ImageSize = New Size(256, 256)
 
             ZoomedImage.Location = New Point(0, 0)
-            ZoomedImage.Size = New Size(I.getFullWidth(), I.getFullHeight())
+            ZoomedImage.Size = New Size(I.ImageWidth(), I.ImageHeight())
 
             ThumbnailViewTitleBar.Location = New Point(0, 0)
-            ThumbnailViewTitleBar.Size = New Size(I.getFullWidth(), 37)
+            ThumbnailViewTitleBar.Size = New Size(I.ImageWidth(), 37)
 
             Divider.Location = New Point(0, 37)
-            Divider.Size = New Size(I.getFullWidth(), 2)
+            Divider.Size = New Size(I.ImageWidth(), 2)
         End Sub
     End Class
 End Namespace
