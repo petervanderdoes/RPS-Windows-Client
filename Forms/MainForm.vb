@@ -1,5 +1,6 @@
-Imports System.Data.Entity.Migrations
 Imports System.Linq
+Imports Enumerable = System.Linq.Enumerable
+Imports DbSetMigrationsExtensions = System.Data.Entity.Migrations.DbSetMigrationsExtensions
 
 Namespace Forms
     Public Class MainForm
@@ -123,7 +124,6 @@ Namespace Forms
         Friend WithEvents RecalcAwards As System.Windows.Forms.Button
         Friend WithEvents ReportsMenu As System.Windows.Forms.MenuItem
         Friend WithEvents FileMenu As System.Windows.Forms.MenuItem
-        Friend WithEvents MenuItem1 As System.Windows.Forms.MenuItem
         Friend WithEvents AwardsTableTitleBar As Label
         Friend WithEvents ReportsScoreSheetMenu As System.Windows.Forms.MenuItem
         Friend WithEvents MenuItem2 As System.Windows.Forms.MenuItem
@@ -172,7 +172,6 @@ Namespace Forms
             Me.MenuItem3 = New System.Windows.Forms.MenuItem()
             Me.FileExitMenu = New System.Windows.Forms.MenuItem()
             Me.MenuItem5 = New System.Windows.Forms.MenuItem()
-            Me.MenuItem1 = New System.Windows.Forms.MenuItem()
             Me.CompCatalogImagesDownload = New System.Windows.Forms.MenuItem()
             Me.CompUploadScores = New System.Windows.Forms.MenuItem()
             Me.MenuItem2 = New System.Windows.Forms.MenuItem()
@@ -184,12 +183,12 @@ Namespace Forms
             Me.MenuItem7 = New System.Windows.Forms.MenuItem()
             Me.HelpAboutMenu = New System.Windows.Forms.MenuItem()
             Me.SelectClassification = New System.Windows.Forms.ComboBox()
-            Me.Label3 = New Label()
+            Me.Label3 = New System.Windows.Forms.Label()
             Me.SelectMedium = New System.Windows.Forms.ComboBox()
-            Me.Label2 = New Label()
-            Me.Label1 = New Label()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.Label1 = New System.Windows.Forms.Label()
             Me.RecalcAwards = New System.Windows.Forms.Button()
-            Me.AwardsTableTitleBar = New Label()
+            Me.AwardsTableTitleBar = New System.Windows.Forms.Label()
             Me.NumNinesHeadingButton = New System.Windows.Forms.Button()
             Me.NumEightsHeadingButton = New System.Windows.Forms.Button()
             Me.NumSevensHeadingButton = New System.Windows.Forms.Button()
@@ -197,15 +196,15 @@ Namespace Forms
             Me.tbEligibleEights = New System.Windows.Forms.TextBox()
             Me.tbEligibleSevens = New System.Windows.Forms.TextBox()
             Me.SelectAward = New System.Windows.Forms.ComboBox()
-            Me.Label4 = New Label()
-            Me.Label5 = New Label()
+            Me.Label4 = New System.Windows.Forms.Label()
+            Me.Label5 = New System.Windows.Forms.Label()
             Me.SelectTheme = New System.Windows.Forms.ComboBox()
             Me.EnableClassification = New System.Windows.Forms.CheckBox()
             Me.EnableMedium = New System.Windows.Forms.CheckBox()
             Me.EnableTheme = New System.Windows.Forms.CheckBox()
             Me.EnableAward = New System.Windows.Forms.CheckBox()
             Me.SelectScore = New System.Windows.Forms.ComboBox()
-            Me.Label6 = New Label()
+            Me.Label6 = New System.Windows.Forms.Label()
             Me.SelectDate = New System.Windows.Forms.ComboBox()
             Me.btnThumbnails = New System.Windows.Forms.Button()
             Me.btnSlideShow = New System.Windows.Forms.Button()
@@ -216,21 +215,19 @@ Namespace Forms
             Me.grid_entries_score = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.grid_entries_award = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.grid_entries_title = New System.Windows.Forms.DataGridViewTextBoxColumn()
-            Me.grid_caption = New Label()
+            Me.grid_caption = New System.Windows.Forms.Label()
             CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'MainMenu1
             '
-            Me.MainMenu1.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
+            Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
                                                {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
             '
             'FileMenu
             '
             Me.FileMenu.Index = 0
-            Me.FileMenu.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
+            Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
                                               {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
             Me.FileMenu.Text = "&File"
             '
@@ -252,31 +249,24 @@ Namespace Forms
             'MenuItem5
             '
             Me.MenuItem5.Index = 1
-            Me.MenuItem5.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
-                                               {Me.MenuItem1, Me.CompCatalogImagesDownload, Me.CompUploadScores})
+            Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+                                               {Me.CompCatalogImagesDownload, Me.CompUploadScores})
             Me.MenuItem5.Text = "Competitions"
-            '
-            'MenuItem1
-            '
-            Me.MenuItem1.Index = 0
-            Me.MenuItem1.Text = "-"
             '
             'CompCatalogImagesDownload
             '
-            Me.CompCatalogImagesDownload.Index = 1
+            Me.CompCatalogImagesDownload.Index = 0
             Me.CompCatalogImagesDownload.Text = "Download Images from Server..."
             '
             'CompUploadScores
             '
-            Me.CompUploadScores.Index = 2
+            Me.CompUploadScores.Index = 1
             Me.CompUploadScores.Text = "Upload Scores..."
             '
             'MenuItem2
             '
             Me.MenuItem2.Index = 2
-            Me.MenuItem2.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
+            Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
                                                {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
             Me.MenuItem2.Text = "&View"
             '
@@ -293,8 +283,7 @@ Namespace Forms
             'ReportsMenu
             '
             Me.ReportsMenu.Index = 3
-            Me.ReportsMenu.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
+            Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
                                                  {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
             Me.ReportsMenu.Text = "&Reports"
             '
@@ -326,10 +315,10 @@ Namespace Forms
                                                                    System.Drawing.FontStyle.Regular,
                                                                    System.Drawing.GraphicsUnit.Point,
                                                                    CType(0, Byte))
-            Me.SelectClassification.Location = New Point(38, 143)
+            Me.SelectClassification.Location = New System.Drawing.Point(38, 143)
             Me.SelectClassification.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectClassification.Name = "SelectClassification"
-            Me.SelectClassification.Size = New Size(174, 23)
+            Me.SelectClassification.Size = New System.Drawing.Size(174, 23)
             Me.SelectClassification.TabIndex = 20
             '
             'Label3
@@ -339,10 +328,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label3.Location = New Point(38, 122)
+            Me.Label3.Location = New System.Drawing.Point(38, 122)
             Me.Label3.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label3.Name = "Label3"
-            Me.Label3.Size = New Size(168, 16)
+            Me.Label3.Size = New System.Drawing.Size(168, 16)
             Me.Label3.TabIndex = 19
             Me.Label3.Text = "Classification"
             '
@@ -353,10 +342,10 @@ Namespace Forms
                                                            System.Drawing.FontStyle.Regular,
                                                            System.Drawing.GraphicsUnit.Point,
                                                            CType(0, Byte))
-            Me.SelectMedium.Location = New Point(38, 194)
+            Me.SelectMedium.Location = New System.Drawing.Point(38, 194)
             Me.SelectMedium.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectMedium.Name = "SelectMedium"
-            Me.SelectMedium.Size = New Size(174, 23)
+            Me.SelectMedium.Size = New System.Drawing.Size(174, 23)
             Me.SelectMedium.TabIndex = 18
             '
             'Label2
@@ -366,10 +355,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label2.Location = New Point(38, 173)
+            Me.Label2.Location = New System.Drawing.Point(38, 173)
             Me.Label2.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label2.Name = "Label2"
-            Me.Label2.Size = New Size(175, 16)
+            Me.Label2.Size = New System.Drawing.Size(175, 16)
             Me.Label2.TabIndex = 17
             Me.Label2.Text = "Medium"
             '
@@ -380,10 +369,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label1.Location = New Point(38, 20)
+            Me.Label1.Location = New System.Drawing.Point(38, 20)
             Me.Label1.Margin = New System.Windows.Forms.Padding(3, 11, 3, 0)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New Size(175, 16)
+            Me.Label1.Size = New System.Drawing.Size(175, 16)
             Me.Label1.TabIndex = 15
             Me.Label1.Text = "Competition Date"
             '
@@ -394,10 +383,10 @@ Namespace Forms
                                                            System.Drawing.FontStyle.Regular,
                                                            System.Drawing.GraphicsUnit.Point,
                                                            CType(0, Byte))
-            Me.RecalcAwards.Location = New Point(61, 407)
+            Me.RecalcAwards.Location = New System.Drawing.Point(61, 407)
             Me.RecalcAwards.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.RecalcAwards.Name = "RecalcAwards"
-            Me.RecalcAwards.Size = New Size(129, 23)
+            Me.RecalcAwards.Size = New System.Drawing.Size(129, 23)
             Me.RecalcAwards.TabIndex = 25
             Me.RecalcAwards.Text = "Recalc &Awards"
             '
@@ -409,11 +398,11 @@ Namespace Forms
                                                                   System.Drawing.FontStyle.Regular,
                                                                   System.Drawing.GraphicsUnit.Point,
                                                                   CType(0, Byte))
-            Me.AwardsTableTitleBar.ForeColor = Color.White
-            Me.AwardsTableTitleBar.Location = New Point(38, 330)
+            Me.AwardsTableTitleBar.ForeColor = System.Drawing.Color.White
+            Me.AwardsTableTitleBar.Location = New System.Drawing.Point(38, 330)
             Me.AwardsTableTitleBar.Margin = New System.Windows.Forms.Padding(0, 11, 0, 0)
             Me.AwardsTableTitleBar.Name = "AwardsTableTitleBar"
-            Me.AwardsTableTitleBar.Size = New Size(175, 24)
+            Me.AwardsTableTitleBar.Size = New System.Drawing.Size(175, 24)
             Me.AwardsTableTitleBar.TabIndex = 27
             Me.AwardsTableTitleBar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
@@ -425,10 +414,10 @@ Namespace Forms
                                                                     System.Drawing.FontStyle.Regular,
                                                                     System.Drawing.GraphicsUnit.Point,
                                                                     CType(0, Byte))
-            Me.NumNinesHeadingButton.Location = New Point(38, 354)
+            Me.NumNinesHeadingButton.Location = New System.Drawing.Point(38, 354)
             Me.NumNinesHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
-            Me.NumNinesHeadingButton.Size = New Size(59, 24)
+            Me.NumNinesHeadingButton.Size = New System.Drawing.Size(59, 24)
             Me.NumNinesHeadingButton.TabIndex = 34
             Me.NumNinesHeadingButton.Text = "9s"
             '
@@ -440,10 +429,10 @@ Namespace Forms
                                                                      System.Drawing.FontStyle.Regular,
                                                                      System.Drawing.GraphicsUnit.Point,
                                                                      CType(0, Byte))
-            Me.NumEightsHeadingButton.Location = New Point(96, 354)
+            Me.NumEightsHeadingButton.Location = New System.Drawing.Point(96, 354)
             Me.NumEightsHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
-            Me.NumEightsHeadingButton.Size = New Size(59, 24)
+            Me.NumEightsHeadingButton.Size = New System.Drawing.Size(59, 24)
             Me.NumEightsHeadingButton.TabIndex = 35
             Me.NumEightsHeadingButton.Text = "8s"
             '
@@ -455,10 +444,10 @@ Namespace Forms
                                                                      System.Drawing.FontStyle.Regular,
                                                                      System.Drawing.GraphicsUnit.Point,
                                                                      CType(0, Byte))
-            Me.NumSevensHeadingButton.Location = New Point(154, 354)
+            Me.NumSevensHeadingButton.Location = New System.Drawing.Point(154, 354)
             Me.NumSevensHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
-            Me.NumSevensHeadingButton.Size = New Size(59, 24)
+            Me.NumSevensHeadingButton.Size = New System.Drawing.Size(59, 24)
             Me.NumSevensHeadingButton.TabIndex = 36
             Me.NumSevensHeadingButton.Text = "7s"
             '
@@ -470,10 +459,10 @@ Namespace Forms
                                                               System.Drawing.FontStyle.Regular,
                                                               System.Drawing.GraphicsUnit.Point,
                                                               CType(0, Byte))
-            Me.tbEligibleNines.Location = New Point(38, 377)
+            Me.tbEligibleNines.Location = New System.Drawing.Point(38, 377)
             Me.tbEligibleNines.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleNines.Name = "tbEligibleNines"
-            Me.tbEligibleNines.Size = New Size(59, 23)
+            Me.tbEligibleNines.Size = New System.Drawing.Size(59, 23)
             Me.tbEligibleNines.TabIndex = 37
             Me.tbEligibleNines.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
             '
@@ -485,10 +474,10 @@ Namespace Forms
                                                                System.Drawing.FontStyle.Regular,
                                                                System.Drawing.GraphicsUnit.Point,
                                                                CType(0, Byte))
-            Me.tbEligibleEights.Location = New Point(96, 377)
+            Me.tbEligibleEights.Location = New System.Drawing.Point(96, 377)
             Me.tbEligibleEights.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleEights.Name = "tbEligibleEights"
-            Me.tbEligibleEights.Size = New Size(59, 23)
+            Me.tbEligibleEights.Size = New System.Drawing.Size(59, 23)
             Me.tbEligibleEights.TabIndex = 38
             Me.tbEligibleEights.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
             '
@@ -500,10 +489,10 @@ Namespace Forms
                                                                System.Drawing.FontStyle.Regular,
                                                                System.Drawing.GraphicsUnit.Point,
                                                                CType(0, Byte))
-            Me.tbEligibleSevens.Location = New Point(154, 377)
+            Me.tbEligibleSevens.Location = New System.Drawing.Point(154, 377)
             Me.tbEligibleSevens.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleSevens.Name = "tbEligibleSevens"
-            Me.tbEligibleSevens.Size = New Size(59, 23)
+            Me.tbEligibleSevens.Size = New System.Drawing.Size(59, 23)
             Me.tbEligibleSevens.TabIndex = 39
             Me.tbEligibleSevens.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
             '
@@ -515,10 +504,10 @@ Namespace Forms
                                                           System.Drawing.FontStyle.Regular,
                                                           System.Drawing.GraphicsUnit.Point,
                                                           CType(0, Byte))
-            Me.SelectAward.Location = New Point(38, 296)
+            Me.SelectAward.Location = New System.Drawing.Point(38, 296)
             Me.SelectAward.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectAward.Name = "SelectAward"
-            Me.SelectAward.Size = New Size(175, 23)
+            Me.SelectAward.Size = New System.Drawing.Size(175, 23)
             Me.SelectAward.TabIndex = 40
             '
             'Label4
@@ -529,10 +518,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label4.Location = New Point(38, 275)
+            Me.Label4.Location = New System.Drawing.Point(38, 275)
             Me.Label4.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label4.Name = "Label4"
-            Me.Label4.Size = New Size(176, 16)
+            Me.Label4.Size = New System.Drawing.Size(176, 16)
             Me.Label4.TabIndex = 41
             Me.Label4.Text = "Award"
             '
@@ -543,10 +532,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label5.Location = New Point(38, 71)
+            Me.Label5.Location = New System.Drawing.Point(38, 71)
             Me.Label5.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label5.Name = "Label5"
-            Me.Label5.Size = New Size(175, 16)
+            Me.Label5.Size = New System.Drawing.Size(175, 16)
             Me.Label5.TabIndex = 42
             Me.Label5.Text = "Theme"
             '
@@ -557,10 +546,10 @@ Namespace Forms
                                                           System.Drawing.FontStyle.Regular,
                                                           System.Drawing.GraphicsUnit.Point,
                                                           CType(0, Byte))
-            Me.SelectTheme.Location = New Point(38, 92)
+            Me.SelectTheme.Location = New System.Drawing.Point(38, 92)
             Me.SelectTheme.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectTheme.Name = "SelectTheme"
-            Me.SelectTheme.Size = New Size(174, 23)
+            Me.SelectTheme.Size = New System.Drawing.Size(174, 23)
             Me.SelectTheme.TabIndex = 43
             '
             'EnableClassification
@@ -572,9 +561,9 @@ Namespace Forms
                                                                    System.Drawing.FontStyle.Regular,
                                                                    System.Drawing.GraphicsUnit.Point,
                                                                    CType(0, Byte))
-            Me.EnableClassification.Location = New Point(11, 146)
+            Me.EnableClassification.Location = New System.Drawing.Point(11, 146)
             Me.EnableClassification.Name = "EnableClassification"
-            Me.EnableClassification.Size = New Size(17, 17)
+            Me.EnableClassification.Size = New System.Drawing.Size(17, 17)
             Me.EnableClassification.TabIndex = 45
             '
             'EnableMedium
@@ -586,9 +575,9 @@ Namespace Forms
                                                            System.Drawing.FontStyle.Regular,
                                                            System.Drawing.GraphicsUnit.Point,
                                                            CType(0, Byte))
-            Me.EnableMedium.Location = New Point(11, 197)
+            Me.EnableMedium.Location = New System.Drawing.Point(11, 197)
             Me.EnableMedium.Name = "EnableMedium"
-            Me.EnableMedium.Size = New Size(17, 17)
+            Me.EnableMedium.Size = New System.Drawing.Size(17, 17)
             Me.EnableMedium.TabIndex = 46
             '
             'EnableTheme
@@ -600,9 +589,9 @@ Namespace Forms
                                                           System.Drawing.FontStyle.Regular,
                                                           System.Drawing.GraphicsUnit.Point,
                                                           CType(0, Byte))
-            Me.EnableTheme.Location = New Point(11, 95)
+            Me.EnableTheme.Location = New System.Drawing.Point(11, 95)
             Me.EnableTheme.Name = "EnableTheme"
-            Me.EnableTheme.Size = New Size(17, 17)
+            Me.EnableTheme.Size = New System.Drawing.Size(17, 17)
             Me.EnableTheme.TabIndex = 47
             '
             'EnableAward
@@ -612,9 +601,9 @@ Namespace Forms
                                                           System.Drawing.FontStyle.Regular,
                                                           System.Drawing.GraphicsUnit.Point,
                                                           CType(0, Byte))
-            Me.EnableAward.Location = New Point(11, 299)
+            Me.EnableAward.Location = New System.Drawing.Point(11, 299)
             Me.EnableAward.Name = "EnableAward"
-            Me.EnableAward.Size = New Size(17, 17)
+            Me.EnableAward.Size = New System.Drawing.Size(17, 17)
             Me.EnableAward.TabIndex = 48
             '
             'SelectScore
@@ -624,10 +613,10 @@ Namespace Forms
                                                           System.Drawing.FontStyle.Regular,
                                                           System.Drawing.GraphicsUnit.Point,
                                                           CType(0, Byte))
-            Me.SelectScore.Location = New Point(38, 245)
+            Me.SelectScore.Location = New System.Drawing.Point(38, 245)
             Me.SelectScore.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectScore.Name = "SelectScore"
-            Me.SelectScore.Size = New Size(101, 23)
+            Me.SelectScore.Size = New System.Drawing.Size(101, 23)
             Me.SelectScore.TabIndex = 50
             '
             'Label6
@@ -637,10 +626,10 @@ Namespace Forms
                                                      System.Drawing.FontStyle.Regular,
                                                      System.Drawing.GraphicsUnit.Point,
                                                      CType(0, Byte))
-            Me.Label6.Location = New Point(38, 224)
+            Me.Label6.Location = New System.Drawing.Point(38, 224)
             Me.Label6.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label6.Name = "Label6"
-            Me.Label6.Size = New Size(80, 16)
+            Me.Label6.Size = New System.Drawing.Size(80, 16)
             Me.Label6.TabIndex = 51
             Me.Label6.Text = "Score"
             '
@@ -651,10 +640,10 @@ Namespace Forms
                                                          System.Drawing.FontStyle.Regular,
                                                          System.Drawing.GraphicsUnit.Point,
                                                          CType(0, Byte))
-            Me.SelectDate.Location = New Point(38, 41)
+            Me.SelectDate.Location = New System.Drawing.Point(38, 41)
             Me.SelectDate.Margin = New System.Windows.Forms.Padding(3, 5, 3, 0)
             Me.SelectDate.Name = "SelectDate"
-            Me.SelectDate.Size = New Size(174, 23)
+            Me.SelectDate.Size = New System.Drawing.Size(174, 23)
             Me.SelectDate.TabIndex = 52
             '
             'btnThumbnails
@@ -662,10 +651,10 @@ Namespace Forms
             Me.btnThumbnails.FlatAppearance.BorderSize = 0
             Me.btnThumbnails.FlatStyle = System.Windows.Forms.FlatStyle.Flat
             Me.btnThumbnails.Image = Global.RPS_Competition_Client.My.Resources.Resources.pictures_32x32
-            Me.btnThumbnails.Location = New Point(180, 236)
+            Me.btnThumbnails.Location = New System.Drawing.Point(180, 236)
             Me.btnThumbnails.Margin = New System.Windows.Forms.Padding(0)
             Me.btnThumbnails.Name = "btnThumbnails"
-            Me.btnThumbnails.Size = New Size(32, 32)
+            Me.btnThumbnails.Size = New System.Drawing.Size(32, 32)
             Me.btnThumbnails.TabIndex = 49
             '
             'btnSlideShow
@@ -674,9 +663,9 @@ Namespace Forms
             Me.btnSlideShow.FlatAppearance.BorderSize = 0
             Me.btnSlideShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat
             Me.btnSlideShow.Image = Global.RPS_Competition_Client.My.Resources.Resources.single_32x32
-            Me.btnSlideShow.Location = New Point(145, 236)
+            Me.btnSlideShow.Location = New System.Drawing.Point(145, 236)
             Me.btnSlideShow.Name = "btnSlideShow"
-            Me.btnSlideShow.Size = New Size(32, 32)
+            Me.btnSlideShow.Size = New System.Drawing.Size(32, 32)
             Me.btnSlideShow.TabIndex = 22
             Me.btnSlideShow.UseVisualStyleBackColor = False
             '
@@ -715,10 +704,11 @@ Namespace Forms
             Me.data_grid_entries_view.AllowUserToDeleteRows = False
             Me.data_grid_entries_view.AllowUserToResizeColumns = False
             Me.data_grid_entries_view.AllowUserToResizeRows = False
-            Me.data_grid_entries_view.Anchor = CType((((AnchorStyles.Top Or AnchorStyles.Bottom) _
-                                                       Or AnchorStyles.Left) _
-                                                      Or AnchorStyles.Right),
-                                                     System.Windows.Forms.AnchorStyles)
+            Me.data_grid_entries_view.Anchor =
+                CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                       Or System.Windows.Forms.AnchorStyles.Right),
+                      System.Windows.Forms.AnchorStyles)
             Me.data_grid_entries_view.AutoSizeColumnsMode =
                 System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
             Me.data_grid_entries_view.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
@@ -738,8 +728,7 @@ Namespace Forms
             Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
             Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
                 System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.data_grid_entries_view.Columns.AddRange(
-                New System.Windows.Forms.DataGridViewColumn() _
+            Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() _
                                                           {Me.grid_entries_score, Me.grid_entries_award,
                                                            Me.grid_entries_title})
             DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -755,7 +744,7 @@ Namespace Forms
             DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
             Me.data_grid_entries_view.DefaultCellStyle = DataGridViewCellStyle2
             Me.data_grid_entries_view.EnableHeadersVisualStyles = False
-            Me.data_grid_entries_view.Location = New Point(225, 42)
+            Me.data_grid_entries_view.Location = New System.Drawing.Point(225, 42)
             Me.data_grid_entries_view.Name = "data_grid_entries_view"
             Me.data_grid_entries_view.ReadOnly = True
             Me.data_grid_entries_view.RowHeadersBorderStyle =
@@ -768,7 +757,7 @@ Namespace Forms
                                                                   System.Drawing.GraphicsUnit.Point,
                                                                   CType(0, Byte))
             Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-            Me.data_grid_entries_view.Size = New Size(1081, 387)
+            Me.data_grid_entries_view.Size = New System.Drawing.Size(1098, 387)
             Me.data_grid_entries_view.TabIndex = 53
             '
             'grid_entries_score
@@ -800,9 +789,10 @@ Namespace Forms
             '
             'grid_caption
             '
-            Me.grid_caption.Anchor = CType(((AnchorStyles.Top Or AnchorStyles.Left) _
-                                            Or AnchorStyles.Right),
-                                           System.Windows.Forms.AnchorStyles)
+            Me.grid_caption.Anchor =
+                CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                       Or System.Windows.Forms.AnchorStyles.Right),
+                      System.Windows.Forms.AnchorStyles)
             Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
             Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.grid_caption.Font = New System.Drawing.Font("Segoe UI",
@@ -810,19 +800,19 @@ Namespace Forms
                                                            System.Drawing.FontStyle.Bold,
                                                            System.Drawing.GraphicsUnit.Point,
                                                            CType(0, Byte))
-            Me.grid_caption.ForeColor = Color.Black
-            Me.grid_caption.Location = New Point(225, 20)
+            Me.grid_caption.ForeColor = System.Drawing.Color.Black
+            Me.grid_caption.Location = New System.Drawing.Point(225, 20)
             Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
             Me.grid_caption.Name = "grid_caption"
-            Me.grid_caption.Size = New Size(1081, 24)
+            Me.grid_caption.Size = New System.Drawing.Size(1098, 24)
             Me.grid_caption.TabIndex = 54
             Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
             'MainForm
             '
             Me.AutoScroll = True
-            Me.AutoScrollMinSize = New Size(640, 480)
-            Me.ClientSize = New Size(1324, 491)
+            Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
+            Me.ClientSize = New System.Drawing.Size(1341, 491)
             Me.Controls.Add(Me.grid_caption)
             Me.Controls.Add(Me.data_grid_entries_view)
             Me.Controls.Add(Me.SelectDate)
@@ -1362,7 +1352,6 @@ Namespace Forms
                         End If
                     End If
 
-
                     ' Install the updated SQL SELECT statement
                     query = select_stmt + where_clause + order_clause
                     entries = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
@@ -1373,7 +1362,8 @@ Namespace Forms
                                    "'"
                     query = select_stmt + where_clause
                     Try
-                        Dim photosize As Entities.photosize = rps_context.Database.SqlQuery(Of Entities.photosize)(query).First()
+                        Dim photosize As Entities.photosize =
+                                Enumerable.First(rps_context.Database.SqlQuery(Of Entities.photosize)(query))
                         image_size_width = photosize.width
                         image_size_height = photosize.height
                     Catch exception As Exception
@@ -2014,7 +2004,9 @@ Namespace Forms
                     End If
                     If Helpers.Json.HasErrors(json) Then
                         Dim error_message As String = Helpers.Json.GetErrorMessage(json)
-                        MsgBox(error_message, msg_box_layout, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                        MsgBox(error_message,
+                               msg_box_layout,
+                               "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
                     End If
                 Else
                     MsgBox(rest.ErrorMessage, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
@@ -2027,8 +2019,6 @@ Namespace Forms
                 getRestCompetitionDates = dates
             End Try
         End Function
-
-
 
         Private Sub downloadCompetitionImages()
 
@@ -2129,7 +2119,9 @@ Namespace Forms
                     If Helpers.Json.HasErrors(json) Then
                         error_message = Helpers.Json.GetErrorMessage(json)
                     End If
-                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    MsgBox(error_message,
+                           MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
+                           "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
                     Exit Sub
                 End If
 
@@ -2147,7 +2139,7 @@ Namespace Forms
                             photosize_record.Competition_Date_1 = json_rec("date")
                             photosize_record.width = json_data("information")("ImageSize")("Width")
                             photosize_record.height = json_data("information")("ImageSize")("Height")
-                            rps_context.Photosizes.AddOrUpdate(photosize_record)
+                            DbSetMigrationsExtensions.AddOrUpdate(rps_context.Photosizes, photosize_record)
                             did_photosize = True
                         End If
                         comp_date = json_rec("date")
@@ -2187,7 +2179,7 @@ Namespace Forms
                         For Each entry As CompEntry In entries_array_list
                             ' If necessary, create the folder for this entry
                             competition_folder = output_folder + "\" + comp_date + " " + comp_classification + " " +
-                                             comp_medium
+                                                 comp_medium
                             dir_info = New DirectoryInfo(competition_folder)
                             If Not dir_info.Exists Then
                                 dir_info.Create()
@@ -2195,29 +2187,29 @@ Namespace Forms
 
                             ' Fetch the image file from the Server
                             local_image_file_name = competition_folder + "\" +
-                                                handleStrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
-                                                "+" + entry.first_name + "_" + entry.last_name + ".jpg"
+                                                    handleStrMap(entry.title, " ?[]/\=+<>:;"",*|", "_---------------") +
+                                                    "+" + entry.first_name + "_" + entry.last_name + ".jpg"
                             My.Computer.Network.DownloadFile(address:=entry.url,
-                                                         destinationFileName:=local_image_file_name,
-                                                         userName:=String.Empty,
-                                                         password:=String.Empty,
-                                                         showUI:=False,
-                                                         connectionTimeout:=100000,
-                                                         overwrite:=True)
+                                                             destinationFileName:=local_image_file_name,
+                                                             userName:=String.Empty,
+                                                             password:=String.Empty,
+                                                             showUI:=False,
+                                                             connectionTimeout:=100000,
+                                                             overwrite:=True)
 
                             ' Insert this image into the database
                             addImageToDatabase(
-                            New FileInfo(local_image_file_name),
-                            entry.first_name + " " + entry.last_name,
-                            entry.title,
-                            entry.score,
-                            entry.award,
-                            comp_classification,
-                            comp_medium,
-                            comp_date,
-                            comp_theme,
-                            entry.entry_id,
-                            sequence_num)
+                                New FileInfo(local_image_file_name),
+                                entry.first_name + " " + entry.last_name,
+                                entry.title,
+                                entry.score,
+                                entry.award,
+                                comp_classification,
+                                comp_medium,
+                                comp_date,
+                                comp_theme,
+                                entry.entry_id,
+                                sequence_num)
 
                             ' Update the Progressbar
                             status_bar.progress_bar.Value = status_bar.progress_bar.Value + 1
@@ -2243,7 +2235,6 @@ Namespace Forms
                 rps_context.SaveChanges()
             End Try
         End Sub
-
 
         Private Function getRestStatResponse(response As XPathDocument) As Boolean
             Dim navigator As XPathNavigator
@@ -2412,8 +2403,6 @@ Namespace Forms
                     comp_medium_list.Add(classification_medium.Medium)
                 Next
 
-
-
                 ' Iterate through all the competition for this date
                 result_competitions_list = New Generic.List(Of Entities.JSON.Competition)
                 For comp_num = 0 To comp_class_list.Count - 1
@@ -2468,7 +2457,9 @@ Namespace Forms
                 response = rest.DoPost(params_post)
                 If IsNothing(response) Then
                     Dim error_message As String = "Server Error" + Environment.NewLine + "Empty response from server"
-                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    MsgBox(error_message,
+                           MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
+                           "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
                 Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
@@ -2477,7 +2468,9 @@ Namespace Forms
                     If Helpers.Json.HasErrors(json) Then
                         error_message = Helpers.Json.GetErrorMessage(json)
                     End If
-                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical, "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    MsgBox(error_message,
+                           MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
+                           "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
                 If Helpers.Json.IsFailed(json) Then
@@ -2485,11 +2478,15 @@ Namespace Forms
                     If Helpers.Json.HasErrors(json) Then
                         error_message = Helpers.Json.GetFailureMessage(json)
                     End If
-                    MsgBox(error_message, MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation, "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    MsgBox(error_message,
+                           MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation,
+                           "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
                 If Helpers.Json.IsSuccess(json) Then
-                    MsgBox("Scores uploaded and processed", MsgBoxStyle.OkOnly, "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                    MsgBox("Scores uploaded and processed",
+                           MsgBoxStyle.OkOnly,
+                           "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
             Catch exception As Exception
