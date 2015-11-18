@@ -1,3 +1,4 @@
+Imports System.Data.Entity.Migrations
 Imports System.Linq
 
 Namespace Forms
@@ -1368,7 +1369,7 @@ Namespace Forms
 
                     select_stmt = "Select * FROM photosize"
                     where_clause = " WHERE Competition_Date_1='" +
-                                   Format(parseSelectedDate(SelectDate.Text), "M/dd/yyyy") +
+                                   Format(parseSelectedDate(SelectDate.Text), "yyyy-MM-dd") +
                                    "'"
                     query = select_stmt + where_clause
                     Try
@@ -1380,24 +1381,24 @@ Namespace Forms
                         image_size_height = 768
                     End Try
                     With data_grid_entries_view
-                            .Columns("grid_entries_score").DefaultCellStyle = center_cell_style
-                            .Columns("grid_entries_award").DefaultCellStyle = center_cell_style
-                            .AutoGenerateColumns = False
-                            .DataSource = entries
-                        End With
+                        .Columns("grid_entries_score").DefaultCellStyle = center_cell_style
+                        .Columns("grid_entries_award").DefaultCellStyle = center_cell_style
+                        .AutoGenerateColumns = False
+                        .DataSource = entries
+                    End With
 
-                        ' Count the number of rows selected and add it to the caption of the DataGrid
-                        num_selected = data_grid_entries_view.RowCount()
+                    ' Count the number of rows selected and add it to the caption of the DataGrid
+                    num_selected = data_grid_entries_view.RowCount()
 
-                        grid_caption.Text += "  -  " + num_selected.ToString + " Images"
+                    grid_caption.Text += "  -  " + num_selected.ToString + " Images"
 
-                        ' Recalculate the awards
-                        If all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
-                            doCalculateAwards()
-                        End If
+                    ' Recalculate the awards
+                    If all_scores_selected And EnableAward.CheckState = CheckState.Unchecked Then
+                        doCalculateAwards()
+                    End If
 
-                    Catch exception As Exception
-                        MsgBox(exception.Message, , "Error In " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                Catch exception As Exception
+                    MsgBox(exception.Message, , "Error In " + Reflection.MethodBase.GetCurrentMethod().ToString)
                 End Try
             End If
         End Sub
@@ -2138,8 +2139,17 @@ Namespace Forms
                 status_bar.progress_bar.Value = 0
                 status_bar.progress_bar.Maximum = json_data("information")("total_entries")
 
+                Dim did_photosize As Boolean = False
                 For Each json_rec As Newtonsoft.Json.Linq.JObject In json_data("competitions")
-                    If json_rec("Entries").HasValues Then
+                    If json_rec("entries").HasValues Then
+                        If Not did_photosize Then
+                            Dim photosize_record As Entities.photosize = New Entities.photosize()
+                            photosize_record.Competition_Date_1 = json_rec("date")
+                            photosize_record.width = json_data("information")("ImageSize")("Width")
+                            photosize_record.height = json_data("information")("ImageSize")("Height")
+                            rps_context.Photosizes.AddOrUpdate(photosize_record)
+                            did_photosize = True
+                        End If
                         comp_date = json_rec("date")
                         comp_theme = json_rec("theme")
                         comp_medium = json_rec("medium")
@@ -2230,6 +2240,7 @@ Namespace Forms
                 status_bar.progress_bar.Hide()
                 status_bar.progress_bar.Value = 0
                 Cursor.Current = Cursors.Default
+                rps_context.SaveChanges()
             End Try
         End Sub
 
