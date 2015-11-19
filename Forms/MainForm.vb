@@ -1,4 +1,15 @@
+Imports System.Collections.Generic
+Imports System.Data.Entity.Migrations
+Imports System.Data.SQLite
+Imports System.Globalization
 Imports System.Linq
+Imports System.Reflection
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
+Imports RPS_Competition_Client.Components
+Imports RPS_Competition_Client.Entities
+Imports RPS_Competition_Client.Entities.JSON
+Imports RPS_Competition_Client.Helpers
 
 Namespace Forms
     Public Class MainForm
@@ -29,10 +40,10 @@ Namespace Forms
         End Structure
 
         ' Database
-        Private rps_context As Entities.rpsEntities
+        Private rps_context As rpsEntities
         Private query As Object
         Private record As Object
-        Private entries As Generic.IList(Of Entities.CompetitionEntry)
+        Private entries As IList(Of CompetitionEntry)
         Private image_size_height As Integer
         Private image_size_width As Integer
 
@@ -57,8 +68,8 @@ Namespace Forms
         Private selected_avg_score As Integer
         Private last_admin_username As String
 
-        Private ReadOnly status_bar As New Components.ProgressStatus
-        Dim rest As Helpers.Rest
+        Private ReadOnly status_bar As New ProgressStatus
+        Dim rest As Rest
 
         ' For the thumbnail view
         Private nine_point_thumb_view_title As String
@@ -156,14 +167,10 @@ Namespace Forms
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle =
-                    New System.Windows.Forms.DataGridViewCellStyle()
-            Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle =
-                    New System.Windows.Forms.DataGridViewCellStyle()
-            Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle =
-                    New System.Windows.Forms.DataGridViewCellStyle()
-            Dim resources As System.ComponentModel.ComponentResourceManager =
-                    New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+            Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+            Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+            Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
             Me.MainMenu1 = New System.Windows.Forms.MainMenu(Me.components)
             Me.FileMenu = New System.Windows.Forms.MenuItem()
             Me.FilePreferencesMenu = New System.Windows.Forms.MenuItem()
@@ -219,16 +226,12 @@ Namespace Forms
             '
             'MainMenu1
             '
-            Me.MainMenu1.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
-                                               {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
+            Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
             '
             'FileMenu
             '
             Me.FileMenu.Index = 0
-            Me.FileMenu.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
-                                              {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
+            Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
             Me.FileMenu.Text = "&File"
             '
             'FilePreferencesMenu
@@ -249,9 +252,7 @@ Namespace Forms
             'MenuItem5
             '
             Me.MenuItem5.Index = 1
-            Me.MenuItem5.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
-                                               {Me.CompCatalogImagesDownload, Me.CompUploadScores})
+            Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.CompCatalogImagesDownload, Me.CompUploadScores})
             Me.MenuItem5.Text = "Competitions"
             '
             'CompCatalogImagesDownload
@@ -267,9 +268,7 @@ Namespace Forms
             'MenuItem2
             '
             Me.MenuItem2.Index = 2
-            Me.MenuItem2.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
-                                               {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
+            Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
             Me.MenuItem2.Text = "&View"
             '
             'ViewSlideShowMenu
@@ -285,9 +284,7 @@ Namespace Forms
             'ReportsMenu
             '
             Me.ReportsMenu.Index = 3
-            Me.ReportsMenu.MenuItems.AddRange(
-                New System.Windows.Forms.MenuItem() _
-                                                 {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
+            Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
             Me.ReportsMenu.Text = "&Reports"
             '
             'ReportsScoreSheetMenu
@@ -313,11 +310,7 @@ Namespace Forms
             '
             'SelectClassification
             '
-            Me.SelectClassification.Font = New System.Drawing.Font("Segoe UI",
-                                                                   9.0!,
-                                                                   System.Drawing.FontStyle.Regular,
-                                                                   System.Drawing.GraphicsUnit.Point,
-                                                                   CType(0, Byte))
+            Me.SelectClassification.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectClassification.Location = New System.Drawing.Point(38, 143)
             Me.SelectClassification.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectClassification.Name = "SelectClassification"
@@ -326,11 +319,7 @@ Namespace Forms
             '
             'Label3
             '
-            Me.Label3.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label3.Location = New System.Drawing.Point(38, 122)
             Me.Label3.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label3.Name = "Label3"
@@ -340,11 +329,7 @@ Namespace Forms
             '
             'SelectMedium
             '
-            Me.SelectMedium.Font = New System.Drawing.Font("Segoe UI",
-                                                           9.0!,
-                                                           System.Drawing.FontStyle.Regular,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.SelectMedium.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectMedium.Location = New System.Drawing.Point(38, 194)
             Me.SelectMedium.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectMedium.Name = "SelectMedium"
@@ -353,11 +338,7 @@ Namespace Forms
             '
             'Label2
             '
-            Me.Label2.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label2.Location = New System.Drawing.Point(38, 173)
             Me.Label2.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label2.Name = "Label2"
@@ -367,11 +348,7 @@ Namespace Forms
             '
             'Label1
             '
-            Me.Label1.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label1.Location = New System.Drawing.Point(38, 20)
             Me.Label1.Margin = New System.Windows.Forms.Padding(3, 11, 3, 0)
             Me.Label1.Name = "Label1"
@@ -381,11 +358,7 @@ Namespace Forms
             '
             'RecalcAwards
             '
-            Me.RecalcAwards.Font = New System.Drawing.Font("Segoe UI",
-                                                           9.0!,
-                                                           System.Drawing.FontStyle.Regular,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.RecalcAwards.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.RecalcAwards.Location = New System.Drawing.Point(61, 407)
             Me.RecalcAwards.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.RecalcAwards.Name = "RecalcAwards"
@@ -396,11 +369,7 @@ Namespace Forms
             'AwardsTableTitleBar
             '
             Me.AwardsTableTitleBar.BackColor = System.Drawing.SystemColors.ActiveCaption
-            Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.0!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.AwardsTableTitleBar.ForeColor = System.Drawing.Color.White
             Me.AwardsTableTitleBar.Location = New System.Drawing.Point(38, 330)
             Me.AwardsTableTitleBar.Margin = New System.Windows.Forms.Padding(0, 11, 0, 0)
@@ -412,11 +381,7 @@ Namespace Forms
             'NumNinesHeadingButton
             '
             Me.NumNinesHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Segoe UI",
-                                                                    9.0!,
-                                                                    System.Drawing.FontStyle.Regular,
-                                                                    System.Drawing.GraphicsUnit.Point,
-                                                                    CType(0, Byte))
+            Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.NumNinesHeadingButton.Location = New System.Drawing.Point(38, 354)
             Me.NumNinesHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
@@ -427,11 +392,7 @@ Namespace Forms
             'NumEightsHeadingButton
             '
             Me.NumEightsHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Segoe UI",
-                                                                     9.0!,
-                                                                     System.Drawing.FontStyle.Regular,
-                                                                     System.Drawing.GraphicsUnit.Point,
-                                                                     CType(0, Byte))
+            Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.NumEightsHeadingButton.Location = New System.Drawing.Point(96, 354)
             Me.NumEightsHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
@@ -442,11 +403,7 @@ Namespace Forms
             'NumSevensHeadingButton
             '
             Me.NumSevensHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Segoe UI",
-                                                                     9.0!,
-                                                                     System.Drawing.FontStyle.Regular,
-                                                                     System.Drawing.GraphicsUnit.Point,
-                                                                     CType(0, Byte))
+            Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.NumSevensHeadingButton.Location = New System.Drawing.Point(154, 354)
             Me.NumSevensHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
@@ -457,11 +414,7 @@ Namespace Forms
             'tbEligibleNines
             '
             Me.tbEligibleNines.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbEligibleNines.Font = New System.Drawing.Font("Segoe UI",
-                                                              9.0!,
-                                                              System.Drawing.FontStyle.Regular,
-                                                              System.Drawing.GraphicsUnit.Point,
-                                                              CType(0, Byte))
+            Me.tbEligibleNines.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.tbEligibleNines.Location = New System.Drawing.Point(38, 377)
             Me.tbEligibleNines.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleNines.Name = "tbEligibleNines"
@@ -472,11 +425,7 @@ Namespace Forms
             'tbEligibleEights
             '
             Me.tbEligibleEights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbEligibleEights.Font = New System.Drawing.Font("Segoe UI",
-                                                               9.0!,
-                                                               System.Drawing.FontStyle.Regular,
-                                                               System.Drawing.GraphicsUnit.Point,
-                                                               CType(0, Byte))
+            Me.tbEligibleEights.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.tbEligibleEights.Location = New System.Drawing.Point(96, 377)
             Me.tbEligibleEights.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleEights.Name = "tbEligibleEights"
@@ -487,11 +436,7 @@ Namespace Forms
             'tbEligibleSevens
             '
             Me.tbEligibleSevens.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbEligibleSevens.Font = New System.Drawing.Font("Segoe UI",
-                                                               9.0!,
-                                                               System.Drawing.FontStyle.Regular,
-                                                               System.Drawing.GraphicsUnit.Point,
-                                                               CType(0, Byte))
+            Me.tbEligibleSevens.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.tbEligibleSevens.Location = New System.Drawing.Point(154, 377)
             Me.tbEligibleSevens.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleSevens.Name = "tbEligibleSevens"
@@ -502,11 +447,7 @@ Namespace Forms
             'SelectAward
             '
             Me.SelectAward.Enabled = False
-            Me.SelectAward.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.SelectAward.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectAward.Location = New System.Drawing.Point(38, 296)
             Me.SelectAward.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectAward.Name = "SelectAward"
@@ -516,11 +457,7 @@ Namespace Forms
             'Label4
             '
             Me.Label4.Enabled = False
-            Me.Label4.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label4.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label4.Location = New System.Drawing.Point(38, 275)
             Me.Label4.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label4.Name = "Label4"
@@ -530,11 +467,7 @@ Namespace Forms
             '
             'Label5
             '
-            Me.Label5.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label5.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label5.Location = New System.Drawing.Point(38, 71)
             Me.Label5.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label5.Name = "Label5"
@@ -544,11 +477,7 @@ Namespace Forms
             '
             'SelectTheme
             '
-            Me.SelectTheme.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.SelectTheme.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectTheme.Location = New System.Drawing.Point(38, 92)
             Me.SelectTheme.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectTheme.Name = "SelectTheme"
@@ -559,11 +488,7 @@ Namespace Forms
             '
             Me.EnableClassification.Checked = True
             Me.EnableClassification.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.EnableClassification.Font = New System.Drawing.Font("Segoe UI",
-                                                                   9.0!,
-                                                                   System.Drawing.FontStyle.Regular,
-                                                                   System.Drawing.GraphicsUnit.Point,
-                                                                   CType(0, Byte))
+            Me.EnableClassification.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableClassification.Location = New System.Drawing.Point(11, 146)
             Me.EnableClassification.Name = "EnableClassification"
             Me.EnableClassification.Size = New System.Drawing.Size(17, 17)
@@ -573,11 +498,7 @@ Namespace Forms
             '
             Me.EnableMedium.Checked = True
             Me.EnableMedium.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.EnableMedium.Font = New System.Drawing.Font("Segoe UI",
-                                                           9.0!,
-                                                           System.Drawing.FontStyle.Regular,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.EnableMedium.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableMedium.Location = New System.Drawing.Point(11, 197)
             Me.EnableMedium.Name = "EnableMedium"
             Me.EnableMedium.Size = New System.Drawing.Size(17, 17)
@@ -587,11 +508,7 @@ Namespace Forms
             '
             Me.EnableTheme.Checked = True
             Me.EnableTheme.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.EnableTheme.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.EnableTheme.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableTheme.Location = New System.Drawing.Point(11, 95)
             Me.EnableTheme.Name = "EnableTheme"
             Me.EnableTheme.Size = New System.Drawing.Size(17, 17)
@@ -599,11 +516,7 @@ Namespace Forms
             '
             'EnableAward
             '
-            Me.EnableAward.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.EnableAward.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableAward.Location = New System.Drawing.Point(11, 299)
             Me.EnableAward.Name = "EnableAward"
             Me.EnableAward.Size = New System.Drawing.Size(17, 17)
@@ -611,11 +524,7 @@ Namespace Forms
             '
             'SelectScore
             '
-            Me.SelectScore.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.SelectScore.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectScore.Location = New System.Drawing.Point(38, 245)
             Me.SelectScore.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectScore.Name = "SelectScore"
@@ -624,11 +533,7 @@ Namespace Forms
             '
             'Label6
             '
-            Me.Label6.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label6.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label6.Location = New System.Drawing.Point(38, 224)
             Me.Label6.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label6.Name = "Label6"
@@ -638,11 +543,7 @@ Namespace Forms
             '
             'SelectDate
             '
-            Me.SelectDate.Font = New System.Drawing.Font("Segoe UI",
-                                                         9.0!,
-                                                         System.Drawing.FontStyle.Regular,
-                                                         System.Drawing.GraphicsUnit.Point,
-                                                         CType(0, Byte))
+            Me.SelectDate.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectDate.Location = New System.Drawing.Point(38, 41)
             Me.SelectDate.Margin = New System.Windows.Forms.Padding(3, 5, 3, 0)
             Me.SelectDate.Name = "SelectDate"
@@ -707,41 +608,25 @@ Namespace Forms
             Me.data_grid_entries_view.AllowUserToDeleteRows = False
             Me.data_grid_entries_view.AllowUserToResizeColumns = False
             Me.data_grid_entries_view.AllowUserToResizeRows = False
-            Me.data_grid_entries_view.Anchor =
-                CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                       Or System.Windows.Forms.AnchorStyles.Right),
-                      System.Windows.Forms.AnchorStyles)
-            Me.data_grid_entries_view.AutoSizeColumnsMode =
-                System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+            Me.data_grid_entries_view.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.data_grid_entries_view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
             Me.data_grid_entries_view.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-            Me.data_grid_entries_view.ColumnHeadersBorderStyle =
-                System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+            Me.data_grid_entries_view.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
             DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
             DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-            DataGridViewCellStyle1.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.0!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            DataGridViewCellStyle1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
             DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
             DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
             DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
             Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-            Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
-                System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.data_grid_entries_view.Columns.AddRange(
-                New System.Windows.Forms.DataGridViewColumn() _
-                                                          {Me.grid_entries_score, Me.grid_entries_award,
-                                                           Me.grid_entries_title})
+            Me.data_grid_entries_view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.grid_entries_score, Me.grid_entries_award, Me.grid_entries_title})
             DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
             DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-            DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.0!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
             DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
             DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
@@ -751,17 +636,11 @@ Namespace Forms
             Me.data_grid_entries_view.Location = New System.Drawing.Point(225, 42)
             Me.data_grid_entries_view.Name = "data_grid_entries_view"
             Me.data_grid_entries_view.ReadOnly = True
-            Me.data_grid_entries_view.RowHeadersBorderStyle =
-                System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-            Me.data_grid_entries_view.RowHeadersWidthSizeMode =
-                System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-            DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.75!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            Me.data_grid_entries_view.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+            Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+            DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-            Me.data_grid_entries_view.Size = New System.Drawing.Size(1098, 387)
+            Me.data_grid_entries_view.Size = New System.Drawing.Size(1115, 387)
             Me.data_grid_entries_view.TabIndex = 53
             '
             'grid_entries_score
@@ -793,22 +672,16 @@ Namespace Forms
             '
             'grid_caption
             '
-            Me.grid_caption.Anchor =
-                CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                       Or System.Windows.Forms.AnchorStyles.Right),
-                      System.Windows.Forms.AnchorStyles)
+            Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
             Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.grid_caption.Font = New System.Drawing.Font("Segoe UI",
-                                                           11.25!,
-                                                           System.Drawing.FontStyle.Bold,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.grid_caption.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.grid_caption.ForeColor = System.Drawing.Color.Black
             Me.grid_caption.Location = New System.Drawing.Point(225, 20)
             Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
             Me.grid_caption.Name = "grid_caption"
-            Me.grid_caption.Size = New System.Drawing.Size(1098, 24)
+            Me.grid_caption.Size = New System.Drawing.Size(1115, 24)
             Me.grid_caption.TabIndex = 54
             Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
@@ -816,7 +689,7 @@ Namespace Forms
             '
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-            Me.ClientSize = New System.Drawing.Size(1341, 491)
+            Me.ClientSize = New System.Drawing.Size(1358, 491)
             Me.Controls.Add(Me.grid_caption)
             Me.Controls.Add(Me.data_grid_entries_view)
             Me.Controls.Add(Me.SelectDate)
@@ -845,11 +718,7 @@ Namespace Forms
             Me.Controls.Add(Me.SelectMedium)
             Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.Label1)
-            Me.Font = New System.Drawing.Font("Segoe UI",
-                                              9.0!,
-                                              System.Drawing.FontStyle.Regular,
-                                              System.Drawing.GraphicsUnit.Point,
-                                              CType(0, Byte))
+            Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Menu = Me.MainMenu1
             Me.Name = "MainForm"
@@ -859,6 +728,7 @@ Namespace Forms
             CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
+
         End Sub
 
 #End Region
@@ -866,20 +736,20 @@ Namespace Forms
         Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             Dim dirinfo As DirectoryInfo
             status_bar.progress_bar.Hide()
-            Helpers.Registry.programRegistryKey = "Software\Raritan Photographic Society\RPS Competition Client"
+            Registry.programRegistryKey = "Software\Raritan Photographic Society\RPS Competition Client"
             Try
                 ' Set up the connection string for the database connection
                 Set_database_name(database_file_name)
                 ' Load the user preferences from the registry
                 getPreferences()
-                rest = New Helpers.Rest(server_name)
+                rest = New Rest(server_name)
 
-                rps_context = New Entities.rpsEntities(New SQLite.SQLiteConnectionStringBuilder() With {
-                                                          .DataSource = database_file_name,
-                                                          .ForeignKeys = True
-                                                          }.ConnectionString)
+                rps_context = New rpsEntities(New SQLiteConnectionStringBuilder() With {
+                                                 .DataSource = database_file_name,
+                                                 .ForeignKeys = True
+                                                 }.ConnectionString)
                 If Not File.Exists(database_file_name) Then
-                    SQLite.SQLiteConnection.CreateFile(database_file_name)
+                    SQLiteConnection.CreateFile(database_file_name)
                     initializeDatabase()
                 End If
 
@@ -904,7 +774,7 @@ Namespace Forms
                 setCompetitionDatesCombobox()
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -916,7 +786,8 @@ Namespace Forms
                     "CREATE TABLE 'club' (`short_name` TEXT,`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`min_score` INTEGER DEFAULT 0,`max_score` INTEGER DEFAULT 0,`min_score_for_award` INTEGER DEFAULT 0);" &
                     "CREATE TABLE 'classification' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
                     "CREATE TABLE 'award' (`name` TEXT,`id` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT UNIQUE);" &
-                    "CREATE TABLE 'CompetitionEntries' (`Photo_ID` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,`Title` TEXT,`Maker` TEXT,`Classification` TEXT,`Medium` TEXT,`Theme` TEXT,`Competition_Date_1` TEXT,`Score_1` INTEGER DEFAULT 0,`Award` TEXT,`Image_File_Name` TEXT,`Display_Sequence` INTEGER DEFAULT 0,`Server_Entry_ID` INTEGER DEFAULT 0);"
+                    "CREATE TABLE 'CompetitionEntries' (`Photo_ID` INTEGER Not NULL PRIMARY KEY AUTOINCREMENT,`Title` TEXT,`Maker` TEXT,`Classification` TEXT,`Medium` TEXT,`Theme` TEXT,`Competition_Date_1` TEXT,`Score_1` INTEGER DEFAULT 0,`Award` TEXT,`Image_File_Name` TEXT,`Display_Sequence` INTEGER DEFAULT 0,`Server_Entry_ID` INTEGER DEFAULT 0);" &
+                    "CREATE TABLE 'photosize' (`Competition_Date_1`	TEXT UNIQUE,`width`	INTEGER,`height` INTEGER,PRIMARY KEY(Competition_Date_1))"
             rps_context.Database.ExecuteSqlCommand(query)
 
             query = "INSERT INTO `medium` (name,id) VALUES ('Color Digital',1);" &
@@ -1130,12 +1001,12 @@ Namespace Forms
                 ' Attempt to update the datasource.
                 data_grid_entries_view.Refresh()
 
-                For Each entry As Entities.CompetitionEntry In entries
+                For Each entry As CompetitionEntry In entries
                     query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
                     rps_context.Database.ExecuteSqlCommand(query,
-                                                           New SQLite.SQLiteParameter("@score", entry.Score_1),
-                                                           New SQLite.SQLiteParameter("@award", entry.Award),
-                                                           New SQLite.SQLiteParameter("@key", entry.Server_Entry_ID)
+                                                           New SQLiteParameter("@score", entry.Score_1),
+                                                           New SQLiteParameter("@award", entry.Award),
+                                                           New SQLiteParameter("@key", entry.Server_Entry_ID)
                                                            )
                 Next
                 ' If we've just completed entering scores, calculate the eligible awards
@@ -1143,7 +1014,7 @@ Namespace Forms
                     doCalculateAwards()
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
         '
@@ -1152,10 +1023,10 @@ Namespace Forms
         Private Function parseSelectedDate(s As String) As Date
             Dim d As Date
             Try
-                d = Date.ParseExact(s, "dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
+                d = Date.ParseExact(s, "dd-MMM-yyyy", CultureInfo.CurrentCulture)
                 parseSelectedDate = d
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
                 parseSelectedDate = Nothing
             End Try
         End Function
@@ -1198,17 +1069,17 @@ Namespace Forms
                 ' Attempt to update the datasource.
                 data_grid_entries_view.Refresh()
 
-                For Each entry As Entities.CompetitionEntry In entries
+                For Each entry As CompetitionEntry In entries
                     query = "UPDATE CompetitionEntries SET Score_1=@score , Award=@award Where Server_Entry_ID=@key"
                     rps_context.Database.ExecuteSqlCommand(query,
-                                                           New SQLite.SQLiteParameter("@score", entry.Score_1),
-                                                           New SQLite.SQLiteParameter("@award", entry.Award),
-                                                           New SQLite.SQLiteParameter("@key", entry.Server_Entry_ID)
+                                                           New SQLiteParameter("@score", entry.Score_1),
+                                                           New SQLiteParameter("@award", entry.Award),
+                                                           New SQLiteParameter("@key", entry.Server_Entry_ID)
                                                            )
                 Next
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1226,7 +1097,7 @@ Namespace Forms
                                        sequence As Integer)
 
             Dim relative_path As String
-            Dim entry As Entities.CompetitionEntry = New Entities.CompetitionEntry
+            Dim entry As CompetitionEntry = New CompetitionEntry
 
             Try
                 ' Calculate the relative path to the file.  The path is relative to the
@@ -1270,7 +1141,7 @@ Namespace Forms
                 rps_context.CompetitionEntries.Add(entry)
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
             rps_context.SaveChanges()
         End Sub
@@ -1283,7 +1154,7 @@ Namespace Forms
                     setMaxAwards = Int((num_images / 4) + 0.5)
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Function
 
@@ -1358,7 +1229,7 @@ Namespace Forms
 
                     ' Install the updated SQL SELECT statement
                     query = select_stmt + where_clause + order_clause
-                    entries = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
+                    entries = rps_context.Database.SqlQuery(Of CompetitionEntry)(query).ToList
 
                     select_stmt = "Select * FROM photosize"
                     where_clause = " WHERE Competition_Date_1='" +
@@ -1366,8 +1237,8 @@ Namespace Forms
                                    "'"
                     query = select_stmt + where_clause
                     Try
-                        Dim photosize As Entities.photosize =
-                                Enumerable.First(rps_context.Database.SqlQuery(Of Entities.photosize)(query))
+                        Dim photosize As photosize =
+                                rps_context.Database.SqlQuery(Of photosize)(query).First()
                         image_size_width = photosize.width
                         image_size_height = photosize.height
                     Catch exception As Exception
@@ -1392,7 +1263,7 @@ Namespace Forms
                     End If
 
                 Catch exception As Exception
-                    MsgBox(exception.Message, , "Error In " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                    MsgBox(exception.Message, , "Error In " + MethodBase.GetCurrentMethod().ToString)
                 End Try
             End If
         End Sub
@@ -1417,7 +1288,7 @@ Namespace Forms
                 maximum_awards = setMaxAwards(CType(entries.Count, Double))
 
                 ' Iterate through the dataset and record all the scores which are eligible for an award
-                For Each entry As Entities.CompetitionEntry In From entry1 In entries Where IsNumeric(entry1.Score_1)
+                For Each entry As CompetitionEntry In From entry1 In entries Where IsNumeric(entry1.Score_1)
                     total_num_scores = total_num_scores + 1
                     If entry.Score_1 >= (min_score_for_award * num_judges) And entry.Score_1 <= (max_score * num_judges) _
                         Then
@@ -1534,7 +1405,7 @@ Namespace Forms
                 tbEligibleSevens.Text = num_eligible_sevens.ToString
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1542,7 +1413,7 @@ Namespace Forms
             Dim temp_file As String
             Dim report_type As String
             Dim competition_date As Date
-            Dim entry As Entities.CompetitionEntry
+            Dim entry As CompetitionEntry
             Dim sw As StreamWriter
             Try
                 ' Bail out if the dataset is empty
@@ -1675,7 +1546,7 @@ Namespace Forms
                 End If
                 sw.Write(
                     "<tr><td colspan=""4"" class=""header_center""><p class=""subtitle"">" +
-                    competition_date.ToString("MMMM", Globalization.CultureInfo.CurrentCulture) + " " +
+                    competition_date.ToString("MMMM", CultureInfo.CurrentCulture) + " " +
                     competition_date.Year.ToString)
                 If EnableTheme.Checked Then
                     sw.Write(" - " + SelectTheme.Text)
@@ -1714,7 +1585,7 @@ Namespace Forms
                 ' Launch a browser to display the worksheet
                 doShellExecute(temp_file)
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1727,7 +1598,7 @@ Namespace Forms
                 my_process.Start()
                 my_process.Dispose()
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1752,7 +1623,7 @@ Namespace Forms
                         Select club.id, club.name
 
                 For Each record In query
-                    prefs_dialog.cbCameraClubName.Items.Add(New Entities.DataItem(record.id, record.name))
+                    prefs_dialog.cbCameraClubName.Items.Add(New DataItem(record.id, record.name))
                 Next
                 prefs_dialog.cbCameraClubName.Text = camera_club_name
                 prefs_dialog.cbNumJudges.Text = CType(num_judges, String)
@@ -1766,56 +1637,56 @@ Namespace Forms
                 Dim rof As String = Trim(prefs_dialog.tbReportsOutputFolder.Text)
                 Dim sn As String = Trim(prefs_dialog.tbServerName.Text)
                 Dim ssd As String = Trim(prefs_dialog.tbServerScriptDir.Text)
-                Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, Entities.DataItem).Value)
-                Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, Entities.DataItem).ID
+                Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).Value)
+                Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).ID
                 Dim nj As Integer = CType(prefs_dialog.cbNumJudges.Text, Integer)
                 If prefs_dialog.DialogResult = DialogResult.OK Then
                     If irf > "" Then
                         ' If necessary, strip off a trailing "\"
-                        images_root_folder = Helpers.Strings.trimTrailingSlash(images_root_folder)
+                        images_root_folder = Strings.trimTrailingSlash(images_root_folder)
                         ' write it to the registry
-                        Helpers.Registry.writeRegistryString("Images Root Folder", images_root_folder)
+                        Registry.writeRegistryString("Images Root Folder", images_root_folder)
                     End If
                     If dbfn > "" Then
                         ' update the connection string
                         Set_database_name(dbfn)
                         ' write it to the registry
-                        Helpers.Registry.writeRegistryString("Database File Name", database_file_name)
+                        Registry.writeRegistryString("Database File Name", database_file_name)
                     End If
                     If rof > "" Then
                         ' If necessary, strip off a trailing "\"
-                        reports_output_folder = Helpers.Strings.trimTrailingSlash(reports_output_folder)
+                        reports_output_folder = Strings.trimTrailingSlash(reports_output_folder)
 
                         ' write it to the registry
-                        Helpers.Registry.writeRegistryString("Reports Output Folder", reports_output_folder)
+                        Registry.writeRegistryString("Reports Output Folder", reports_output_folder)
                     End If
                     If sn > "" Then
                         ' Store the new Server name in memory
                         server_name = sn
                         ' Write it to the registry
-                        Helpers.Registry.writeRegistryString("Server Name", sn)
+                        Registry.writeRegistryString("Server Name", sn)
                         rest.Server = server_name
                     End If
                     If ssd > "" Then
                         ' Store the new Server script directory in memory
                         server_script_dir = ssd
                         ' Write it to the registry
-                        Helpers.Registry.writeRegistryString("Server Script Directory", ssd)
+                        Registry.writeRegistryString("Server Script Directory", ssd)
                     End If
                     If ccid > 0 Then
                         ' Set and store the club id
                         camera_club_id = ccid
-                        Helpers.Registry.writeRegistryString("Camera Club ID", CType(ccid, String))
+                        Registry.writeRegistryString("Camera Club ID", CType(ccid, String))
                     End If
                     If ccn > "" Then
                         ' Set and store the club name
                         camera_club_name = ccn
-                        Helpers.Registry.writeRegistryString("Camera Club Name", ccn)
+                        Registry.writeRegistryString("Camera Club Name", ccn)
                     End If
                     If nj > 0 Then
                         ' Set and store the number of judges
                         num_judges = nj
-                        Helpers.Registry.writeRegistryString("Number of Judges", CType(nj, String))
+                        Registry.writeRegistryString("Number of Judges", CType(nj, String))
                     End If
 
                     ' Fetch the list of classifications, mediums and awards from the database
@@ -1824,7 +1695,7 @@ Namespace Forms
 
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1832,7 +1703,7 @@ Namespace Forms
             Try
                 database_file_name = file_name
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1840,45 +1711,45 @@ Namespace Forms
             Dim value As String
 
             Try
-                value = Helpers.Registry.getRegistryString("Images Root Folder")
+                value = Registry.getRegistryString("Images Root Folder")
                 If value > "" Then
                     images_root_folder = value
                 End If
-                value = Helpers.Registry.getRegistryString("Database File Name")
+                value = Registry.getRegistryString("Database File Name")
                 If value > "" Then
                     Set_database_name(value)
                 End If
-                value = Helpers.Registry.getRegistryString("Reports Output Folder")
+                value = Registry.getRegistryString("Reports Output Folder")
                 If value > "" Then
                     reports_output_folder = value
                 End If
-                value = Helpers.Registry.getRegistryString("Server Name")
+                value = Registry.getRegistryString("Server Name")
                 If value > "" Then
                     server_name = value
                 End If
-                value = Helpers.Registry.getRegistryString("Server Script Directory")
+                value = Registry.getRegistryString("Server Script Directory")
                 If value > "" Then
                     server_script_dir = value
                 End If
-                value = Helpers.Registry.getRegistryString("Camera Club ID")
+                value = Registry.getRegistryString("Camera Club ID")
                 If value > "" Then
                     camera_club_id = CType(value, Integer)
                 End If
-                value = Helpers.Registry.getRegistryString("Camera Club Name")
+                value = Registry.getRegistryString("Camera Club Name")
                 If value > "" Then
                     camera_club_name = value
                 End If
-                value = Helpers.Registry.getRegistryString("Last Admin Username")
+                value = Registry.getRegistryString("Last Admin Username")
                 If value > "" Then
                     last_admin_username = value
                 End If
-                value = Helpers.Registry.getRegistryString("Number of Judges")
+                value = Registry.getRegistryString("Number of Judges")
                 If value > "" Then
                     num_judges = value
                 End If
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1952,7 +1823,7 @@ Namespace Forms
                 all_scores_selected = True
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -1982,7 +1853,7 @@ Namespace Forms
                     SelectDate.SelectedIndex = 0
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
         ' Call the REST service on the Server to retrieve the list of available
@@ -1990,14 +1861,14 @@ Namespace Forms
         Private Function getRestCompetitionDates(params As Hashtable) As ArrayList
             Dim response As String
             Dim dates As New ArrayList
-            Dim msg_box_layout As MsgBoxStyle = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
+            Dim msg_box_layout As MsgBoxStyle
 
             Try
                 ' Retrieve the list of competition dates from the Server
                 params.Add("rpswinclient", "getcompdate")
                 response = rest.DoGet(server_script_dir, params)
                 If response IsNot Nothing Then
-                    Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
+                    Dim json As JObject = JObject.Parse(response)
                     If Not Helpers.Json.IsError(json) Then
                         msg_box_layout = MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation
                         For Each competition_date As String In json("data")("competition_dates")
@@ -2010,16 +1881,16 @@ Namespace Forms
                         Dim error_message As String = Helpers.Json.GetErrorMessage(json)
                         MsgBox(error_message,
                                msg_box_layout,
-                               "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                               "Error in: " + MethodBase.GetCurrentMethod().Name)
                     End If
                 Else
-                    MsgBox(rest.ErrorMessage, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                    MsgBox(rest.ErrorMessage, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
                 End If
 
                 getRestCompetitionDates = dates
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
                 getRestCompetitionDates = dates
             End Try
         End Function
@@ -2030,15 +1901,15 @@ Namespace Forms
             Dim username As String
             Dim password As String
             Dim comp_date As String
-            Dim comp_classification As String = Nothing
-            Dim comp_theme As String = Nothing
-            Dim comp_medium As String = Nothing
+            Dim comp_classification As String
+            Dim comp_theme As String
+            Dim comp_medium As String
             Dim local_image_file_name As String
             Dim output_folder As String
             Dim competition_folder As String
             Dim dir_info As DirectoryInfo
             Dim params As New Hashtable
-            Dim response As String = Nothing
+            Dim response As String
             Dim comp_dates As ArrayList
             Dim sql As String
             Dim entries_array_list As New ArrayList
@@ -2082,11 +1953,11 @@ Namespace Forms
 
                 ' Save the username in the registry as the default admin username
                 last_admin_username = username
-                Helpers.Registry.writeRegistryString("Last Admin Username", last_admin_username)
+                Registry.writeRegistryString("Last Admin Username", last_admin_username)
 
                 ' Delete any competitions in the local database that already have this date
                 Dim d As Date
-                d = Date.ParseExact(comp_date, "yyyy-MM-dd", Globalization.CultureInfo.CurrentCulture)
+                d = Date.ParseExact(comp_date, "yyyy-MM-dd", CultureInfo.CurrentCulture)
                 sql = "DELETE FROM CompetitionEntries WHERE Competition_Date_1 = '" +
                       Format(d, "M/dd/yyyy") + "'"
                 If download_digital And Not download_prints Then
@@ -2116,7 +1987,7 @@ Namespace Forms
                 If IsNothing(response) Then
                     Exit Sub
                 End If
-                Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
+                Dim json As JObject = JObject.Parse(response)
 
                 If Helpers.Json.IsError(json) Then
                     Dim error_message As String = "Server Error" + Environment.NewLine + "Unknown error"
@@ -2125,26 +1996,25 @@ Namespace Forms
                     End If
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
-                           "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                           "Error in: " + MethodBase.GetCurrentMethod().Name)
                     Exit Sub
                 End If
 
-                Dim json_data As Newtonsoft.Json.Linq.JObject = json("data")
+                Dim json_data As JObject = json("data")
                 ' Initialize the progress bar
                 status_bar.progress_bar.Minimum = 0
                 status_bar.progress_bar.Value = 0
                 status_bar.progress_bar.Maximum = json_data("information")("total_entries")
 
                 Dim did_photosize As Boolean = False
-                For Each json_rec As Newtonsoft.Json.Linq.JObject In json_data("competitions")
+                For Each json_rec As JObject In json_data("competitions")
                     If json_rec("entries").HasValues Then
                         If Not did_photosize Then
-                            Dim photosize_record As Entities.photosize = New Entities.photosize()
+                            Dim photosize_record As photosize = New photosize()
                             photosize_record.Competition_Date_1 = json_rec("date")
                             photosize_record.width = json_data("information")("ImageSize")("Width")
                             photosize_record.height = json_data("information")("ImageSize")("Height")
-                            Entity.Migrations.DbSetMigrationsExtensions.AddOrUpdate(rps_context.Photosizes,
-                                                                                                photosize_record)
+                            rps_context.Photosizes.AddOrUpdate(photosize_record)
                             did_photosize = True
                         End If
                         comp_date = json_rec("date")
@@ -2155,7 +2025,7 @@ Namespace Forms
                         prev_member = ""
                         bucket = 0
                         entries_array_list.Clear()
-                        For Each json_entry As Newtonsoft.Json.Linq.JObject In json_rec("entries")
+                        For Each json_entry As JObject In json_rec("entries")
                             this_entry.entry_id = json_entry("id")
                             this_entry.first_name = json_entry("first_name")
                             this_entry.last_name = json_entry("last_name")
@@ -2231,7 +2101,7 @@ Namespace Forms
                 MsgBox("Competition Images Downloaded", , "Download Competition Images")
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             Finally
                 ' Clear the ProgressBar
                 status_bar.progress_bar.Hide()
@@ -2252,10 +2122,10 @@ Namespace Forms
         '       MyString = StrMap(MyString, "àéùxyz", "aeu")
         ' will translate all occurrances of à, é, ù and will delete all occurrances of x,y,z.
 
-        Public Function handleStrMap(original_string As String,
-                                     map_what As String,
-                                     to_what As String,
-                                     Optional ByVal compare As Long = 0) As String
+        Private Function handleStrMap(original_string As String,
+                                      map_what As String,
+                                      to_what As String,
+                                      Optional ByVal compare As Long = 0) As String
 
             Dim output_ptr As Long
             Dim input_ptr As Long
@@ -2295,11 +2165,11 @@ Namespace Forms
                 End If
             Catch exception As Exception
                 handleStrMap = original_string
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Function
 
-        Private Function uploadScores() As Boolean
+        Private Sub uploadScores()
             Dim upload_dialog As UploadScoresDialog
             Dim username As String
             Dim password As String
@@ -2319,7 +2189,7 @@ Namespace Forms
             Dim award As String
             Dim entry_id As String
             Dim params As New Hashtable
-            Dim params_post As New Generic.List(Of Generic.KeyValuePair(Of String, String))
+            Dim params_post As New List(Of KeyValuePair(Of String, String))
             Dim posn As Integer
             Dim first_name As String
             Dim last_name As String
@@ -2327,12 +2197,12 @@ Namespace Forms
             Dim upload_prints As Boolean
             Dim selected_medium As String
             Dim competitions_result As String
-            Dim result_competitions As Entities.JSON.Competitions
-            Dim result_competition As Entities.JSON.Competition
-            Dim result_entry As Entities.JSON.Entry
-            Dim result_entries_list As Generic.List(Of Entities.JSON.Entry)
-            Dim result_competitions_list As Generic.List(Of Entities.JSON.Competition)
-            Dim response As String = Nothing
+            Dim result_competitions As Competitions
+            Dim result_competition As Competition
+            Dim result_entry As Entry
+            Dim result_entries_list As List(Of Entry)
+            Dim result_competitions_list As List(Of Competition)
+            Dim response As String
 
             Try
                 ' Get the list of competition dates from the Server
@@ -2342,7 +2212,7 @@ Namespace Forms
                 comp_dates = getRestCompetitionDates(params)
                 If comp_dates.Count = 0 Then
                     MsgBox("No competitions available to receive scores", , "Upload Scores")
-                    Return False
+                    Exit Function
                 End If
                 Cursor.Current = Cursors.Default
 
@@ -2361,7 +2231,7 @@ Namespace Forms
 
                 ' Save the username in the registry as the default admin username
                 last_admin_username = username
-                Helpers.Registry.writeRegistryString("Last Admin Username", last_admin_username)
+                Registry.writeRegistryString("Last Admin Username", last_admin_username)
 
                 Cursor.Current = Cursors.WaitCursor
                 Application.DoEvents()
@@ -2374,23 +2244,23 @@ Namespace Forms
                 If upload_prints And Not upload_digital Then
                     selected_medium = " AND Medium like '%Prints'"
                 End If
-                Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", Globalization.CultureInfo.CurrentCulture)
+                Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", CultureInfo.CurrentCulture)
                 sql_select = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
                 sql_where = "WHERE Competition_Date_1 = '" +
                             Format(d, "M/dd/yyyy") + "'" +
                             selected_medium
                 query = sql_select + sql_where
-                recs = rps_context.Database.SqlQuery(Of Entities.ClassificationMedium)(query).ToList
+                recs = rps_context.Database.SqlQuery(Of ClassificationMedium)(query).ToList
 
-                For Each classification_medium As Entities.ClassificationMedium In recs
+                For Each classification_medium As ClassificationMedium In recs
                     comp_class_list.Add(classification_medium.Classification)
                     comp_medium_list.Add(classification_medium.Medium)
                 Next
 
                 ' Iterate through all the competition for this date
-                result_competitions_list = New Generic.List(Of Entities.JSON.Competition)
+                result_competitions_list = New List(Of Competition)
                 For comp_num = 0 To comp_class_list.Count - 1
-                    result_competition = New Entities.JSON.Competition()
+                    result_competition = New Competition()
                     ' Query the database for the entries of this competition
                     classification = comp_class_list.Item(comp_num)
                     medium = comp_medium_list.Item(comp_num)
@@ -2398,13 +2268,13 @@ Namespace Forms
                     sql_where = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
                                 classification + "' AND Medium = '" + medium + "'"
                     query = sql_select + sql_where
-                    recs = rps_context.Database.SqlQuery(Of Entities.CompetitionEntry)(query).ToList
+                    recs = rps_context.Database.SqlQuery(Of CompetitionEntry)(query).ToList
                     ' Output the tags that describe this competition
 
                     ' Iterate through all the entries of this competition
-                    result_entries_list = New Generic.List(Of Entities.JSON.Entry)
-                    For Each competition_entry As Entities.CompetitionEntry In recs
-                        result_entry = New Entities.JSON.Entry()
+                    result_entries_list = New List(Of Entry)
+                    For Each competition_entry As CompetitionEntry In recs
+                        result_entry = New Entry()
                         ' Read the entry data from the database
                         maker = competition_entry.Maker
                         posn = InStr(1, maker, " ")
@@ -2429,24 +2299,24 @@ Namespace Forms
                     result_competition.Entries = result_entries_list
                     result_competitions_list.Add(result_competition)
                 Next
-                result_competitions = New Entities.JSON.Competitions()
+                result_competitions = New Competitions()
                 result_competitions.Competitions = result_competitions_list
 
-                competitions_result = Newtonsoft.Json.JsonConvert.SerializeObject(result_competitions)
+                competitions_result = JsonConvert.SerializeObject(result_competitions)
                 params_post.Clear()
-                params_post.Add(New Generic.KeyValuePair(Of String, String)("rpswinclient", "uploadscore"))
-                params_post.Add(New Generic.KeyValuePair(Of String, String)("username", username))
-                params_post.Add(New Generic.KeyValuePair(Of String, String)("password", password))
-                params_post.Add(New Generic.KeyValuePair(Of String, String)("json", competitions_result))
+                params_post.Add(New KeyValuePair(Of String, String)("rpswinclient", "uploadscore"))
+                params_post.Add(New KeyValuePair(Of String, String)("username", username))
+                params_post.Add(New KeyValuePair(Of String, String)("password", password))
+                params_post.Add(New KeyValuePair(Of String, String)("json", competitions_result))
                 response = rest.DoPost(params_post)
                 If IsNothing(response) Then
                     Dim error_message As String = "Server Error" + Environment.NewLine + "Empty response from server"
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
-                           "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                           "Error in: " + MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
-                Dim json As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(response)
+                Dim json As JObject = JObject.Parse(response)
                 If Helpers.Json.IsError(json) Then
                     Dim error_message As String = "Server Error" + Environment.NewLine + "Unknown error"
                     If Helpers.Json.HasErrors(json) Then
@@ -2454,7 +2324,7 @@ Namespace Forms
                     End If
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
-                           "Error in: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                           "Error in: " + MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
                 If Helpers.Json.IsFailed(json) Then
@@ -2464,21 +2334,21 @@ Namespace Forms
                     End If
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation,
-                           "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                           "In: " + MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
                 If Helpers.Json.IsSuccess(json) Then
                     MsgBox("Scores uploaded and processed",
                            MsgBoxStyle.OkOnly,
-                           "In: " + Reflection.MethodBase.GetCurrentMethod().Name)
+                           "In: " + MethodBase.GetCurrentMethod().Name)
                     Exit Function
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             Finally
                 Cursor.Current = Cursors.Default
             End Try
-        End Function
+        End Sub
         '
         ' Enter the unique list of competition themes for this date into the Theme combobox
         '
@@ -2501,7 +2371,7 @@ Namespace Forms
                     SelectTheme.Text = ""
                 End If
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 

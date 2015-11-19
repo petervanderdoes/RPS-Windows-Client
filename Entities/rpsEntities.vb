@@ -1,14 +1,9 @@
-Imports System
-Imports System.ComponentModel.DataAnnotations.Schema
-Imports System.Data.Common
+
 Imports System.Data.Entity
 Imports System.Data.SQLite
-Imports System.Linq
 Imports System.Runtime.InteropServices
 
 Namespace Entities
-
-
     <ComVisible(False)>
     Partial Public Class rpsEntities
         Inherits DbContext
@@ -27,7 +22,7 @@ Namespace Entities
         Public Overridable Property Photosizes As DbSet(Of photosize)
         Public Overridable Property media As DbSet(Of medium)
 
-        Protected Overrides Sub OnModelCreating(ByVal modelBuilder As DbModelBuilder)
+        Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
             modelBuilder.Entity(Of award)() _
                 .HasMany(Function(e) e.club_award) _
                 .WithOptional(Function(e) e.award) _

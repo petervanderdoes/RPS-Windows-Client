@@ -1,4 +1,5 @@
 Namespace Helpers
+    ' ReSharper disable once ClassNeverInstantiated.Global
     Public Class Strings
         ''' <summary>Trims the trailing slash off a string if it exists</summary>
         ''' <param name="input_string">String to trim</param>

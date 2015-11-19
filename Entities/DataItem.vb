@@ -4,12 +4,11 @@
 Namespace Entities
     Public Class DataItem
 
-        Private _id As Integer
-        Private _value As String
+        Private ReadOnly _id As Integer
 
         Public Sub New(ByVal id As String, ByVal value As String)
             _id = id
-            _value = value
+            Me.Value = value
         End Sub
 
         Public ReadOnly Property ID() As String
@@ -18,11 +17,7 @@ Namespace Entities
             End Get
         End Property
 
-        Public ReadOnly Property Value() As String
-            Get
-                Return _value
-            End Get
-        End Property
+        Public ReadOnly Property Value As String
 
         Public Overrides Function ToString() As String
             Return Value

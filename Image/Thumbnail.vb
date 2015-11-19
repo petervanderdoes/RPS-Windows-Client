@@ -18,7 +18,7 @@ Namespace Image
         End Sub
 
         Property imageFile As String
-            Get
+            Private Get
                 imageFile = image_file_name
             End Get
             Set

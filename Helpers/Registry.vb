@@ -1,4 +1,5 @@
 Namespace Helpers
+    ' ReSharper disable once ClassNeverInstantiated.Global
     Public Class Registry
         Public Shared Property programRegistryKey As String
         Private Shared Property completeRegistryKey As RegistryKey

@@ -1,11 +1,7 @@
-Imports System
-Imports System.Collections.Generic
+
 Imports System.ComponentModel.DataAnnotations
-Imports System.ComponentModel.DataAnnotations.Schema
-Imports System.Data.Entity.Spatial
 
 Namespace Entities
-
     Partial Public Class CompetitionEntry
         <Key>
         Public Property Photo_ID As Long

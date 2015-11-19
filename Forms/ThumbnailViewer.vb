@@ -1,3 +1,7 @@
+Imports System.Reflection
+Imports RPS_Competition_Client.Entities
+Imports RPS_Competition_Client.Image
+
 Namespace Forms
     Public Class ThumbnailViewer
         Inherits Form
@@ -5,45 +9,27 @@ Namespace Forms
         Private ReadOnly the_main_form As MainForm
         Private ReadOnly image_list As IList
         Private current_index As Integer
-        Private current_row As Entities.CompetitionEntry
+        Private current_row As CompetitionEntry
         Private full_size_file_name As String
         Private is_zoomed As Boolean
         Private ReadOnly thumbnail_view_title As String
 
         ' API parameters for setting border select style for the listview
         Private Const LVM_FIRST As Integer = &H1000
+        ' ReSharper disable once UnusedMember.Global
         Public Const LVM_GETCOUNTPERPAGE As Integer = LVM_FIRST + 40
+        ' ReSharper disable once UnusedMember.Global
         Public Const WM_SETREDRAW As Integer = &HB
 
-        Private Enum LVS_EX
-            LVS_EX_GRIDLINES = &H1
-            LVS_EX_SUBITEMIMAGES = &H2
-            LVS_EX_CHECKBOXES = &H4
-            LVS_EX_TRACKSELECT = &H8
-            LVS_EX_HEADERDRAGDROP = &H10
-            LVS_EX_FULLROWSELECT = &H20
-            LVS_EX_ONECLICKACTIVATE = &H40
-            LVS_EX_TWOCLICKACTIVATE = &H80
-            LVS_EX_FLATSB = &H100
-            LVS_EX_REGIONAL = &H200
-            LVS_EX_INFOTIP = &H400
-            LVS_EX_UNDERLINEHOT = &H800
-            LVS_EX_UNDERLINECOLD = &H1000
-            LVS_EX_MULTIWORKAREAS = &H2000
-            LVS_EX_LABELTIP = &H4000
-            LVS_EX_BORDERSELECT = &H8000
-            LVS_EX_DOUBLEBUFFER = &H10000
-            LVS_EX_HIDELABELS = &H20000
-            LVS_EX_SINGLEROW = &H40000
-            LVS_EX_SNAPTOGRID = &H80000
-            LVS_EX_SIMPLESELECT = &H100000
-        End Enum 'LVS_EX
+        Private Enum LvsEx
+            lvs_ex_borderselect = &H8000
+        End Enum 'LvsEx
 
-        Private Enum LVM
-            LVM_FIRST = &H1000
-            LVM_SETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 54
-            LVM_GETEXTENDEDLISTVIEWSTYLE = LVM_FIRST + 55
-        End Enum 'LVM
+        Private Enum Lvm
+            lvm_first = &H1000
+            lvm_setextendedlistviewstyle = lvm_first + 54
+            lvm_getextendedlistviewstyle = lvm_first + 55
+        End Enum 'Lvm
 
 #Region " Windows Form Designer generated code "
 
@@ -284,7 +270,7 @@ Namespace Forms
                         e.Handled = True
                 End Select
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
@@ -296,7 +282,7 @@ Namespace Forms
             Dim thumb_file_name As String
             Dim thumb_image As Drawing.Image
             Dim num_images As Integer
-            Dim thumb As Image.Thumbnail
+            Dim thumb As Thumbnail
             Dim this_item As ListViewItem
 
             Try
@@ -314,7 +300,7 @@ Namespace Forms
 
                 ' Iterate through the dataset to load the thumbnails into the imagelist
                 Dim i As Int16 = 0
-                For Each entry As Entities.CompetitionEntry In image_list
+                For Each entry As CompetitionEntry In image_list
 
                     ' Compute the file name of the thumbnail image
                     image_file_name = entry.Image_File_Name
@@ -332,7 +318,7 @@ Namespace Forms
                     End If
                     ' If the thumbnail file doesn't exist, render it now
                     If Not File.Exists(thumb_file_name) Then
-                        thumb = New Image.Thumbnail(the_main_form)
+                        thumb = New Thumbnail(the_main_form)
                         thumb.imageFile = image_file_name
                         thumb.doRender()
                     End If
@@ -355,7 +341,7 @@ Namespace Forms
                 is_zoomed = False
 
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             Finally
             End Try
         End Sub
@@ -365,15 +351,15 @@ Namespace Forms
 
             Try
                 styles = NativeMethods.SendMessage(ThumbnailListView.Handle, LVM.LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0)
-                styles = styles Or LVS_EX.LVS_EX_BORDERSELECT
+                styles = styles Or LvsEx.LVS_EX_BORDERSELECT
                 NativeMethods.SendMessage(ThumbnailListView.Handle, LVM.LVM_SETEXTENDEDLISTVIEWSTYLE, 0, styles)
             Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
+                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
         End Sub
 
         Private Sub SetSizes(image_width As Integer, image_height As Integer)
-            Dim I As Image.RpsImageSize = New Image.RpsImageSize
+            Dim I As RpsImageSize = New RpsImageSize
             I.ImageWidth = image_width
             I.ImageHeight = image_height
             ClientSize = New Size(I.ImageWidth(), I.ImageHeight())

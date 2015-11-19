@@ -1,7 +1,7 @@
 Namespace Components
     Public Class ProgressStatus
         Inherits StatusBar
-        Public progress_bar As New ProgressBar
+        Public ReadOnly progress_bar As New ProgressBar
         Private progress_bar_panel As Integer = -1
 
         Sub New()
@@ -10,10 +10,7 @@ Namespace Components
             Controls.Add(progress_bar)
         End Sub
 
-        Public Property progressBarPanel As Integer
-            Get
-                Return progress_bar_panel
-            End Get
+        Public WriteOnly Property progressBarPanel As Integer
             Set
                 progress_bar_panel = Value
                 Panels(progress_bar_panel).Style = StatusBarPanelStyle.OwnerDraw

@@ -1,18 +1,15 @@
-Imports System
-Imports System.Collections.Generic
-Imports System.ComponentModel.DataAnnotations
-Imports System.ComponentModel.DataAnnotations.Schema
-Imports System.Data.Entity.Spatial
+
 
 Namespace Entities
-
     Partial Public Class club_medium
         Public Property club_id As Long?
 
         Public Property medium_id As Long?
 
-        <Key>
-        <DatabaseGenerated(DatabaseGeneratedOption.None)>
+        <System.ComponentModel.DataAnnotations.Key>
+        <
+            System.ComponentModel.DataAnnotations.Schema.DatabaseGenerated _
+                (System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None)>
         Public Property sort_key As Long
 
         Public Overridable Property club As club

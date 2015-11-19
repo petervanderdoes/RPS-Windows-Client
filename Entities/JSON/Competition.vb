@@ -3,6 +3,6 @@ Namespace Entities.JSON
         Public Property CompDate As String
         Public Property Classification As String
         Public Property Medium As String
-        Public Property Entries As Generic.List(Of Entities.JSON.Entry)
+        Public Property Entries As Generic.List(Of Entry)
     End Class
 End Namespace

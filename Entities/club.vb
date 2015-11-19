@@ -1,23 +1,18 @@
-Imports System
-Imports System.Collections.Generic
-Imports System.ComponentModel.DataAnnotations
-Imports System.ComponentModel.DataAnnotations.Schema
-Imports System.Data.Entity.Spatial
+
 
 Namespace Entities
-
-    <Table("club")>
+    <System.ComponentModel.DataAnnotations.Schema.Table("club")>
     Partial Public Class club
         Public Sub New()
-            club_award = New HashSet(Of club_award)()
-            club_classification = New HashSet(Of club_classification)()
-            club_medium = New HashSet(Of club_medium)()
+            club_award = New Generic.HashSet(Of club_award)()
+            club_classification = New Generic.HashSet(Of club_classification)()
+            club_medium = New Generic.HashSet(Of club_medium)()
         End Sub
 
-        <StringLength(2147483647)>
+        <System.ComponentModel.DataAnnotations.StringLength(2147483647)>
         Public Property short_name As String
 
-        <StringLength(2147483647)>
+        <System.ComponentModel.DataAnnotations.StringLength(2147483647)>
         Public Property name As String
 
         Public Property id As Long
@@ -28,10 +23,10 @@ Namespace Entities
 
         Public Property min_score_for_award As Long?
 
-        Public Overridable Property club_award As ICollection(Of club_award)
+        Public Overridable Property club_award As Generic.ICollection(Of club_award)
 
-        Public Overridable Property club_classification As ICollection(Of club_classification)
+        Public Overridable Property club_classification As Generic.ICollection(Of club_classification)
 
-        Public Overridable Property club_medium As ICollection(Of club_medium)
+        Public Overridable Property club_medium As Generic.ICollection(Of club_medium)
     End Class
 End Namespace

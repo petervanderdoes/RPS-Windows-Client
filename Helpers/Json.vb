@@ -1,6 +1,7 @@
 
 
 Namespace Helpers
+    ' ReSharper disable once ClassNeverInstantiated.Global
     Public Class Json
         Public Shared Function GetErrorMessage(json As Newtonsoft.Json.Linq.JObject) As String
 
