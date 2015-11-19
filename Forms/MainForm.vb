@@ -1,6 +1,4 @@
 Imports System.Linq
-Imports Enumerable = System.Linq.Enumerable
-Imports DbSetMigrationsExtensions = System.Data.Entity.Migrations.DbSetMigrationsExtensions
 
 Namespace Forms
     Public Class MainForm
@@ -221,13 +219,15 @@ Namespace Forms
             '
             'MainMenu1
             '
-            Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.MainMenu1.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
             '
             'FileMenu
             '
             Me.FileMenu.Index = 0
-            Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.FileMenu.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                               {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
             Me.FileMenu.Text = "&File"
             '
@@ -249,7 +249,8 @@ Namespace Forms
             'MenuItem5
             '
             Me.MenuItem5.Index = 1
-            Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.MenuItem5.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                {Me.CompCatalogImagesDownload, Me.CompUploadScores})
             Me.MenuItem5.Text = "Competitions"
             '
@@ -266,7 +267,8 @@ Namespace Forms
             'MenuItem2
             '
             Me.MenuItem2.Index = 2
-            Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.MenuItem2.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
             Me.MenuItem2.Text = "&View"
             '
@@ -283,7 +285,8 @@ Namespace Forms
             'ReportsMenu
             '
             Me.ReportsMenu.Index = 3
-            Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
+            Me.ReportsMenu.MenuItems.AddRange(
+                New System.Windows.Forms.MenuItem() _
                                                  {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
             Me.ReportsMenu.Text = "&Reports"
             '
@@ -728,7 +731,8 @@ Namespace Forms
             Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
             Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
                 System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() _
+            Me.data_grid_entries_view.Columns.AddRange(
+                New System.Windows.Forms.DataGridViewColumn() _
                                                           {Me.grid_entries_score, Me.grid_entries_award,
                                                            Me.grid_entries_title})
             DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -2139,7 +2143,8 @@ Namespace Forms
                             photosize_record.Competition_Date_1 = json_rec("date")
                             photosize_record.width = json_data("information")("ImageSize")("Width")
                             photosize_record.height = json_data("information")("ImageSize")("Height")
-                            DbSetMigrationsExtensions.AddOrUpdate(rps_context.Photosizes, photosize_record)
+                            Entity.Migrations.DbSetMigrationsExtensions.AddOrUpdate(rps_context.Photosizes,
+                                                                                                photosize_record)
                             did_photosize = True
                         End If
                         comp_date = json_rec("date")
@@ -2236,27 +2241,6 @@ Namespace Forms
             End Try
         End Sub
 
-        Private Function getRestStatResponse(response As XPathDocument) As Boolean
-            Dim navigator As XPathNavigator
-            Dim nodes As XPathNodeIterator
-            Dim node As XPathNavigator
-
-            Try
-                ' Get the response status node with XPath
-                navigator = response.CreateNavigator()
-                nodes = navigator.Select("/rsp[@stat]")
-                nodes.MoveNext()
-                node = nodes.Current
-                If node.GetAttribute("stat", "") = "ok" Then
-                    getRestStatResponse = True
-                Else
-                    getRestStatResponse = False
-                End If
-
-            Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + Reflection.MethodBase.GetCurrentMethod().ToString)
-            End Try
-        End Function
         ' Map characters within a string.  Replace all occurrances of each character in
         ' MapWhat with the corresponding character in toWhat.
         '

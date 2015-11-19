@@ -101,7 +101,6 @@ Namespace Image
             End Try
         End Sub
 
-
         Private Function getEncoderInfo(mime_type As String) As ImageCodecInfo
             Dim j As Integer
             Dim encoders As ImageCodecInfo()

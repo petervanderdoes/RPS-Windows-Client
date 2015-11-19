@@ -1,4 +1,4 @@
-Imports System.ComponentModel
+
 
 Namespace Forms
     Public Class DownloadCompetitionsDialog
@@ -136,7 +136,7 @@ Namespace Forms
             Me.Password.Location = New Point(124, 45)
             Me.Password.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.Password.Name = "Password"
-            Me.Password.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
+            Me.Password.PasswordChar = ChrW(42)
             Me.Password.Size = New Size(170, 23)
             Me.Password.TabIndex = 3
             '
@@ -319,7 +319,6 @@ Namespace Forms
 
 #End Region
 
-
         Private Sub BrowseButton_Click(sender As Object, e As EventArgs) Handles BrowseButton.Click
             FolderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer
             FolderBrowserDialog1.SelectedPath = the_main_form.images_root_folder
@@ -328,7 +327,8 @@ Namespace Forms
             End If
         End Sub
 
-        Private Sub Download_Competitions_Dialog_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
+        Private Sub Download_Competitions_Dialog_Closing(sender As Object, e As System.ComponentModel.CancelEventArgs) _
+            Handles MyBase.Closing
             Dim invalid_input As Boolean = False
             Dim err_msg As String = "Please correct the following errors" + vbCrLf + vbCrLf
 

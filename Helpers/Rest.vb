@@ -6,10 +6,10 @@ Namespace Helpers
 
         Public Property Server As String
         Public Property ErrorMessage As String
-
         Private Property HttpResponseMessage As Http.HttpResponseMessage
 
-        Public Function DoPost(post_data As Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) As Object
+        Public Function DoPost(post_data As Generic.IReadOnlyCollection(Of Generic.KeyValuePair(Of String, String))) _
+            As Object
             Dim client As New Http.HttpClient()
             Try
                 client.BaseAddress = New Uri("http://" + Server)

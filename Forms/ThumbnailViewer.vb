@@ -372,7 +372,7 @@ Namespace Forms
             End Try
         End Sub
 
-        Private Sub SetSizes(ByVal image_width As Integer, ByVal image_height As Integer)
+        Private Sub SetSizes(image_width As Integer, image_height As Integer)
             Dim I As Image.RpsImageSize = New Image.RpsImageSize
             I.ImageWidth = image_width
             I.ImageHeight = image_height
