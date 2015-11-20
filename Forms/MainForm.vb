@@ -2212,7 +2212,7 @@ Namespace Forms
                 comp_dates = getRestCompetitionDates(params)
                 If comp_dates.Count = 0 Then
                     MsgBox("No competitions available to receive scores", , "Upload Scores")
-                    Exit Function
+                    Exit Sub
                 End If
                 Cursor.Current = Cursors.Default
 
@@ -2226,7 +2226,7 @@ Namespace Forms
                     upload_digital = upload_dialog.Upload_digital_scores.Checked
                     upload_prints = upload_dialog.Upload_print_scores.Checked
                 Else
-                    Exit Function
+                    Exit Sub
                 End If
 
                 ' Save the username in the registry as the default admin username
@@ -2314,7 +2314,7 @@ Namespace Forms
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
                            "Error in: " + MethodBase.GetCurrentMethod().Name)
-                    Exit Function
+                    Exit Sub
                 End If
                 Dim json As JObject = JObject.Parse(response)
                 If Helpers.Json.IsError(json) Then
@@ -2325,7 +2325,7 @@ Namespace Forms
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Critical,
                            "Error in: " + MethodBase.GetCurrentMethod().Name)
-                    Exit Function
+                    Exit Sub
                 End If
                 If Helpers.Json.IsFailed(json) Then
                     Dim error_message As String = "Server Warning" + Environment.NewLine + "Unknown failure"
@@ -2335,13 +2335,13 @@ Namespace Forms
                     MsgBox(error_message,
                            MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation,
                            "In: " + MethodBase.GetCurrentMethod().Name)
-                    Exit Function
+                    Exit Sub
                 End If
                 If Helpers.Json.IsSuccess(json) Then
                     MsgBox("Scores uploaded and processed",
                            MsgBoxStyle.OkOnly,
                            "In: " + MethodBase.GetCurrentMethod().Name)
-                    Exit Function
+                    Exit Sub
                 End If
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
