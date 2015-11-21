@@ -39,7 +39,7 @@ Namespace Helpers
         End Function
 
         Public Shared Function IsFailed(json As Newtonsoft.Json.Linq.JObject) As Boolean
-            If json("status") = "failed" Then
+            If json("status") = "fail" Then
                 Return True
             End If
             Return False
