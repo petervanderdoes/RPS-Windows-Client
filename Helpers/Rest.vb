@@ -5,6 +5,7 @@ Namespace Helpers
         End Sub
 
         Public Property Server As String
+        Public Property SSL As Boolean
         Public Property ErrorMessage As String
         Private Property HttpResponseMessage As Http.HttpResponseMessage
 
@@ -12,7 +13,12 @@ Namespace Helpers
             As Object
             Dim client As New Http.HttpClient()
             Try
-                client.BaseAddress = New Uri("http://" + Server)
+                If SSL Then
+                    client.BaseAddress = New Uri("https://" + Server)
+                Else
+                    client.BaseAddress = New Uri("http://" + Server)
+                End If
+
                 Dim content As Http.HttpContent = New Http.FormUrlEncodedContent(post_data)
                 HttpResponseMessage = client.PostAsync(client.BaseAddress, content).Result
                 HttpResponseMessage.EnsureSuccessStatusCode()
@@ -42,7 +48,12 @@ Namespace Helpers
                     uri_string = String.Format("{0}{1}{2}={3}", uri_string, delim, argument.Key, argument.Value)
                     delim = "&"
                 Next
-                client.BaseAddress = New Uri("http://" + Server + uri_string)
+                If SSL Then
+                    client.BaseAddress = New Uri("https://" + Server + uri_string)
+                Else
+                    client.BaseAddress = New Uri("http://" + Server + uri_string)
+                End If
+
                 HttpResponseMessage = client.GetAsync(client.BaseAddress).Result
                 If HttpResponseMessage.IsSuccessStatusCode Then
                     DoGet = HttpResponseMessage.Content.ReadAsStringAsync().Result
