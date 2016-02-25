@@ -51,6 +51,7 @@ Namespace Forms
         Private reports_output_folder As String = data_folder + "\Reports"
         Public images_root_folder As String = data_folder + "\Photos"
         Private server_name As String = "localhost"
+        Private server_is_ssl As Boolean = False
         Private server_script_dir As String = "/"
         Public camera_club_name As String = "Raritan Photographic Society"
         Private camera_club_id As Integer = 1
@@ -167,14 +168,10 @@ Namespace Forms
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle =
-                    New System.Windows.Forms.DataGridViewCellStyle()
-            Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle =
-                    New System.Windows.Forms.DataGridViewCellStyle()
-            Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle =
-                    New System.Windows.Forms.DataGridViewCellStyle()
-            Dim resources As System.ComponentModel.ComponentResourceManager =
-                    New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+            Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+            Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+            Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
             Me.MainMenu1 = New System.Windows.Forms.MainMenu(Me.components)
             Me.FileMenu = New System.Windows.Forms.MenuItem()
             Me.FilePreferencesMenu = New System.Windows.Forms.MenuItem()
@@ -230,14 +227,12 @@ Namespace Forms
             '
             'MainMenu1
             '
-            Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
-                                               {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
+            Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FileMenu, Me.MenuItem5, Me.MenuItem2, Me.ReportsMenu, Me.MenuItem7})
             '
             'FileMenu
             '
             Me.FileMenu.Index = 0
-            Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
-                                              {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
+            Me.FileMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.FilePreferencesMenu, Me.MenuItem3, Me.FileExitMenu})
             Me.FileMenu.Text = "&File"
             '
             'FilePreferencesMenu
@@ -258,8 +253,7 @@ Namespace Forms
             'MenuItem5
             '
             Me.MenuItem5.Index = 1
-            Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
-                                               {Me.CompCatalogImagesDownload, Me.CompUploadScores})
+            Me.MenuItem5.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.CompCatalogImagesDownload, Me.CompUploadScores})
             Me.MenuItem5.Text = "Competitions"
             '
             'CompCatalogImagesDownload
@@ -275,8 +269,7 @@ Namespace Forms
             'MenuItem2
             '
             Me.MenuItem2.Index = 2
-            Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
-                                               {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
+            Me.MenuItem2.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ViewSlideShowMenu, Me.ViewThumbnailsMenu})
             Me.MenuItem2.Text = "&View"
             '
             'ViewSlideShowMenu
@@ -292,8 +285,7 @@ Namespace Forms
             'ReportsMenu
             '
             Me.ReportsMenu.Index = 3
-            Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() _
-                                                 {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
+            Me.ReportsMenu.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.ReportsScoreSheetMenu, Me.ReportsResultsReportMenu})
             Me.ReportsMenu.Text = "&Reports"
             '
             'ReportsScoreSheetMenu
@@ -319,11 +311,7 @@ Namespace Forms
             '
             'SelectClassification
             '
-            Me.SelectClassification.Font = New System.Drawing.Font("Segoe UI",
-                                                                   9.0!,
-                                                                   System.Drawing.FontStyle.Regular,
-                                                                   System.Drawing.GraphicsUnit.Point,
-                                                                   CType(0, Byte))
+            Me.SelectClassification.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectClassification.Location = New System.Drawing.Point(38, 143)
             Me.SelectClassification.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectClassification.Name = "SelectClassification"
@@ -332,11 +320,7 @@ Namespace Forms
             '
             'Label3
             '
-            Me.Label3.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label3.Location = New System.Drawing.Point(38, 122)
             Me.Label3.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label3.Name = "Label3"
@@ -346,11 +330,7 @@ Namespace Forms
             '
             'SelectMedium
             '
-            Me.SelectMedium.Font = New System.Drawing.Font("Segoe UI",
-                                                           9.0!,
-                                                           System.Drawing.FontStyle.Regular,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.SelectMedium.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectMedium.Location = New System.Drawing.Point(38, 194)
             Me.SelectMedium.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectMedium.Name = "SelectMedium"
@@ -359,11 +339,7 @@ Namespace Forms
             '
             'Label2
             '
-            Me.Label2.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label2.Location = New System.Drawing.Point(38, 173)
             Me.Label2.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label2.Name = "Label2"
@@ -373,11 +349,7 @@ Namespace Forms
             '
             'Label1
             '
-            Me.Label1.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label1.Location = New System.Drawing.Point(38, 20)
             Me.Label1.Margin = New System.Windows.Forms.Padding(3, 11, 3, 0)
             Me.Label1.Name = "Label1"
@@ -387,11 +359,7 @@ Namespace Forms
             '
             'RecalcAwards
             '
-            Me.RecalcAwards.Font = New System.Drawing.Font("Segoe UI",
-                                                           9.0!,
-                                                           System.Drawing.FontStyle.Regular,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.RecalcAwards.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.RecalcAwards.Location = New System.Drawing.Point(61, 407)
             Me.RecalcAwards.Margin = New System.Windows.Forms.Padding(3, 7, 3, 3)
             Me.RecalcAwards.Name = "RecalcAwards"
@@ -402,11 +370,7 @@ Namespace Forms
             'AwardsTableTitleBar
             '
             Me.AwardsTableTitleBar.BackColor = System.Drawing.SystemColors.ActiveCaption
-            Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.0!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            Me.AwardsTableTitleBar.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.AwardsTableTitleBar.ForeColor = System.Drawing.Color.White
             Me.AwardsTableTitleBar.Location = New System.Drawing.Point(38, 330)
             Me.AwardsTableTitleBar.Margin = New System.Windows.Forms.Padding(0, 11, 0, 0)
@@ -418,11 +382,7 @@ Namespace Forms
             'NumNinesHeadingButton
             '
             Me.NumNinesHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Segoe UI",
-                                                                    9.0!,
-                                                                    System.Drawing.FontStyle.Regular,
-                                                                    System.Drawing.GraphicsUnit.Point,
-                                                                    CType(0, Byte))
+            Me.NumNinesHeadingButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.NumNinesHeadingButton.Location = New System.Drawing.Point(38, 354)
             Me.NumNinesHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumNinesHeadingButton.Name = "NumNinesHeadingButton"
@@ -433,11 +393,7 @@ Namespace Forms
             'NumEightsHeadingButton
             '
             Me.NumEightsHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Segoe UI",
-                                                                     9.0!,
-                                                                     System.Drawing.FontStyle.Regular,
-                                                                     System.Drawing.GraphicsUnit.Point,
-                                                                     CType(0, Byte))
+            Me.NumEightsHeadingButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.NumEightsHeadingButton.Location = New System.Drawing.Point(96, 354)
             Me.NumEightsHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumEightsHeadingButton.Name = "NumEightsHeadingButton"
@@ -448,11 +404,7 @@ Namespace Forms
             'NumSevensHeadingButton
             '
             Me.NumSevensHeadingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Segoe UI",
-                                                                     9.0!,
-                                                                     System.Drawing.FontStyle.Regular,
-                                                                     System.Drawing.GraphicsUnit.Point,
-                                                                     CType(0, Byte))
+            Me.NumSevensHeadingButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.NumSevensHeadingButton.Location = New System.Drawing.Point(154, 354)
             Me.NumSevensHeadingButton.Margin = New System.Windows.Forms.Padding(0)
             Me.NumSevensHeadingButton.Name = "NumSevensHeadingButton"
@@ -463,11 +415,7 @@ Namespace Forms
             'tbEligibleNines
             '
             Me.tbEligibleNines.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbEligibleNines.Font = New System.Drawing.Font("Segoe UI",
-                                                              9.0!,
-                                                              System.Drawing.FontStyle.Regular,
-                                                              System.Drawing.GraphicsUnit.Point,
-                                                              CType(0, Byte))
+            Me.tbEligibleNines.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.tbEligibleNines.Location = New System.Drawing.Point(38, 377)
             Me.tbEligibleNines.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleNines.Name = "tbEligibleNines"
@@ -478,11 +426,7 @@ Namespace Forms
             'tbEligibleEights
             '
             Me.tbEligibleEights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbEligibleEights.Font = New System.Drawing.Font("Segoe UI",
-                                                               9.0!,
-                                                               System.Drawing.FontStyle.Regular,
-                                                               System.Drawing.GraphicsUnit.Point,
-                                                               CType(0, Byte))
+            Me.tbEligibleEights.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.tbEligibleEights.Location = New System.Drawing.Point(96, 377)
             Me.tbEligibleEights.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleEights.Name = "tbEligibleEights"
@@ -493,11 +437,7 @@ Namespace Forms
             'tbEligibleSevens
             '
             Me.tbEligibleSevens.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbEligibleSevens.Font = New System.Drawing.Font("Segoe UI",
-                                                               9.0!,
-                                                               System.Drawing.FontStyle.Regular,
-                                                               System.Drawing.GraphicsUnit.Point,
-                                                               CType(0, Byte))
+            Me.tbEligibleSevens.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.tbEligibleSevens.Location = New System.Drawing.Point(154, 377)
             Me.tbEligibleSevens.Margin = New System.Windows.Forms.Padding(0)
             Me.tbEligibleSevens.Name = "tbEligibleSevens"
@@ -508,11 +448,7 @@ Namespace Forms
             'SelectAward
             '
             Me.SelectAward.Enabled = False
-            Me.SelectAward.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.SelectAward.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectAward.Location = New System.Drawing.Point(38, 296)
             Me.SelectAward.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectAward.Name = "SelectAward"
@@ -522,11 +458,7 @@ Namespace Forms
             'Label4
             '
             Me.Label4.Enabled = False
-            Me.Label4.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label4.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label4.Location = New System.Drawing.Point(38, 275)
             Me.Label4.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label4.Name = "Label4"
@@ -536,11 +468,7 @@ Namespace Forms
             '
             'Label5
             '
-            Me.Label5.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label5.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label5.Location = New System.Drawing.Point(38, 71)
             Me.Label5.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label5.Name = "Label5"
@@ -550,11 +478,7 @@ Namespace Forms
             '
             'SelectTheme
             '
-            Me.SelectTheme.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.SelectTheme.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectTheme.Location = New System.Drawing.Point(38, 92)
             Me.SelectTheme.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectTheme.Name = "SelectTheme"
@@ -565,11 +489,7 @@ Namespace Forms
             '
             Me.EnableClassification.Checked = True
             Me.EnableClassification.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.EnableClassification.Font = New System.Drawing.Font("Segoe UI",
-                                                                   9.0!,
-                                                                   System.Drawing.FontStyle.Regular,
-                                                                   System.Drawing.GraphicsUnit.Point,
-                                                                   CType(0, Byte))
+            Me.EnableClassification.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableClassification.Location = New System.Drawing.Point(11, 146)
             Me.EnableClassification.Name = "EnableClassification"
             Me.EnableClassification.Size = New System.Drawing.Size(17, 17)
@@ -579,11 +499,7 @@ Namespace Forms
             '
             Me.EnableMedium.Checked = True
             Me.EnableMedium.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.EnableMedium.Font = New System.Drawing.Font("Segoe UI",
-                                                           9.0!,
-                                                           System.Drawing.FontStyle.Regular,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.EnableMedium.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableMedium.Location = New System.Drawing.Point(11, 197)
             Me.EnableMedium.Name = "EnableMedium"
             Me.EnableMedium.Size = New System.Drawing.Size(17, 17)
@@ -593,11 +509,7 @@ Namespace Forms
             '
             Me.EnableTheme.Checked = True
             Me.EnableTheme.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.EnableTheme.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.EnableTheme.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableTheme.Location = New System.Drawing.Point(11, 95)
             Me.EnableTheme.Name = "EnableTheme"
             Me.EnableTheme.Size = New System.Drawing.Size(17, 17)
@@ -605,11 +517,7 @@ Namespace Forms
             '
             'EnableAward
             '
-            Me.EnableAward.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.EnableAward.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.EnableAward.Location = New System.Drawing.Point(11, 299)
             Me.EnableAward.Name = "EnableAward"
             Me.EnableAward.Size = New System.Drawing.Size(17, 17)
@@ -617,11 +525,7 @@ Namespace Forms
             '
             'SelectScore
             '
-            Me.SelectScore.Font = New System.Drawing.Font("Segoe UI",
-                                                          9.0!,
-                                                          System.Drawing.FontStyle.Regular,
-                                                          System.Drawing.GraphicsUnit.Point,
-                                                          CType(0, Byte))
+            Me.SelectScore.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectScore.Location = New System.Drawing.Point(38, 245)
             Me.SelectScore.Margin = New System.Windows.Forms.Padding(7, 5, 3, 0)
             Me.SelectScore.Name = "SelectScore"
@@ -630,11 +534,7 @@ Namespace Forms
             '
             'Label6
             '
-            Me.Label6.Font = New System.Drawing.Font("Segoe UI",
-                                                     9.0!,
-                                                     System.Drawing.FontStyle.Regular,
-                                                     System.Drawing.GraphicsUnit.Point,
-                                                     CType(0, Byte))
+            Me.Label6.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label6.Location = New System.Drawing.Point(38, 224)
             Me.Label6.Margin = New System.Windows.Forms.Padding(3, 7, 3, 0)
             Me.Label6.Name = "Label6"
@@ -644,11 +544,7 @@ Namespace Forms
             '
             'SelectDate
             '
-            Me.SelectDate.Font = New System.Drawing.Font("Segoe UI",
-                                                         9.0!,
-                                                         System.Drawing.FontStyle.Regular,
-                                                         System.Drawing.GraphicsUnit.Point,
-                                                         CType(0, Byte))
+            Me.SelectDate.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SelectDate.Location = New System.Drawing.Point(38, 41)
             Me.SelectDate.Margin = New System.Windows.Forms.Padding(3, 5, 3, 0)
             Me.SelectDate.Name = "SelectDate"
@@ -713,40 +609,25 @@ Namespace Forms
             Me.data_grid_entries_view.AllowUserToDeleteRows = False
             Me.data_grid_entries_view.AllowUserToResizeColumns = False
             Me.data_grid_entries_view.AllowUserToResizeRows = False
-            Me.data_grid_entries_view.Anchor =
-                CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                       Or System.Windows.Forms.AnchorStyles.Right),
-                      System.Windows.Forms.AnchorStyles)
-            Me.data_grid_entries_view.AutoSizeColumnsMode =
-                System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+            Me.data_grid_entries_view.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.data_grid_entries_view.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
             Me.data_grid_entries_view.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-            Me.data_grid_entries_view.ColumnHeadersBorderStyle =
-                System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+            Me.data_grid_entries_view.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
             DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
             DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-            DataGridViewCellStyle1.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.0!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            DataGridViewCellStyle1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
             DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control
             DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText
             DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
             Me.data_grid_entries_view.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-            Me.data_grid_entries_view.ColumnHeadersHeightSizeMode =
-                System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() _
-                                                          {Me.grid_entries_score, Me.grid_entries_award,
-                                                           Me.grid_entries_title})
+            Me.data_grid_entries_view.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.data_grid_entries_view.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.grid_entries_score, Me.grid_entries_award, Me.grid_entries_title})
             DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
             DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-            DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.0!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
             DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window
             DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText
@@ -756,17 +637,11 @@ Namespace Forms
             Me.data_grid_entries_view.Location = New System.Drawing.Point(225, 42)
             Me.data_grid_entries_view.Name = "data_grid_entries_view"
             Me.data_grid_entries_view.ReadOnly = True
-            Me.data_grid_entries_view.RowHeadersBorderStyle =
-                System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-            Me.data_grid_entries_view.RowHeadersWidthSizeMode =
-                System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-            DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI",
-                                                                  9.75!,
-                                                                  System.Drawing.FontStyle.Regular,
-                                                                  System.Drawing.GraphicsUnit.Point,
-                                                                  CType(0, Byte))
+            Me.data_grid_entries_view.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+            Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+            DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-            Me.data_grid_entries_view.Size = New System.Drawing.Size(1115, 387)
+            Me.data_grid_entries_view.Size = New System.Drawing.Size(1132, 387)
             Me.data_grid_entries_view.TabIndex = 53
             '
             'grid_entries_score
@@ -798,22 +673,16 @@ Namespace Forms
             '
             'grid_caption
             '
-            Me.grid_caption.Anchor =
-                CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                       Or System.Windows.Forms.AnchorStyles.Right),
-                      System.Windows.Forms.AnchorStyles)
+            Me.grid_caption.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.grid_caption.BackColor = System.Drawing.SystemColors.ActiveCaption
             Me.grid_caption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.grid_caption.Font = New System.Drawing.Font("Segoe UI",
-                                                           11.25!,
-                                                           System.Drawing.FontStyle.Bold,
-                                                           System.Drawing.GraphicsUnit.Point,
-                                                           CType(0, Byte))
+            Me.grid_caption.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.grid_caption.ForeColor = System.Drawing.Color.Black
             Me.grid_caption.Location = New System.Drawing.Point(225, 20)
             Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
             Me.grid_caption.Name = "grid_caption"
-            Me.grid_caption.Size = New System.Drawing.Size(1115, 24)
+            Me.grid_caption.Size = New System.Drawing.Size(1132, 24)
             Me.grid_caption.TabIndex = 54
             Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
@@ -821,7 +690,7 @@ Namespace Forms
             '
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-            Me.ClientSize = New System.Drawing.Size(1358, 491)
+            Me.ClientSize = New System.Drawing.Size(1375, 491)
             Me.Controls.Add(Me.grid_caption)
             Me.Controls.Add(Me.data_grid_entries_view)
             Me.Controls.Add(Me.SelectDate)
@@ -850,11 +719,7 @@ Namespace Forms
             Me.Controls.Add(Me.SelectMedium)
             Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.Label1)
-            Me.Font = New System.Drawing.Font("Segoe UI",
-                                              9.0!,
-                                              System.Drawing.FontStyle.Regular,
-                                              System.Drawing.GraphicsUnit.Point,
-                                              CType(0, Byte))
+            Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Menu = Me.MainMenu1
             Me.Name = "MainForm"
@@ -864,6 +729,7 @@ Namespace Forms
             CType(Me.data_grid_entries_view, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
+
         End Sub
 
 #End Region
@@ -1753,6 +1619,7 @@ Namespace Forms
                     prefs_dialog.tbReportsOutputFolder.Text = reports_output_folder
                 End If
                 prefs_dialog.tbServerName.Text = server_name
+                prefs_dialog.tbUsesSSL.Checked = server_is_ssl
                 prefs_dialog.tbServerScriptDir.Text = server_script_dir
                 query = From club In rps_context.clubs
                         Select club.id, club.name
@@ -1771,6 +1638,7 @@ Namespace Forms
                 Dim dbfn As String = Trim(prefs_dialog.tbDatabaseFileName.Text)
                 Dim rof As String = Trim(prefs_dialog.tbReportsOutputFolder.Text)
                 Dim sn As String = Trim(prefs_dialog.tbServerName.Text)
+                Dim ssl As Boolean = prefs_dialog.tbUsesSSL.Checked
                 Dim ssd As String = Trim(prefs_dialog.tbServerScriptDir.Text)
                 Dim ccn As String = Trim(CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).Value)
                 Dim ccid As Integer = CType(prefs_dialog.cbCameraClubName.SelectedItem, DataItem).ID
@@ -1802,6 +1670,9 @@ Namespace Forms
                         Registry.writeRegistryString("Server Name", sn)
                         rest.Server = server_name
                     End If
+                    server_is_ssl = ssl
+                    Registry.writeRegistryString("SSL", ssl)
+                    rest.SSL = ssl
                     If ssd > "" Then
                         ' Store the new Server script directory in memory
                         server_script_dir = ssd
