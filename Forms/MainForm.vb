@@ -641,7 +641,7 @@ Namespace Forms
             Me.data_grid_entries_view.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
             DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.data_grid_entries_view.RowsDefaultCellStyle = DataGridViewCellStyle3
-            Me.data_grid_entries_view.Size = New System.Drawing.Size(1132, 387)
+            Me.data_grid_entries_view.Size = New System.Drawing.Size(1149, 387)
             Me.data_grid_entries_view.TabIndex = 53
             '
             'grid_entries_score
@@ -682,7 +682,7 @@ Namespace Forms
             Me.grid_caption.Location = New System.Drawing.Point(225, 20)
             Me.grid_caption.Margin = New System.Windows.Forms.Padding(0)
             Me.grid_caption.Name = "grid_caption"
-            Me.grid_caption.Size = New System.Drawing.Size(1132, 24)
+            Me.grid_caption.Size = New System.Drawing.Size(1149, 24)
             Me.grid_caption.TabIndex = 54
             Me.grid_caption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
@@ -690,7 +690,7 @@ Namespace Forms
             '
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New System.Drawing.Size(640, 480)
-            Me.ClientSize = New System.Drawing.Size(1375, 491)
+            Me.ClientSize = New System.Drawing.Size(1392, 491)
             Me.Controls.Add(Me.grid_caption)
             Me.Controls.Add(Me.data_grid_entries_view)
             Me.Controls.Add(Me.SelectDate)
@@ -1432,8 +1432,7 @@ Namespace Forms
                 Else
                     report_type = "Scoresheet"
                 End If
-                temp_file = reports_output_folder + "\" +
-                            report_type + "_" + CType(competition_date.Year, String) + "-" +
+                temp_file = report_type + "_" + CType(competition_date.Year, String) + "-" +
                             CType(competition_date.Month, String) + "-" +
                             CType(competition_date.Day, String)
                 If EnableTheme.Checked Then
@@ -1451,7 +1450,8 @@ Namespace Forms
                 If EnableAward.Checked Then
                     temp_file += "_" + SelectAward.Text
                 End If
-                temp_file = handleStrMap(temp_file, " ?[]/\=+<>:;"",*|", "_---------------") + ".html"
+                temp_file = handleStrMap(temp_file, " ?[]/\=+<>:;#"",*|", "_----------------") + ".html"
+                temp_file = reports_output_folder + "\" + temp_file
                 sw = File.CreateText(temp_file)
                 sw.WriteLine("<html><style type=""text/css"">")
                 sw.WriteLine("<!--")
@@ -1584,20 +1584,10 @@ Namespace Forms
                 sw.Close()
                 '
                 ' Launch a browser to display the worksheet
-                doShellExecute(temp_file)
-            Catch exception As Exception
-                MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
-            End Try
-        End Sub
-
-        Private Shared Sub doShellExecute(file As String)
-            Try
-                Dim my_process As New Process
-                my_process.StartInfo.FileName = file
-                my_process.StartInfo.UseShellExecute = True
-                my_process.StartInfo.RedirectStandardOutput = False
-                my_process.Start()
-                my_process.Dispose()
+                Try
+                    Process.Start(temp_file)
+                Catch exeception As Exception
+                End Try
             Catch exception As Exception
                 MsgBox(exception.Message, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
             End Try
