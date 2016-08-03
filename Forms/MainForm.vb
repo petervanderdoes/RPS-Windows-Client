@@ -1172,7 +1172,7 @@ Namespace Forms
                     ' Start with a basic SQL statement that selects records by date.
                     select_stmt = "Select * FROM CompetitionEntries"
                     where_clause = " WHERE Competition_Date_1='" +
-                                   Format(parseSelectedDate(SelectDate.Text), "M/dd/yyyy") +
+                                   Format(parseSelectedDate(SelectDate.Text), "M/d/yyyy") +
                                    "'"
                     order_clause = " ORDER BY Display_Sequence, Title"
                     grid_caption.Text = Format(parseSelectedDate(SelectDate.Text), "MM/dd/yyyy")
@@ -1829,7 +1829,7 @@ Namespace Forms
         Private Sub setCompetitionDatesCombobox()
 
             query = From entry In rps_context.CompetitionEntries
-                    Order By entry.Competition_Date_1
+                    Order By entry.Competition_Date_1 Ascending
                     Select entry.Competition_Date_1 Distinct
 
             Try
@@ -1882,6 +1882,8 @@ Namespace Forms
                 Else
                     MsgBox(rest.ErrorMessage, , "Error in: " + MethodBase.GetCurrentMethod().ToString)
                 End If
+
+                dates.Sort()
 
                 getRestCompetitionDates = dates
 
@@ -1955,7 +1957,7 @@ Namespace Forms
                 Dim d As Date
                 d = Date.ParseExact(comp_date, "yyyy-MM-dd", CultureInfo.CurrentCulture)
                 sql = "DELETE FROM CompetitionEntries WHERE Competition_Date_1 = '" +
-                      Format(d, "M/dd/yyyy") + "'"
+                      Format(d, "M/d/yyyy") + "'"
                 If download_digital And Not download_prints Then
                     sql += " AND Medium like '%Digital'"
                 End If
@@ -2253,7 +2255,7 @@ Namespace Forms
                 Dim d As Date = Date.ParseExact(comp_date, "yyyy-MM-dd", CultureInfo.CurrentCulture)
                 sql_select = "SELECT DISTINCT Classification, Medium FROM CompetitionEntries "
                 sql_where = "WHERE Competition_Date_1 = '" +
-                            Format(d, "M/dd/yyyy") + "'" +
+                            Format(d, "M/d/yyyy") + "'" +
                             selected_medium
                 query = sql_select + sql_where
                 recs = rps_context.Database.SqlQuery(Of ClassificationMedium)(query).ToList
@@ -2271,7 +2273,7 @@ Namespace Forms
                     classification = comp_class_list.Item(comp_num)
                     medium = comp_medium_list.Item(comp_num)
                     sql_select = "Select * FROM CompetitionEntries "
-                    sql_where = "WHERE Competition_Date_1 = '" + Format(d, "M/dd/yyyy") + "' And classification = '" +
+                    sql_where = "WHERE Competition_Date_1 = '" + Format(d, "M/d/yyyy") + "' And classification = '" +
                                 classification + "' AND Medium = '" + medium + "'"
                     query = sql_select + sql_where
                     recs = rps_context.Database.SqlQuery(Of CompetitionEntry)(query).ToList
@@ -2360,7 +2362,7 @@ Namespace Forms
         '
         Private Sub setThemeCombobox()
             Try
-                Dim comp_date As String = Format(parseSelectedDate(SelectDate.Text), "M/dd/yyyy")
+                Dim comp_date As String = Format(parseSelectedDate(SelectDate.Text), "M/d/yyyy")
                 themes.Clear()
                 SelectTheme.Items.Clear()
 
